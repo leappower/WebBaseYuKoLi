@@ -176,7 +176,7 @@
 
     if (region === "sea") {
       badge.style.background = "rgba(236,91,19,0.12)";
-      badge.style.color = "' + _primary + '";
+      badge.style.color = _primary;
       badge.style.border = "1px solid rgba(236,91,19,0.3)";
       badge.innerHTML = [
         '<span style="font-size:1rem;">💬</span>',
