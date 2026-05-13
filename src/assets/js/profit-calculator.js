@@ -5,20 +5,39 @@
 (function () {
   "use strict";
 
+  /* ───────── Config bridge ───────── */
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _roi = _cfg.roi || {};
+  var _brandCfg = _cfg.brand || {};
+  var BRAND_NAME = _brandCfg.name || "YuKoLi";
+
   /* ───────── Default salary data per country ───────── */
-  var DEFAULT_SALARIES = {
-    Philippines: { monthly: 25000, currency: "PHP", symbol: "₱" },
-    Indonesia: { monthly: 4800000, currency: "IDR", symbol: "Rp" },
-    Vietnam: { monthly: 7000000, currency: "VND", symbol: "₫" },
-    Thailand: { monthly: 15000, currency: "THB", symbol: "฿" },
-    Malaysia: { monthly: 2500, currency: "MYR", symbol: "RM" },
-    China: { monthly: 5000, currency: "CNY", symbol: "¥" },
-    Japan: { monthly: 220000, currency: "JPY", symbol: "¥" },
-    "South Korea": { monthly: 2800000, currency: "KRW", symbol: "₩" },
-    India: { monthly: 25000, currency: "INR", symbol: "₹" },
-    "Saudi Arabia": { monthly: 4000, currency: "SAR", symbol: "ر.س" },
-    Taiwan: { monthly: 40000, currency: "TWD", symbol: "NT$" },
-    Other: { monthly: 2000, currency: "USD", symbol: "$" },
+  var DEFAULT_SALARIES = _roi.salaries || {
+    Philippines: { monthly: 25000, currency: "PHP", symbol: "₱", rateToUSD: 56 },
+    Indonesia: { monthly: 4800000, currency: "IDR", symbol: "Rp", rateToUSD: 15800 },
+    Vietnam: { monthly: 7000000, currency: "VND", symbol: "₫", rateToUSD: 25000 },
+    Thailand: { monthly: 15000, currency: "THB", symbol: "฿", rateToUSD: 35 },
+    Malaysia: { monthly: 2500, currency: "MYR", symbol: "RM", rateToUSD: 4.7 },
+    China: { monthly: 5000, currency: "CNY", symbol: "¥", rateToUSD: 7.24 },
+    Japan: { monthly: 220000, currency: "JPY", symbol: "¥", rateToUSD: 150 },
+    "South Korea": { monthly: 2800000, currency: "KRW", symbol: "₩", rateToUSD: 1300 },
+    India: { monthly: 25000, currency: "INR", symbol: "₹", rateToUSD: 83 },
+    "Saudi Arabia": { monthly: 4000, currency: "SAR", symbol: "ر.س", rateToUSD: 3.75 },
+    Taiwan: { monthly: 40000, currency: "TWD", symbol: "NT$", rateToUSD: 32 },
+    Singapore: { monthly: 3500, currency: "SGD", symbol: "S$", rateToUSD: 1.34 },
+    USA: { monthly: 3500, currency: "USD", symbol: "$", rateToUSD: 1 },
+    UK: { monthly: 2200, currency: "GBP", symbol: "£", rateToUSD: 0.79 },
+    Germany: { monthly: 2800, currency: "EUR", symbol: "€", rateToUSD: 0.92 },
+    France: { monthly: 2600, currency: "EUR", symbol: "€", rateToUSD: 0.92 },
+    Brazil: { monthly: 2800, currency: "BRL", symbol: "R$", rateToUSD: 5.0 },
+    Mexico: { monthly: 8000, currency: "MXN", symbol: "Mex$", rateToUSD: 17 },
+    Turkey: { monthly: 15000, currency: "TRY", symbol: "₺", rateToUSD: 30 },
+    UAE: { monthly: 4500, currency: "AED", symbol: "د.إ", rateToUSD: 3.67 },
+    Australia: { monthly: 4500, currency: "AUD", symbol: "A$", rateToUSD: 1.53 },
+    Egypt: { monthly: 6000, currency: "EGP", symbol: "E£", rateToUSD: 48 },
+    "South Africa": { monthly: 15000, currency: "ZAR", symbol: "R", rateToUSD: 18 },
+    Russia: { monthly: 60000, currency: "RUB", symbol: "₽", rateToUSD: 92 },
+    Other: { monthly: 2000, currency: "USD", symbol: "$", rateToUSD: 1 },
   };
 
   /* ───────── Language → Country auto-match ───────── */
@@ -36,6 +55,19 @@
     ko: "South Korea",
     hi: "India",
     ar: "Saudi Arabia",
+    "en-SG": "Singapore",
+    "en-US": "USA",
+    "en-GB": "UK",
+    de: "Germany",
+    fr: "France",
+    pt: "Brazil",
+    "es-MX": "Mexico",
+    tr: "Turkey",
+    "ar-AE": "UAE",
+    "en-AU": "Australia",
+    "ar-EG": "Egypt",
+    "en-ZA": "South Africa",
+    ru: "Russia",
   };
 
   /** Detect country from browser language (works before translationManager is loaded) */
@@ -152,6 +184,19 @@
       ms: { symbol: "RM", currency: "MYR" },
       hi: { symbol: "₹", currency: "INR" },
       ar: { symbol: "ر.س", currency: "SAR" },
+      "en-SG": { symbol: "S$", currency: "SGD" },
+      "en-US": { symbol: "$", currency: "USD" },
+      "en-GB": { symbol: "£", currency: "GBP" },
+      de: { symbol: "€", currency: "EUR" },
+      fr: { symbol: "€", currency: "EUR" },
+      pt: { symbol: "R$", currency: "BRL" },
+      "es-MX": { symbol: "Mex$", currency: "MXN" },
+      tr: { symbol: "₺", currency: "TRY" },
+      "ar-AE": { symbol: "د.إ", currency: "AED" },
+      "en-AU": { symbol: "A$", currency: "AUD" },
+      "ar-EG": { symbol: "E£", currency: "EGP" },
+      "en-ZA": { symbol: "R", currency: "ZAR" },
+      ru: { symbol: "₽", currency: "RUB" },
     };
     for (var key in map) {
       if (lang === key || lang.indexOf(key) === 0) return map[key];
@@ -240,16 +285,9 @@
     };
 
     var investment = getEquipmentCost(input.equipment);
-    // Convert USD investment to local currency (rough estimates)
-    var usdToLocalRates = {
-      Philippines: 56,
-      Indonesia: 15800,
-      Vietnam: 25000,
-      Thailand: 35,
-      Malaysia: 4.7,
-      Other: 1,
-    };
-    var rate = usdToLocalRates[input.country] || 1;
+    // Convert USD investment to local currency (use rateToUSD from salary config)
+    var salaryEntry = DEFAULT_SALARIES[input.country] || DEFAULT_SALARIES["Other"];
+    var rate = salaryEntry.rateToUSD || 1;
     var localInvestment = {
       min: Math.round(investment.min * rate),
       max: Math.round(investment.max * rate),
@@ -578,7 +616,7 @@
             .join(", ")
         : "N/A";
     return [
-      "Hi YuKoLi, I calculated my ROI:",
+      "Hi " + BRAND_NAME + ", I calculated my ROI:",
       "",
       t("profit_calc_report_challenge") + ": " + input.country,
       t("profit_calc_labor_cost") + ": " + formatNumber(input.laborCost) + " " + lc.currency,
@@ -780,7 +818,7 @@
           }
         }
 
-        var filename = "YuKoLi-ROI-Report-" + new Date().toISOString().slice(0, 10) + ".pdf";
+        var filename = BRAND_NAME + "-ROI-Report-" + new Date().toISOString().slice(0, 10) + ".pdf";
         pdf.save(filename);
       })
       .catch(function (err) {
