@@ -169,7 +169,7 @@
 
   function renderWaCard(cfg, device) {
     if (device === "mobile") {
-      var _wa = window.Contacts ? window.Contacts.whatsapp : "8613163756465";
+      var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
       return (
         '<a href="https://wa.me/' +
         _wa +
@@ -185,7 +185,7 @@
         "</a>"
       );
     }
-    var _wa = window.Contacts ? window.Contacts.whatsapp : "8613163756465";
+    var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
     return (
       '<a href="https://wa.me/' +
       _wa +
@@ -207,7 +207,7 @@
   function renderEmailCard(cfg, device) {
     if (device === "mobile") {
       return (
-        '<a href="mailto:support.kitchen@yukoli.com" class="flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all active:scale-95">' +
+        '<a href="mailto:" + (_cfg.supportEmail || ((_cfg.contacts || {}).supportEmail || "support.kitchen@yukoli.com")) class="flex items-center gap-3 p-4 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 transition-all active:scale-95">' +
         '<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0"><span class="material-symbols-outlined text-primary text-xl">email</span></div>' +
         '<div class="flex-1"><p class="font-bold text-sm text-slate-900 dark:text-slate-100">Email</p><p class="text-xs text-slate-500 dark:text-slate-400">' +
         (cfg.email || "support.kitchen@yukoli.com") +
@@ -217,7 +217,7 @@
       );
     }
     return (
-      '<a href="mailto:support.kitchen@yukoli.com" class="flex flex-col items-center gap-3 p-8 rounded-2xl bg-primary/5 border border-primary/20 hover:bg-primary/10 hover:shadow-lg hover:border-primary/40 transition-all duration-300 group">' +
+      '<a href="mailto:" + (_cfg.supportEmail || ((_cfg.contacts || {}).supportEmail || "support.kitchen@yukoli.com")) class="flex flex-col items-center gap-3 p-8 rounded-2xl bg-primary/5 border border-primary/20 hover:bg-primary/10 hover:shadow-lg hover:border-primary/40 transition-all duration-300 group">' +
       '<div class="w-14 h-14 rounded-full bg-primary flex items-center justify-center group-hover:scale-110 transition-transform"><span class="material-symbols-outlined text-white text-2xl">email</span></div>' +
       '<h3 class="font-bold text-lg">Email</h3>' +
       '<p class="text-sm text-slate-500 dark:text-slate-400 text-center">' +
@@ -229,7 +229,7 @@
 
   function renderPhoneCard(cfg, device) {
     if (device === "mobile") {
-      var _tel = window.Contacts ? window.Contacts.whatsapp : "8613163756465";
+      var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
       return (
         '<a href="tel:+' +
         _tel +
@@ -244,7 +244,7 @@
     }
     var phoneKey = cfg.phoneKey || "support_contact_phone_label";
     var phoneDescKey = cfg.phoneDescKey || "support_contact_phone_desc";
-    var _tel = window.Contacts ? window.Contacts.whatsapp : "8613163756465";
+    var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
     return (
       '<a href="tel:+' +
       _tel +

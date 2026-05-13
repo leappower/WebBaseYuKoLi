@@ -47,7 +47,7 @@
         esc(item.key) +
         "</p>"
       : "";
-    var waHref = "https://wa.me/" + (window.Contacts ? window.Contacts.whatsapp : "8613163756465");
+    var waHref = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465"));
 
     if (item.isWhatsApp) {
       return (
@@ -151,6 +151,7 @@
     }
 
     window.requestAnimationFrame(function () {
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
       if (bar) bar.style.opacity = "1";
       if (!document.body.style.paddingBottom) {
         document.body.style.paddingBottom = (bar ? bar.offsetHeight : 80) + 20 + "px";

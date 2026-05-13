@@ -25,7 +25,7 @@
    * 0. CONFIG
    * ───────────────────────────────────────────── */
 
-  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts ? window.Contacts.whatsapp : "8613163756465");
+  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465"));
   var SCROLL_THRESHOLD = 300;
 
   // 可通过 window 覆盖
@@ -166,6 +166,7 @@
         args = arguments;
       clearTimeout(timeout);
       timeout = setTimeout(function () {
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
         func.apply(ctx, args);
       }, wait);
     };

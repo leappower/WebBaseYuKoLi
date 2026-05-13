@@ -355,7 +355,7 @@
         esc(product.badge) +
         "</span>"
       : "";
-    var wa = window.Contacts ? window.Contacts.whatsapp : "8613163756465";
+    var wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465");
 
     // Video support: product.video or product.videoUrl from CMS
     var videoUrl = product.video || product.videoUrl || "";

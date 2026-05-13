@@ -1451,7 +1451,7 @@
       window.Contacts && typeof window.Contacts.contactsWhatsApp === "function"
         ? window.Contacts.contactsWhatsApp({ source: "ROI Calculator", message: msg })
         : "https://wa.me/" +
-          (window.Contacts ? window.Contacts.whatsapp : "8613163756465") +
+          (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465")) +
           "?text=" +
           encodeURIComponent(msg);
     window.open(url, "_blank", "noopener");

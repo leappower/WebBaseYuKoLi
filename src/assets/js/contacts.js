@@ -30,7 +30,8 @@
    * wa.me 链接的点击，用此号码动态生成 URL。floating-actions.js、footer.js、
    * contact-dropdown.js、profit-calculator.js 等也通过 window.Contacts.whatsapp 读取此值。
    */
-  var WHATSAPP_NUMBER = "8613163756465";
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp) || "8613163756465";
 
   // ============================================
   // WHATSAPP SOURCE TRACKING

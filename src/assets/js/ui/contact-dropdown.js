@@ -6,6 +6,7 @@
  */
 
 (function () {
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
   "use strict";
 
   var _spaRegs = {};
@@ -23,7 +24,7 @@
     {
       key: "nav_contact_whatsapp",
       icon: "chat",
-      href: "https://wa.me/" + (window.Contacts ? window.Contacts.whatsapp : "8613163756465"),
+      href: "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465")),
       isWhatsApp: true,
     },
   ];
