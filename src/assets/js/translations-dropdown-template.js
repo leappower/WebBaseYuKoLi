@@ -3,6 +3,9 @@
  * 这个下拉框会被动态插入到 body 中，使用 fixed 定位
  */
 
+var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
+
 window.LanguageDropdownTemplate = {
   // 按地区分组的语言配置（从 LANG_REGISTRY 动态读取）
   LANG_GROUPS: [
@@ -34,7 +37,7 @@ window.LanguageDropdownTemplate = {
     var isActive = code === currentLang ? "is-active" : "";
     var checkIcon =
       code === currentLang
-        ? '<span class="material-symbols-outlined text-sm" style="color:#ec5b13">check</span>'
+        ? '<span class="material-symbols-outlined text-sm" style="color:' + _primary + '">check</span>'
         : '<span style="width:20px"></span>';
     return (
       '<button class="lang-option w-full flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ' +
@@ -70,8 +73,8 @@ window.LanguageDropdownTemplate = {
     var s = document.createElement("style");
     s.id = "lang-dropdown-styles";
     s.textContent = [
-      ".lang-option.is-active { background: rgba(236,91,19,.08); color: #ec5b13; }",
-      ".lang-option.is-active span { color: #ec5b13; }",
+      ".lang-option.is-active { background: rgba(236,91,19,.08); color: " + _primary + "; }",
+      ".lang-option.is-active span { color: " + _primary + "; }",
       "html.dark .lang-option.is-active { background: rgba(236,91,19,.14); color: #f97316; }",
       "html.dark .lang-option.is-active span { color: #f97316; }",
       "#language-dropdown { animation: langDropIn .2s cubic-bezier(.32,.72,0,1); }",

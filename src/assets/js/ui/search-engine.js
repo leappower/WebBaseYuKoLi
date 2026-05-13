@@ -15,6 +15,8 @@
 
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -645,7 +647,7 @@
       "  padding: 1px 6px;",
       "  border-radius: 4px;",
       "  background: rgba(236,91,19,0.10);",
-      "  color: #ec5b13;",
+      "  color: ' + _primary + ';",
       "  font-size: 10px;",
       "  font-weight: 700;",
       "  flex-shrink: 0;",
@@ -688,7 +690,7 @@
       "  border-top: 1px solid rgba(120,120,128,0.10);",
       "  font-size: 12px;",
       "  font-weight: 600;",
-      "  color: #ec5b13;",
+      "  color: ' + _primary + ';",
       "  text-decoration: none;",
       "  border-radius: 8px;",
       "  transition: background 0.12s ease;",
@@ -698,7 +700,7 @@
       ".ios-search-view-all .material-symbols-outlined {",
       "  font-size: 14px;",
       "}",
-      "html.dark .ios-search-view-all { color: #ec5b13; border-top-color: rgba(255,255,255,0.06); }",
+      "html.dark .ios-search-view-all { color: ' + _primary + '; border-top-color: rgba(255,255,255,0.06); }",
       "html.dark .ios-search-view-all:hover { background: rgba(236,91,19,0.10); }",
 
       /* Scrollbar */

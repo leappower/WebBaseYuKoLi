@@ -6,6 +6,8 @@
 
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var esc = global.DropdownBase.esc;
   var isTouch = global.DropdownBase.isTouch;
@@ -51,7 +53,7 @@
       "  padding: 9px 12px; font-size: 13px; font-weight: 600; color: #1d1d1f;",
       "  text-decoration: none; border-radius: 10px; transition: background .1s ease;",
       "}",
-      ".prod-viewall-item:hover { background: rgba(236,91,19,.06); color: #ec5b13; }",
+      ".prod-viewall-item:hover { background: rgba(236,91,19,.06); color: ' + _primary + '; }",
       ".prod-viewall-item .material-symbols-outlined { font-size: 16px; }",
       "html.dark .prod-viewall-item { color: #f5f5f7; }",
       "html.dark .prod-viewall-item:hover { background: rgba(236,91,19,.10); color: #f97316; }",

@@ -17,6 +17,8 @@
 /* global CustomSelect */
 (function (_global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -666,7 +668,7 @@
       "  transition: color 200ms ease;",
       "}",
       "html.dark .ios-search-icon { color: rgba(235,235,245,0.6); }",
-      ".ios-search-bar.is-focused .ios-search-icon { color: #ec5b13; }",
+      ".ios-search-bar.is-focused .ios-search-icon { color: ' + _primary + '; }",
 
       /* 搜索输入框 */
       ".ios-search-input {",

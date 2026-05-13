@@ -7,6 +7,8 @@
  */
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -125,14 +127,14 @@
       s.id = "pi-sticky-cta-style";
       s.textContent = [
         "#yukoli-sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:calc(var(--z-footer, 10) + 1);",
-        "background:#fff;border-top:2px solid #ec5b13;padding:10px 24px;",
+        "background:#fff;border-top:2px solid ' + _primary + ';padding:10px 24px;",
         "display:flex;align-items:center;justify-content:space-between;",
         "box-shadow:0 -4px 24px rgba(0,0,0,.12);",
         "transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}",
         "#yukoli-sticky-cta.visible{transform:translateY(0);}",
         "#yukoli-sticky-cta .sc-title{font-weight:700;font-size:.95rem;color:#0f172a;}",
         "#yukoli-sticky-cta .sc-sub{font-size:.78rem;color:#64748b;}",
-        "#yukoli-sticky-cta .sc-btn{background:#ec5b13;color:#fff;border:none;",
+        "#yukoli-sticky-cta .sc-btn{background:' + _primary + ';color:#fff;border:none;",
         "padding:9px 20px;border-radius:6px;font-weight:700;font-size:.85rem;",
         "cursor:pointer;white-space:nowrap;}",
         "#yukoli-sticky-cta .sc-btn:hover{opacity:.88;}",

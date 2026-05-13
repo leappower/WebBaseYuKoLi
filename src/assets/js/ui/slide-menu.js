@@ -16,6 +16,8 @@
 /* global SlideMenu */
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -126,7 +128,7 @@
       "}",
       "html.dark .mobile-menu-l1-icon { background: rgba(236,91,19,.18); }",
       ".mobile-menu-l1-icon .material-symbols-outlined {",
-      "  font-size: 18px; color: #ec5b13;",
+      "  font-size: 18px; color: ' + _primary + ';",
       "}",
       ".mobile-menu-l1-label { flex: 1; min-width: 0; }",
       ".mobile-menu-l1-arrow {",
@@ -172,10 +174,10 @@
       ".mobile-menu-l2-item:active { background: rgba(236,91,19,.06); }",
       "html.dark .mobile-menu-l2-item:active { background: rgba(236,91,19,.10); }",
       ".mobile-menu-l2-viewall .mobile-menu-l2-icon {",
-      "  color: var(--color-primary, #ec5b13);",
+      "  color: var(--color-primary, ' + _primary + ');",
       "}",
       ".mobile-menu-l2-viewall:active .mobile-menu-l2-label {",
-      "  color: var(--color-primary, #ec5b13);",
+      "  color: var(--color-primary, ' + _primary + ');",
       "}",
 
       /* 二级菜单项图标 */
@@ -186,7 +188,7 @@
       "}",
       "html.dark .mobile-menu-l2-icon { background: rgba(236,91,19,.14); }",
       ".mobile-menu-l2-icon .material-symbols-outlined {",
-      "  font-size: 14px; color: #ec5b13;",
+      "  font-size: 14px; color: ' + _primary + ';",
       "}",
 
       /* 二级菜单项标签 */
@@ -202,7 +204,7 @@
       "}",
       ".mobile-menu-l2-item.is-active .mobile-menu-l2-label {",
       "  text-decoration: underline; text-decoration-style: solid;",
-      "  text-decoration-color: var(--color-primary, #ec5b13);",
+      "  text-decoration-color: var(--color-primary, ' + _primary + ');",
       "  text-decoration-thickness: 2px;",
       "}",
 
@@ -211,7 +213,7 @@
       "  display: inline-flex; align-items: center; padding: 2px 7px;",
       "  font-size: 10px; font-weight: 700; letter-spacing: .04em;",
       "  text-transform: uppercase;",
-      "  background: #ec5b13; color: #fff; border-radius: 20px;",
+      "  background: ' + _primary + '; color: #fff; border-radius: 20px;",
       "  flex-shrink: 0; line-height: 1.4;",
       "}",
 
@@ -228,7 +230,7 @@
 
       /* 当前激活项高亮 */
       ".mobile-menu-l2-item.is-active {",
-      "  color: var(--color-primary, #ec5b13); font-weight: 600;",
+      "  color: var(--color-primary, ' + _primary + '); font-weight: 600;",
       "}",
       ".mobile-menu-l2-item.is-active .mobile-menu-l2-icon {",
       "  background: rgba(236,91,19,.20);",
@@ -264,14 +266,14 @@
       "  transition: all .15s ease;",
       "}",
       ".mobile-menu-cta-btn.primary {",
-      "  background: #ec5b13; color: #fff;",
+      "  background: ' + _primary + '; color: #fff;",
       "}",
       ".mobile-menu-cta-btn.primary:hover,",
       ".mobile-menu-cta-btn.primary:active {",
       "  background: #d54f0f;",
       "}",
       ".mobile-menu-cta-btn.secondary {",
-      "  background: rgba(236,91,19,.10); color: #ec5b13;",
+      "  background: rgba(236,91,19,.10); color: ' + _primary + ';",
       "}",
       "html.dark .mobile-menu-cta-btn.secondary {",
       "  background: rgba(236,91,19,.18); color: #ff8c5a;",

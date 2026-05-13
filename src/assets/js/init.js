@@ -5,6 +5,8 @@
 
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   // ============================================
   // User Activity Tracking for Smart Popup System
@@ -174,7 +176,7 @@
 
     if (region === "sea") {
       badge.style.background = "rgba(236,91,19,0.12)";
-      badge.style.color = "#ec5b13";
+      badge.style.color = "' + _primary + '";
       badge.style.border = "1px solid rgba(236,91,19,0.3)";
       badge.innerHTML = [
         '<span style="font-size:1rem;">💬</span>',

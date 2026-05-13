@@ -23,6 +23,8 @@
 
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -132,14 +134,14 @@
       ".cs-item:active { background: rgba(236,91,19,.12); }",
       "html.dark .cs-item:hover, html.dark .cs-item" + "." + HOVER_CLASS + " { background: rgba(236,91,19,.10); }",
       ".cs-item" + "." + ACTIVE_CLASS + " {",
-      "  background: rgba(236,91,19,.08); color: #ec5b13; font-weight: 600;",
+      "  background: rgba(236,91,19,.08); color: ' + _primary + '; font-weight: 600;",
       "}",
       "html.dark .cs-item" + "." + ACTIVE_CLASS + " { background: rgba(236,91,19,.14); color: #f97316; }",
       ".cs-item.cs-item-disabled {",
       "  opacity: .4; pointer-events: none;",
       "}",
       ".cs-check {",
-      "  margin-left: auto; font-size: 18px; color: #ec5b13; opacity: 0; flex-shrink: 0;",
+      "  margin-left: auto; font-size: 18px; color: ' + _primary + '; opacity: 0; flex-shrink: 0;",
       "  transition: opacity .15s ease;",
       "}",
       "html.dark .cs-check { color: #f97316; }",
@@ -165,7 +167,7 @@
       "  border: .5px solid rgba(0,0,0,.06); border-radius: 8px;",
       "  background: rgba(255,255,255,.8); color: #1e293b; outline: none;",
       "}",
-      ".cs-search:focus { border-color: #ec5b13; box-shadow: 0 0 0 2px rgba(236,91,19,.15); }",
+      ".cs-search:focus { border-color: ' + _primary + '; box-shadow: 0 0 0 2px rgba(236,91,19,.15); }",
       "html.dark .cs-search {",
       "  background: rgba(51,65,85,.8); color: #e2e8f0; border-color: rgba(255,255,255,.08);",
       "}",
@@ -239,7 +241,7 @@
       "  border: .5px solid rgba(0,0,0,.06); border-radius: 10px;",
       "  background: rgba(255,255,255,.8); color: #1e293b; outline: none;",
       "}",
-      ".cs-popup-search:focus { border-color: #ec5b13; box-shadow: 0 0 0 2px rgba(236,91,19,.15); }",
+      ".cs-popup-search:focus { border-color: ' + _primary + '; box-shadow: 0 0 0 2px rgba(236,91,19,.15); }",
       "html.dark .cs-popup-search {",
       "  background: rgba(51,65,85,.8); color: #e2e8f0; border-color: rgba(255,255,255,.08);",
       "}",

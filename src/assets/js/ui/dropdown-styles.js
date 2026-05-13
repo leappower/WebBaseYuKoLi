@@ -11,6 +11,8 @@
 
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   /**
    * Shared style template — uses {{PREFIX}} placeholder.
@@ -84,7 +86,7 @@
 
     ".{{PREFIX}}-dropdown-item:active { background: rgba(236,91,19,.12); transform: scale(.98); }",
 
-    ".{{PREFIX}}-dropdown-item.is-active { background: rgba(236,91,19,.08); color: #ec5b13; }",
+    ".{{PREFIX}}-dropdown-item.is-active { background: rgba(236,91,19,.08); color: ' + _primary + '; }",
 
     "html.dark .{{PREFIX}}-dropdown-item.is-active { background: rgba(236,91,19,.14); color: #f97316; }",
 
@@ -97,7 +99,7 @@
     "  background: rgba(236,91,19,.08);",
     "  font-weight: 600;",
     "}",
-    ".{{PREFIX}}-dropdown-item.is-active .{{PREFIX}}-dropdown-chevron { color: #ec5b13; }",
+    ".{{PREFIX}}-dropdown-item.is-active .{{PREFIX}}-dropdown-chevron { color: ' + _primary + '; }",
     "html.dark .{{PREFIX}}-dropdown-item.is-active { background: rgba(236,91,19,.14); }",
 
     /* ===== Icon ===== */
@@ -109,7 +111,7 @@
 
     "html.dark .{{PREFIX}}-dropdown-icon { background: rgba(236,91,19,.18); }",
 
-    ".{{PREFIX}}-dropdown-icon .material-symbols-outlined { font-size: 16px; color: #ec5b13; }",
+    ".{{PREFIX}}-dropdown-icon .material-symbols-outlined { font-size: 16px; color: ' + _primary + '; }",
 
     /* ===== Label ===== */
     ".{{PREFIX}}-dropdown-label {",
@@ -184,7 +186,7 @@
     "  background: rgba(236,91,19,.08);",
     "  font-weight: 600;",
     "}",
-    ".{{PREFIX}}-popup-item.is-active .{{PREFIX}}-popup-chevron { color: #ec5b13; }",
+    ".{{PREFIX}}-popup-item.is-active .{{PREFIX}}-popup-chevron { color: ' + _primary + '; }",
     "html.dark .{{PREFIX}}-popup-item.is-active { background: rgba(236,91,19,.14); }",
 
     ".{{PREFIX}}-popup-label { flex: 1; min-width: 0; }",

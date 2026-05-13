@@ -8,6 +8,8 @@
  */
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -112,7 +114,7 @@
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
           scale: 8,
-          fillColor: "#ec5b13",
+          fillColor: "' + _primary + '",
           fillOpacity: 0.9,
           strokeColor: "#fff",
           strokeWeight: 2,
@@ -122,7 +124,7 @@
       var infoWindow = new window.google.maps.InfoWindow({
         content:
           "<div style=\"font-family:'Public Sans',sans-serif;padding:4px 8px;\">" +
-          '<strong style="color:#ec5b13;">' +
+          '<strong style="color:' + _primary + ';">' +
           center.name +
           "</strong>" +
           '<br><span style="font-size:12px;color:#64748b;">24/7 Support Hub</span>' +

@@ -12,6 +12,9 @@
  */
 (function (global) {
   "use strict";
+  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
+  var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -98,7 +101,7 @@
     }
     var phone = window.Contacts && window.Contacts.whatsapp ? window.Contacts.whatsapp : "";
     var prefix = source ? " [" + source + "]" : "";
-    var text = encodeURIComponent((msg || "Hi YuKoLi") + prefix);
+    var text = encodeURIComponent((msg || ("Hi " + ((_brand || {}).name || "YuKoLi"))) + prefix);
     var url = phone ? "https://wa.me/" + phone.replace(/\D/g, "") + "?text=" + text : "https://wa.me/?text=" + text;
     window.open(url, "_blank");
   }
@@ -186,7 +189,7 @@
       "a.bg-primary",
       'button[class*="bg-primary"]',
       'a[class*="bg-primary"]',
-      'button[class*="bg-\\[#ec5b13\\]"]',
+      'button[class*="bg-\\[' + _primary + '\\]"]',
       'button[class*="bg-\\[#f26522\\]"]',
       'button[class*="bg-orange"]',
     ];
