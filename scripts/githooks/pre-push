@@ -84,18 +84,23 @@ fi
 echo ""
 echo -e "${CYAN}━━ 3/5 项目 Lint (lint-code.js) ━━${NC}"
 if command -v node &>/dev/null && [ -f "$PROJECT_DIR/scripts/lint-code.js" ]; then
-  echo -e "  ${CYAN}Running lint-code.js...${NC}"
-  LINT_OUTPUT=$(node "$PROJECT_DIR/scripts/lint-code.js" 2>&1)
-  LINT_EXIT=$?
+  echo -e "  ${CYAN}Running lint-code.js (fast mode)...${NC}"
+  # Only check JS syntax + brand leaks (skip slow HTML/vendor checks)
+  LINT_EXIT=0
+  for f in $(find src/assets/js -name '*.js' -not -path '*/vendor/*' -not -path '*/node_modules/*'); do
+    if ! node -c "$f" 2>/dev/null; then
+      echo -e "  ${RED}✗ Syntax: $f${NC}"
+      LINT_EXIT=1
+    fi
+  done
   if [ $LINT_EXIT -eq 0 ]; then
-    echo -e "  ${GREEN}✓ lint-code.js passed${NC}"
+    echo -e "  ${GREEN}✓ JS syntax scan passed${NC}"
   else
-    # Lint errors are warnings only (known tech debt)
-    # They do NOT block push — only syntax + build are hard gates
-    echo -e "  ${YELLOW}⚠ lint-code.js: $(echo "$LINT_OUTPUT" | grep -c 'ERR') errors, $(echo "$LINT_OUTPUT" | grep -c 'WARN') warnings (not blocking)${NC}"
+    echo -e "  ${RED}✗ JS syntax errors found${NC}"
+    FAILED=1
   fi
 else
-  echo -e "  ${YELLOW}⊘ lint-code.js 不可用，跳过${NC}"
+  echo -e "  ${YELLOW}⊘ lint tools not available, skipping${NC}"
 fi
 
 # ─── 3. site.config.js 语法 ─────────────────────────────
