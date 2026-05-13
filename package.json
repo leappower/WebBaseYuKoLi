@@ -24,6 +24,7 @@
     "lint:all": "npm run lint && npm run lint:css && npm run lint:html",
     "lint:all:fix": "npm run lint:fix && npm run lint:css:fix && npm run lint:html:fix",
     "lint:staged": "npx lint-staged",
+    "postinstall": "bash scripts/install-hooks.sh 2>/dev/null || true",
     "hooks:install": "npx lefthook install",
     "hooks:uninstall": "npx lefthook uninstall",
     "prepush": "bash scripts/pre-push-check.sh",
