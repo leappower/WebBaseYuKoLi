@@ -24,7 +24,7 @@
       title: "联系我们",
       wechat: "扫码添加，在线咨询",
       wa: "多国语言支持，工作日2小时回复",
-      email: "support.kitchen@yukoli.com",
+      email: ((_cfg.contacts || {}).supportEmail || "support.kitchen@yukoli.com"),
       phone: "紧急故障 随时待命 极速响应",
     },
     faq: {

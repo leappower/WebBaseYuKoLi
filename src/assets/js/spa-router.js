@@ -34,6 +34,8 @@
 (function (global) {
   "use strict";
 
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+
   var SpaRouter = {
     //
     // Route resolution: convention over configuration.
@@ -47,7 +49,6 @@
     // handled by the getDevicePage() conversion below.
     //
     // NOTE: Only exceptions need listing here — everything else follows convention.
-    //
     routes: {
       // Aliases / redirects
       "/": "/home/index.html",

@@ -27,6 +27,10 @@
   }
 
   // ─── Static image assets (non-product, paths are fixed) ──────────────────────
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _images = _cfg.images || {};
+
+  /* Static image assets — fallback when site.config not loaded */
   var IMAGE_ASSETS = {
     logo: IMAGE_PATH_PREFIX + "/logo_html.webp",
     logo_dark: IMAGE_PATH_PREFIX + "/logo_html_2.webp",

@@ -17,16 +17,19 @@
   /* ═══════════════════════════════════════════════════════════════════
      SECTION 1: CONSTANTS & CONFIGURATION
      ═══════════════════════════════════════════════════════════════════ */
-  var WHATSAPP_NUMBER = (window.Contacts && window.Contacts.whatsapp) || "8613163756465";
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp)
+    || (window.Contacts && window.Contacts.whatsapp) || "8613163756465";
+  var _routes = (_cfg.routes || {}).pages || {};
   var PAGES = Object.freeze({
-    home: "/home/",
-    products: "/products/",
-    quote: "/quote/",
-    thankYou: "/thank-you/",
-    landing: "/landing/",
-    support: "/support/",
-    cases: "/cases/",
-    roiCalculator: "/profit-calculator/",
+    home: _routes.home || "/home/",
+    products: _routes.products || "/products/",
+    quote: _routes.quote || "/quote/",
+    thankYou: _routes.thankYou || "/thank-you/",
+    landing: _routes.landing || "/landing/",
+    support: _routes.support || "/support/",
+    cases: _routes.cases || "/cases/",
+    roiCalculator: _routes.roiCalculator || "/profit-calculator/",
   });
   /* ═══════════════════════════════════════════════════════════════════
      SECTION 2: DEPRECATED (removed getDeviceType, resolveDeviceUrl)

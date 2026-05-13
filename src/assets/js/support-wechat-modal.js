@@ -1,4 +1,5 @@
 (function () {
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
   "use strict";
 
   var _spaRegs = {};

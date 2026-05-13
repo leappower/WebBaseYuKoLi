@@ -213,8 +213,9 @@
 
   document.addEventListener("DOMContentLoaded", function () {
     setupProductSectionTracking();
-    initIoTPulse();
-    initGeoHero();
+    var _features = (window.SITE_CONFIG || window._cfg || {}).features || {};
+    if (_features.iotPulse) initIoTPulse();
+    if (_features.geoHero) initGeoHero();
   });
 
   // Re-start tracking on SPA navigation
