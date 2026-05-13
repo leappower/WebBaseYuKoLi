@@ -248,7 +248,7 @@
         ? ((window.Breadcrumb && window.Breadcrumb.PRODUCT_SLUGS && window.Breadcrumb.PRODUCT_SLUGS[slug]) || {}).label
         : "";
       // Track referrer for back navigation
-      if (slug) sessionStorage.setItem("pdp_referrer", "/products/" + slug + "/");
+      if (slug) { try { sessionStorage.setItem("pdp_referrer", "/products/" + slug + "/"); } catch(e) {} }
       var model = product.model || "";
       // PC/Tablet breadcrumb
       var html =

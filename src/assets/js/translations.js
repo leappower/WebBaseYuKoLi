@@ -59,7 +59,8 @@
     );
   }
   ((r.prototype.getInitialLanguage = function () {
-    var t = localStorage.getItem("userLanguage");
+    var t;
+    try { t = localStorage.getItem("userLanguage"); } catch(e) { t = null; }
     return t && getO()[t] ? t : "en";
   }),
     (r.prototype.loadTranslations = function (t) {
@@ -107,8 +108,8 @@
             if (s && "object" == typeof s && s.data && "object" == typeof s.data) {
               if (s.timestamp && Date.now() - s.timestamp < 864e5 && s._v === 2)
                 return ((o = s.data), this.translationsCache.set(e, o), Promise.resolve(o));
-              localStorage.removeItem(n);
-            } else (console.warn("[i18n] Invalid cache structure for " + t + ", clearing"), localStorage.removeItem(n));
+              try { localStorage.removeItem(n); } catch(e) {}
+            } else (console.warn("[i18n] Invalid cache structure for " + t + ", clearing"), (function(){ try { localStorage.removeItem(n); } catch(e) {} })());
           }
         } catch (e) {
           console.warn("[i18n] Failed to read localStorage cache for " + t + ":", e.message);
@@ -416,7 +417,7 @@
                     var a = n.currentLanguage;
                     return (
                       (n.currentLanguage = e),
-                      localStorage.setItem("userLanguage", e),
+                      (function(){ try { localStorage.setItem("userLanguage", e); } catch(e) {} })(),
                       n.applyTranslations().then(function () {
                         if (
                           ((document.documentElement.lang = e),
@@ -647,7 +648,7 @@
     (r.prototype.initialize = function () {
       var e = this;
       if (e.isInitialized) return Promise.resolve(e);
-      localStorage.getItem("browserLang") || localStorage.setItem("browserLang", this.detectBrowserLanguage());
+      (function(){ try { if (!localStorage.getItem("browserLang")) localStorage.setItem("browserLang", this.detectBrowserLanguage()); } catch(e) {} }).call(this);
       var n = this.getInitialLanguage();
       return (
         (this.currentLanguage = n),

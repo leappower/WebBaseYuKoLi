@@ -100,7 +100,9 @@
     var pdpMatch = path.match(/^\/products\/(detail\/?(?:\?model=([^&]+))?|([^/]+))$/);
     if (pdpMatch) {
       var model = pdpMatch[2] || pdpMatch[3] || "";
-      var referrer = sessionStorage.getItem("pdp_referrer") || "";
+      var referrer;
+      try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
+      referrer = referrer || "";
       var refSlug = referrer.replace(/\/$/, "").split("/").pop();
       if (!PRODUCT_SLUGS[refSlug]) refSlug = "";
 
@@ -332,7 +334,7 @@
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     // Track category page → PDP transitions
     if (/^\/products\/(stirfry|cutting|frying|stewing|steaming|other)$/.test(path)) {
-      sessionStorage.setItem("pdp_referrer", path);
+      try { sessionStorage.setItem("pdp_referrer", path); } catch(e) {}
     }
     // Clear when navigating away from PDP
     if (!/^\/products\/(?!stirfry|cutting|frying|stewing|steaming|other|compare)(?!$)/.test(path)) {
@@ -406,7 +408,8 @@
   window.Breadcrumb = {
     init: init,
     goBack: function () {
-      var referrer = sessionStorage.getItem("pdp_referrer");
+      var referrer;
+      try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
       if (
         referrer &&
         window.location.pathname.indexOf("/products/") === 0 &&

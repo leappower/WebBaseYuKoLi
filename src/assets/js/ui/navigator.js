@@ -382,7 +382,9 @@
     // Clear existing content
     selectEl.innerHTML = "";
 
-    var currentLang = localStorage.getItem("userLanguage") || "zh-CN";
+    var currentLang;
+    try { currentLang = localStorage.getItem("userLanguage"); } catch(e) { currentLang = null; }
+    currentLang = currentLang || "zh-CN";
     var groups = {
       common: { label: "常用 / Common", langs: [] },
       southeast_asia: { label: "东南亚 / Southeast Asia", langs: [] },
@@ -422,7 +424,9 @@
     // Always generate the button + empty hidden <select>.
     // The <select> is populated lazily on first click (when LANG_REGISTRY is available),
     // so this works even on pages that don't load lang-registry.js directly.
-    var currentLang = localStorage.getItem("userLanguage") || "zh-CN";
+    var currentLang;
+    try { currentLang = localStorage.getItem("userLanguage"); } catch(e) { currentLang = null; }
+    currentLang = currentLang || "zh-CN";
     var currentLangName = currentLang;
     var reg = window.LANG_REGISTRY;
     if (reg && reg.LANGUAGES) {
@@ -937,7 +941,7 @@
     if (!langCode) return;
 
     // Update localStorage
-    localStorage.setItem("userLanguage", langCode);
+    try { localStorage.setItem("userLanguage", langCode); } catch(e) {}
 
     // Update button label
     var labelEl = document.getElementById("current-lang-label");

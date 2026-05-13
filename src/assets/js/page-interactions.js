@@ -282,7 +282,7 @@
   function toggleDarkMode() {
     var html = document.documentElement;
     var isDark = html.classList.toggle("dark");
-    localStorage.setItem("darkMode", isDark ? "true" : "false");
+    try { localStorage.setItem("darkMode", isDark ? "true" : "false"); } catch(e) {}
 
     document.querySelectorAll("[data-dark-toggle]").forEach(function (el) {
       el.textContent = isDark ? "light_mode" : "dark_mode";

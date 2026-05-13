@@ -99,9 +99,16 @@
    * 从 localStorage 加载用户状态，并重置会话级字段。
    */
   function loadUserState() {
-    var saved = localStorage.getItem("userState");
+    var saved;
+    try { saved = localStorage.getItem("userState"); } catch(e) { saved = null; }
     if (saved) {
-      var parsed = JSON.parse(saved);
+      var parsed;
+      try {
+        parsed = JSON.parse(saved);
+      } catch (e) {
+        console.warn("[SmartPopup] Failed to parse userState from localStorage:", e);
+        parsed = {};
+      }
       _extend(userState, parsed);
       userState.visitCount++;
       // 会话级字段重置
@@ -115,7 +122,7 @@
 
   /** 将当前用户状态持久化到 localStorage。 */
   function saveUserState() {
-    localStorage.setItem("userState", JSON.stringify(userState));
+    try { localStorage.setItem("userState", JSON.stringify(userState)); } catch(e) {}
   }
 
   /** 更新当前会话的滚动深度（取最大值），同时更新历史记录。 */
@@ -386,7 +393,9 @@
      */
     loadSuppressionState: function () {
       var storageKey = this.state.storageKeys.convertedUntil;
-      this.state.suppression.convertedUntil = Number(localStorage.getItem(storageKey) || 0);
+      var _suppVal;
+      try { _suppVal = localStorage.getItem(storageKey); } catch(e) { _suppVal = null; }
+      this.state.suppression.convertedUntil = Number(_suppVal || 0);
     },
 
     // ── 参与度评分 ───────────────────────────────────────────────────────
@@ -794,7 +803,7 @@
     saveConversionSuppression: function () {
       var suppressUntil = Date.now() + 48 * 60 * 60 * 1000; // 48 小时
       this.state.suppression.convertedUntil = suppressUntil;
-      localStorage.setItem(this.state.storageKeys.convertedUntil, String(suppressUntil));
+      try { localStorage.setItem(this.state.storageKeys.convertedUntil, String(suppressUntil)); } catch(e) {}
     },
 
     /**
