@@ -102,7 +102,7 @@
     var saved = localStorage.getItem("userState");
     if (saved) {
       var parsed = JSON.parse(saved);
-      Object.assign(userState, parsed);
+      _extend(userState, parsed);
       userState.visitCount++;
       // 会话级字段重置
       userState.timeOnPage = 0;
