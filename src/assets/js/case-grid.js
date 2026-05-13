@@ -6,8 +6,12 @@
 ;(function () {
   'use strict'
 
-  /* ── Mock Data ──────────────────────────────────── */
-  var ROI_CASES = [
+  /* ── Config Bridge ─────────────────────────────── */
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _casesCfg = _cfg.cases || {};
+
+  /* ── Fallback Data ─────────────────────────────── */
+  var _fallbackCases = [
     { slug: 'manila-lunchbox-studio-2025', country: '🇵🇭 Philippines',
       industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback',
       dailyOutput: 320, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 36,000',
@@ -56,7 +60,7 @@
       payback: 5.1,
       title: '河内街头小吃升级：1 台机器 + 1 个人 = 全品类菜单',
       quote: '"Phở 和 Bánh Mì 都能用，外国游客也夸味道好。"' }
-  ]
+  ];
 
   var _fallbackFilters = {
     industry: {
@@ -79,7 +83,7 @@
       i18n: 'cases_filter_benefit',
       options: ['Labor Cost Reduction', 'Consistency', 'Space Saving', 'Fast Payback']
     }
-  }
+  };
 
   /* ── State ──────────────────────────────────────── */
   var ROI_CASES = _casesCfg.grid || _fallbackCases;

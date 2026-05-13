@@ -10,28 +10,6 @@
 ;(function (global) {
   "use strict";
 
-  // ── Config Bridge（与现有代码兼容） ──
-  var _cfg = {
-    brand: config.brand,
-    seo: config.seo,
-    nav: config.nav,
-    footer: config.footer,
-    categories: config.categories,
-    routes: config.routes,
-    roi: config.roi,
-    cases: config.cases,
-    crossSell: config.crossSell,
-    images: config.images,
-    i18n: config.i18n,
-    features: config.features,
-    contacts: config.contacts
-  };
-
-  if (typeof window !== 'undefined') {
-    window._cfg = _cfg;
-    // SITE_CONFIG is read-only by design, assigned by individual scripts
-  }
-
   var config = {
 
     // ═══════════════════════════════════════════════════════════
@@ -281,8 +259,17 @@
     // 案例系统
     // ═══════════════════════════════════════════════════════════
     cases: {
-      grid: [],  // TODO: 从 case-grid.js 迁移
-      detail: {}, // TODO: 从 cases-page.js 迁移
+      grid: [
+        { slug: 'manila-lunchbox-studio-2025', country: '🇵🇭 Philippines', industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback', dailyOutput: 320, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 36,000', payback: 5.2, title: '马尼拉 Liempo 快餐店：从 3 个厨师到 1 台机器', quote: '"开业三年一直为招不到稳定的炒锅师傅发愁。现在一个人就能搞定，出餐速度还更快了。"' },
+        { slug: 'jakarta-catering-hub-2025', country: '🇮🇩 Indonesia', industry: '中央厨房', volume: '500-1000', benefit: 'Consistency', dailyOutput: 600, laborBefore: 12, laborAfter: 5, monthlySaving: 'IDR 22M', payback: 8.0, title: '雅加达送餐中央厨房：6 家门店统一出品', quote: '"以前每个门店味道都不一样，客户经常投诉。现在六家店的味道完全一样，回头客明显多了。"' },
+        { slug: 'hcmc-cloud-kitchen-compact', country: '🇻🇳 Vietnam', industry: '云厨房', volume: '<200', benefit: 'Space Saving', dailyOutput: 150, laborBefore: 3, laborAfter: 1, monthlySaving: 'VND 14M', payback: 5.5, title: '胡志明市云厨房：15㎡ 完成全品类出餐', quote: '"空间小但能做的菜很多，客户都以为是专业大厨房。"' },
+        { slug: 'bangkok-chain-8-stores', country: '🇹🇭 Thailand', industry: '连锁餐饮', volume: '1000+', benefit: 'Consistency', dailyOutput: 1200, laborBefore: 24, laborAfter: 12, monthlySaving: 'THB 270K', payback: 11.3, title: '曼谷火锅连锁 8 店：口味标准化 + 培训周期缩短 75%', quote: '"新店开业第 2 周就能正常出餐，以前至少要 2 个月。"' },
+        { slug: 'kl-canteen-2000-meals', country: '🇲🇾 Malaysia', industry: '智慧食堂', volume: '1000+', benefit: 'Fast Payback', dailyOutput: 2000, laborBefore: 15, laborAfter: 6, monthlySaving: 'MYR 13,500', payback: 6.2, title: '吉隆坡工厂食堂：2000 餐/天，6.2 个月回本', quote: '"工人最喜欢的是清洗方便，10 分钟就能搞定。"' },
+        { slug: 'cebu-small-resto-payback', country: '🇵🇭 Philippines', industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback', dailyOutput: 280, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 32,000', payback: 4.8, title: 'Cebu 小吃店：投资 1 台，4.8 个月回本', quote: '"最好的投资决定，省下来的钱已经买第二台了。"' },
+        { slug: 'surabaya-central-automation', country: '🇮🇩 Indonesia', industry: '中央厨房', volume: '500-1000', benefit: 'Labor Cost Reduction', dailyOutput: 800, laborBefore: 18, laborAfter: 8, monthlySaving: 'IDR 24M', payback: 8.5, title: '泗水中央厨房：自动化后废品率从 8% 降至 1.2%', quote: '"食品浪费大幅减少，每个月节省的食材钱就很可观。"' },
+        { slug: 'hanoi-street-food-modern', country: '🇻🇳 Vietnam', industry: '小型餐饮', volume: '<200', benefit: 'Consistency', dailyOutput: 180, laborBefore: 2, laborAfter: 1, monthlySaving: 'VND 8M', payback: 5.1, title: '河内街头小吃升级：1 台机器 + 1 个人 = 全品类菜单', quote: '"Phở 和 Bánh Mì 都能用，外国游客也夸味道好。"' },
+      ],
+      detail: {},
       filters: {
         industries: ["小型餐饮", "中央厨房", "连锁餐饮", "智慧食堂", "云厨房"],
         volumes: ["<200", "200-500", "500-1000", "1000+"],
@@ -426,7 +413,6 @@
 
   // ── 导出 ──
   global.SITE_CONFIG = config;
-  // 兼容简写
   global._cfg = config;
 
   // Node.js 环境导出

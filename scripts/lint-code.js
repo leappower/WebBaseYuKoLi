@@ -212,12 +212,12 @@ function checkConfigBridge(jsFiles) {
     }
 
     // _cfg used without declaration or window._cfg fallback
-    if (/\b_cfg\b/.test(content) && !/var\s+_cfg\b/.test(content) && !/window\._cfg/.test(content)) {
+    if (/\b_cfg\b/.test(content) && !/var\s+_cfg\b/.test(content) && !/window\._cfg/.test(content) && !/site\.config\.js$/.test(f)) {
       error(r, 0, '_cfg used but neither declared nor imported from window._cfg');
     }
 
-    // window.SITE_CONFIG typo detection
-    if (/window\.SITE_CONFIG\s*=/.test(content)) {
+    // window.SITE_CONFIG assignment detection (skip site.config.js itself)
+    if (/window\.SITE_CONFIG\s*=/.test(content) && !/site\.config\.js$/.test(f)) {
       error(r, 0, 'window.SITE_CONFIG is assigned (read-only, defined in site.config.js)');
     }
   });
@@ -237,6 +237,8 @@ function checkBrandHardcode(jsFiles) {
       var ln = i + 1;
       var trimmed = line.trim();
 
+      // Skip site.config.js — this IS the config source
+      if (/site\.config\.js$/.test(f)) return;
       // Skip comments
       if (/^\s*(\/\/|\/\*|\*)/.test(trimmed)) return;
       // Skip var _primary definition line (has fallback)
