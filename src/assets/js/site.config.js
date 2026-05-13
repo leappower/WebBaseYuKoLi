@@ -282,8 +282,8 @@
     // 搭配推荐 & 场景入口
     // ═══════════════════════════════════════════════════════════
     crossSell: {
-      map: {},    // TODO: 从 cross-sell.js 迁移
-      scenes: {}, // TODO: 从 cross-sell.js 迁移
+      map: {},    // Optional override; cross-sell.js has built-in fallback
+      scenes: {}, // Optional override; cross-sell.js has built-in fallback
       appLabels: {
         "small-restaurant": "小型餐饮",
         "central-kitchen": "中央厨房",

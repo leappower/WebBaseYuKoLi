@@ -60,9 +60,8 @@
     CATEGORY_KEY_TO_SLUG[PRODUCT_SLUGS[slug].key] = slug;
   });
 
-  // ─── Cross-sell: 3-4 items per category with rich copy ────────
-
-  var CROSS_SELL_MAP = {
+  // ─── Cross-sell: read from site.config.js ────────────────
+  var _fallbackCrossSell = {
     stirfry: [
       { slug: "cutting", reason: "切配后直接翻炒，备料到出餐无缝衔接", highlight: "效率 +200%" },
       { slug: "steaming", reason: "蒸饭蒸菜同步进行，午高峰不排队", highlight: "出餐 -40min" },
@@ -97,156 +96,41 @@
     ],
   };
 
-  // ─── Scene entry: 3 scenes per category with descriptions ─────
-
-  var SCENE_ENTRY_MAP = {
+  var _fallbackScenes = {
     stirfry: [
-      {
-        href: "/applications/small-restaurant/",
-        slug: "small-restaurant",
-        icon: "storefront",
-        desc: "2-5人小后厨，一台炒菜机顶3个厨师",
-      },
-      {
-        href: "/applications/canteen/",
-        slug: "canteen",
-        icon: "restaurant",
-        desc: "食堂午高峰500-5000人，90分钟出完热菜",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房批量出餐，菜品口味标准化",
-      },
+      { href: "/applications/small-restaurant/", slug: "small-restaurant", icon: "storefront", desc: "2-5人小后厨，一台炒菜机顶3个厨师" },
+      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂午高峰500-5000人，90分钟出完热菜" },
+      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房批量出餐，菜品口味标准化" },
     ],
     cutting: [
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "千份级备料，切配规格统一不出错",
-      },
-      {
-        href: "/applications/food-factory/",
-        slug: "food-factory",
-        icon: "factory",
-        desc: "食品工厂流水线切配，日产能提升6倍",
-      },
+      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "千份级备料，切配规格统一不出错" },
+      { href: "/applications/food-factory/", slug: "food-factory", icon: "factory", desc: "食品工厂流水线切配，日产能提升6倍" },
       { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂切菜工序自动化，2小时→20分钟" },
     ],
     frying: [
-      {
-        href: "/applications/small-restaurant/",
-        slug: "small-restaurant",
-        icon: "storefront",
-        desc: "炸鸡炸薯条出餐快，外卖高峰不爆单",
-      },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "store",
-        desc: "连锁店炸品口味统一，每批出品标准化",
-      },
-      {
-        href: "/applications/cloud-kitchen/",
-        slug: "cloud-kitchen",
-        icon: "delivery_dining",
-        desc: "云厨房多品牌共用，炸炉轮流出餐",
-      },
+      { href: "/applications/small-restaurant/", slug: "small-restaurant", icon: "storefront", desc: "炸鸡炸薯条出餐快，外卖高峰不爆单" },
+      { href: "/applications/chain-restaurant/", slug: "chain-restaurant", icon: "store", desc: "连锁店炸品口味统一，每批出品标准化" },
+      { href: "/applications/cloud-kitchen/", slug: "cloud-kitchen", icon: "delivery_dining", desc: "云厨房多品牌共用，炸炉轮流出餐" },
     ],
     stewing: [
       { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂炖汤一大锅，千人份同时供应" },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房炖品批量出，口味稳定如一",
-      },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "store",
-        desc: "连锁店招牌炖品，每家店味道都一样",
-      },
+      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房炖品批量出，口味稳定如一" },
+      { href: "/applications/chain-restaurant/", slug: "chain-restaurant", icon: "store", desc: "连锁店招牌炖品，每家店味道都一样" },
     ],
     steaming: [
-      {
-        href: "/applications/canteen/",
-        slug: "canteen",
-        icon: "restaurant",
-        desc: "食堂蒸饭蒸菜同步，千人份量轻松搞定",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房批量蒸制，配送前锁鲜保味",
-      },
-      {
-        href: "/applications/food-factory/",
-        slug: "food-factory",
-        icon: "factory",
-        desc: "食品工厂蒸煮工序，全自动温度控制",
-      },
+      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂蒸饭蒸菜同步，千人份量轻松搞定" },
+      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房批量蒸制，配送前锁鲜保味" },
+      { href: "/applications/food-factory/", slug: "food-factory", icon: "factory", desc: "食品工厂蒸煮工序，全自动温度控制" },
     ],
     other: [
       { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂洗碗分餐一体，后厨人手省一半" },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "store",
-        desc: "连锁店排烟+清洗标准化，后厨干净合规",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房传送+包装，全流程自动化",
-      },
-    ],
-    all: [
-      {
-        href: "/applications/small-restaurant/",
-        slug: "small-restaurant",
-        icon: "storefront",
-        desc: "2-5人小后厨，一台炒菜机顶3个厨师",
-      },
-      {
-        href: "/applications/canteen/",
-        slug: "canteen",
-        icon: "restaurant",
-        desc: "食堂午高峰500-5000人，90分钟出完热菜",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房批量出餐，菜品口味标准化",
-      },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "dining",
-        desc: "连锁门店统一出品，告别厨师依赖",
-      },
-      {
-        href: "/applications/cloud-kitchen/",
-        slug: "cloud-kitchen",
-        icon: "delivery_dining",
-        desc: "外卖云厨房，单店日产能3000+单",
-      },
-      {
-        href: "/applications/food-factory/",
-        slug: "food-factory",
-        icon: "factory",
-        desc: "食品工厂产线自动化，日产能万份以上",
-      },
-      { href: "/applications/menu-lab/", slug: "menu-lab", icon: "science", desc: "菜系实验室，一键复制各国风味" },
+      { href: "/applications/chain-restaurant/", slug: "chain-restaurant", icon: "store", desc: "连锁店排烟+清洗标准化，后厨干净合规" },
+      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房传送+包装，全流程自动化" },
     ],
   };
 
-
+  var CROSS_SELL_MAP = ((_cfg.crossSell || {}).map && Object.keys(_cfg.crossSell.map).length > 0) ? _cfg.crossSell.map : _fallbackCrossSell;
+  var SCENE_ENTRY_MAP = ((_cfg.crossSell || {}).scenes && Object.keys(_cfg.crossSell.scenes).length > 0) ? _cfg.crossSell.scenes : _fallbackScenes;
 
   // ─── Detect current page ───────────────────────────────────────
 
@@ -403,7 +287,9 @@
     var nav = document.getElementById("product-category-nav");
     if (!nav) return;
 
-    var referrer = sessionStorage.getItem("pdp_referrer") || "";
+    var referrer;
+    try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
+    referrer = referrer || "";
     var refSlug = referrer.replace(/\/$/, "").split("/").pop();
     if (refSlug && PRODUCT_SLUGS[refSlug]) {
       showPdpNav(nav, refSlug);
@@ -446,7 +332,7 @@
   function trackPdpReferrer() {
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     if (/^\/products\/(stirfry|cutting|frying|stewing|steaming|other)$/.test(path)) {
-      sessionStorage.setItem("pdp_referrer", path);
+      try { sessionStorage.setItem("pdp_referrer", path); } catch(e) {}
     }
   }
 
@@ -492,7 +378,8 @@
 
   window.Breadcrumb = {
     goBack: function () {
-      var referrer = sessionStorage.getItem("pdp_referrer");
+      var referrer;
+      try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
       if (
         referrer &&
         window.location.pathname.indexOf("/products/") === 0 &&
