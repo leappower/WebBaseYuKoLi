@@ -149,7 +149,7 @@ html.dark body {
      h4 (Sub): PC xl | Mobile lg
    正文: text-base (PC) | text-sm (Mobile)
    辅助: text-sm (PC) | text-xs (Mobile)
-   强调色: text-primary (#ec5b13)
+   强调色: text-primary (var(--color-primary))
    正文色: text-slate-900 dark:text-white
    辅助色: text-slate-500 dark:text-slate-400
 */
@@ -556,7 +556,7 @@ a.bg-primary:hover,
 button.bg-primary:hover,
 a.bg-primary[class*="hover:"]:hover,
 button.bg-primary[class*="hover:"]:hover {
-  background-color: #d4521a;
+  background-color: var(--color-primary);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgb(242 101 34 / 0.35);
 }
@@ -613,7 +613,7 @@ button.bg-primary[class*="hover:"]:hover {
   }
 
   50% {
-    background-color: #ec5b13;
+    background-color: var(--color-primary);
     box-shadow: 0 0 0 8px rgb(236 91 19 / 0);
   }
 }
@@ -709,13 +709,13 @@ button.bg-primary[class*="hover:"]:hover {
   transition: all 0.2s ease;
 }
 .filter-chip:hover {
-  border-color: #ec5b13;
-  color: #ec5b13;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 .filter-chip.active {
-  background: #ec5b13;
+  background: var(--color-primary);
   color: white;
-  border-color: #ec5b13;
+  border-color: var(--color-primary);
 }
 
 /* Category tabs active state */
@@ -724,12 +724,12 @@ button.bg-primary[class*="hover:"]:hover {
   transition: all 0.2s ease;
 }
 .category-tab:hover {
-  color: #ec5b13;
+  color: var(--color-primary);
 }
 .category-tab.active {
-  background: #ec5b13;
+  background: var(--color-primary);
   color: white;
-  border-color: #ec5b13;
+  border-color: var(--color-primary);
   border-radius: 9999px;
 }
 
