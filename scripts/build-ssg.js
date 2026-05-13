@@ -168,9 +168,10 @@ function patchHtmlPaths(html) {
   var bpName = bp.replace(/^\//, '');
 
   // 0. Inject window.BASE_PATH for JS files to use
-  // Insert after <head> tag
+  // Insert site.config.js + BASE_PATH after <head> tag
+  var siteConfigScript = '<script src="' + bp + '/site.config.js"></script>';
   var basePathScript = '<script>window.BASE_PATH="' + bp + '";</script>';
-  html = html.replace(/<head>/i, '<head>\n' + basePathScript);
+  html = html.replace(/<head>/i, '<head>\n' + siteConfigScript + '\n' + basePathScript);
 
   // 1. Patch src= and href= attributes in HTML tags
   //    Match: src="/path" or href="/path" (not //, not /#, not already prefixed)
@@ -392,7 +393,8 @@ function generate404() {
     '    body { font-family: "Public Sans", sans-serif; min-height: 100dvh; }',
     '  </style>',
     '',
-    '  <!-- Dark mode -->',
+    '  <!-- Site Configuration + Dark mode -->',
+    '  <script src="' + bp + '/site.config.js"></script>',
     '  <script>(function(){if(localStorage.getItem("darkMode")==="true")document.documentElement.classList.add("dark")})()</script>',
     '',
     '  <!-- Redirect script: /home → /home/, unknown → show 404 -->',
@@ -464,6 +466,7 @@ function generate404() {
     '  <div id="footer" data-variant="auto"></div>',
     '',
     '  <!-- Shared scripts (same as other pages) -->',
+    '  <script src="' + bp + '/site.config.js"></script>',
     '  <script defer src="' + bp + '/assets/js/router.js"></script>',
     '  <script defer src="' + bp + '/assets/js/lang-registry.js"></script>',
     '  <script defer src="' + bp + '/assets/js/translations.js"></script>',

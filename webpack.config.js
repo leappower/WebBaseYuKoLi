@@ -232,6 +232,12 @@ module.exports = (env = {}, argv = {}) => {
                 to: 'factory-tour.mp4',
                 noErrorOnMissing: true,
               },
+              // Copy site.config.js to dist root
+              {
+                from: 'site.config.js',
+                to: 'site.config.js',
+                noErrorOnMissing: true,
+              },
               // Copy SPA entry point (SSG root entry with device redirect)
               {
                 from: 'src/index.html',
