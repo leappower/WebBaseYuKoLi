@@ -19,6 +19,13 @@
  */
 (function (global) {
   "use strict";
+  function _extend(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+    }
+    return target;
+  }
 
   // ─── Fallback 工具函数 ─────────────────────────────────────────────────────
 

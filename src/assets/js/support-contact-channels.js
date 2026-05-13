@@ -9,7 +9,7 @@
  */
 (function () {
   "use strict";
-
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();

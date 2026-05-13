@@ -72,7 +72,7 @@
       navigate(PAGES.home);
     }
   };
-  const backController = new BackButtonController();
+  var backController = new BackButtonController();
   function safeBack() {
     backController.back();
   }
@@ -92,7 +92,7 @@
    * Smooth scroll to element by ID
    */
   function scrollTo(id) {
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth", block: "start" });
     }

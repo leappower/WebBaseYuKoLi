@@ -4,6 +4,13 @@
 
 (function attachAppUtils(global) {
   "use strict";
+  function _extend(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+    }
+    return target;
+  }
 
   /**
    * 产品分类名 → i18n key 中的 ASCII slug 映射表
@@ -80,7 +87,7 @@
         var imageKey = product.imageRecognitionKey || "product_" + category;
         var imageUrl = product.imageUrl || resolveImage(imageKey);
         result.push(
-          Object.assign(
+          _extend(
             {},
             PRODUCT_DEFAULTS,
             {

@@ -1,5 +1,12 @@
 !(function (t) {
   "use strict";
+  function _extend(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+    }
+    return target;
+  }
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
@@ -194,7 +201,7 @@
       });
     }),
     (r.prototype.mergeTranslations = function (t, e) {
-      return Object.assign({}, t, e);
+      return _extend({}, t, e);
     }),
     (r.prototype.normalizeTranslationKeys = function (t) {
       if (Array.isArray(t)) return t.map(this.normalizeTranslationKeys.bind(this));
@@ -277,7 +284,7 @@
                 r = document.querySelectorAll("[data-i18n-aria]"),
                 i = document.getElementById("current-lang-label"),
                 s = t.translationsCache.get("product-" + t.currentLanguage) || {},
-                l = Object.assign({}, e, s),
+                l = _extend({}, e, s),
                 u = function (e) {
                   var n = t.resolveTranslationValue(l, e);
                   return n && n !== e ? n : t.getFallbackTranslation(e);

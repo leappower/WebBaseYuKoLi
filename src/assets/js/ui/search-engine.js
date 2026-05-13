@@ -15,6 +15,13 @@
 
 (function (global) {
   "use strict";
+  function _extend(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+    }
+    return target;
+  }
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
   var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
 
@@ -102,7 +109,7 @@
       var translatedScenarios = p.scenarios || "";
       var translatedUsage = getProductTranslation(p, "throughput", p.throughput || "");
 
-      return Object.assign({}, p, {
+      return _extend({}, p, {
         _displayName: translatedName || (translatedCategory + " " + (p.model || "")).trim(),
         _displayCategory: translatedCategory,
         _displayBadge: translatedBadge,

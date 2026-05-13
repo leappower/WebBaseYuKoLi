@@ -2,6 +2,7 @@
  * 语言下拉框 HTML 模板
  * 这个下拉框会被动态插入到 body 中，使用 fixed 定位
  */
+"use strict";
 
 var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
 var _primary = ((_theme.colors || {}).primary) || "#ec5b13";

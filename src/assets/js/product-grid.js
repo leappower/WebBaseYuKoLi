@@ -419,10 +419,7 @@
           img = p.imageUrl;
         }
         result.push(
-          Object.assign({}, p, {
-            _category: cat.category || cat.slug || "",
-            _imageUrl: img,
-          })
+          (function() { var o = {}; for (var k in p) o[k] = p[k]; o._category = cat.category || cat.slug || ""; o._imageUrl = img; return o; })()
         );
       });
     });

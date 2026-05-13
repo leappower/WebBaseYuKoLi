@@ -109,8 +109,16 @@
 
   // ─── ProductEntity ─────────────────────────────────────────────────────────
   function ProductEntity(payload) {
-    var defaults = Object.assign({}, PRODUCT_DEFAULTS, { productImageKey: "", imageUrl: "" });
-    Object.assign(this, defaults, payload);
+    var defaults = _extend({}, PRODUCT_DEFAULTS, { productImageKey: "", imageUrl: "" });
+    _extend(this, defaults, payload);
+  }
+
+  function _extend(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+    }
+    return target;
   }
 
   // ─── normalizeProduct ──────────────────────────────────────────────────────
@@ -162,7 +170,7 @@
     }
 
     return new ProductEntity(
-      Object.assign({}, PRODUCT_DEFAULTS, product, {
+      _extend({}, PRODUCT_DEFAULTS, product, {
         category: toNullableString(product.category) || toNullableString(fallbackCategory),
         subCategory: toNullableString(product.subCategory),
         model: toNullableString(product.model),
@@ -213,7 +221,7 @@
   }
 
   var GENERATED_PRODUCT_SERIES = SAFE_PRODUCT_DATA_TABLE.map(function (series) {
-    return Object.assign({}, series, {
+    return _extend({}, series, {
       products: filterValidProducts(series.products).map(function (product) {
         return normalizeProduct(product, series.category);
       }),
@@ -225,7 +233,7 @@
   // FEISHU_SYNC_APPEND_END
 
   var APPENDED_PRODUCT_SERIES_NORMALIZED = APPENDED_PRODUCT_SERIES.map(function (series) {
-    return Object.assign({}, series, {
+    return _extend({}, series, {
       products: filterValidProducts(series.products).map(function (product) {
         return normalizeProduct(product, series.category);
       }),
@@ -235,12 +243,12 @@
   function withImageUrl(seriesList) {
     var IMAGE_ASSETS = getImageAssets();
     return seriesList.map(function (series) {
-      return Object.assign({}, series, {
+      return _extend({}, series, {
         products: series.products.map(function (product) {
           var imageKey = product.imageRecognitionKey || "";
           var imageUrl = IMAGE_ASSETS[imageKey] || "";
           return new ProductEntity(
-            Object.assign({}, product, {
+            _extend({}, product, {
               imageRecognitionKey: imageKey || null,
               productImageKey: imageKey || null,
               imageUrl: imageUrl,
@@ -279,7 +287,7 @@
         var hasIdentity = pid !== category + "::::" && pid !== "::::";
         if (hasIdentity && target.indexMap.has(pid)) {
           var idx = target.indexMap.get(pid);
-          target.products[idx] = Object.assign({}, target.products[idx], product);
+          target.products[idx] = _extend({}, target.products[idx], product);
           return;
         }
         target.products.push(product);
@@ -309,7 +317,7 @@
     // Read from RUNTIME global, not closure snapshot
     var liveData = Array.isArray(window.PRODUCT_DATA_TABLE) ? window.PRODUCT_DATA_TABLE : [];
     var rebuilt = liveData.map(function (series) {
-      return Object.assign({}, series, {
+      return _extend({}, series, {
         products: filterValidProducts(series.products).map(function (product) {
           return normalizeProduct(product, series.category);
         }),
