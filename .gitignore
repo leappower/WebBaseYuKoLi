@@ -1,190 +1,81 @@
-*.class
-*.lock
-*.log
-*.pyc
-*.swp
-.buildlog/
-.history
+# ═══════════════════════════════════════════════════════
+# KitchenYuKoLi / BrewYuKoLi — .gitignore
+# ═══════════════════════════════════════════════════════
 
-
-
-/bin/cache/
-/bin/internal/bootstrap.bat
-/bin/internal/bootstrap.sh
-/bin/mingit/
-/dev/benchmarks/mega_gallery/
-/dev/bots/.recipe_deps
-/dev/bots/android_tools/
-/dev/devicelab/ABresults*.json
-/dev/docs/doc/
-/dev/docs/lib/
-/dev/docs/pubspec.yaml
-/dev/integration_tests/**/Pods
-version
-analysis_benchmark.json
-
-# packages file containing multi-root paths
-.packages.generated
-
-**/doc/api/
-.packages
-.pub-preload-cache/
-.pub/
-build/
-linked_*.ds
-unlinked.ds
-unlinked_spec.ds
-
-**/android/**/gradle-wrapper.jar
-.gradle/
-**/android/captures/
-**/android/gradlew
-**/android/gradlew.bat
-**/android/local.properties
-**/android/**/GeneratedPluginRegistrant.java
-**/android/key.properties
-*.jks
-
-**/ios/**/*.mode1v3
-**/ios/**/*.mode2v3
-**/ios/**/*.moved-aside
-**/ios/**/*.pbxuser
-**/ios/**/*.perspectivev3
-**/ios/**/*sync/
-**/ios/**/.sconsign.dblite
-**/ios/**/.tags*
-**/ios/**/.vagrant/
-**/ios/**/DerivedData/
-**/ios/**/Icon?
-**/ios/**/Pods/
-**/ios/**/.symlinks/
-**/ios/**/profile
-**/ios/.generated/
-**/ios/ServiceDefinitions.json
-
-# macOS
-**/Flutter/ephemeral/
-**/Pods/
-**/macos/Flutter/GeneratedPluginRegistrant.swift
-**/macos/Flutter/ephemeral
-**/xcuserdata/
-
-# Windows
-**/windows/flutter/generated_plugin_registrant.cc
-**/windows/flutter/generated_plugin_registrant.h
-**/windows/flutter/generated_plugins.cmake
-
-# Linux
-**/linux/flutter/generated_plugin_registrant.cc
-**/linux/flutter/generated_plugin_registrant.h
-**/linux/flutter/generated_plugins.cmake
-
-# Coverage
-coverage/
-
-# Symbols
-app.*.symbols
-
-!**/ios/**/default.mode1v3
-!**/ios/**/default.mode2v3
-!**/ios/**/default.pbxuser
-!**/ios/**/default.perspectivev3
-!/dev/ci/**/Gemfile.lock
+# ─── Dependencies ─────────────────────────────────
 node_modules/
-
-# Node / JavaScript
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
 .pnp/
 .pnp.js
 .pnp.cjs
 
-# Dependency directories
-/.pnp.cjs
-
-# Build outputs
+# ─── Build outputs ────────────────────────────────
 dist/
 build/
 out/
-public/build/
-public/assets/
-.parcel-cache/
-.next/
-.nuxt/
-.vite/
+
+# ─── Cache & temp ─────────────────────────────────
 .cache/
 .tmp/
-
-# Coverage
-coverage/
+.parcel-cache/
 .nyc_output/
-
-# Environment
-.env
-.env.local
-.env.*.local
-.env.*
-
-# Logs, pids, temp files
-logs/
-*.log
-pids/
-*.pid
-*.seed
+coverage/
 tmp/
 temp/
 
-# OS files
+# ─── Environment & secrets ────────────────────────
+.env
+.env.local
+.env.*.local
+
+# ─── Logs ─────────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ─── OS files ─────────────────────────────────────
 .DS_Store
 Thumbs.db
 Icon?
+ehthumbs.db
+*.swp
+*.swo
+*~
 
-# IDEs and editors
+# ─── IDEs ─────────────────────────────────────────
 .vscode/
 .idea/
 *.sublime-workspace
 *.sublime-project
 
-# Docker
-docker-compose.override.yml
-.docker/
-
-# Secrets / certs
+# ─── Secrets & certs ──────────────────────────────
 *.pem
 *.key
 *.crt
 
-# Misc
-ehthumbs.db
+# ─── Large media files (use CDN / Git LFS) ───────
+# Video files > 50 MB must NOT be committed directly.
+# Use Git LFS:  git lfs track "*.mp4"
+# Or host externally and reference via URL.
+*.mp4
+*.mov
+*.avi
+*.mkv
 
+# ─── OpenClaw internal ────────────────────────────
+.openclaw-project
+skill/.openclaw-project/
+translate-quota.json
+
+# ─── Playwright ───────────────────────────────────
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# ─── Misc / archive ───────────────────────────────
 scripts/ci/
 scripts/archive/
 scripts/.archive/
-.archive/
-
-dist/
-build/
-coverage/
-skill/.openclaw-project/
-.openclaw-project
-translate-quota.json
-
-# Git hooks
-.githooks/
-
-# Reference files
 .reference/
--e 
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
--e 
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+.githooks/
