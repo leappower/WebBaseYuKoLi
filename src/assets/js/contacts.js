@@ -90,7 +90,8 @@
    */
   function contactsWhatsApp(opts) {
     opts = opts || {};
-    var message = opts.message || "Hi YuKoLi";
+    var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
+    var message = opts.message || ("Hi " + (_brand.name || "YuKoLi"));
     var source = opts.source || "";
 
     var text = message;
@@ -210,10 +211,11 @@
     window.open("https://t.me/baeckerei-profi", "_blank");
   }
   function startEmail() {
-    var subject = "YuKoLi 智能厨具询价";
+    var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
+    var subject = (_brand.name || "YuKoLi") + " 询价";
     var body = buildQuoteMessage();
     window.location.href =
-      "mailto:support@yukoli.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      "mailto:" + ((_cfg.contacts || {}).supportEmail || "support@yukoli.com") + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   }
   function startFacebook() {
     window.open("https://www.facebook.com/people/Yukoli-Technology-Co-Ltd/61579549730250/", "_blank");

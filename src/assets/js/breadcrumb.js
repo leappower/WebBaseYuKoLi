@@ -34,24 +34,21 @@
     return fallback || key;
   }
 
-  var PRODUCT_SLUGS = {
-    stirfry: { key: "nav_products_stirfry", label: "翻炒系列", icon: "local_fire_department", emoji: "🔥" },
-    cutting: { key: "nav_products_cutting", label: "切配系列", icon: "content_cut", emoji: "🔪" },
-    frying: { key: "nav_products_frying", label: "煎炸系列", icon: "outdoor_grill", emoji: "🍳" },
-    stewing: { key: "nav_products_stewing", label: "炖煮系列", icon: "soup_kitchen", emoji: "🥘" },
-    steaming: { key: "nav_products_steaming", label: "蒸煮系列", icon: "cloud", emoji: "⬆️" },
-    other: { key: "nav_products_other", label: "辅助设备", icon: "more_horiz", emoji: "⚙️" },
-  };
+  // ── Config-driven category maps ──
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _categories = _cfg.categories || {};
 
-  var APP_SLUGS = {
-    "small-restaurant": { label: "小型餐饮", icon: "storefront" },
-    "central-kitchen": { label: "中央厨房", icon: "apartment" },
-    canteen: { label: "智慧食堂", icon: "school" },
-    "chain-restaurant": { label: "连锁餐饮", icon: "store" },
-    "cloud-kitchen": { label: "云厨房/外卖", icon: "cloud" },
-    "food-factory": { label: "食品工厂", icon: "factory" },
-    "menu-lab": { label: "菜系实验室", icon: "science" },
-  };
+  function buildSlugMap(items) {
+    var map = {};
+    if (!items) return map;
+    for (var i = 0; i < items.length; i++) {
+      map[items[i].slug] = items[i];
+    }
+    return map;
+  }
+
+  var PRODUCT_SLUGS = buildSlugMap(_categories.products);
+  var APP_SLUGS = buildSlugMap(_categories.applications);
 
   // i18n-wrapped labels (lazy resolved at render time)
   function getProductLabel(slug) {
@@ -64,13 +61,7 @@
     return tl(SUPPORT_SLUGS[slug].label, SUPPORT_SLUGS[slug].label);
   }
 
-  var SUPPORT_SLUGS = {
-    faq: { label: "技术问答", icon: "help" },
-    installation: { label: "安装调试", icon: "build" },
-    warranty: { label: "质保维护", icon: "verified" },
-    "spare-parts": { label: "配件支持", icon: "settings" },
-    training: { label: "培训下载", icon: "school" },
-  };
+  var SUPPORT_SLUGS = buildSlugMap(_categories.support);
 
   // ─── Page route config ─────────────────────────────────────────
   // Each entry: { match: regex, parentPath, parentLabel, currentLabel, siblings }

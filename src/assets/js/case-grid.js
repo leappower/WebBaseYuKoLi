@@ -58,8 +58,7 @@
       quote: '"Phở 和 Bánh Mì 都能用，外国游客也夸味道好。"' }
   ]
 
-  /* ── Filter Definitions ─────────────────────────── */
-  var FILTERS = {
+  var _fallbackFilters = {
     industry: {
       label: '行业',
       i18n: 'cases_filter_industry',
@@ -83,6 +82,9 @@
   }
 
   /* ── State ──────────────────────────────────────── */
+  var ROI_CASES = _casesCfg.grid || _fallbackCases;
+  var FILTERS = _casesCfg.filters || _fallbackFilters;
+
   var activeFilters = { industry: null, volume: null, country: null, benefit: null }
 
   /* ── Helpers ────────────────────────────────────── */

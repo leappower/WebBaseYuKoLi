@@ -33,16 +33,29 @@
 
   // ─── Category data ────────────────────────────────────────────
 
-  var PRODUCT_SLUGS = {
-    stirfry: { key: "nav_products_stirfry", label: "翻炒系列", icon: "local_fire_department" },
-    cutting: { key: "nav_products_cutting", label: "切配系列", icon: "content_cut" },
-    frying: { key: "nav_products_frying", label: "煎炸系列", icon: "outdoor_grill" },
-    stewing: { key: "nav_products_stewing", label: "炖煮系列", icon: "soup_kitchen" },
-    steaming: { key: "nav_products_steaming", label: "蒸煮系列", icon: "cloud" },
-    other: { key: "nav_products_other", label: "辅助设备", icon: "more_horiz" },
-  };
+  // ── Config-driven category data ──
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _categories = _cfg.categories || {};
 
+  function buildSlugMap(items) {
+    var map = {};
+    if (!items) return map;
+    for (var i = 0; i < items.length; i++) {
+      map[items[i].slug] = items[i];
+    }
+    return map;
+  }
+
+  var PRODUCT_SLUGS = buildSlugMap(_categories.products);
+  var _crossSell = _cfg.crossSell || {};
+  var APP_LABELS = _crossSell.appLabels || {};
+
+  // Build reverse map from slug to category key
   var CATEGORY_KEY_TO_SLUG = {};
+
+  function getAppLabel(slug) {
+    return tl(APP_LABELS[slug] || slug, APP_LABELS[slug] || slug);
+  }
   Object.keys(PRODUCT_SLUGS).forEach(function (slug) {
     CATEGORY_KEY_TO_SLUG[PRODUCT_SLUGS[slug].key] = slug;
   });
@@ -233,19 +246,7 @@
     ],
   };
 
-  var APP_LABELS = {
-    "small-restaurant": "小型餐饮",
-    "central-kitchen": "中央厨房",
-    canteen: "智慧食堂",
-    "chain-restaurant": "连锁餐饮",
-    "cloud-kitchen": "云厨房/外卖",
-    "food-factory": "食品工厂",
-    "menu-lab": "菜系实验室",
-  };
 
-  function getAppLabel(slug) {
-    return tl(APP_LABELS[slug], APP_LABELS[slug]);
-  }
 
   // ─── Detect current page ───────────────────────────────────────
 

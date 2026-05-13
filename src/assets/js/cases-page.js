@@ -13,8 +13,15 @@
     tgt.addEventListener(evt, fn, { signal: ac.signal });
   }
 
-  /* ─── Case Study Data ─── */
-  var CASES = {
+  /* ─── Case Study Data (config-driven) ─── */
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _brand = _cfg.brand || {};
+  var BRAND_NAME = _brand.name || "YuKoLi";
+  var _caseDetail = (_cfg.cases || {}).detail || {};
+
+  /* Fallback when site.config not loaded */
+  var _fallbackCases = {
+
     1: {
       title: "暹罗快炒 (Siam Wok Express)",
       subtitle: "泰国 · 连锁餐饮 · 86家门店",
@@ -262,6 +269,8 @@
   /* ═══════════════════════════════════════════════════
      3. Case Study Modal
      ═══════════════════════════════════════════════════ */
+  var CASES = _caseDetail || _fallbackCases;
+
   var modalOverlay = null;
   var modalCard = null;
 
@@ -478,7 +487,7 @@
       '<div style="aspect-ratio:16/9;background:#0f172a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;">' +
       '<span class="material-symbols-outlined" style="font-size:4rem;color:#f97316;">play_circle</span>' +
       '<p style="color:#e2e8f0;font-weight:700;font-size:1.125rem;">视频即将上线</p>' +
-      '<p style="color:#94a3b8;font-size:0.875rem;">YuKoLi智能炒菜机自动化演示</p>' +
+      '<p style="color:#94a3b8;font-size:0.875rem;">' + BRAND_NAME + '智能设备自动化演示</p>' +
       "</div>" +
       "</div>";
 
