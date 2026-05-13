@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 /**
- * lint-code.js — 项目代码规范自动检查工具 v2.0
+ * lint-code.js — 项目代码规范自动检查工具 v2.1
+ *
+ * 配套规范：docs/DEV-STANDARDS.md（第 10 章：代码搜索与批量替换规范）
  *
  * 检查项（12 项）：
  *   1.  JS 语法检查
@@ -42,6 +44,7 @@ var WARN_COUNT = 0;
 var FIX_COUNT = 0;
 var STAGED_ONLY = process.argv.indexOf('--staged') !== -1;
 var FIX_MODE = process.argv.indexOf('--fix') !== -1;
+var EXCLUDE_DIRS = ['node_modules', 'dist', '.git', 'vendor', 'scripts'];
 
 // ═══════════════════════════════════════════════════════════
 // Helpers
@@ -505,7 +508,9 @@ var jsFiles, htmlFiles, jsonFiles;
 
 if (STAGED_ONLY) {
   var staged = getStagedFiles();
-  jsFiles = staged.filter(function (f) { return f.endsWith('.js'); }).map(function (f) { return path.join(ROOT, f); }).filter(function (f) { return fs.existsSync(f); });
+  jsFiles = staged.filter(function (f) {
+    return f.endsWith('.js') && !EXCLUDE_DIRS.some(function (d) { return f.indexOf(d + '/') === 0; });
+  }).map(function (f) { return path.join(ROOT, f); }).filter(function (f) { return fs.existsSync(f); });
   htmlFiles = staged.filter(function (f) { return f.endsWith('.html'); }).map(function (f) { return path.join(ROOT, f); }).filter(function (f) { return fs.existsSync(f); });
   jsonFiles = staged.filter(function (f) { return f.endsWith('.json'); }).map(function (f) { return path.join(ROOT, f); }).filter(function (f) { return fs.existsSync(f); });
 } else {

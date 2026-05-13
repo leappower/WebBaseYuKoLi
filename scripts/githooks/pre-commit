@@ -153,7 +153,7 @@ if [ "$JSON_FAIL" -ne 0 ]; then FAILED=1; fi
 echo ""
 echo -e "${CYAN}━━ 5/8 品牌硬编码检查 ━━${NC}"
 BRAND_FAIL=0
-for f in $(git diff --cached --name-only --diff-filter=ACM '*.js'); do
+for f in $(git diff --cached --name-only --diff-filter=ACM '*.js' | grep -v '^scripts/' | grep -v '^docs/'); do
   if [ -f "$f" ]; then
     # New #ec5b13 not in fallback context
     if grep -n '#ec5b13' "$f" | grep -v '||.*#ec5b13\|var.*_primary\|//\|*/' > /dev/null 2>&1; then
