@@ -226,6 +226,66 @@ function injectLangRegistry(html) {
 }
 
 /**
+ * Inject theme-init.js + device-specific nav scripts into HTML.
+ *
+ * - All pages: theme-init.js (font CDN + CSS vars)
+ * - PC pages: mega-menu.js
+ * - Mobile/Tablet pages: nav-footer.js
+ *
+ * Detects device type from filename (index-pc, index-mobile, index-tablet).
+ * For generated pages (404, root index), pass deviceType explicitly.
+ * Uses idempotent markers to prevent double injection.
+ */
+function injectThemeAndNavScripts(html, deviceType) {
+  // Already processed — skip (idempotent)
+  if (html.indexOf('theme-init.js') !== -1) return html;
+
+  var bp = BASE_PATH ? BASE_PATH.replace(/\/$/, '') : '';
+  var tags = '';
+
+  // 1. theme-init.js — always injected (fonts + CSS tokens)
+  tags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
+
+  // 2. Device-specific nav script
+  //    Determine device type from filename if not explicitly provided
+  if (!deviceType) {
+    // This function is called on HTML content, not a filename;
+    // caller should detect from filename and pass deviceType.
+    deviceType = 'mobile'; // safe default
+  }
+
+  if (deviceType === 'pc') {
+    tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+  } else {
+    tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+  }
+
+  // Insert before the first <script tag that references navigator.js
+  // This ensures our scripts load before navigator initializes
+  var navigatorPattern = new RegExp('(\\s*)(<script[^>]*src=["\'][^"\']*assets\\/js\\/ui\\/navigator\\.js[^>]*>)', 'i');
+  if (navigatorPattern.test(html)) {
+    html = html.replace(navigatorPattern, tags + '$1$2');
+  } else {
+    // Fallback: insert before </body>
+    html = html.replace(/<\/body>/i, tags + '</body>');
+  }
+
+  return html;
+}
+
+/**
+ * Detect device type from filename.
+ * @param {string} filename - e.g. 'index-pc.html', 'index-mobile.html'
+ * @returns {string} 'pc', 'mobile', 'tablet', or 'responsive'
+ */
+function detectDeviceType(filename) {
+  if (/index-pc/.test(filename)) return 'pc';
+  if (/index-mobile/.test(filename)) return 'mobile';
+  if (/index-tablet/.test(filename)) return 'tablet';
+  return 'responsive';
+}
+
+/**
  * Generate a route-specific index.html that serves as the directory entry.
  *
  * This file is similar to src/pages/<route>/index.html but with:
@@ -262,6 +322,9 @@ function generateRouteIndex(route) {
 
   // Inject lang-registry.js before translations.js (if not already present)
   html = injectLangRegistry(html);
+
+  // Inject theme-init.js + nav-footer.js (responsive index.html serves all devices)
+  html = injectThemeAndNavScripts(html, 'responsive');
 
   // Patch all root-absolute paths with BASE_PATH prefix
   html = patchHtmlPaths(html);
@@ -312,6 +375,9 @@ function copyDeviceFiles(route) {
     if (BASE_PATH) {
       content = patchHtmlPaths(content);
     }
+    // Inject theme-init.js + device-specific nav scripts (nav-footer.js or mega-menu.js)
+    var deviceType = detectDeviceType(file);
+    content = injectThemeAndNavScripts(content, deviceType);
     fs.writeFileSync(destFile, content, 'utf-8');
     copied++;
   }
@@ -349,6 +415,9 @@ function generateRootIndex() {
 
   // Patch all root-absolute paths with BASE_PATH prefix
   html = patchHtmlPaths(html);
+
+  // Inject theme-init.js + nav-footer.js (SPA shell serves all devices)
+  html = injectThemeAndNavScripts(html, 'responsive');
 
   // Write to dist/index.html
   fs.writeFileSync(path.join(DIST_DIR, 'index.html'), html, 'utf-8');
@@ -471,6 +540,8 @@ function generate404() {
     '  <script defer src="' + bp + '/assets/js/lang-registry.js"></script>',
     '  <script defer src="' + bp + '/assets/js/translations.js"></script>',
     '  <script src="' + bp + '/assets/js/translations-dropdown-template.js"></script>',
+    '  <script defer src="' + bp + '/assets/js/theme-init.js"></script>',
+    '  <script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>',
     '  <script defer src="' + bp + '/assets/js/ui/navigator.js"></script>',
     '  <script defer src="' + bp + '/assets/js/ui/footer.js"></script>',
     '  <script defer src="' + bp + '/assets/js/ui/floating-actions.js"></script>',

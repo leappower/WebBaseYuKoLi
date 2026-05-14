@@ -437,8 +437,16 @@
         zOverlay: 800,
       },
       fonts: {
-        heading: '"Public Sans", sans-serif',
-        body: '"Inter", "Public Sans", system-ui, sans-serif',
+        heading: "'Plus Jakarta Sans', 'Satoshi', 'Public Sans', system-ui, sans-serif",
+        body: "'Inter', 'Noto Sans SC', 'Public Sans', system-ui, sans-serif",
+        mono: "'Space Grotesk', monospace",
+        cdn: [
+          "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap",
+          "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+          "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap",
+        ],
+        // Satoshi 是商业字体，CDN 不可用。安装后添加本地引用：
+        // cdn: [...above, "/assets/fonts/satoshi.woff2"]
       },
       hero: {
         height: "600px",

@@ -197,6 +197,7 @@
     ".sup-dropdown-wrap",
     ".abt-dropdown-wrap",
     ".cnt-dropdown-wrap",
+    ".mega-menu-wrap",
   ];
 
   /**
@@ -415,6 +416,14 @@
 
     /* ---------- 有 dropdown 的导航项 ---------- */
     if (navItem.hasDropdown) {
+      /* ---------- Mega Menu 模式 ---------- */
+      if (typeof window.MegaMenu !== "undefined") {
+        var cfg = window.SITE_CONFIG || window._cfg || {};
+        if ((cfg.navMode || {}).desktop === "mega-menu" && variant === "pc") {
+          return window.MegaMenu.render({ href: href, label: navItem.label, activeClass: activeClass, navItem: navItem });
+        }
+      }
+
       var dropdownModules = {
         products: window.ProductsDropdown,
         applications: window.ApplicationsDropdown,
@@ -1729,6 +1738,12 @@
      * @param {string} categoryKey - 分类 i18n key
      */
     highlightCategory: highlightCategory,
+
+    /**
+     * 关闭除指定元素外的所有已打开 dropdown（供外部模块调用）
+     * @param {HTMLElement|null} keepOpen - 保持打开的元素
+     */
+    _closeOtherDropdowns: closeOtherDropdowns,
   };
 
   /* ================================================================
