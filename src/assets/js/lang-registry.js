@@ -14,12 +14,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Fallback 语言数据（与 site.config.js i18n.languages 保持同步）
 // ─────────────────────────────────────────────────────────────────────────────
-var _FALLBACK_LANGUAGES = [
-  { code: "zh-CN", nativeName: "中文（简体）", englishName: "Chinese (Simplified)", hasTranslation: true, uiGroup: "common", sortOrder: 1, currency: { symbol: "¥", code: "CNY", rate: 1, unit: "万元" } },
-  { code: "en", nativeName: "English", englishName: "English", hasTranslation: true, uiGroup: "common", sortOrder: 2, currency: { symbol: "$", code: "USD", rate: 0.14, unit: "K" } },
-  { code: "zh-TW", nativeName: "中文（繁體）", englishName: "Chinese (Traditional)", hasTranslation: true, uiGroup: "other", sortOrder: 14, currency: { symbol: "NT$", code: "TWD", rate: 4.4, unit: "萬元" } },
-  { code: "ja", nativeName: "日本語", englishName: "Japanese", hasTranslation: true, uiGroup: "east_asia", sortOrder: 11, currency: { symbol: "¥", code: "JPY", rate: 21, unit: "万円", label: "JP¥" } }
-];
+var _FALLBACK_LANGUAGES = [];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Config bridge: 优先读取 SITE_CONFIG，fallback 到内嵌数据
