@@ -553,7 +553,7 @@
       "</th>";
     html +=
       '<th style="padding:8px;text-align:right;border-bottom:2px solid #cbd5e1">' +
-      tFunc("profit_calc_tco_yukoli") +
+      tFunc("profit_calc_tco_brand") +
       "</th>";
     html +=
       '<th style="padding:8px;text-align:right;border-bottom:2px solid #cbd5e1">' +
