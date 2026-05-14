@@ -50,7 +50,14 @@ while read -r line; do
   case "$line" in
     *force*|*delete*) IS_FORCE=1 ;;
   esac
-done < <(git push --dry-run "$@" 2>&1 || true)
+TMPFILE=$(mktemp)
+git push --dry-run "$@" > "$TMPFILE" 2>&1 || true
+while read -r line; do
+  case "$line" in
+    *force*|*delete*) IS_FORCE=1 ;;
+  esac
+done < "$TMPFILE"
+rm -f "$TMPFILE"
 
 if [ "$IS_FORCE" -eq 1 ]; then
   if [ "$REMOTE_BRANCH" = "master" ] || [ "$REMOTE_BRANCH" = "main" ]; then
