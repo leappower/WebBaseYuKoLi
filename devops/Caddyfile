@@ -8,7 +8,7 @@ localhost:3099 {
         output file /var/log/caddy/brew-dev.log
     }
     
-    # 开发环境代理
+    # 开发环境代理到Node.js服务器
     reverse_proxy localhost:3099
     
     # 开发头部
@@ -31,7 +31,7 @@ localhost:3443 {
         ca /usr/local/share/ca-certificates
     }
     
-    # 反向代理
+    # 反向代理到Node.js HTTP服务
     reverse_proxy localhost:3099
     
     # 开发环境头部

@@ -16,6 +16,9 @@ VERSION="v=$(date +%Y%m%d%H%M)"
 
 echo "🏗️  Building..."
 
+# Ensure dist root exists
+mkdir -p "$DIST"
+
 # ─── Pre-flight checks ───────────────────────────────────────────
 # Catch corrupted source files before they propagate to dist
 INDEX_SIZE=$(wc -c < "$SRC/index.html")
