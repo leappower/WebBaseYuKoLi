@@ -132,7 +132,12 @@
     }
   }
 
-  document.addEventListener("keydown", onKeydown);
+  // ESC handler — guard against re-init in SPA
+  if (!document.querySelector('[data-wc-bound]')) {
+    document.documentElement.setAttribute('data-wc-bound', '');
+    var _escEM = window.DomUtils && new DomUtils.EventManager();
+    (_escEM || {on:function(){}}).on(document, "keydown", onKeydown);
+  }
 
   function bindClicks() {
     // Use rAF to ensure DOM is updated (contact-channels may have just rendered)

@@ -952,9 +952,10 @@
       }, 300);
     }
 
-    // Recalculate on resize (debounced)
+    // Recalculate on resize (debounced, auto-cleanup via EventManager)
     var resizeTimer;
-    window.addEventListener("resize", function () {
+    var _tabEM = window.DomUtils && new DomUtils.EventManager();
+    (_tabEM || {on:function(){}}).on(window, "resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
         calcDynamicMax();

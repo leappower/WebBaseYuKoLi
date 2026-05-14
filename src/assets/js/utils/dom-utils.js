@@ -72,7 +72,13 @@
 
   EventManager.prototype.on = function (tgt, evt, fn, opts) {
     if (this._ac.signal.aborted) return this;
-    tgt.addEventListener(evt, fn, Object.assign({}, opts || {}, { signal: this._ac.signal }));
+    var merged = { signal: this._ac.signal };
+    if (opts) {
+      if (opts.capture !== undefined) merged.capture = opts.capture;
+      if (opts.once !== undefined) merged.once = opts.once;
+      if (opts.passive !== undefined) merged.passive = opts.passive;
+    }
+    tgt.addEventListener(evt, fn, merged);
     this._count++;
     return this;
   };

@@ -284,10 +284,11 @@
   }
   _spaOn(document, "spa:load", mount, "spa:load");
 
-  // Re-render on resize (device type change)
+  // Re-render on resize (device type change), auto-cleanup via EventManager
   var _lastDevice = getDevice();
   var _resizeTimer;
-  window.addEventListener("resize", function () {
+  var _resizeEM = window.DomUtils && new DomUtils.EventManager();
+  (_resizeEM || {on:function(){}}).on(window, "resize", function () {
     clearTimeout(_resizeTimer);
     _resizeTimer = setTimeout(function () {
       var d = getDevice();

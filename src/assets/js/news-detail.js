@@ -36,7 +36,7 @@
       if (window.translationManager && window.translationManager.t) {
         var i18nPrefix = window.translationManager.t("news_detail_published") || "";
         var dateVal = window.translationManager.t(dateKey) || "";
-        dateEl.innerHTML = i18nPrefix + " " + dateVal;
+        dateEl.innerHTML = DomUtils.esc(i18nPrefix) + " " + DomUtils.esc(dateVal);
       }
     }
 
@@ -45,14 +45,12 @@
       var bodyKey = id + "_body";
       if (window.translationManager && window.translationManager.t) {
         var bodyHtml = window.translationManager.t(bodyKey) || "";
-        // Convert newlines to paragraphs
-        bodyHtml = bodyHtml
+        bodyEl.innerHTML = bodyHtml
           .split("\n\n")
           .map(function (p) {
-            return "<p>" + p.trim() + "</p>";
+            return "<p>" + DomUtils.esc(p.trim()) + "</p>";
           })
           .join("");
-        bodyEl.innerHTML = bodyHtml;
       }
     }
 

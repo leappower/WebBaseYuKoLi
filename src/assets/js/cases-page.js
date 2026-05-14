@@ -534,7 +534,11 @@
      8. ESC key handler
      ═══════════════════════════════════════════════════ */
   function initKeyboard() {
-    document.addEventListener("keydown", function (e) {
+    // Guard against SPA re-init
+    if (document.querySelector('[data-cases-kb-bound]')) return;
+    document.documentElement.setAttribute('data-cases-kb-bound', '');
+    var _kbEM = window.DomUtils && new DomUtils.EventManager();
+    (_kbEM || {on:function(){}}).on(document, "keydown", function (e) {
       if (e.key === "Escape") {
         closeModal();
         if (videoOverlay && videoOverlay.style.display === "flex") {

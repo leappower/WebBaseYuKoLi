@@ -353,8 +353,12 @@
   }
 
   /* ── Filter Button Event Binding ────────────────── */
+  var _filterClickBound = false;
   function bindFilterButtons() {
-    document.addEventListener('click', function (e) {
+    if (_filterClickBound) return;
+    _filterClickBound = true;
+    var _clickEM = window.DomUtils && new DomUtils.EventManager();
+    (_clickEM || {on:function(){}}).on(document, 'click', function (e) {
       var btn = e.target.closest('.case-filter-btn')
       if (!btn) return
 

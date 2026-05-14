@@ -505,7 +505,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", renderPDP);
-  document.addEventListener("product-data-ready", renderPDP);
+  // Use EventManager to prevent duplicate product-data-ready listeners in SPA
+  var _pdpEM = window.DomUtils && new DomUtils.EventManager();
+  (_pdpEM || {on:function(){}}).on(document, "product-data-ready", renderPDP);
   // Multi-language helper: get product field for current language
   // Translate spec labels
   function tl(chinese) {
