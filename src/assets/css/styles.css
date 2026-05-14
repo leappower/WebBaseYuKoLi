@@ -3,7 +3,7 @@
  * Isolated from src/ styles. Do NOT import from src/assets/css/styles.css.
  *
  * Design tokens:
- *   Primary:          #ec5b13  (Yukoli orange)
+ *   Primary:          var(--color-primary)  (config-driven)
  *   Background light: #f8f6f6
  *   Background dark:  #221610
  *   Font:             Public Sans (Google Fonts)
@@ -25,9 +25,9 @@
 
 /* ─── CSS Custom Properties ─────────────────────────────────────── */
 :root {
-  --color-primary: #ec5b13;
-  --color-primary-10: rgb(236, 91, 19, 0.1);
-  --color-primary-20: rgb(236, 91, 19, 0.2);
+  --color-primary: #006064;
+  --color-primary-10: rgba(0, 96, 100, 0.1);
+  --color-primary-20: rgba(0, 96, 100, 0.2);
   --color-bg-light: #f8f6f6;
   --color-bg-dark: #221610;
 
@@ -172,7 +172,7 @@ html.dark body {
  *     theme: {
  *       extend: {
  *         colors: {
- *           "primary":          "#ec5b13",
+ *           "primary":          "var(--color-primary)",
  *           "background-light": "#f8f6f6",
  *           "background-dark":  "#221610",
  *         },

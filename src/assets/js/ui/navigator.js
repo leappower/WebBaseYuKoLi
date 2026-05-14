@@ -23,7 +23,7 @@
    */
   function getPrimaryColor() {
     var cfg = window.SITE_CONFIG || window._cfg || {};
-    return ((cfg.theme || {}).colors || {}).primary || "#ec5b13";
+    return ((cfg.theme || {}).colors || {}).primary || "#006064";
   }
   /**
    * 获取主题 accent 色彩（实时从 SITE_CONFIG 读取）

@@ -12,7 +12,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
+  var _primary = ((_theme.colors || {}).primary) || "#006064";
 
   /**
    * Shared style template — uses {{PREFIX}} placeholder.

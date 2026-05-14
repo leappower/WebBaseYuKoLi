@@ -156,7 +156,11 @@
     // 2. 色彩变量
     var colors = theme.colors || {};
     if (colors.primary) setToken(el, "color-primary", colors.primary);
-    if (colors.primaryRgb) setToken(el, "color-primary-rgb", colors.primaryRgb);
+    if (colors.primaryRgb) {
+      setToken(el, "color-primary-rgb", colors.primaryRgb);
+      setToken(el, "color-primary-10", "rgba(" + colors.primaryRgb + ", 0.1)");
+      setToken(el, "color-primary-20", "rgba(" + colors.primaryRgb + ", 0.2)");
+    }
     if (colors.primaryHover) setToken(el, "color-primary-hover", colors.primaryHover);
     if (colors.bgLight) setToken(el, "color-bg-light", colors.bgLight);
     if (colors.bgDark) setToken(el, "color-bg-dark", colors.bgDark);

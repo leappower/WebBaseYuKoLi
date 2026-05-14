@@ -8,7 +8,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
+  var _primary = ((_theme.colors || {}).primary) || "#006064";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -126,28 +126,28 @@
       var s = document.createElement("style");
       s.id = "pi-sticky-cta-style";
       s.textContent = [
-        "#yukoli-sticky-cta{position:fixed;bottom:0;left:0;right:0;z-index:calc(var(--z-footer, 10) + 1);",
+        "#sticky-cta-bar{position:fixed;bottom:0;left:0;right:0;z-index:calc(var(--z-footer, 10) + 1);",
         "background:#fff;border-top:2px solid ' + _primary + ';padding:10px 24px;",
         "display:flex;align-items:center;justify-content:space-between;",
         "box-shadow:0 -4px 24px rgba(0,0,0,.12);",
         "transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}",
-        "#yukoli-sticky-cta.visible{transform:translateY(0);}",
-        "#yukoli-sticky-cta .sc-title{font-weight:700;font-size:.95rem;color:#0f172a;}",
-        "#yukoli-sticky-cta .sc-sub{font-size:.78rem;color:#64748b;}",
-        "#yukoli-sticky-cta .sc-btn{background:' + _primary + ';color:#fff;border:none;",
+        "#sticky-cta-bar.visible{transform:translateY(0);}",
+        "#sticky-cta-bar .sc-title{font-weight:700;font-size:.95rem;color:#0f172a;}",
+        "#sticky-cta-bar .sc-sub{font-size:.78rem;color:#64748b;}",
+        "#sticky-cta-bar .sc-btn{background:' + _primary + ';color:#fff;border:none;",
         "padding:9px 20px;border-radius:6px;font-weight:700;font-size:.85rem;",
         "cursor:pointer;white-space:nowrap;}",
-        "#yukoli-sticky-cta .sc-btn:hover{opacity:.88;}",
-        "#yukoli-sticky-cta .sc-close{background:none;border:none;cursor:pointer;",
+        "#sticky-cta-bar .sc-btn:hover{opacity:.88;}",
+        "#sticky-cta-bar .sc-close{background:none;border:none;cursor:pointer;",
         "color:#94a3b8;font-size:18px;padding:4px 8px;line-height:1;}",
       ].join("");
       document.head.appendChild(s);
     }
 
-    var bar = document.getElementById("yukoli-sticky-cta");
+    var bar = document.getElementById("sticky-cta-bar");
     if (!bar) {
       bar = document.createElement("div");
-      bar.id = "yukoli-sticky-cta";
+      bar.id = "sticky-cta-bar";
       bar.setAttribute("role", "complementary");
       bar.setAttribute("aria-label", "Quick contact bar");
       bar.innerHTML = [

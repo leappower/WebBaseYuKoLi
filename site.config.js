@@ -502,7 +502,7 @@
 
   // ── 导出 ──
   global.SITE_CONFIG = config;
-  global._cfg = config;
+  global._cfg = config; // @deprecated — use window.SITE_CONFIG instead
 
   // Node.js 环境导出
   if (typeof module !== "undefined" && module.exports) {
