@@ -567,9 +567,9 @@
     for (var yr = 1; yr <= 5; yr++) {
       var factor = Math.pow(1 + inflation, yr - 1);
       var tradCost = annualLabor * factor;
-      var yukoliCost = afterLaborBase * factor + maintenanceBase * factor;
-      if (yr === 1) yukoliCost += investmentMid;
-      var annualSave = tradCost - yukoliCost;
+      var vendorCost = afterLaborBase * factor + maintenanceBase * factor;
+      if (yr === 1) vendorCost += investmentMid;
+      var annualSave = tradCost - vendorCost;
       cumulative += annualSave;
       html += "<tr>";
       html +=
@@ -584,7 +584,7 @@
       html +=
         '<td style="padding:6px 8px;border-bottom:1px solid #e2e8f0;text-align:right">' +
         lc.symbol +
-        formatNumber(Math.round(yukoliCost)) +
+        formatNumber(Math.round(vendorCost)) +
         "</td>";
       html +=
         '<td style="padding:6px 8px;border-bottom:1px solid #e2e8f0;text-align:right;color:' +
