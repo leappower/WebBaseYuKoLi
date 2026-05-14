@@ -101,9 +101,12 @@ pre-push:
         echo "✓ 推送到 $REMOTE (非保护分支)"
         # Check force push
         IS_FORCE=0
+        _BP_TMP=$(mktemp)
+        git push --dry-run 2>&1 > "$_BP_TMP" || true
         while read -r line; do
           case "$line" in *force*|*delete*) IS_FORCE=1 ;; esac
-        done < <(git push --dry-run 2>&1 || true)
+        done < "$_BP_TMP"
+        rm -f "$_BP_TMP"
         if [ "$IS_FORCE" = "1" ] && { [ "$REMOTE" = "master" ] || [ "$REMOTE" = "main" ]; }; then
           echo "✗ ERR  禁止 force push 到 $REMOTE"
           exit 1
