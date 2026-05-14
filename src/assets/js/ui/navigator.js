@@ -17,8 +17,24 @@
 /* global CustomSelect */
 (function (_global) {
   "use strict";
-  var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#ec5b13";
+  /**
+   * 获取主题 primary 色彩（实时从 SITE_CONFIG 读取）
+   * @returns {string} primary 色值
+   */
+  function getPrimaryColor() {
+    var cfg = window.SITE_CONFIG || window._cfg || {};
+    return ((cfg.theme || {}).colors || {}).primary || "#ec5b13";
+  }
+  /**
+   * 获取主题 accent 色彩（实时从 SITE_CONFIG 读取）
+   * @param {string} accentKey - accent 名称
+   * @returns {string} accent primary 色值
+   */
+  function getAccentColor(accentKey) {
+    var cfg = window.SITE_CONFIG || window._cfg || {};
+    var accents = (cfg.theme || {}).accentColors || {};
+    return (accents[accentKey] || {}).primary || getPrimaryColor();
+  }
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -55,6 +71,110 @@
   /** @type {Array} 当前生效的导航项 (recomputed per-call to avoid stale closure) */
 
   /**
+   * 获取导航项（配置驱动）
+   * 优先从 SITE_CONFIG.nav 读取，fallback 到 DEFAULT_NAV_ITEMS
+   * @returns {Array} 导航项数组
+   */
+  function getNavItems() {
+    var cfg = window.SITE_CONFIG || window._cfg || {};
+    // 如果配置了自定义导航项，直接使用
+    if (cfg.nav && Array.isArray(cfg.nav.items) && cfg.nav.items.length > 0) {
+      return cfg.nav.items;
+    }
+    // 从 categories 构建导航项（如果有 productLines 配置）
+    if (cfg.navMode && cfg.categories) {
+      return buildNavFromConfig(cfg);
+    }
+    // Fallback 到硬编码
+    return DEFAULT_NAV_ITEMS;
+  }
+
+  /**
+   * 从 SITE_CONFIG 构建导航项
+   * @param {Object} cfg - SITE_CONFIG 对象
+   * @returns {Array} 导航项数组
+   */
+  function buildNavFromConfig(cfg) {
+    var cats = cfg.categories || {};
+    var items = [];
+
+    // 产品
+    if (cats.products && cats.products.length > 0) {
+      items.push({
+        key: "nav_products",
+        label: cfg.brand ? cfg.brand.name + " " + "Products" : "Products",
+        path: "/products/",
+        id: "products",
+        hasDropdown: true
+      });
+    }
+
+    // 行业场景 / Solutions（如果有 productLines，改用 Solutions 作为菜单名）
+    if (cats.applications && cats.applications.length > 0) {
+      items.push({
+        key: "nav_applications",
+        label: cfg.navMode && cfg.navMode.desktop === "mega-menu" ? "Solutions" : "行业场景",
+        path: "/applications/",
+        id: "applications",
+        hasDropdown: true
+      });
+    }
+
+    // 案例
+    if (cfg.cases && cfg.cases.grid && cfg.cases.grid.length > 0) {
+      items.push({
+        key: "nav_cases",
+        label: "真实案例",
+        path: "/cases/",
+        id: "cases",
+        hasDropdown: false
+      });
+    }
+
+    // ROI
+    if (cfg.features && cfg.features.profitCalculator) {
+      items.push({
+        key: "nav_profit_calculator",
+        label: "投资回报",
+        path: "/profit-calculator/",
+        id: "profit-calculator",
+        hasDropdown: false
+      });
+    }
+
+    // Support
+    if (cats.support && cats.support.length > 0) {
+      items.push({
+        key: "nav_support",
+        label: "服务支持",
+        path: "/support/",
+        id: "support",
+        hasDropdown: true
+      });
+    }
+
+    // About
+    items.push({
+      key: "nav_about",
+      label: "关于我们",
+      path: "/about/",
+      id: "about",
+      hasDropdown: true
+    });
+
+    // Contact
+    items.push({
+      key: "nav_contact",
+      label: "联系我们",
+      path: "/contact/",
+      id: "contact",
+      hasDropdown: false
+    });
+
+    return items;
+  }
+
+  /**
    * 所有 dropdown 容器的 CSS 类名（用于互斥开关）
    * @type {string[]}
    */
@@ -78,6 +198,18 @@
     quote: "contact",
     "thank-you": "contact",
   };
+
+  /**
+   * 获取路径激活映射（配置驱动）
+   * @returns {Object} 路径 → active id 映射
+   */
+  function getPathToActiveMap() {
+    var cfg = window.SITE_CONFIG || window._cfg || {};
+    if (cfg.routes && cfg.routes.activeMap) {
+      return cfg.routes.activeMap;
+    }
+    return PATH_TO_ACTIVE_MAP;
+  }
 
   /* Sections whose nav item id differs from the activeSectionId (version drift) */
   var ID_ALIASES = {
@@ -317,7 +449,7 @@
    * @returns {string} HTML 字符串
    */
   function buildNavItemsHtml(activeId, variant) {
-    var items = DEFAULT_NAV_ITEMS;
+    var items = getNavItems();
     return items
       .map(function (item) {
         return buildNavItemHtml(item, activeId, variant);
@@ -672,7 +804,7 @@
       "  transition: color 200ms ease;",
       "}",
       "html.dark .ios-search-icon { color: rgba(235,235,245,0.6); }",
-      ".ios-search-bar.is-focused .ios-search-icon { color: ' + _primary + '; }",
+      ".ios-search-bar.is-focused .ios-search-icon { color: ' + getPrimaryColor() + '; }",
 
       /* 搜索输入框 */
       ".ios-search-input {",
@@ -1319,7 +1451,7 @@
     activeSectionId = activeSectionId || "";
     var currentPath = window.location.pathname.replace(/\/$/, "") || "/";
 
-    var navItems = DEFAULT_NAV_ITEMS;
+    var navItems = getNavItems();
 
     /* 确保 dropdown 样式已注入（SPA 动态加载场景） */
     injectDropdownStyles();
@@ -1342,9 +1474,10 @@
       var triggerEl = triggers[i];
 
       /* 应用路径映射 */
+      var _activeMap = getPathToActiveMap();
       var mappedId = activeSectionId;
-      if (PATH_TO_ACTIVE_MAP[activeSectionId]) {
-        mappedId = PATH_TO_ACTIVE_MAP[activeSectionId];
+      if (_activeMap[activeSectionId]) {
+        mappedId = _activeMap[activeSectionId];
       }
 
       /* 判断该 trigger 是否属于当前激活的 section */

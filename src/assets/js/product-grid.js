@@ -426,6 +426,21 @@
     return result;
   }
 
+  // ─── Accent color lookup ──────────────────────────────────────
+  // Maps a product's category to a data-accent value.
+  // Reads from SITE_CONFIG.categories.products[].accent; falls back to "coral".
+  function getProductAccent(p) {
+    if (!p) return "coral";
+    var cat = p._category || "";
+    var cfgProducts = ((window.SITE_CONFIG || window._cfg || {}).categories || {}).products || [];
+    for (var i = 0; i < cfgProducts.length; i++) {
+      if (cfgProducts[i].slug === cat || cfgProducts[i].key === cat) {
+        return cfgProducts[i].accent || "coral";
+      }
+    }
+    return "coral";
+  }
+
   function esc(str) {
     if (!str) return "";
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -478,6 +493,7 @@
 
   function renderPC(p) {
     var cat = esc(p._category);
+    var accent = getProductAccent(p);
     var model = esc(p.model || "");
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || p.highlights || "");
@@ -505,6 +521,7 @@
     return (
       '<article class="product-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
       selectedClass +
+      '" data-accent="' + accent +
       '" data-category="' +
       cat +
       '" data-tier="' +
@@ -553,6 +570,7 @@
 
   function renderTablet(p) {
     var cat = esc(p._category);
+    var accent = getProductAccent(p);
     var model = esc(p.model || "");
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || "");
@@ -571,6 +589,7 @@
     return (
       '<article class="product-card-tablet bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
       selectedClass +
+      '" data-accent="' + accent +
       '" data-category="' +
       cat +
       '" data-model="' +
@@ -618,6 +637,7 @@
 
   function renderMobile(p) {
     var cat = esc(p._category);
+    var accent = getProductAccent(p);
     var model = esc(p.model || "");
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || "");
@@ -628,6 +648,7 @@
     return (
       '<article class="product-card-mobile bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden relative' +
       selectedClass +
+      '" data-accent="' + accent +
       '" data-category="' +
       cat +
       '" data-model="' +
