@@ -45,6 +45,7 @@ var FIX_COUNT = 0;
 var STAGED_ONLY = process.argv.indexOf('--staged') !== -1;
 var FIX_MODE = process.argv.indexOf('--fix') !== -1;
 var EXCLUDE_DIRS = ['node_modules', 'dist', '.git', 'vendor', 'scripts'];
+var EXCLUDE_FILES = ['webpack.config.js', 'src/index.js']; // Build tools use ES6+
 
 // ═══════════════════════════════════════════════════════════
 // Helpers
@@ -121,6 +122,7 @@ function checkJSSyntax(jsFiles) {
   console.log('\n\x1b[1m━━ 1/12  JS 语法检查 (node -c) ━━\x1b[0m');
   var ok = true;
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     try {
       cp.execSync('node -c "' + f + '"', { encoding: 'utf8', stdio: 'pipe' });
     } catch (e) {
@@ -198,6 +200,7 @@ function checkHTMLTags(htmlFiles) {
 function checkConfigBridge(jsFiles) {
   console.log('\n\x1b[1m━━ 4/12  Config Bridge 一致性 ━━\x1b[0m');
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var content = fs.readFileSync(f, 'utf8');
     var r = rel(f);
 
@@ -230,6 +233,7 @@ function checkConfigBridge(jsFiles) {
 function checkBrandHardcode(jsFiles) {
   console.log('\n\x1b[1m━━ 5/12  品牌硬编码检查 ━━\x1b[0m');
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var lines = readLines(f);
     var r = rel(f);
 
@@ -283,6 +287,7 @@ function checkBrandHardcode(jsFiles) {
 function checkConsoleLog(jsFiles) {
   console.log('\n\x1b[1m━━ 6/12  console.log 泄露检查 ━━\x1b[0m');
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var lines = readLines(f);
     var r = rel(f);
 
@@ -308,6 +313,7 @@ function checkConsoleLog(jsFiles) {
 function checkStyleAssignmentBug(jsFiles) {
   console.log('\n\x1b[1m━━ 7/12  style 赋值 Bug 检查 ━━\x1b[0m');
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var lines = readLines(f);
     var r = rel(f);
 
@@ -370,6 +376,7 @@ function checkLargeFiles() {
 function checkUseStrict(jsFiles) {
   console.log('\n\x1b[1m━━ 9/12  \x27use strict\x27 检查 ━━\x1b[0m');
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var content = fs.readFileSync(f, 'utf8');
     if (!/'use strict'/.test(content) && !/"use strict"/.test(content)) {
       error(rel(f), 0, "Missing 'use strict' directive");
@@ -397,6 +404,7 @@ function checkES6Syntax(jsFiles) {
   ];
 
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var lines = readLines(f);
     var r = rel(f);
 
@@ -420,6 +428,7 @@ function checkES6Syntax(jsFiles) {
 function checkUnguardedOperations(jsFiles) {
   console.log('\n\x1b[1m━━ 11/12 未 guard 的 JSON.parse / fetch ━━\x1b[0m');
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var content = fs.readFileSync(f, 'utf8');
     var lines = content.split('\n');
     var r = rel(f);
@@ -475,6 +484,7 @@ function checkHardcodedURLs(jsFiles) {
   ];
 
   jsFiles.forEach(function (f) {
+    if (EXCLUDE_FILES.some(function (ef) { return f.endsWith(ef); })) return;
     var lines = readLines(f);
     var r = rel(f);
 
