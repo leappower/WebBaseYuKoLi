@@ -62,6 +62,18 @@
   }
 
   var SUPPORT_SLUGS = buildSlugMap(_categories.support);
+  // 动态构建分类 slug 正则（替代硬编码）
+  function buildSlugPattern(slugMap) {
+    var slugs = Object.keys(slugMap);
+    if (slugs.length === 0) return "(?!x)x"; // never matches
+    return slugs.join("|");
+  }
+
+  var PRODUCT_SLUG_PATTERN = buildSlugPattern(PRODUCT_SLUGS);
+  var APP_SLUG_PATTERN = buildSlugPattern(APP_SLUGS);
+  var SUPPORT_SLUG_PATTERN = buildSlugPattern(SUPPORT_SLUGS);
+
+
 
   // ─── Page route config ─────────────────────────────────────────
   // Each entry: { match: regex, parentPath, parentLabel, currentLabel, siblings }
@@ -83,7 +95,7 @@
     var result = { type: "none", slug: "", parentPath: "", parentLabel: "", currentLabel: "", siblings: [] };
 
     // Product category pages: /products/stirfry/
-    var catMatch = path.match(/^\/products\/(stirfry|cutting|frying|stewing|steaming|other)$/);
+    var catMatch = path.match(new RegExp("^/products/(" + PRODUCT_SLUG_PATTERN + ")$"));
     if (catMatch) {
       var slug = catMatch[1];
       var info = PRODUCT_SLUGS[slug];
@@ -127,9 +139,7 @@
     }
 
     // Application scenario pages
-    var appMatch = path.match(
-      /^\/applications\/(small-restaurant|central-kitchen|canteen|chain-restaurant|cloud-kitchen|food-factory|menu-lab)$/
-    );
+    var appMatch = path.match(new RegExp("^/applications/(" + APP_SLUG_PATTERN + ")$"));
     if (appMatch) {
       var appSlug = appMatch[1];
       result.type = "application";
@@ -142,7 +152,7 @@
     }
 
     // Support pages
-    var supMatch = path.match(/^\/support\/(faq|installation|warranty|spare-parts|training)$/);
+    var supMatch = path.match(new RegExp("^/support/(" + SUPPORT_SLUG_PATTERN + ")$"));
     if (supMatch) {
       var supSlug = supMatch[1];
       result.type = "support";
@@ -333,11 +343,11 @@
   function trackPdpReferrer() {
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     // Track category page → PDP transitions
-    if (/^\/products\/(stirfry|cutting|frying|stewing|steaming|other)$/.test(path)) {
+    if (new RegExp("^/products/(" + PRODUCT_SLUG_PATTERN + ")$").test(path)) {
       try { sessionStorage.setItem("pdp_referrer", path); } catch(e) {}
     }
     // Clear when navigating away from PDP
-    if (!/^\/products\/(?!stirfry|cutting|frying|stewing|steaming|other|compare)(?!$)/.test(path)) {
+    if (!new RegExp("^/products/(?!(?:" + PRODUCT_SLUG_PATTERN + "|compare)(?:$|/))").test(path)) {
       // Don't clear — keep it for back navigation
     }
   }
@@ -413,7 +423,7 @@
       if (
         referrer &&
         window.location.pathname.indexOf("/products/") === 0 &&
-        !/stirfry|cutting|frying|stewing|steaming|other|compare/.test(
+        !new RegExp("^(" + PRODUCT_SLUG_PATTERN + "|compare)$").test(
           window.location.pathname.replace("/products/", "")
         )
       ) {
