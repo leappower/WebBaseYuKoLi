@@ -45,6 +45,10 @@
     万円: 10000,
     백만: 1000000,
     Lakh: 100000,
+    ม้น: 1000000,
+    ร้อยล้าน: 100000000,
+    Milhão: 1000000,
+    Million: 1000000,
     "": 1,
   };
 
@@ -156,7 +160,7 @@
       var t = el.textContent.trim();
       // 匹配 "10K RMB/year"、"万元/年"、"K/yr" 等格式
       var m = t.match(
-        /^(\d*[\.]?\d*)\s*(万元|萬元|K|M|Lakh|ล้าน|Triệu|Juta|万円|백만)?\s*(RMB|USD|CNY|THB|VND|MYR|IDR|JPY|KRW|INR|TWD|SAR)?\s*\/\s*(year|yr|年)$/i
+        /^(\d*[\.]?\d*)\s*(万元|萬元|K|M|Lakh|ล้าน|Triệu|Juta|万円|백만| mille|tys\.|mln)?\s*(RMB|USD|CNY|THB|VND|MYR|IDR|JPY|KRW|INR|TWD|SAR|EUR|BRL|RUB|PLN|GBP|ILS|TRY|KHR|LAK|MMK|PHP|SGD)?\s*\/\s*(year|yr|年)$/i
       );
       if (m) {
         var num = m[1] || "";
@@ -170,7 +174,7 @@
     document.querySelectorAll("[data-currency-label]").forEach(function (el) {
       el.textContent = el.textContent
         .replace(
-          /[(（]\s*(RMB|USD|CNY|THB|VND|MYR|IDR|JPY|KRW|INR|TWD|SAR|人民币|新台幣|新台币|新加坡元|泰铢|越南盾|令吉|卢比|韩元|日元|沙特里亚尔|[¥$₹฿₫₩₤€£]+)\s*[)）]/g,
+          /[(（]\s*(RMB|USD|CNY|THB|VND|MYR|IDR|JPY|KRW|INR|TWD|SAR|EUR|BRL|RUB|PLN|GBP|ILS|TRY|KHR|LAK|MMK|PHP|SGD|人民币|新台幣|新台币|新加坡元|泰铢|越南盾|令吉|卢比|韩元|日元|沙特里亚尔|欧元|英镑|卢布|兹罗提|雷亚尔|谢克尔|里拉|瑞尔|基普|缅元|比索|新元|[¥$₹฿₫₩₤€£₺₽₾zł₭៛]+)\s*[)）]/g,
           function (match) {
             return match.indexOf("（") === 0 ? "（" + sym + "）" : "(" + sym + ")";
           }

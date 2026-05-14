@@ -543,6 +543,8 @@
       common: { label: "常用 / Common", langs: [] },
       southeast_asia: { label: "东南亚 / Southeast Asia", langs: [] },
       east_asia: { label: "东亚 / East Asia", langs: [] },
+      middle_east: { label: "中东 / Middle East", langs: [] },
+      european: { label: "欧洲 / Europe", langs: [] },
       other: { label: "其他 / Other", langs: [] },
     };
 
@@ -552,7 +554,7 @@
       groups[g].langs.push(l);
     });
 
-    var groupOrder = ["common", "southeast_asia", "east_asia", "other"];
+    var groupOrder = ["common", "southeast_asia", "east_asia", "middle_east", "european", "other"];
     groupOrder.forEach(function (gid) {
       var grp = groups[gid];
       if (!grp || grp.langs.length === 0) return;
