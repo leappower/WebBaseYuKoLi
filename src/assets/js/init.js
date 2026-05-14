@@ -110,6 +110,8 @@
    * Selectors are intentionally conservative to avoid tagging unrelated elements.
    */
   function initIoTPulse() {
+    var _f = (window.SITE_CONFIG || window._cfg || {}).features || {};
+    if (!_f.iotPulse) return;
     var selectors = [
       "[data-iot-node]",
       "[data-sensor]",
@@ -202,6 +204,8 @@
   }
 
   function initGeoHero() {
+    var _f = (window.SITE_CONFIG || window._cfg || {}).features || {};
+    if (!_f.geoHero) return;
     var hero =
       document.querySelector("[data-geo-hero]") ||
       document.querySelector("section:first-of-type") ||

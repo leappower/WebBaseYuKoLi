@@ -108,19 +108,6 @@
     return result;
   }
 
-  function getSeriesFilters() {
-    return getProductSeries()
-      .filter(function (series) {
-        return (series.products || []).some(isProductActive);
-      })
-      .map(function (series) {
-        return {
-          key: series.category,
-          filterKey: getCategoryI18nKey(series.category),
-        };
-      });
-  }
-
   window.AppUtils = {
     get IMAGE_ASSETS() {
       return getImageAssets();

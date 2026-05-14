@@ -75,6 +75,8 @@
 
   // 暂时未被使用 — API key 未配置，当前显示静态 SVG fallback
   function initServiceCenterMap() {
+    var _f = (window.SITE_CONFIG || window._cfg || {}).features || {};
+    if (!_f.maps) return;
     if (typeof window.google === "undefined" || !window.google.maps) {
       return;
     }

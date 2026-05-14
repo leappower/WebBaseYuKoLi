@@ -374,33 +374,6 @@
     renderCrossSellForCurrentPage();
   }
 
-  // ─── Public API ────────────────────────────────────────────────
-
-  window.Breadcrumb = {
-    goBack: function () {
-      var referrer;
-      try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
-      if (
-        referrer &&
-        window.location.pathname.indexOf("/products/") === 0 &&
-        !/stirfry|cutting|frying|stewing|steaming|other|compare/.test(
-          window.location.pathname.replace("/products/", "")
-        )
-      ) {
-        if (window.SpaRouter && typeof window.SpaRouter.navigate === "function") {
-          window.SpaRouter.navigate(referrer);
-        } else {
-          window.location.href = referrer;
-        }
-      } else {
-        window.history.back();
-      }
-    },
-    SLUG_TO_CATEGORY_KEY: {},
-    CATEGORY_KEY_TO_SLUG: CATEGORY_KEY_TO_SLUG,
-    PRODUCT_SLUGS: PRODUCT_SLUGS,
-  };
-
   // ─── Public API: allow external category control (e.g. /products/all/ Tab switching) ──
   window.CrossSell = {
     setCategory: function (slug) {
