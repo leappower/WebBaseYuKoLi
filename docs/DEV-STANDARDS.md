@@ -20,6 +20,8 @@
 10. [代码搜索与批量替换规范](#10-代码搜索与批量替换规范) ⭐ **最高优先级**
 11. [调试与问题定位指南](#11-调试与问题定位指南)
 
+> **第4章新增必读：** [4.8 三屏一致性](##48-三屏一致性) · [4.9 根因修复原则](#49-根因修复原则) · [4.10 调试与问题定位方法](#410-调试与问题定位方法)
+
 ---
 
 ## 1. Git 工作流与分支管理
@@ -349,6 +351,212 @@ if (window.innerWidth > 768) { ... }
 ### 4.7 'use strict' 🔴
 
 所有 JS 文件**必须**包含 `'use strict';`（当前 4 个文件缺少）。
+
+### 4.8 三屏一致性 🔴
+
+本项目面向 PC（≥1024px）、Tablet（768-1023px）、Mobile（<768px）三个屏幕尺寸。**任何代码修改都必须考虑三端影响**。
+
+**强制规则：**
+
+| 规则 | 说明 |
+|------|------|
+| 修改必验三屏 | 修改任何 JS/CSS/HTML 后，必须检查 PC、Tablet、Mobile 三端表现 |
+| 不能只改一端 | 修复 Mobile 的 bug 时，确认 PC 和 Tablet 没有回归 |
+| 共享模块影响面 | 修改 `common.js`、`utils.js`、`translations.js` 等共享模块时，必须验证所有页面 |
+| 响应式断点一致 | 新增样式必须覆盖三个断点，不能只写一个 `min-width` |
+| 事件适配 | 触摸事件（Mobile）和鼠标事件（PC/Tablet）都要处理 |
+
+**三屏验证方法：**
+
+```
+1. 浏览器 DevTools → Toggle Device Toolbar (Ctrl+Shift+M)
+2. 依次切换三个断点验证：
+   - PC: 1440px / 1280px / 1024px
+   - Tablet: 768px / 900px
+   - Mobile: 375px / 414px
+3. 刷新页面，检查布局、交互、功能是否正常
+4. 如有语言切换，三端都要验证切换效果
+```
+
+### 4.9 根因修复原则 🔴
+
+**禁止打补丁式修复。** 每个问题必须找到根本原因，从根源解决。
+
+#### 禁止的补丁模式 🔴
+
+| 补丁模式 | 为什么禁止 | 正确做法 |
+|----------|-----------|---------|
+| `setTimeout(fn, 300)` 掩盖时序问题 | 时序依赖不稳定，设备性能差异导致时好时坏 | 找到事件/数据就绪的触发点，用回调或事件监听 |
+| `display: none` 隐藏问题元素 | 元素仍然存在，占用内存，可能影响其他逻辑 | 找到元素错误渲染/定位的原因，修复布局或数据 |
+| `try/catch` 吞掉错误不处理 | 错误被静默掩盖，问题潜伏到线上 | 在 catch 中正确处理（降级、重试、上报） |
+| `!important` 覆盖样式 | 破坏样式优先级，后续维护困难 | 找到样式被覆盖的原因，调整选择器权重 |
+| 硬编码尺寸/位置 | 不适配不同屏幕和内容长度 | 使用相对单位（%、rem）、Flexbox、Grid |
+| 复制粘贴代码修复 | 不理解原因，引入新 bug | 理解数据流和执行路径后再修复 |
+
+#### 修复前必须回答的问题 🔴
+
+每次修复前，先回答以下问题：
+
+```
+1. 这个问题的触发条件是什么？（哪个页面、什么操作、什么数据）
+2. 数据流经过哪些模块？（数据从哪来、在哪处理、在哪渲染）
+3. 问题出现在数据流的哪个环节？（数据源？清洗？渲染？）
+4. 为什么会出错？（而不是「加个判断跳过」）
+5. 修复后会影响哪些其他模块/页面？
+```
+
+#### 修复流程 🔴
+
+```
+1. 复现问题 → 明确触发条件
+2. 定位相关文件和模块
+3. 插入调试日志（见 4.10）追踪数据流
+4. 找到第一个出错点（不是表面症状，是根因）
+5. 从根因修复
+6. 删除调试日志
+7. 三屏验证（见 4.8）
+8. lint + 语法检查通过后提交
+```
+
+### 4.10 调试与问题定位方法 🔴
+
+#### 4.10.1 调试日志规范 🔴
+
+**必须遵守的日志级别：**
+
+| 级别 | 用途 | 生产环境 | 示例 |
+|------|------|----------|------|
+| `console.error` | 运行时异常、必须关注的问题 | ✅ 保留 | 网络失败、JSON 解析错误 |
+| `console.warn` | 非致命问题、降级处理 | ✅ 保留 | 翻译加载失败、缓存失效 |
+| `console.log` / `console.debug` | 开发调试信息 | ❌ 必须守卫 | 渲染路径、数据结构 |
+| `console.info` | 一般性信息 | ❌ 必须守卫 | 初始化完成 |
+
+**日志守卫格式：**
+
+```javascript
+// ✅ 标准守卫
+if (__DEVELOPMENT__) console.log("[ModuleName] rendering:", data);
+
+// ✅ 带前缀（便于 grep 定位）
+if (__DEVELOPMENT__) console.log("[ProductGrid] doRender called with", count, "items");
+
+// ❌ 无守卫的 log — pre-commit hook 会拦截
+console.log("rendering products", data);
+
+// ❌ 用 warn/error 代替 log 守卫
+console.warn("[ProductGrid] doRender called");  // 这不是警告，是调试信息
+```
+
+**前缀命名规范：** `[ModuleName]` 大驼峰，与文件名一致。
+
+```javascript
+// 文件: profit-calculator.js
+if (__DEVELOPMENT__) console.log("[ProfitCalc] recommendProducts called");
+
+// 文件: spa-router.js
+if (__DEVELOPMENT__) console.log("[SPARouter] navigating to", path);
+
+// 文件: translations.js
+if (__DEVELOPMENT__) console.log("[i18n] setLanguage:", lang);
+```
+
+**临时调试日志**（排查问题时插入，修复后必须删除）：
+
+```javascript
+// 标记 TODO:DEBUG 方便搜索清理
+if (__DEVELOPMENT__) console.log("[ProductDetail] TODO:DEBUG spec data:", JSON.stringify(specs));
+```
+
+清理时搜索：`grep -rn "TODO:DEBUG" src/assets/js/`
+
+#### 4.10.2 定位问题的标准方法 🔴
+
+**Step 1: 确定影响范围**
+
+```
+- 哪个页面？哪个屏幕尺寸（PC/Tablet/Mobile）？
+- 是首次加载就出问题，还是某个操作后触发？
+- 三端都有问题，还是特定端？
+```
+
+**Step 2: 浏览器控制台诊断**
+
+```
+1. F12 → Console：查看 error / warn 报错
+2. F12 → Network：检查请求是否成功（翻译文件、产品数据）
+3. F12 → Elements：检查 DOM 结构和 CSS 是否正确
+4. F12 → Application → localStorage：检查翻译缓存、用户语言设置
+```
+
+**Step 3: 插入调试日志追踪数据流**
+
+```javascript
+// 追踪数据是否到达 — 在函数入口
+function renderProducts(products) {
+  if (__DEVELOPMENT__) console.log("[ProductGrid] renderProducts input:", products ? products.length : 'null');
+  // ...
+}
+
+// 追踪分支走向 — 在条件判断处
+if (products && products.length > 0) {
+  if (__DEVELOPMENT__) console.log("[ProductGrid] branch: has products");
+} else {
+  if (__DEVELOPMENT__) console.log("[ProductGrid] branch: empty products");
+}
+
+// 追踪异步结果 — 在 callback 处
+fetch('/api/data').then(function(res) {
+  if (__DEVELOPMENT__) console.log("[Module] fetch status:", res.status);
+  return res.json();
+}).catch(function(err) {
+  console.error("[Module] fetch failed:", err);  // error 不需要守卫
+});
+```
+
+**Step 4: DOM 状态检查**
+
+```javascript
+// 检查元素是否存在
+var el = document.getElementById('product-grid');
+if (__DEVELOPMENT__) console.log("[ProductGrid] container el:", el ? 'found' : 'NOT FOUND');
+
+// 检查子元素数量
+if (__DEVELOPMENT__) console.log("[ProductGrid] children count:", el ? el.children.length : 'N/A');
+
+// 检查 CSS 类
+if (__DEVELOPMENT__) console.log("[ProductGrid] container classes:", el ? el.className : 'N/A');
+```
+
+**Step 5: 事件绑定验证**
+
+```javascript
+// 确认事件是否触发
+button.addEventListener('click', function(e) {
+  if (__DEVELOPMENT__) console.log('[FilterBar] click fired, target:', e.target);
+});
+```
+
+#### 4.10.3 常用诊断命令
+
+```bash
+# JS 语法检查（最快排查语法错误）
+node -c src/assets/js/文件名.js
+
+# 批量语法检查
+find src/assets/js -name "*.js" ! -path "*/vendor/*" -exec node -c {} \;
+
+# JSON 格式检查
+node -e "JSON.parse(require('fs').readFileSync('文件.json','utf8')); console.log('OK')"
+
+# 搜索未守卫的 console.log
+grep -rn "console\.log" src/assets/js/*.js | grep -v vendor | grep -v __DEVELOPMENT__
+
+# 搜索调试残留
+grep -rn "TODO:DEBUG" src/assets/js/
+
+# 检查 HTML 中是否引用了不存在的 JS 文件
+for f in $(grep -roh 'src="[^"]*\.js' dist/ | sed 's/src="//'); do [ ! -f "dist/$f" ] && echo "MISSING: $f"; done
+```
 
 ---
 
@@ -976,249 +1184,65 @@ if (!/'use strict'/.test(content) && !/"use strict"/.test(content)) {
 
 ---
 
-## 11. 调试与问题定位指南
+## 11. 补充参考
 
-本章面向 **AI Agent 和开发者**，提供定位问题的标准方法和工具。
+> 核心内容已整合到第 4 章代码质量规范，此处保留快速查找索引。
+>
+> - 三屏一致性 → [4.8 三屏一致性](#48-三屏一致性)
+> - 根因修复原则 → [4.9 根因修复原则](#49-根因修复原则)
+> - 调试日志规范 → [4.10 调试与问题定位方法](#410-调试与问题定位方法)
 
-### 11.1 调试日志规范 🔴
-
-**必须遵守的日志级别**：
-
-| 级别 | 用途 | 生产环境 | 示例 |
-|------|------|----------|------|
-| `console.error` | 运行时异常、必须关注的问题 | ✅ 保留 | 网络失败、JSON解析错误 |
-| `console.warn` | 非致命问题、降级处理 | ✅ 保留 | 翻译加载失败、缓存失效 |
-| `console.log` / `console.debug` | 开发调试信息 | ❌ 必须守卫 | 渲染路径、数据结构 |
-| `console.info` | 一般性信息 | ❌ 必须守卫 | 初始化完成 |
-
-**console.log 守卫格式**：
-
-```javascript
-// ✅ 标准守卫
-if (__DEVELOPMENT__) console.log("[ModuleName] rendering:", data);
-
-// ✅ 带前缀（便于 grep 定位）
-if (__DEVELOPMENT__) console.log("[ProductGrid] doRender called with", count, "items");
-
-// ❌ 无守卫的 log — pre-commit hook 会拦截
-console.log("rendering products", data);
-
-// ❌ 用 warn/error 代替 log 守卫
-console.warn("[ProductGrid] doRender called");  // 这不是警告，是调试信息
-```
-
-**前缀命名规范**：`[ModuleName]` 大驼峰，与文件名一致。
-
-```javascript
-// 文件: profit-calculator.js
-if (__DEVELOPMENT__) console.log("[ProfitCalc] recommendProducts called");
-
-// 文件: spa-router.js
-if (__DEVELOPMENT__) console.log("[SPARouter] navigating to", path);
-
-// 文件: translations.js
-if (__DEVELOPMENT__) console.log("[i18n] setLanguage:", lang);
-```
-
-**临时调试日志**（排查问题时插入，修复后必须删除）：
-
-```javascript
-// 临时定位渲染问题 — 标记 TODO:DEBUG 方便搜索清理
-if (__DEVELOPMENT__) console.log("[ProductDetail] TODO:DEBUG spec data:", JSON.stringify(specs));
-```
-
-清理时搜索：`grep -rn "TODO:DEBUG" src/assets/js/`
-
-### 11.2 定位问题的标准流程 🔴
-
-**遇到 Bug 时，按以下顺序排查，不要跳步**：
-
-```
-Step 1: 复现问题 → 确定触达路径和三屏表现
-Step 2: 查看浏览器控制台 → error / warn 是否有报错
-Step 3: 定位相关文件 → 确认模块和 HTML 模板
-Step 4: 插入调试日志 → 验证数据流和执行路径
-Step 5: 修复根因 → 非补丁式修复
-Step 6: 三屏验证 → pc / tablet / mobile 都要测
-```
-
-#### Step 1: 复现问题
-
-- 明确触发条件：哪个页面、什么操作、哪个屏幕尺寸
-- 三屏都要试：PC (≥1024px)、Tablet (768-1023px)、Mobile (<768px)
-- 记录复现步骤，越具体越好
-
-#### Step 2: 浏览器控制台
-
-```
-1. 打开 DevTools (F12)
-2. Console 面板 → 查看 error/warn
-3. Network 面板 → 查看请求是否成功（翻译文件、产品数据）
-4. Elements 面板 → 检查 DOM 结构是否正确
-5. Application 面板 → 检查 localStorage 翻译缓存
-```
-
-#### Step 3: 定位相关文件
+### 11.1 定位相关文件的快速方法
 
 **HTML 模板**（页面结构问题）：
 ```
-# 找到页面模板
 页面路径 → src/pages/{section}/{page}/index-{device}.html
-
-# 示例：产品列表 PC 端
-src/pages/products/all/index-pc.html
+示例：src/pages/products/all/index-pc.html
 ```
 
 **JS 模块**（交互/逻辑问题）：
 ```
-# 通过页面加载的脚本找到 JS 模块
+通过页面加载的脚本找到 JS 模块：
 grep -n "script.*src" src/pages/products/all/index-pc.html
 
-# 通过功能关键词搜索 JS 模块
-grep -rn "关键词" src/assets/js/*.js --include="*.js" | grep -v vendor
+通过功能关键词搜索：
+grep -rn "关键词" src/assets/js/*.js | grep -v vendor
 ```
 
 **CSS**（样式问题）：
 ```
-# 搜索类名
 grep -rn "\.类名" src/assets/css/
 ```
 
-#### Step 4: 插入调试日志
-
-**数据流追踪**：
-
-```javascript
-// 追踪数据是否到达 — 在函数入口
-function renderProducts(products) {
-  if (__DEVELOPMENT__) console.log("[ProductGrid] renderProducts input:", products ? products.length : 'null');
-  // ...
-}
-
-// 追踪分支走向 — 在条件判断处
-if (products && products.length > 0) {
-  if (__DEVELOPMENT__) console.log("[ProductGrid] branch: has products");
-  // ...
-} else {
-  if (__DEVELOPMENT__) console.log("[ProductGrid] branch: empty products");
-  // ...
-}
-
-// 追踪异步结果 — 在 callback/Promise 处
-fetch('/api/products').then(function(res) {
-  if (__DEVELOPMENT__) console.log("[ProductGrid] fetch status:", res.status);
-  return res.json();
-}).then(function(data) {
-  if (__DEVELOPMENT__) console.log("[ProductGrid] fetch data count:", data.length);
-}).catch(function(err) {
-  console.error("[ProductGrid] fetch failed:", err);  // error 不需要守卫
-});
-```
-
-**DOM 状态检查**：
-
-```javascript
-// 检查元素是否存在
-var el = document.getElementById('product-grid');
-if (__DEVELOPMENT__) console.log("[ProductGrid] container el:", el ? 'found' : 'NOT FOUND');
-
-// 检查子元素数量
-if (__DEVELOPMENT__) console.log("[ProductGrid] children count:", el ? el.children.length : 'N/A');
-
-// 检查 CSS 类
-if (__DEVELOPMENT__) console.log("[ProductGrid] container classes:", el ? el.className : 'N/A');
-```
-
-**事件绑定验证**：
-
-```javascript
-// 确认事件是否触发
-button.addEventListener('click', function(e) {
-  if (__DEVELOPMENT__) console.log('[FilterBar] click fired, target:', e.target);
-});
-
-// 确认 SPA 事件是否派发
-if (__DEVELOPMENT__) console.log('[ProductDetail] about to dispatch product-data-ready');
-document.dispatchEvent(new CustomEvent('product-data-ready', { detail: data }));
-```
-
-#### Step 5: 修复根因
-
-**禁止**：
-- ❌ 只修表面现象（如加 `display:none` 隐藏问题元素）
-- ❌ 加 `setTimeout` 延迟掩盖时序问题
-- ❌ 加 try/catch 吞掉错误不处理
-- ❌ 复制粘贴代码而不理解原因
-
-**正确做法**：
-- ✅ 找到数据流的第一个出错点
-- ✅ 理解为什么数据/状态不对
-- ✅ 从根源修复（配置缺失 → 补配置，事件未触发 → 追踪派发点）
-- ✅ 修复后删除调试日志
-
-#### Step 6: 三屏验证
-
-每个修复必须验证三个屏幕尺寸：
-
-| 设备 | 宽度范围 | 验证要点 |
-|------|----------|----------|
-| PC | ≥1024px | 完整布局、悬停效果、多列排列 |
-| Tablet | 768-1023px | 自适应列数、触摸区域 |
-| Mobile | <768px | 单列、汉堡菜单、底部导航 |
-
-验证方法：
-```
-1. 浏览器 DevTools → Toggle Device Toolbar (Ctrl+Shift+M)
-2. 依次切换 Responsive / iPad / iPhone
-3. 刷新页面确认修复生效
-4. 检查相关交互功能（点击、滚动、表单）
-```
-
-### 11.3 常用诊断命令 🟡
+### 11.2 诊断命令速查
 
 ```bash
-# JS 语法检查（最快的方式排查语法错误）
+# JS 语法检查
 node -c src/assets/js/文件名.js
-
-# 批量语法检查所有 JS
 find src/assets/js -name "*.js" ! -path "*/vendor/*" -exec node -c {} \;
 
 # JSON 格式检查
 node -e "JSON.parse(require('fs').readFileSync('文件.json','utf8')); console.log('OK')"
 
-# 搜索调试日志（确认清理干净）
+# 搜索调试残留
+grep -rn "TODO:DEBUG" src/assets/js/
 grep -rn "console\.log" src/assets/js/*.js | grep -v vendor | grep -v __DEVELOPMENT__
 
-# 搜索未守卫的 console.warn（可能是调试遗留）
-grep -rn "console\.warn" src/assets/js/*.js | grep -v vendor
-
-# 查找某个功能关键词在哪些文件中使用
-grep -rn "关键词" src/assets/js/ src/pages/ --include="*.js" --include="*.html"
-
-# 检查事件监听器平衡（add vs remove）
-echo "add: $(grep -rc 'addEventListener' src/assets/js/*.js | grep -v vendor | awk -F: '{s+=$NF}END{print s}')" && \
+# 事件监听器平衡检查
+echo "add: $(grep -rc 'addEventListener' src/assets/js/*.js | grep -v vendor | awk -F: '{s+=$NF}END{print s}')"
 echo "remove: $(grep -rc 'removeEventListener' src/assets/js/*.js | grep -v vendor | awk -F: '{s+=$NF}END{print s}')"
 
-# 检查 innerHTML 使用情况
-grep -rn "\.innerHTML\s*=" src/assets/js/*.js | grep -v vendor
+# innerHTML 使用检查
+grep -rn '\.innerHTML\s*=' src/assets/js/*.js | grep -v vendor
 
-# 查看 Git 改动范围
-git diff --stat
-git diff --name-only  # 只看文件名
-
-# 运行项目 Lint
+# 项目 Lint
 node scripts/lint-code.js
 ```
 
-### 11.4 AI Agent 调试约束 🔴
-
-AI Agent 修复 Bug 时必须遵守：
+### 11.3 AI Agent 调试约束
 
 1. **先读后改** — 读取目标文件，理解上下文后再修改
-2. **单文件单处** — 每次只改一个文件的一处问题，提交后再改下一处
-3. **改完验证** — `node -c` 验证语法，确保不引入新错误
+2. **单文件单处** — 每次只改一个文件的一处问题
+3. **改完验证** — `node -c` 验证语法
 4. **不改编译产物** — 禁止修改 `dist/` 目录
 5. **三屏同步** — 修改 JS/CSS 时确认三端 HTML 都受影响
-6. **不延迟掩盖** — 禁止用 `setTimeout` 掩盖时序 Bug
-7. **日志清理** — 修复完成后删除所有临时 `TODO:DEBUG` 日志
-8. **不改黑盒** — 不理解功能意图时不盲目修改，先问

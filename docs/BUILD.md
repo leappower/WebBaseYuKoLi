@@ -14,7 +14,7 @@ npm start
 **其他开发场景：**
 
 ```bash
-# 产品数据有更新时（先拉取飞书再启动）
+# 产品数据有更新时（确认数据表为最新再启动）
 npm run dev:webpack
 
 # 跳过 prestart 直接启动 webpack（产品数据已是最新时）
@@ -60,14 +60,9 @@ npm run test:coverage
 
 ---
 
-### 产品数据同步
+### 产品数据
 
-产品数据来自飞书，本地开发前需确保数据最新：
-
-```bash
-# 从飞书同步最新产品数据（更新 src/assets/js/product-data-table.js）
-npm run sync:feishu
-```
+产品数据表（`src/assets/js/product-data-table.js`）为手动维护。如需更新，编辑该文件即可。
 
 > 详见 [PRODUCT_DATA.md](./PRODUCT_DATA.md)
 
@@ -104,7 +99,7 @@ npm run build:dev:pack
 
 ---
 
-**日常迭代（代码改动，产品数据/图片/翻译无变化）：**
+**日常迭代（代码改动，产品数据/图片无变化）：**
 
 ```bash
 npm run build:pack
@@ -114,39 +109,26 @@ npm run build:pack
 
 ---
 
-**产品/翻译有更新（含飞书同步 + 增量翻译）：**
-
-```bash
-npm run build:withFeishu
-```
-
-完整流程：飞书拉取 → i18n 提取 → 产品同步 → 合并 → 增量翻译 → 图片下载 → 图片压缩 → webpack → 复制翻译文件 → 构建 i18n。
-
----
-
 **发布前完整验证（推荐）：**
 
 ```bash
 npm run build:production
 ```
 
-等同于 `build:withFeishu`，额外在最后执行 `verify-static-build.js` 验证产物完整性。
+完整流程：图片下载 → 图片压缩 → webpack 打包 → 产物验证。
 
 ---
 
 ### 所有构建命令一览
 
-| 命令 | Hash | 图片下载 | 飞书同步 | 翻译 | 验证 | 适用场景 |
-|------|:---:|:---:|:---:|:---:|:---:|------|
-| `build:dev:pack` | ❌ | ❌ | ❌ | ❌ | ❌ | **日常测试，极速，仅重打包 JS/CSS** |
-| `build:dev` | ❌ | ❌ | ❌ | ❌ | ❌ | **日常测试，含语言包生成** |
-| `build` / `build:fast` | ✅ | ✅ | ❌ | ❌ | ❌ | 仅代码改动，图片可能有更新 |
-| `build:static` | ✅ | ✅ | ❌ | ❌ | ✅ | 同上，带产物验证 |
-| `build:pack` | ✅ | ❌ | ❌ | ❌ | ✅ | 图片已是最新，纯代码打包（正式发布前最快） |
-| `build:withFeishu` | ✅ | ✅ | ✅ | 增量 | ❌ | 产品/翻译有变化 |
-| `build:static:withFeishu` | ✅ | ✅ | ✅ | 增量 | ✅ | 同上，带验证 |
-| `build:production` | ✅ | ✅ | ✅ | 增量 | ✅ | **正式发布前推荐** |
-| `build:production:full` | ✅ | ✅ | ✅ | 全量 | ✅ | 翻译有大范围变更时 |
+| 命令 | Hash | 图片下载 | 验证 | 适用场景 |
+|------|:---:|:---:|:---:|------|
+| `build:dev:pack` | ❌ | ❌ | ❌ | **日常测试，极速，仅重打包 JS/CSS** |
+| `build:dev` | ❌ | ❌ | ❌ | ❌ | **日常测试，含语言包生成** |
+| `build` / `build:fast` | ✅ | ✅ | ❌ | 仅代码改动，图片可能有更新 |
+| `build:static` | ✅ | ✅ | ✅ | 同上，带产物验证 |
+| `build:pack` | ✅ | ❌ | ✅ | 图片已是最新，纯代码打包（正式发布前最快） |
+| `build:production` | ✅ | ✅ | ✅ | **正式发布前推荐** |
 
 ---
 
@@ -183,10 +165,7 @@ dist/
 
 **Q：webpack 报找不到 `product-data-table.js`**
 
-```bash
-# 先同步飞书数据
-npm run sync:feishu
-```
+确认 `src/assets/js/product-data-table.js` 文件存在。
 
 **Q：构建时图片压缩报错**
 
@@ -290,6 +269,6 @@ npm run docker:run         # 本地验证
 
 ## 版本发布
 
-发布使用专门的 `release.js` 脚本，自动化处理版本号递增、飞书同步、翻译、打包、推送全流程。
+发布使用专门的 `release.js` 脚本，自动化处理版本号递增、打包、推送全流程。
 
 详见 [RELEASE.md](./RELEASE.md)。

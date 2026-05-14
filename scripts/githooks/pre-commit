@@ -88,7 +88,7 @@ echo -e "${CYAN}━━ 2/8 敏感文件检查 ━━${NC}"
 SECRET_FILES=0
 for f in $(git diff --cached --name-only); do
   case "$f" in
-    *.env|.env*|.env.*) 
+    *.env|.env|.env.*) 
       echo -e "  ${RED}✗ ERR${NC}  $f — .env 文件禁止提交"
       SECRET_FILES=1; FAILED=1 ;;
     *.pem|*.key|*.p12|*.pfx)

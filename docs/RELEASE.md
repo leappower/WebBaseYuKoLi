@@ -39,7 +39,7 @@ chore: 构建/工具链变更
 ```bash
 git commit -m "fix: 修复产品图片无法显示的 bug"
 git commit -m "feat: 新增越南语支持"
-git commit -m "chore: 更新飞书产品数据"
+git commit -m "chore: 更新产品数据"
 git commit -m "docs: 更新 BUILD.md 构建说明"
 ```
 
@@ -75,13 +75,11 @@ git push --no-verify
 Step 1  读取远端 release 分支，解析当前版本号
 Step 2  计算新版本号
 Step 3  lint 检查（--skip-lint 可跳过）
-Step 4  飞书数据同步（--skip-feishu 可跳过）
-Step 5  i18n 提取 + 产品翻译（--skip-translate 可跳过）
-Step 6  图片下载（增量）（--skip-download 可跳过）
-Step 7  图片压缩（增量）+ webpack 打包 + 产物验证
-Step 8  创建 release/vX.Y.Z 孤立分支（仅含 dist/ 产物）
-Step 9  提交产物并推送到远端
-Step 10 打印发布摘要
+Step 4  图片下载（增量）（--skip-download 可跳过）
+Step 5  图片压缩（增量）+ webpack 打包 + 产物验证
+Step 6  创建 release/vX.Y.Z 孤立分支（仅含 dist/ 产物）
+Step 7  提交产物并推送到远端
+Step 8  打印发布摘要
 ```
 
 ### 推荐发布命令
@@ -90,7 +88,7 @@ Step 10 打印发布摘要
 ```bash
 npm run release
 ```
-版本从 `1.2.3` 递增为 `1.2.4`，执行完整飞书+增量翻译流程。
+版本从 `1.2.3` 递增为 `1.2.4`，执行完整打包流程。
 
 ---
 
@@ -110,27 +108,12 @@ npm run release:major
 
 ---
 
-**产品数据有变但跳过翻译（快速发布）：**
-```bash
-npm run release:no-translate
-```
-拉取飞书数据，跳过 Gemini 翻译（使用已有翻译数据），其余流程正常。
+**仅打包推送（代码改动，数据/图片无变化）：**
 
----
-
-**仅打包推送（代码改动，数据/翻译/图片无变化）：**
 ```bash
 npm run release:pack-only
 ```
-跳过飞书 + 跳过翻译，最快完成打包推送。
-
----
-
-**全量翻译（翻译有大范围变更时）：**
-```bash
-npm run release:full-translate
-```
-全量重新翻译所有键（耗时较长，一般不需要）。
+跳过图片下载，最快完成打包推送。
 
 ---
 
@@ -143,17 +126,14 @@ npm run release:skip-download
 
 ### 发布命令对照表
 
-| 命令 | 飞书 | 翻译 | 图片下载 | 版本递增 | 适用场景 |
-|------|:---:|:---:|:---:|:---:|------|
-| `release` | ✅ | 增量 | ✅ | patch | **日常发布** |
-| `release:minor` | ✅ | 增量 | ✅ | minor | 新功能发布 |
-| `release:major` | ✅ | 增量 | ✅ | major | 重大更新 |
-| `release:no-translate` | ✅ | ❌ | ✅ | patch | 快速发布（跳过翻译） |
-| `release:no-feishu` | ❌ | 增量 | ✅ | patch | 无产品数据变更 |
-| `release:pack-only` | ❌ | ❌ | ✅ | patch | **纯代码改动，最快** |
-| `release:full-translate` | ✅ | 全量 | ✅ | patch | 翻译大范围变更 |
-| `release:skip-download` | ✅ | 增量 | ❌ | patch | 图片已本地化 |
-| `release:dry` | — | — | — | — | 预演，不执行任何操作 |
+| 命令 | 图片下载 | 版本递增 | 适用场景 |
+|------|:---:|:---:|------|
+| `release` | ✅ | patch | **日常发布** |
+| `release:minor` | ✅ | minor | 新功能发布 |
+| `release:major` | ✅ | major | 重大更新 |
+| `release:pack-only` | ❌ | patch | **纯代码改动，最快** |
+| `release:skip-download` | ❌ | patch | 图片已本地化 |
+| `release:dry` | — | — | 预演，不执行任何操作 |
 
 ---
 
@@ -177,8 +157,6 @@ X.Y.Z
 ```
 [ ] npm run lint:all          → 0 errors
 [ ] npm test                  → 全部通过
-[ ] 产品数据已同步（如有变更）→ npm run sync:feishu
-[ ] 翻译文件已更新（如有变更）→ npm run translate:products:incremental
 [ ] 图片已优化（如有新增）    → npm run optimize:images
 [ ] 本地预览无异常            → npm start / build:pack 后检查
 ```

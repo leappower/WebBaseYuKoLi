@@ -1,13 +1,9 @@
-# 产品数据流：飞书 → 代码 → 渲染
+# 产品数据管理
 
 ## 整体数据流
 
 ```
-飞书多维表格（产品数据源）
-        ↓ npm run sync:feishu
-        ↓ scripts/generate-products-data-table.js
-        ↓
-src/assets/product-data-table.js     ← 自动生成，勿手动编辑
+src/assets/product-data-table.js     ← 产品数据表
         ↓ import PRODUCT_DATA_TABLE
         ↓
 product-list.js：normalizeProduct()  ← 数据清洗与标准化
@@ -20,33 +16,6 @@ PRODUCT_SERIES（最终导出）            ← 全局产品数据
         ↓ import
         ↓
 utils.js：renderProducts()           ← 渲染产品卡片到 #product-grid
-```
-
----
-
-## 飞书数据同步
-
-### 同步命令
-
-```bash
-# 从飞书拉取最新产品数据
-npm run sync:feishu
-```
-
-等同于执行 `scripts/ensure-product-data-table.js`，该脚本：
-1. 读取 `scripts/feishu-config.json` 中的飞书 API 配置
-2. 调用 `scripts/generate-products-data-table.js` 连接飞书多维表格
-3. 拉取全部产品记录，生成/覆写 `src/assets/product-data-table.js`
-
-> **注意：** `product-data-table.js` 由脚本自动生成，不要手动编辑，下次同步会被覆盖。
-
-### 飞书配置
-
-飞书 API 凭证通过环境变量注入（不要提交到版本库）：
-```bash
-FEISHU_APP_ID=xxx
-FEISHU_APP_SECRET=xxx
-FEISHU_TABLE_TOKEN=xxx
 ```
 
 ---
@@ -75,7 +44,7 @@ FEISHU_TABLE_TOKEN=xxx
 | `productDimensions` | string | 产品尺寸 |
 | `color` | string | 颜色/材料 |
 | `imageRecognitionKey` | string \| null | **图片识别键（优先级最高）** |
-| `i18n` | object | 多语言字段（飞书同步格式，见下文） |
+| `i18n` | object | 多语言字段（见下文） |
 
 ---
 
@@ -89,7 +58,7 @@ FEISHU_TABLE_TOKEN=xxx
 
 ```
 优先级 1：product.imageRecognitionKey（主字段有值）
-优先级 2：product.i18n.imageRecognitionKey['zh-CN']（飞书同步格式）
+优先级 2：product.i18n.imageRecognitionKey['zh-CN']
 优先级 3：modelToImageKey(product.model)（由型号自动推导）
 ```
 
@@ -122,9 +91,9 @@ modelToImageKey('M4DAD+1')       // → 'm4dad_p1_1'（+ 号转为 _p）
 | `toArrayValue(v)` | 逗号/分号分隔字符串 → 数组，过滤空元素（支持中文分号 `；`） |
 | `toBooleanOrDefault(v, default)` | `'false'`/`'否'` → `false`，其他有值 → `true` |
 
-### i18n 字段兼容
+### i18n 字段格式
 
-飞书同步的数据中，多语言字段包裹在 `i18n` 对象里：
+多语言字段包裹在 `i18n` 对象里：
 
 ```json
 {
@@ -160,7 +129,7 @@ const imageUrl = IMAGE_ASSETS[imageKey] || '';
 
 ## `mergeSeriesByIdentity` 去重合并
 
-`GENERATED_PRODUCT_SERIES`（来自飞书）和 `APPENDED_PRODUCT_SERIES`（手动追加）会合并，相同产品按 **身份键** 去重：
+`GENERATED_PRODUCT_SERIES`（来自产品数据表）和 `APPENDED_PRODUCT_SERIES`（手动追加）会合并，相同产品按 **身份键** 去重：
 
 ```
 身份键 = "${category}::${subCategory}::${model}"
@@ -174,15 +143,15 @@ const imageUrl = IMAGE_ASSETS[imageKey] || '';
 
 ## `APPENDED_PRODUCT_SERIES` 手动追加
 
-`product-list.js` 中有一段手动追加区域（由飞书同步脚本维护边界标记）：
+`product-list.js` 中有一段手动追加区域（边界标记为历史遗留）：
 
 ```javascript
-// FEISHU_SYNC_APPEND_START
+// FEISHU_SYNC_APPEND_START（历史标记）
 export const APPENDED_PRODUCT_SERIES = [];
-// FEISHU_SYNC_APPEND_END
+// FEISHU_SYNC_APPEND_END（历史标记）
 ```
 
-如需在飞书数据外手动补充产品，在此数组中添加，格式与 `PRODUCT_DATA_TABLE` 相同。
+如需在产品数据表之外手动补充产品，在此数组中添加，格式与 `PRODUCT_DATA_TABLE` 相同。
 
 ---
 
@@ -207,11 +176,10 @@ PRODUCT_SERIES（全局导出）
 
 ## 常见问题
 
-**Q：飞书同步后产品数据为空 / 产品列表空白**
+**Q：产品列表空白**
 
 1. 检查 `src/assets/product-data-table.js` 是否存在且非空
 2. 检查 `PRODUCT_DATA_TABLE` 导出是否为有效数组
-3. 检查飞书 API 凭证是否有效
 
 **Q：产品图片不显示**
 
@@ -228,7 +196,4 @@ window.IMAGE_ASSETS['esl_gb60_1']
 
 **Q：产品卡片显示的名称是中文**
 
-该产品对应语言的 `-product.json` 中没有该产品的 `name` 翻译，属于正常 fallback。执行增量翻译即可：
-```bash
-npm run translate:products:incremental
-```
+该产品对应语言的 `-product.json` 中没有该产品的 `name` 翻译，属于正常 fallback。手动编辑对应语言的 `-product.json` 文件添加翻译即可。

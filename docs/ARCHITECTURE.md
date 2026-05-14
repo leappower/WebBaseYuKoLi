@@ -7,8 +7,8 @@
 │                              浏览器（客户端）                                │
 │                                                                              │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │ src/ (2026 新版 — 主生产目录 + webpack 构建源)                        │    │
-│  │   index.js    ── webpack ESM 入口（副作用导入所有 IIFE 模块）          │    │
+│  │ src/ (2026 新版 — 主生产目录)                                       │    │
+│  │   index.js    ── 可选 webpack ESM 入口（副作用导入所有 IIFE 模块）    │    │
 │  │   pages/                                                            │    │
 │  │     <page>/index.html  ── 响应式统一入口（方案C，JS 检测屏宽重定向）   │    │
 │  │     <page>/index-pc.html / index-tablet.html / index-mobile.html    │    │
@@ -25,7 +25,7 @@
 │  │       image-assets.js       window.ImageAssets                       │    │
 │  │       contacts.js           window.Contacts                          │    │
 │  │       navigation.js         window.Navigation                        │    │
-│  │       product-data-table.js window.PRODUCT_DATA_TABLE（自动同步）     │    │
+│  │       product-data-table.js window.PRODUCT_DATA_TABLE（手动维护）     │    │
 │  │       product-list.js       window.PRODUCT_SERIES                    │    │
 │  │       utils.js              window.AppUtils                          │    │
 │  │       products.js           window.Products                          │    │
@@ -46,16 +46,14 @@
 └──────────────────────────────────────────────────────────────────────────────┘
                              ↑ 数据/翻译写入
 ┌──────────────────────────────────────────────────────────────────────────────┐
-│              构建时数据层                                                     │
-│  飞书多维表格 → generate-products-data-table.js                               │
-│               → src/assets/js/product-data-table.js（webpack + 静态 HTML）   │
-│  Gemini API   → unified-translator.js → {lang}-product.json                  │
+│              数据层（手动维护）                                                │
+│  产品数据 → src/assets/js/product-data-table.js（手动编辑）                   │
+│  翻译文件 → assets/lang/{lang}-product.json（手动维护）                       │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
 
 > **目录说明（2026-03-16 重组后）**
-> - `src/` — **主生产目录 + webpack 构建源**：多页面静态 HTML，`src/index.js` 为 webpack ESM 入口，打包输出到 `dist/`
-> - `src-backup/` — 原 Webpack SPA 体系历史备份；测试文件（ESM 可 import）暂时指向此目录，待 `src/assets/js/` 重构为 ESM 后迁移
+> - `src/` — **主生产目录**：多页面静态 HTML，IIFE 模块体系，可零构建直接部署
 
 ---
 
@@ -220,12 +218,6 @@ loadTranslations(lang)
 global.ImageAssets = { IMAGE_ASSETS, resolveImage, imgTag, loadFromManifest };
 ```
 
-**src-backup/ 版本（Webpack 构建体系）：**
-```javascript
-import manifest from './images/image-manifest.json';
-// → IMAGE_ASSETS 在模块加载时同步可用，无运行时 fetch
-```
-
 **分类规则：**
 - `NON_PRODUCT_KEYS`：logo、背景、证书、工厂图等固定资产（硬编码路径）
 - `productImages`：从 manifest 自动展开，过滤 NON_PRODUCT_KEYS 后动态生成
@@ -265,18 +257,18 @@ imgTag('esl_gb60_1', 'alt')  // → '<img src="images/esl_gb60_1.webp" ...>'
 **限流：** 15 分钟窗口，每 IP 最多 100 次请求。
 
 **用途区分：**
-- 开发环境：运行 Express 提供 webpack-dev-server 的代理
-- 生产环境：推荐使用 Nginx 直接托管 `src/`，Express 仅在需要服务端逻辑（如定时飞书同步）时使用
+- 开发环境：运行 Express 提供 webpack-dev-server 的代理（可选，webpack 构建模式时使用）
+- 生产环境：推荐使用 Nginx 直接托管 `src/`，Express 仅在需要服务端逻辑时使用
 
 ---
 
-## webpack 构建配置（src-backup 体系）
+## webpack 构建配置（可选辅助入口）
 
-> **说明：** webpack 现在指向 `src-backup/`，用于维护旧 SPA 构建管线，不影响 `src/` 静态部署。
+> **说明：** `src/index.js` 作为可选的 webpack ESM 入口，用于将 IIFE 模块打包为单一 bundle。`src/` 静态多页面可直接部署，无需 webpack 构建。
 
 **入口/出口：**
 ```
-入口：  src-backup/index.js
+入口：  src/index.js
 输出：  dist/bundle.[contenthash:8].js    （生产，带哈希用于缓存破坏）
         dist/bundle.js                    （开发，无哈希）
         dist/styles.[contenthash:8].css   （生产）
@@ -292,16 +284,16 @@ clean: true（每次重建自动清空 dist/）
 
 **生产额外复制（CopyWebpackPlugin）：**
 ```
-src-backup/assets/lang/         → dist/assets/lang/    （仅 *-ui.json、*-product.json、languages.json）
-src-backup/assets/images/       → dist/images/
-src-backup/sw.js                → dist/sw.js
-factory-tour.mp4                → dist/factory-tour.mp4（如存在）
+src/assets/lang/         → dist/assets/lang/    （仅 *-ui.json、*-product.json、languages.json）
+src/assets/images/       → dist/images/
+src/sw.js                → dist/sw.js
+factory-tour.mp4         → dist/factory-tour.mp4（如存在）
 ```
 
 **开发服务器（devServer）：**
 - 端口 5000
-- 静态目录优先级：`dist/assets/lang` > `src-backup/assets/lang`（支持构建后预览）
-- 图片目录：`dist/images` > `src-backup/assets/images`
+- 静态目录优先级：`dist/assets/lang` > `src/assets/lang`（支持构建后预览）
+- 图片目录：`dist/images` > `src/assets/images`
 - `Service-Worker-Allowed: /`（允许 SW 在根路径注册）
 
 ---
@@ -366,7 +358,7 @@ src/
 5. image-assets.js       → window.ImageAssets
 6. contacts.js           → window.Contacts
 7. navigation.js         → window.Navigation（依赖 MediaQueries + CommonUtils）
-8. product-data-table.js → window.PRODUCT_DATA_TABLE（自动同步，332KB 数据）
+8. product-data-table.js → window.PRODUCT_DATA_TABLE（手动维护，332KB 数据）
 9. product-list.js       → window.PRODUCT_SERIES（依赖 PRODUCT_DATA_TABLE + ImageAssets）
 10. utils.js             → window.AppUtils（依赖 PRODUCT_SERIES + ImageAssets）
 11. products.js          → window.Products（依赖 MediaQueries + CommonUtils + AppUtils）
@@ -478,19 +470,6 @@ Tablet 导航项 ID：`home` / `catalog` / `solutions` / `iot` / `config`
 ```
 
 `scripts/patch-responsive-redirect.py` 负责批量注入/更新所有 HTML 页面的跳转脚本。
-
-### 与 `src-backup/` 的关键差异
-
-| 维度 | `src-backup/`（v0.0.4 Webpack 体系） | `src/`（2026 主版） |
-|---|---|---|
-| 打包 | Webpack（单入口 SPA） | 无打包，纯静态多页面 |
-| 样式 | Tailwind（本地 PostCSS 构建）| Tailwind CDN（内嵌）|
-| i18n | TranslationManager + JSON 语言包 | TranslationManager IIFE（语言包需配套）|
-| 图片 | 本地 WebP（`src-backup/assets/images/`）| ImageAssets IIFE + loadFromManifest() |
-| 响应式 | 单 HTML + 媒体查询 | 每页面独立 PC/Tablet/Mobile 文件 |
-| JS 模块 | ESM（import/export） | IIFE + window.xxx（无构建依赖）|
-| 数据 | 飞书 → 动态渲染 | product-data-table.js IIFE（飞书同步写入）|
-| 发布 | GitHub Pages / Nginx / Docker（需 webpack build）| 直接托管 `src/` 目录，零构建 |
 
 ---
 
@@ -693,12 +672,14 @@ imgTag('esl_gb60_1', 'alt')  // → '<img src="images/esl_gb60_1.webp" ...>'
 **限流：** 15 分钟窗口，每 IP 最多 100 次请求。
 
 **用途区分：**
-- 开发环境：运行 Express 提供 webpack-dev-server 的代理
-- 生产环境：推荐使用 Nginx 直接托管 `dist/`，Express 仅在需要服务端逻辑（如定时飞书同步）时使用
+- 开发环境：运行 Express 提供 webpack-dev-server 的代理（可选，webpack 构建模式时使用）
+- 生产环境：推荐使用 Nginx 直接托管 `src/`，Express 仅在需要服务端逻辑时使用
 
 ---
 
-## webpack 构建配置
+## webpack 构建配置（可选辅助入口）
+
+> **说明：** `src/index.js` 作为可选的 webpack ESM 入口，用于将 IIFE 模块打包为单一 bundle。`src/` 静态多页面可直接部署，无需 webpack 构建。
 
 **入口/出口：**
 ```

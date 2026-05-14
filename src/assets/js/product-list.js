@@ -228,9 +228,9 @@
     });
   });
 
-  // FEISHU_SYNC_APPEND_START
+  // APPENDED_SERIES_START — 手动追加区域
   var APPENDED_PRODUCT_SERIES = [];
-  // FEISHU_SYNC_APPEND_END
+  // APPENDED_SERIES_END
 
   var APPENDED_PRODUCT_SERIES_NORMALIZED = APPENDED_PRODUCT_SERIES.map(function (series) {
     return _extend({}, series, {
