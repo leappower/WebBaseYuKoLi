@@ -1,8 +1,10 @@
 /**
- * router.js — Yukoli Site-wide Navigation Utilities
+ * page-init.js — Page-level wiring utilities (back button, WhatsApp, forms, nav links)
  *
-// NOTE: This is a supplementary utility module. Core routing is handled by spa-router.js.
-// Do NOT add routing logic here — only utility helpers (back button, WhatsApp links, form submission). * Provides: back button control, WhatsApp links, form submission,
+ * NOTE: This is a supplementary utility module. Core routing is handled by spa-router.js.
+ * Do NOT add routing logic here — only utility helpers.
+ *
+ * Provides: back button control, WhatsApp links, form submission,
  * bfcache recovery, and link wiring utilities.
  *
  * NOTE: Primary navigation (header/footer) is handled by navigator.js
@@ -366,7 +368,7 @@
   // Setup bfcache recovery handlers
   setupBfcacheRecovery();
   // Export public API for debugging and external use
-  window.YukoliRouter = {
+  window.PageInit = {
     navigate: navigate,
     whatsappHref: whatsappHref,
     safeBack: safeBack,

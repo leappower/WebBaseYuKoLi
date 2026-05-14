@@ -300,7 +300,7 @@ module.exports = (env = {}, argv = {}) => {
           directory: path.join(__dirname, 'src/assets/css'),
           publicPath: '/assets/css',
         },
-        // JS — pages reference /assets/js/router.js (root-absolute)
+        // JS — pages reference /assets/js/page-init.js (root-absolute)
         {
           directory: path.join(__dirname, 'src/assets/js'),
           publicPath: '/assets/js',

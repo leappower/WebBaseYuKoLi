@@ -467,7 +467,7 @@ function generate404() {
     '',
     '  <!-- Shared scripts (same as other pages) -->',
     '  <script src="' + bp + '/site.config.js"></script>',
-    '  <script defer src="' + bp + '/assets/js/router.js"></script>',
+    '  <script defer src="' + bp + '/assets/js/page-init.js"></script>',
     '  <script defer src="' + bp + '/assets/js/lang-registry.js"></script>',
     '  <script defer src="' + bp + '/assets/js/translations.js"></script>',
     '  <script src="' + bp + '/assets/js/translations-dropdown-template.js"></script>',

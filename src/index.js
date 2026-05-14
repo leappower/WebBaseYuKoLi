@@ -13,7 +13,7 @@
  *       3. HTML templating (HtmlWebpackPlugin, inject:false)
  *
  *     JS modules that ARE active at runtime (loaded directly by pages):
- *       router.js, page-interactions.js, contacts.js, smart-popup.js,
+ *       page-init.js, page-interactions.js, contacts.js, smart-popup.js,
  *       back-to-top.js  — loaded via <script defer src="/assets/js/...">
  *
  *     JS modules pending activation (see fix-plan.md F3):
