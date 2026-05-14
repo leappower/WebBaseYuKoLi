@@ -114,7 +114,10 @@
 
   /* ───────────────────────── INTERACTION ───────────────────────── */
 
+  var _docClickBound = false;
   function initDropdownClick() {
+    if (_docClickBound) return;
+    _docClickBound = true;
     document.addEventListener("click", function () {
       document.querySelectorAll(".cnt-dropdown-wrap.is-open").forEach(function (d) {
         d.classList.remove("is-open");

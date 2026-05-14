@@ -817,10 +817,12 @@
     });
     if (!categories.length) return;
 
-    // Emoji map for category tabs
-    var CATEGORY_EMOJI = {
-      nav_products_stirfry: "🔥",
-    };
+    // Emoji map for category tabs (config-driven)
+    var _cfgCats = (window.SITE_CONFIG || window._cfg || {}).categories || {};
+    var CATEGORY_EMOJI = (_cfgCats.products || []).reduce(function (m, c) {
+      if (c.key && c.emoji) m[c.key] = c.emoji;
+      return m;
+    }, {});
 
     // Build tab buttons
     var allTabs = [];
@@ -991,15 +993,11 @@
       if (cat === "all") {
         if (window.CrossSell && window.CrossSell.clearCategory) window.CrossSell.clearCategory();
       } else {
-        // Map category key (e.g. "nav_products_cutting") back to slug (e.g. "cutting")
-        var KEY_TO_SLUG = {
-          nav_products_stirfry: "stirfry",
-          nav_products_cutting: "cutting",
-          nav_products_frying: "frying",
-          nav_products_stewing: "stewing",
-          nav_products_steaming: "steaming",
-          nav_products_other: "other",
-        };
+        // Map category key back to slug (config-driven)
+        var KEY_TO_SLUG = (_cfgCats.products || []).reduce(function (m, c) {
+          if (c.key && c.slug) m[c.key] = c.slug;
+          return m;
+        }, {});
         var slug = KEY_TO_SLUG[cat] || cat;
         if (window.CrossSell && window.CrossSell.setCategory) window.CrossSell.setCategory(slug);
       }
@@ -1017,14 +1015,10 @@
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (match) {
       var slug = match[1];
-      var SLUG_MAP = {
-        cutting: "nav_products_cutting",
-        stirfry: "nav_products_stirfry",
-        frying: "nav_products_frying",
-        stewing: "nav_products_stewing",
-        steaming: "nav_products_steaming",
-        other: "nav_products_other",
-      };
+      var SLUG_MAP = (_cfgCats.products || []).reduce(function (m, c) {
+        if (c.slug && c.key) m[c.slug] = c.key;
+        return m;
+      }, {});
       var cat = SLUG_MAP[slug] || slug;
       if (cat) _activeCategory = cat;
     }
@@ -1103,14 +1097,10 @@
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (match) {
       var slug = match[1];
-      var SLUG_MAP = {
-        cutting: "nav_products_cutting",
-        stirfry: "nav_products_stirfry",
-        frying: "nav_products_frying",
-        stewing: "nav_products_stewing",
-        steaming: "nav_products_steaming",
-        other: "nav_products_other",
-      };
+      var SLUG_MAP = (_cfgCats.products || []).reduce(function (m, c) {
+        if (c.slug && c.key) m[c.slug] = c.key;
+        return m;
+      }, {});
       categoryFromUrl = SLUG_MAP[slug] || slug;
     }
     _activeCategory = categoryFromUrl || "all";

@@ -244,25 +244,30 @@
         n || (t.textContent = e);
       } else t.placeholder !== e && (t.placeholder = e);
     }),
+    (r.prototype.interpolate = function (t) {
+      if (typeof t !== 'string') return t;
+      var brand = this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || 'YuKoLi');
+      return t.replace(/\{brand\}/g, brand);
+    }),
     (r.prototype.translate = function (t) {
       var e = this.translationsCache.get("ui-" + this.currentLanguage);
       if (e) {
         var n = this.resolveTranslationValue(e, t);
-        if (n && n !== t) return n;
+        if (n && n !== t) return this.interpolate(n);
       }
       var a = this.translationsCache.get("product-" + this.currentLanguage);
       if (a) {
         var o = this.resolveTranslationValue(a, t);
-        if (o && o !== t) return o;
+        if (o && o !== t) return this.interpolate(o);
       }
       var r = this.translationsCache.get(this.currentLanguage);
-      return this.resolveTranslationValue(r, t);
+      return this.interpolate(this.resolveTranslationValue(r, t));
     }),
     (r.prototype.uiText = function (t, e) {
       var n = this.translate(t);
       if (n && n !== t) return n;
       var a = this.getFallbackTranslation(t);
-      return a && a !== t ? a : e;
+      return a && a !== t ? this.interpolate(a) : e;
     }),
     (r.prototype.applyTranslations = function () {
       var t = this,
@@ -288,7 +293,7 @@
                 l = _extend({}, e, s),
                 u = function (e) {
                   var n = t.resolveTranslationValue(l, e);
-                  return n && n !== e ? n : t.getFallbackTranslation(e);
+                  return n && n !== e ? t.interpolate(n) : t.interpolate(t.getFallbackTranslation(e));
                 },
                 c = [];
               if (
@@ -356,7 +361,7 @@
         });
     }),
     (r.prototype.refreshCompanyName = function (t) {
-      var e = (t && t.company_name) || this.getFallbackTranslation("company_name");
+      var e = (t && this.interpolate(t.company_name)) || this.interpolate(this.getFallbackTranslation("company_name"));
       ((e && "company_name" !== e) || "zh-CN" !== this.currentLanguage || (e = "佛山市跃迁力科技有限公司"),
         e &&
           "company_name" !== e &&

@@ -9,6 +9,7 @@
   /* ── Config Bridge ─────────────────────────────── */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _casesCfg = _cfg.cases || {};
+  function esc(s) { if (s == null) return ""; return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
 
   /* ── Fallback Data ─────────────────────────────── */
   var _fallbackCases = [
@@ -137,23 +138,23 @@
     return '<div class="case-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all group border border-slate-200 dark:border-slate-700 hover:border-' + bc + '-500/50 flex flex-col">' +
       '<!-- 上方图片 16:9 -->' +
       '<div class="w-full aspect-video bg-slate-200 dark:bg-slate-700 overflow-hidden relative flex-shrink-0">' +
-        '<img loading="lazy" alt="' + c.title + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="/assets/images/default.webp" />' +
+        '<img loading="lazy" alt="' + esc(c.title) + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="/assets/images/default.webp" />' +
         '<div class="absolute top-3 left-3 flex items-center gap-2">' +
-          '<span class="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-800/90 text-sm font-semibold text-slate-700 dark:text-slate-200 backdrop-blur-sm">' + c.country + '</span>' +
-          '<span class="px-3 py-1 rounded-full bg-' + bc + '-500 text-white text-sm font-bold">' + benefitLabel(c.benefit) + '</span>' +
+          '<span class="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-800/90 text-sm font-semibold text-slate-700 dark:text-slate-200 backdrop-blur-sm">' + esc(c.country) + '</span>' +
+          '<span class="px-3 py-1 rounded-full bg-' + bc + '-500 text-white text-sm font-bold">' + esc(benefitLabel(c.benefit)) + '</span>' +
         '</div>' +
       '</div>' +
       '<!-- 下方内容 -->' +
       '<div class="flex-1 p-5 lg:p-6 flex flex-col gap-2.5">' +
-        '<h3 class="font-bold text-lg lg:text-xl leading-snug text-slate-900 dark:text-white" data-i18n="cases_title_' + c.slug + '">' + c.title + '</h3>' +
+        '<h3 class="font-bold text-lg lg:text-xl leading-snug text-slate-900 dark:text-white" data-i18n="cases_title_' + esc(c.slug) + '">' + esc(c.title) + '</h3>' +
         '<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">' +
-          '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span>' + c.industry + '</span>' +
+          '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span>' + esc(c.industry) + '</span>' +
           '<span class="text-slate-300 dark:text-slate-600">·</span>' +
-          '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">restaurant</span>' + c.dailyOutput + ' 餐/天</span>' +
+          '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">restaurant</span>' + esc(c.dailyOutput) + ' 餐/天</span>' +
           '<span class="text-slate-300 dark:text-slate-600">·</span>' +
-          '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">schedule</span>' + c.payback + ' 月回本</span>' +
+          '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">schedule</span>' + esc(c.payback) + ' 月回本</span>' +
         '</div>' +
-        '<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 italic border-l-4 border-' + bc + '-400 pl-3" data-i18n="cases_quote_' + c.slug + '">' + c.quote + '</p>' +
+        '<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 italic border-l-4 border-' + bc + '-400 pl-3" data-i18n="cases_quote_' + esc(c.slug) + '">' + esc(c.quote) + '</p>' +
         '<div class="grid grid-cols-3 gap-2 mt-1">' +
           '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
             '<div class="text-lg font-black text-' + bc + '-600">-' + pct + '%</div>' +
@@ -168,7 +169,7 @@
             '<div class="text-xs text-slate-500 dark:text-slate-400">月节省</div>' +
           '</div>' +
         '</div>' +
-        '<a href="/cases/' + c.slug + '/" target="_self" class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all mt-auto pt-1">' +
+        '<a href="/cases/' + esc(c.slug) + '/" target="_self" class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all mt-auto pt-1">' +
           '<span data-i18n="cases_read_story">查看详情</span>' +
           '<span class="material-symbols-outlined text-base">arrow_forward</span>' +
         '</a>' +
@@ -185,22 +186,22 @@
     return '<div class="case-card bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700">' +
       '<div class="p-4 flex flex-col gap-2">' +
         '<div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">' +
-          '<span>' + c.country + ' · ' + c.industry + '</span>' +
-          '<span class="font-semibold text-slate-700 dark:text-slate-200">' + c.dailyOutput + ' 餐/天</span>' +
+          '<span>' + c.country + ' · ' + esc(c.industry) + '</span>' +
+          '<span class="font-semibold text-slate-700 dark:text-slate-200">' + esc(c.dailyOutput) + ' 餐/天</span>' +
         '</div>' +
-        '<h3 class="font-bold text-base leading-snug" data-i18n="cases_title_' + c.slug + '">' + c.title + '</h3>' +
+        '<h3 class="font-bold text-base leading-snug" data-i18n="cases_title_' + esc(c.slug) + '">' + esc(c.title) + '</h3>' +
         '<div class="flex items-center gap-3">' +
           '<span class="inline-flex items-center gap-1 text-sm font-bold text-' + bc + '-600">' +
-            '<span class="material-symbols-outlined text-sm">' + benefitIcon(c.benefit) + '</span>' +
+            '<span class="material-symbols-outlined text-sm">' + esc(benefitIcon(c.benefit)) + '</span>' +
             '人工 -' + pct + '%' +
           '</span>' +
           '<span class="inline-flex items-center gap-1 text-sm font-semibold text-slate-700 dark:text-slate-200">' +
             '<span class="material-symbols-outlined text-sm text-primary">schedule</span>' +
-            c.payback + ' 月回本' +
+            esc(c.payback) + ' 月回本' +
           '</span>' +
         '</div>' +
-        '<p class="text-sm text-slate-600 dark:text-slate-400 italic" data-i18n="cases_quote_' + c.slug + '">' + c.quote + '</p>' +
-        '<a href="/cases/' + c.slug + '/" target="_self" class="inline-flex items-center gap-1 text-primary font-bold text-sm">' +
+        '<p class="text-sm text-slate-600 dark:text-slate-400 italic" data-i18n="cases_quote_' + c.slug + '">' + esc(c.quote) + '</p>' +
+        '<a href="/cases/' + esc(c.slug) + '/" target="_self" class="inline-flex items-center gap-1 text-primary font-bold text-sm">' +
           '<span data-i18n="cases_read_more">Read More</span>' +
           '<span class="material-symbols-outlined text-base">arrow_forward</span>' +
         '</a>' +
@@ -255,7 +256,7 @@
     for (var key in FILTERS) {
       var f = FILTERS[key]
       html += '<div class="flex items-center gap-2">' +
-        '<span class="text-sm font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap" data-i18n="' + f.i18n + '">' + f.label + '</span>' +
+        '<span class="text-sm font-semibold text-slate-600 dark:text-slate-300 whitespace-nowrap" data-i18n="' + f.i18n + '">' + esc(f.label) + '</span>' +
         '<div class="flex gap-1">'
       html += '<button data-filter="' + key + '" data-value="" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>'
       for (var i = 0; i < f.options.length; i++) {
@@ -286,7 +287,7 @@
     for (var key in FILTERS) {
       var f = FILTERS[key]
       html += '<div>' +
-        '<span class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2" data-i18n="' + f.i18n + '">' + f.label + '</span>' +
+        '<span class="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2" data-i18n="' + f.i18n + '">' + esc(f.label) + '</span>' +
         '<div class="flex flex-wrap gap-1.5">'
       html += '<button data-filter="' + key + '" data-value="" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>'
       for (var i = 0; i < f.options.length; i++) {
@@ -331,7 +332,7 @@
         " width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22" +
         " stroke=%22%2394a3b8%22 stroke-width=%222%22><path d=%22M6 9l6 6 6-6%22/></svg>\');" +
         " background-repeat: no-repeat; background-position: right 8px center; padding-right: 28px;'>";
-      html += '<option value="">' + f.label + '</option>'
+      html += '<option value="">' + esc(f.label) + '</option>'
       for (var i = 0; i < f.options.length; i++) {
         html += '<option value="' + f.options[i] + '">' + f.options[i] + '</option>'
       }

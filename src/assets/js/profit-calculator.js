@@ -5,6 +5,8 @@
 (function () {
   "use strict";
 
+  function esc(s) { if (s == null) return ""; return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
+
   /* ───────── Config bridge ───────── */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _roi = _cfg.roi || {};
@@ -894,10 +896,10 @@
     return (
       '<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e2e8f0">' +
       '<span style="color:#64748b;font-size:13px">' +
-      label +
+      esc(label) +
       "</span>" +
       '<span style="font-weight:700;font-size:13px;color:#1e293b">' +
-      value +
+      esc(value) +
       "</span>" +
       "</div>"
     );

@@ -6,6 +6,7 @@
   "use strict";
 
   var _spaRegs = {};
+  function esc(s) { if (s == null) return ""; return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;"); }
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
     var ac = new AbortController();
@@ -303,10 +304,10 @@
         return (
           '<div style="text-align:center;padding:1rem 0.5rem;background:#f8fafc;border-radius:0.75rem;" class="dark:bg-slate-800">' +
           '<div style="font-size:2rem;font-weight:900;color:var(--color-primary,#f97316);">' +
-          r.value +
+          esc(r.value) +
           "</div>" +
           '<div style="font-size:0.75rem;color:#64748b;font-weight:600;margin-top:0.25rem;" class="dark:text-slate-400">' +
-          r.label +
+          esc(r.label) +
           "</div>" +
           "</div>"
         );
@@ -318,12 +319,12 @@
         return (
           '<div style="display:flex;justify-content:space-between;padding:0.5rem 0;border-bottom:1px solid #f1f5f9;" class="dark:border-slate-700">' +
           '<span><strong class="text-primary">' +
-          e.model +
+          esc(e.model) +
           "</strong> · " +
-          e.name +
+          esc(e.name) +
           "</span>" +
           '<span style="font-weight:700;">' +
-          e.qty +
+          esc(e.qty) +
           "</span>" +
           "</div>"
         );
@@ -336,32 +337,32 @@
       // Header
       '<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;">' +
       '<span style="font-size:2rem;">' +
-      c.flag +
+      esc(c.flag) +
       "</span>" +
       "<div>" +
       '<h2 style="font-size:1.5rem;font-weight:900;line-height:1.2;">' +
-      c.title +
+      esc(c.title) +
       "</h2>" +
       '<p style="color:#64748b;font-size:0.875rem;font-weight:600;" class="dark:text-slate-400">' +
-      c.subtitle +
+      esc(c.subtitle) +
       "</p>" +
       "</div>" +
       "</div>" +
       '<p style="color:#475569;margin-bottom:1.5rem;" class="dark:text-slate-300">' +
-      c.client +
+      esc(c.client) +
       "</p>" +
       // Challenge
       '<div style="margin-bottom:1.5rem;">' +
       '<h3 style="font-weight:800;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:0.5rem;" class="dark:text-slate-400">💡 客户挑战</h3>' +
       '<p style="line-height:1.7;">' +
-      c.challenge +
+      esc(c.challenge) +
       "</p>" +
       "</div>" +
       // Solution
       '<div style="margin-bottom:1.5rem;">' +
       '<h3 style="font-weight:800;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:0.5rem;" class="dark:text-slate-400">🔧 解决方案</h3>' +
       '<p style="line-height:1.7;">' +
-      c.solution +
+      esc(c.solution) +
       "</p>" +
       "</div>" +
       // Key Results
@@ -380,22 +381,22 @@
       '<div style="margin-bottom:1.5rem;">' +
       '<h3 style="font-weight:800;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;color:#64748b;margin-bottom:0.5rem;" class="dark:text-slate-400">⏱️ 项目周期</h3>' +
       "<p>" +
-      c.timeline +
+      esc(c.timeline) +
       "</p>" +
       "</div>" +
       // Testimonial
       '<div style="background:#f8fafc;padding:1.25rem;border-radius:0.75rem;border-left:4px solid var(--color-primary,#f97316);" class="dark:bg-slate-800">' +
       '<p style="font-style:italic;line-height:1.7;margin-bottom:0.5rem;color:#334155;" class="dark:text-slate-300">"' +
-      c.testimonial.text +
+      esc(c.testimonial.text) +
       '"</p>' +
       '<p style="font-size:0.8125rem;color:#64748b;" class="dark:text-slate-400">（' +
-      c.testimonial.textCn +
+      esc(c.testimonial.textCn) +
       "）</p>" +
       '<p style="font-weight:700;margin-top:0.75rem;font-size:0.875rem;">— ' +
-      c.testimonial.author +
+      esc(c.testimonial.author) +
       "</p>" +
       '<p style="font-size:0.8125rem;color:#64748b;" class="dark:text-slate-400">' +
-      c.testimonial.role +
+      esc(c.testimonial.role) +
       "</p>" +
       "</div>" +
       // CTA

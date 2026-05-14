@@ -31,6 +31,7 @@
    * contact-dropdown.js、profit-calculator.js 等也通过 window.Contacts.whatsapp 读取此值。
    */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _social = ((_cfg.contacts || {}).social) || {};
   var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp) || "8613163756465";
 
   // ============================================
@@ -203,13 +204,13 @@
     window.open(url, "_blank");
   }
   function startLine() {
-    window.open("https://line.me/ti/p/+66840273150", "_blank");
+    window.open((_social.line || "https://line.me/ti/p/+66840273150"), "_blank");
   }
   function startPhone() {
     window.location.href = "tel:+" + WHATSAPP_NUMBER;
   }
   function startTelegram() {
-    window.open("https://t.me/baeckerei-profi", "_blank");
+    window.open((_social.telegram || "https://t.me/baeckerei-profi"), "_blank");
   }
   function startEmail() {
     var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
@@ -219,16 +220,16 @@
       "mailto:" + ((_cfg.contacts || {}).supportEmail || "support@yukoli.com") + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   }
   function startFacebook() {
-    window.open("https://www.facebook.com/people/Yukoli-Technology-Co-Ltd/61579549730250/", "_blank");
+    window.open((_social.facebook || "https://www.facebook.com/people/Yukoli-Technology-Co-Ltd/61579549730250/"), "_blank");
   }
   function startInstagram() {
-    window.open("https://instagram.com/baeckerei.profi", "_blank");
+    window.open((_social.instagram || "https://instagram.com/baeckerei.profi"), "_blank");
   }
   function startTwitter() {
-    window.open("https://twitter.com/baeckerei_profi", "_blank");
+    window.open((_social.twitter || "https://twitter.com/baeckerei_profi"), "_blank");
   }
   function startLinkedIn() {
-    window.open("https://linkedin.com/company/baeckereitechnik-profi", "_blank");
+    window.open((_social.linkedin || "https://linkedin.com/company/baeckereitechnik-profi"), "_blank");
   }
   /**
    * startTikTok 优先调用 window.showNotification（page-interactions.js Toast 注册后）。

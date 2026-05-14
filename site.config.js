@@ -16,7 +16,7 @@
     // 品牌
     // ═══════════════════════════════════════════════════════════
     brand: {
-      name: "YuKoLi",
+      name: "YuKoLi",  // BRAND_NAME will be derived from this at runtime
       fullName: "YuKoLi Technology",
       fullNameCN: "跃迁力科技",
       legalName: "Foshan YuKoLi Technology Co., Ltd.",
@@ -43,18 +43,22 @@
     // 联系渠道
     // ═══════════════════════════════════════════════════════════
     contacts: {
-      whatsapp: "8613163756465",
-      whatsappDefaultMsg: "Hi YuKoLi, I'm interested in your commercial kitchen equipment.",
-      email: "info@yukoli.com",
+      whatsapp: (typeof WHATSAPP_NUMBER !== 'undefined') ? WHATSAPP_NUMBER : "8613163756465",
+      whatsappDefaultMsg: (typeof WHATSAPP_DEFAULT_MSG !== 'undefined') ? WHATSAPP_DEFAULT_MSG : "Hi YuKoLi, I'm interested in your commercial kitchen equipment.",
+      email: (typeof INFO_EMAIL !== 'undefined') ? INFO_EMAIL : "info@yukoli.com",
       supportEmail: "support.kitchen@yukoli.com",
+      formEmail: (typeof FORM_EMAIL !== 'undefined') ? FORM_EMAIL : "179564128@qq.com",
       phone: "",
       address: "Room 502-6, Building 12, Fangchuangyuan, No.83 Zhanlun Road, Honggang, Foshan, Guangdong, China",
       addressCN: "广东省佛山市顺德区容桂街道展业路83号方创园12栋502-6",
       social: {
-        facebook: "",
-        instagram: "",
+        line: "https://line.me/ti/p/+66840273150",
+        telegram: "https://t.me/baeckerei-profi",
+        facebook: "https://www.facebook.com/people/Yukoli-Technology-Co-Ltd/61579549730250/",
+        instagram: "https://instagram.com/baeckerei.profi",
+        twitter: "https://twitter.com/baeckerei_profi",
+        linkedin: "https://linkedin.com/company/baeckereitechnik-profi",
         youtube: "",
-        linkedin: "",
         tiktok: "",
         wechat: "",
       },
@@ -259,8 +263,17 @@
     // 案例系统
     // ═══════════════════════════════════════════════════════════
     cases: {
-      grid: [],  // TODO: 从 case-grid.js 迁移
-      detail: {}, // TODO: 从 cases-page.js 迁移
+      grid: [
+        { slug: 'manila-lunchbox-studio-2025', country: '🇵🇭 Philippines', industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback', dailyOutput: 320, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 36,000', payback: 5.2, title: '马尼拉 Liempo 快餐店：从 3 个厨师到 1 台机器', quote: '"开业三年一直为招不到稳定的炒锅师傅发愁。现在一个人就能搞定，出餐速度还更快了。"' },
+        { slug: 'jakarta-catering-hub-2025', country: '🇮🇩 Indonesia', industry: '中央厨房', volume: '500-1000', benefit: 'Consistency', dailyOutput: 600, laborBefore: 12, laborAfter: 5, monthlySaving: 'IDR 22M', payback: 8.0, title: '雅加达送餐中央厨房：6 家门店统一出品', quote: '"以前每个门店味道都不一样，客户经常投诉。现在六家店的味道完全一样，回头客明显多了。"' },
+        { slug: 'hcmc-cloud-kitchen-compact', country: '🇻🇳 Vietnam', industry: '云厨房', volume: '<200', benefit: 'Space Saving', dailyOutput: 150, laborBefore: 3, laborAfter: 1, monthlySaving: 'VND 14M', payback: 5.5, title: '胡志明市云厨房：15㎡ 完成全品类出餐', quote: '"空间小但能做的菜很多，客户都以为是专业大厨房。"' },
+        { slug: 'bangkok-chain-8-stores', country: '🇹🇭 Thailand', industry: '连锁餐饮', volume: '1000+', benefit: 'Consistency', dailyOutput: 1200, laborBefore: 24, laborAfter: 12, monthlySaving: 'THB 270K', payback: 11.3, title: '曼谷火锅连锁 8 店：口味标准化 + 培训周期缩短 75%', quote: '"新店开业第 2 周就能正常出餐，以前至少要 2 个月。"' },
+        { slug: 'kl-canteen-2000-meals', country: '🇲🇾 Malaysia', industry: '智慧食堂', volume: '1000+', benefit: 'Fast Payback', dailyOutput: 2000, laborBefore: 15, laborAfter: 6, monthlySaving: 'MYR 13,500', payback: 6.2, title: '吉隆坡工厂食堂：2000 餐/天，6.2 个月回本', quote: '"工人最喜欢的是清洗方便，10 分钟就能搞定。"' },
+        { slug: 'cebu-small-resto-payback', country: '🇵🇭 Philippines', industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback', dailyOutput: 280, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 32,000', payback: 4.8, title: 'Cebu 小吃店：投资 1 台，4.8 个月回本', quote: '"最好的投资决定，省下来的钱已经买第二台了。"' },
+        { slug: 'surabaya-central-automation', country: '🇮🇩 Indonesia', industry: '中央厨房', volume: '500-1000', benefit: 'Labor Cost Reduction', dailyOutput: 800, laborBefore: 18, laborAfter: 8, monthlySaving: 'IDR 24M', payback: 8.5, title: '泗水中央厨房：自动化后废品率从 8% 降至 1.2%', quote: '"食品浪费大幅减少，每个月节省的食材钱就很可观。"' },
+        { slug: 'hanoi-street-food-modern', country: '🇻🇳 Vietnam', industry: '小型餐饮', volume: '<200', benefit: 'Consistency', dailyOutput: 180, laborBefore: 2, laborAfter: 1, monthlySaving: 'VND 8M', payback: 5.1, title: '河内街头小吃升级：1 台机器 + 1 个人 = 全品类菜单', quote: '"Phở 和 Bánh Mì 都能用，外国游客也夸味道好。"' },
+      ],
+      detail: {},
       filters: {
         industries: ["小型餐饮", "中央厨房", "连锁餐饮", "智慧食堂", "云厨房"],
         volumes: ["<200", "200-500", "500-1000", "1000+"],
@@ -273,186 +286,8 @@
     // 搭配推荐 & 场景入口
     // ═══════════════════════════════════════════════════════════
     crossSell: {
-      map: {
-    stirfry: [
-      { slug: "cutting", reason: "切配后直接翻炒，备料到出餐无缝衔接", highlight: "效率 +200%" },
-      { slug: "steaming", reason: "蒸饭蒸菜同步进行，午高峰不排队", highlight: "出餐 -40min" },
-      { slug: "other", reason: "洗碗机+保温台，后厨动线一次到位", highlight: "人手 -3人" },
-      { slug: "stewing", reason: "炖汤+炒菜双线出餐，菜品更丰富", highlight: "菜品 +30%" },
-    ],
-    cutting: [
-      { slug: "stirfry", reason: "切好直接下锅，备料到烹饪零等待", highlight: "效率 +180%" },
-      { slug: "steaming", reason: "切配+蒸煮一体化，前处理更高效", highlight: "备料 -60min" },
-      { slug: "other", reason: "传送带+分拣台，流水线式切配作业", highlight: "产能 +4倍" },
-    ],
-    frying: [
-      { slug: "stirfry", reason: "炸+炒双线并行，出餐速度翻倍", highlight: "出餐 +100%" },
-      { slug: "cutting", reason: "切配备料跟上油炸节奏，不缺料", highlight: "备料 0等待" },
-      { slug: "other", reason: "滤油台+排烟系统，油炸区干净整洁", highlight: "油烟 -80%" },
-    ],
-    stewing: [
-      { slug: "stirfry", reason: "炖汤+炒菜组合，满足多样化菜单", highlight: "菜品 +25%" },
-      { slug: "steaming", reason: "炖煮蒸饭同步，大锅饭不再手忙脚乱", highlight: "同步出餐" },
-      { slug: "cutting", reason: "自动切配炖菜食材，规格统一味道稳", highlight: "口味一致" },
-    ],
-    steaming: [
-      { slug: "stirfry", reason: "蒸+炒搭档，炒菜蒸饭同时搞定", highlight: "效率 +150%" },
-      { slug: "cutting", reason: "蒸前切配自动完成，食材现切现蒸", highlight: "鲜度提升" },
-      { slug: "stewing", reason: "蒸+炖组合，汤饭粥一灶全出", highlight: "一灶多用" },
-      { slug: "other", reason: "保温分餐台搭配蒸柜，热菜直达窗口", highlight: "温度不降" },
-    ],
-    other: [
-      { slug: "stirfry", reason: "核心烹饪+辅助设备，后厨全套配齐", highlight: "一站式" },
-      { slug: "cutting", reason: "切配+辅助传送，流水线完整配置", highlight: "流水线化" },
-      { slug: "steaming", reason: "蒸柜+保温台，从蒸到分餐不断链", highlight: "温度可控" },
-    ],
-  },
-      scenes: {
-    stirfry: [
-      {
-        href: "/applications/small-restaurant/",
-        slug: "small-restaurant",
-        icon: "storefront",
-        desc: "2-5人小后厨，一台炒菜机顶3个厨师",
-      },
-      {
-        href: "/applications/canteen/",
-        slug: "canteen",
-        icon: "restaurant",
-        desc: "食堂午高峰500-5000人，90分钟出完热菜",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房批量出餐，菜品口味标准化",
-      },
-    ],
-    cutting: [
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "千份级备料，切配规格统一不出错",
-      },
-      {
-        href: "/applications/food-factory/",
-        slug: "food-factory",
-        icon: "factory",
-        desc: "食品工厂流水线切配，日产能提升6倍",
-      },
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂切菜工序自动化，2小时→20分钟" },
-    ],
-    frying: [
-      {
-        href: "/applications/small-restaurant/",
-        slug: "small-restaurant",
-        icon: "storefront",
-        desc: "炸鸡炸薯条出餐快，外卖高峰不爆单",
-      },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "store",
-        desc: "连锁店炸品口味统一，每批出品标准化",
-      },
-      {
-        href: "/applications/cloud-kitchen/",
-        slug: "cloud-kitchen",
-        icon: "delivery_dining",
-        desc: "云厨房多品牌共用，炸炉轮流出餐",
-      },
-    ],
-    stewing: [
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂炖汤一大锅，千人份同时供应" },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房炖品批量出，口味稳定如一",
-      },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "store",
-        desc: "连锁店招牌炖品，每家店味道都一样",
-      },
-    ],
-    steaming: [
-      {
-        href: "/applications/canteen/",
-        slug: "canteen",
-        icon: "restaurant",
-        desc: "食堂蒸饭蒸菜同步，千人份量轻松搞定",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房批量蒸制，配送前锁鲜保味",
-      },
-      {
-        href: "/applications/food-factory/",
-        slug: "food-factory",
-        icon: "factory",
-        desc: "食品工厂蒸煮工序，全自动温度控制",
-      },
-    ],
-    other: [
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂洗碗分餐一体，后厨人手省一半" },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "store",
-        desc: "连锁店排烟+清洗标准化，后厨干净合规",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房传送+包装，全流程自动化",
-      },
-    ],
-    all: [
-      {
-        href: "/applications/small-restaurant/",
-        slug: "small-restaurant",
-        icon: "storefront",
-        desc: "2-5人小后厨，一台炒菜机顶3个厨师",
-      },
-      {
-        href: "/applications/canteen/",
-        slug: "canteen",
-        icon: "restaurant",
-        desc: "食堂午高峰500-5000人，90分钟出完热菜",
-      },
-      {
-        href: "/applications/central-kitchen/",
-        slug: "central-kitchen",
-        icon: "apartment",
-        desc: "中央厨房批量出餐，菜品口味标准化",
-      },
-      {
-        href: "/applications/chain-restaurant/",
-        slug: "chain-restaurant",
-        icon: "dining",
-        desc: "连锁门店统一出品，告别厨师依赖",
-      },
-      {
-        href: "/applications/cloud-kitchen/",
-        slug: "cloud-kitchen",
-        icon: "delivery_dining",
-        desc: "外卖云厨房，单店日产能3000+单",
-      },
-      {
-        href: "/applications/food-factory/",
-        slug: "food-factory",
-        icon: "factory",
-        desc: "食品工厂产线自动化，日产能万份以上",
-      },
-      { href: "/applications/menu-lab/", slug: "menu-lab", icon: "science", desc: "菜系实验室，一键复制各国风味" },
-    ],
-  },
+      map: {},    // Optional override; cross-sell.js has built-in fallback
+      scenes: {}, // Optional override; cross-sell.js has built-in fallback
       appLabels: {
         "small-restaurant": "小型餐饮",
         "central-kitchen": "中央厨房",
@@ -582,7 +417,6 @@
 
   // ── 导出 ──
   global.SITE_CONFIG = config;
-  // 兼容简写
   global._cfg = config;
 
   // Node.js 环境导出

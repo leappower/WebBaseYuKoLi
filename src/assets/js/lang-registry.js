@@ -1,273 +1,67 @@
 /**
- * lang-registry.js — 语言注册表（唯一权威数据源）
+ * lang-registry.js — 语言注册表（config-driven）
  *
- * 所有与语言相关的配置均在此处管理：
- *   - 前端弹窗展示（nativeName、uiGroup）
- *   - 翻译引擎目标语言（hasTranslation、englishName）
- *   - 翻译文件生成/合并排序（sortOrder）
- *   - 运行时语言白名单（hasTranslation: true）
+ * 优先从 site.config.js → window.SITE_CONFIG.i18n.languages 读取语言数据。
+ * 若 config 未加载，则使用内嵌 fallback 数组（与 site.config.js 保持同步）。
  *
  * 使用方式：
- *   Node.js:  const { LANGUAGES, getLangs } = require('../src/lang-registry');
- *   Browser:  通过 webpack/vite 打包或 <script> 引入后读取 window.LANG_REGISTRY
- *
- * 字段说明：
- *   code           语言代码（唯一 ID）
- *   nativeName     弹窗展示的原生名称
- *   englishName    翻译 Prompt 中使用的英文名称
- *   hasTranslation true  = 已有翻译文件，参与翻译引擎处理
- *                  false = 仅前端展示，暂无翻译文件
- *   uiGroup        弹窗分组：'common'
- *   sortOrder      合并/排序时的顺序（数字越小越靠前）
+ *   Node.js:  const { LANGUAGES, getLangs } = require('./lang-registry');
+ *   Browser:  window.LANG_REGISTRY.LANGUAGES
  */
 
 "use strict";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 主注册表（2 种语言：zh-CN + en）
+// Fallback 语言数据（与 site.config.js i18n.languages 保持同步）
 // ─────────────────────────────────────────────────────────────────────────────
-// 使用 var 防止重复加载时报错，并用 window 检查避免重复定义
-if (typeof window !== "undefined" && window.LANG_REGISTRY && window.LANG_REGISTRY.LANGUAGES) {
-  // 已存在，直接复用
-} else {
-  // 语言注册表定义
-  var LANGUAGES = [
-    {
-      code: "zh-CN",
-      nativeName: "中文（简体）",
-      englishName: "Chinese (Simplified)",
-      hasTranslation: true,
-      uiGroup: "common",
-      sortOrder: 1,
-      currency: { symbol: "¥", code: "CNY", rate: 1, unit: "万元" },
-    },
-    {
-      code: "en",
-      nativeName: "English",
-      englishName: "English",
-      hasTranslation: true,
-      uiGroup: "common",
-      sortOrder: 2,
-      currency: { symbol: "$", code: "USD", rate: 0.14, unit: "K" },
-    },
-    // ── Phase 2: Southeast Asia ──
-    {
-      code: "th",
-      nativeName: "ไทย",
-      englishName: "Thai",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 3,
-      currency: { symbol: "฿", code: "THB", rate: 5.0, unit: "ล้าน" },
-    },
-    {
-      code: "vi",
-      nativeName: "Tiếng Việt",
-      englishName: "Vietnamese",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 4,
-      currency: { symbol: "₫", code: "VND", rate: 3400, unit: "Triệu" },
-    },
-    {
-      code: "ms",
-      nativeName: "Bahasa Melayu",
-      englishName: "Malay",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 5,
-      currency: { symbol: "RM", code: "MYR", rate: 0.65, unit: "Juta" },
-    },
-    {
-      code: "id",
-      nativeName: "Bahasa Indonesia",
-      englishName: "Indonesian",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 6,
-      currency: { symbol: "Rp", code: "IDR", rate: 2200, unit: "Juta" },
-    },
-    // ── Phase 3: East Asia ──
-    {
-      code: "ja",
-      nativeName: "日本語",
-      englishName: "Japanese",
-      hasTranslation: true,
-      uiGroup: "east_asia",
-      sortOrder: 7,
-      currency: { symbol: "¥", code: "JPY", rate: 21, unit: "万円", label: "JP¥" },
-    },
-    {
-      code: "ko",
-      nativeName: "한국어",
-      englishName: "Korean",
-      hasTranslation: true,
-      uiGroup: "east_asia",
-      sortOrder: 8,
-      currency: { symbol: "₩", code: "KRW", rate: 188, unit: "백만" },
-    },
-    // ── Phase 4: South Asia + Others ──
-    {
-      code: "hi",
-      nativeName: "हिन्दी",
-      englishName: "Hindi",
-      hasTranslation: true,
-      uiGroup: "other",
-      sortOrder: 9,
-      currency: { symbol: "₹", code: "INR", rate: 11.5, unit: "Lakh" },
-    },
-    {
-      code: "zh-TW",
-      nativeName: "中文（繁體）",
-      englishName: "Chinese (Traditional)",
-      hasTranslation: true,
-      uiGroup: "other",
-      sortOrder: 10,
-      currency: { symbol: "NT$", code: "TWD", rate: 4.4, unit: "萬元" },
-    },
-    {
-      code: "ar",
-      nativeName: "العربية",
-      englishName: "Arabic",
-      hasTranslation: true,
-      uiGroup: "middle_east",
-      sortOrder: 11,
-      currency: { symbol: "ر.س", code: "SAR", rate: 0.52, unit: "K" },
-    },
-    // ── Southeast Asia (extended) ──
-    {
-      code: "fil",
-      nativeName: "Filipino",
-      englishName: "Filipino",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 12,
-      currency: { symbol: "₱", code: "PHP", rate: 0.017, unit: "K" },
-    },
-    {
-      code: "km",
-      nativeName: "ភាសាខ្មែរ",
-      englishName: "Khmer",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 13,
-      currency: { symbol: "៛", code: "KHR", rate: 4100, unit: "ម៉ឺន" },
-    },
-    {
-      code: "lo",
-      nativeName: "ລາວ",
-      englishName: "Lao",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 14,
-      currency: { symbol: "₭", code: "LAK", rate: 22000, unit: "ລ້ານ" },
-    },
-    {
-      code: "my",
-      nativeName: "မြန်မာဘာသာ",
-      englishName: "Burmese",
-      hasTranslation: true,
-      uiGroup: "southeast_asia",
-      sortOrder: 15,
-      currency: { symbol: "K", code: "MMK", rate: 2100, unit: "K" },
-    },
-    // ── Middle East (extended) ──
-    {
-      code: "he",
-      nativeName: "עברית",
-      englishName: "Hebrew",
-      hasTranslation: true,
-      uiGroup: "middle_east",
-      sortOrder: 16,
-      currency: { symbol: "₪", code: "ILS", rate: 3.7, unit: "K" },
-    },
-    {
-      code: "tr",
-      nativeName: "Türkçe",
-      englishName: "Turkish",
-      hasTranslation: true,
-      uiGroup: "middle_east",
-      sortOrder: 17,
-      currency: { symbol: "₺", code: "TRY", rate: 30, unit: "K" },
-    },
-    // ── European ──
-    {
-      code: "fr",
-      nativeName: "Français",
-      englishName: "French",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 18,
-      currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" },
-    },
-    {
-      code: "de",
-      nativeName: "Deutsch",
-      englishName: "German",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 19,
-      currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" },
-    },
-    {
-      code: "es",
-      nativeName: "Español",
-      englishName: "Spanish",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 20,
-      currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" },
-    },
-    {
-      code: "pt",
-      nativeName: "Português",
-      englishName: "Portuguese",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 21,
-      currency: { symbol: "R$", code: "BRL", rate: 5.0, unit: "K" },
-    },
-    {
-      code: "ru",
-      nativeName: "Русский",
-      englishName: "Russian",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 22,
-      currency: { symbol: "₽", code: "RUB", rate: 92, unit: "K" },
-    },
-    {
-      code: "it",
-      nativeName: "Italiano",
-      englishName: "Italian",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 23,
-      currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" },
-    },
-    {
-      code: "nl",
-      nativeName: "Nederlands",
-      englishName: "Dutch",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 24,
-      currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" },
-    },
-    {
-      code: "pl",
-      nativeName: "Polski",
-      englishName: "Polish",
-      hasTranslation: true,
-      uiGroup: "european",
-      sortOrder: 25,
-      currency: { symbol: "zł", code: "PLN", rate: 4.0, unit: "K" },
-    },
-  ];
-} // 结束重复加载保护
+var _FALLBACK_LANGUAGES = [
+  { code: "zh-CN", nativeName: "中文（简体）", englishName: "Chinese (Simplified)", hasTranslation: true, uiGroup: "common", sortOrder: 1, currency: { symbol: "¥", code: "CNY", rate: 1, unit: "万元" } },
+  { code: "en", nativeName: "English", englishName: "English", hasTranslation: true, uiGroup: "common", sortOrder: 2, currency: { symbol: "$", code: "USD", rate: 0.14, unit: "K" } },
+  { code: "th", nativeName: "ไทย", englishName: "Thai", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 3, currency: { symbol: "฿", code: "THB", rate: 5.0, unit: "ล้าน" } },
+  { code: "vi", nativeName: "Tiếng Việt", englishName: "Vietnamese", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 4, currency: { symbol: "₫", code: "VND", rate: 3400, unit: "Triệu" } },
+  { code: "ms", nativeName: "Bahasa Melayu", englishName: "Malay", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 5, currency: { symbol: "RM", code: "MYR", rate: 0.65, unit: "Juta" } },
+  { code: "id", nativeName: "Bahasa Indonesia", englishName: "Indonesian", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 6, currency: { symbol: "Rp", code: "IDR", rate: 2200, unit: "Juta" } },
+  { code: "fil", nativeName: "Filipino", englishName: "Filipino", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 7, currency: { symbol: "₱", code: "PHP", rate: 0.017, unit: "K" } },
+  { code: "km", nativeName: "ភាសាខ្មែរ", englishName: "Khmer", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 8, currency: { symbol: "៛", code: "KHR", rate: 4100, unit: "ម៉ឺន" } },
+  { code: "lo", nativeName: "ລາວ", englishName: "Lao", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 9, currency: { symbol: "₭", code: "LAK", rate: 22000, unit: "ລ້ານ" } },
+  { code: "my", nativeName: "မြန်မာဘာသာ", englishName: "Burmese", hasTranslation: true, uiGroup: "southeast_asia", sortOrder: 10, currency: { symbol: "K", code: "MMK", rate: 2100, unit: "K" } },
+  { code: "ja", nativeName: "日本語", englishName: "Japanese", hasTranslation: true, uiGroup: "east_asia", sortOrder: 11, currency: { symbol: "¥", code: "JPY", rate: 21, unit: "万円", label: "JP¥" } },
+  { code: "ko", nativeName: "한국어", englishName: "Korean", hasTranslation: true, uiGroup: "east_asia", sortOrder: 12, currency: { symbol: "₩", code: "KRW", rate: 188, unit: "백만" } },
+  { code: "hi", nativeName: "हिन्दी", englishName: "Hindi", hasTranslation: true, uiGroup: "other", sortOrder: 13, currency: { symbol: "₹", code: "INR", rate: 11.5, unit: "Lakh" } },
+  { code: "zh-TW", nativeName: "中文（繁體）", englishName: "Chinese (Traditional)", hasTranslation: true, uiGroup: "other", sortOrder: 14, currency: { symbol: "NT$", code: "TWD", rate: 4.4, unit: "萬元" } },
+  { code: "ar", nativeName: "العربية", englishName: "Arabic", hasTranslation: true, uiGroup: "middle_east", sortOrder: 15, currency: { symbol: "ر.س", code: "SAR", rate: 0.52, unit: "K" } },
+  { code: "he", nativeName: "עברית", englishName: "Hebrew", hasTranslation: true, uiGroup: "middle_east", sortOrder: 16, currency: { symbol: "₪", code: "ILS", rate: 3.7, unit: "K" } },
+  { code: "tr", nativeName: "Türkçe", englishName: "Turkish", hasTranslation: true, uiGroup: "middle_east", sortOrder: 17, currency: { symbol: "₺", code: "TRY", rate: 30, unit: "K" } },
+  { code: "fr", nativeName: "Français", englishName: "French", hasTranslation: true, uiGroup: "european", sortOrder: 18, currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" } },
+  { code: "de", nativeName: "Deutsch", englishName: "German", hasTranslation: true, uiGroup: "european", sortOrder: 19, currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" } },
+  { code: "es", nativeName: "Español", englishName: "Spanish", hasTranslation: true, uiGroup: "european", sortOrder: 20, currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" } },
+  { code: "pt", nativeName: "Português", englishName: "Portuguese", hasTranslation: true, uiGroup: "european", sortOrder: 21, currency: { symbol: "R$", code: "BRL", rate: 5.0, unit: "K" } },
+  { code: "ru", nativeName: "Русский", englishName: "Russian", hasTranslation: true, uiGroup: "european", sortOrder: 22, currency: { symbol: "₽", code: "RUB", rate: 92, unit: "K" } },
+  { code: "it", nativeName: "Italiano", englishName: "Italian", hasTranslation: true, uiGroup: "european", sortOrder: 23, currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" } },
+  { code: "nl", nativeName: "Nederlands", englishName: "Dutch", hasTranslation: true, uiGroup: "european", sortOrder: 24, currency: { symbol: "€", code: "EUR", rate: 0.92, unit: "K" } },
+  { code: "pl", nativeName: "Polski", englishName: "Polish", hasTranslation: true, uiGroup: "european", sortOrder: 25, currency: { symbol: "zł", code: "PLN", rate: 4.0, unit: "K" } },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 派生工具函数（从注册表生成各脚本需要的格式）
+// Config bridge: 优先读取 SITE_CONFIG，fallback 到内嵌数据
+// ─────────────────────────────────────────────────────────────────────────────
+function _resolveLanguages() {
+  var cfg = (typeof window !== "undefined" && (window.SITE_CONFIG || window._cfg)) || {};
+  if (cfg.i18n && cfg.i18n.languages && cfg.i18n.languages.length > 0) {
+    return cfg.i18n.languages;
+  }
+  return _FALLBACK_LANGUAGES;
+}
+
+// 防止重复加载
+if (typeof window !== "undefined" && window.LANG_REGISTRY && window.LANG_REGISTRY.LANGUAGES) {
+  var LANGUAGES = window.LANG_REGISTRY.LANGUAGES;
+} else {
+  var LANGUAGES = _resolveLanguages();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 工具函数
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -277,7 +71,7 @@ if (typeof window !== "undefined" && window.LANG_REGISTRY && window.LANG_REGISTR
  */
 function getLangs(filter) {
   var result = LANGUAGES.slice().sort(function (a, b) {
-    return a.sortOrder - b.sortOrder;
+    return (a.sortOrder || 0) - (b.sortOrder || 0);
   });
   if (!filter) return result;
   if (filter.group !== undefined) {
@@ -294,9 +88,7 @@ function getLangs(filter) {
 }
 
 /**
- * 返回 { code: nativeName } 映射（对应 translations.js languageNames）
- * @param {{ hasTranslation?: boolean }} [filter]
- * @returns {Object}
+ * 返回 { code: nativeName } 映射
  */
 function getNativeNames(filter) {
   return getLangs(filter).reduce(function (acc, l) {
@@ -311,16 +103,11 @@ function getNativeNames(filter) {
 
 // Node.js 环境
 if (typeof module !== "undefined" && module.exports) {
-  // Aliases for backward compatibility with build scripts
   function getSupportedCodes(filter) {
-    return getLangs(filter).map(function (l) {
-      return l.code;
-    });
+    return getLangs(filter).map(function (l) { return l.code; });
   }
   function getAllCodes() {
-    return LANGUAGES.map(function (l) {
-      return l.code;
-    });
+    return LANGUAGES.map(function (l) { return l.code; });
   }
   function getEnglishNames(filter) {
     return getLangs(filter).reduce(function (acc, l) {
@@ -330,16 +117,18 @@ if (typeof module !== "undefined" && module.exports) {
   }
 
   module.exports = {
-    LANGUAGES,
-    getLangs,
-    getNativeNames,
-    getSupportedCodes,
-    getAllCodes,
-    getEnglishNames,
+    LANGUAGES: LANGUAGES,
+    getLangs: getLangs,
+    getNativeNames: getNativeNames,
+    getSupportedCodes: getSupportedCodes,
+    getAllCodes: getAllCodes,
+    getEnglishNames: getEnglishNames,
+    /** @deprecated Use SITE_CONFIG.i18n.languages directly */
+    _FALLBACK_LANGUAGES: _FALLBACK_LANGUAGES,
   };
 }
 
-// 浏览器环境（通过 <script> 直接引入时）
+// 浏览器环境
 if (typeof window !== "undefined") {
   window.LANG_REGISTRY = {
     LANGUAGES: LANGUAGES,
