@@ -419,7 +419,7 @@
       /* ---------- Mega Menu 模式 ---------- */
       if (typeof window.MegaMenu !== "undefined") {
         var cfg = window.SITE_CONFIG || window._cfg || {};
-        if ((cfg.navMode || {}).desktop === "mega-menu" && variant === "pc") {
+        if ((cfg.navMode || {}).desktop === "mega-menu" && (cfg.features || {}).megaMenu !== false && variant === "pc") {
           return window.MegaMenu.render({ href: href, label: navItem.label, activeClass: activeClass, navItem: navItem });
         }
       }

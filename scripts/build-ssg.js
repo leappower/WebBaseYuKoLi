@@ -256,7 +256,11 @@ function injectThemeAndNavScripts(html, deviceType) {
 
   if (deviceType === 'pc') {
     tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+  } else if (deviceType === 'mobile' || deviceType === 'tablet') {
+    tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
   } else {
+    // responsive: inject both — each checks features + device width at runtime
+    tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
     tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
   }
 

@@ -487,12 +487,12 @@
       geoHero: false,
       smartPopup: true,
       profitCalculator: true,
-      productCompare: true,
+      productCompare: false,   // TODO: planned — no module yet
       cases: true,
       crossSell: true,
-      screenshot: true,
-      pdfExport: true,
-      serviceMap: true,
+      screenshot: false,       // TODO: planned — no module yet
+      pdfExport: false,        // TODO: planned — no module yet
+      serviceMap: false,       // TODO: planned — no module yet
       megaMenu: true,          // 是否启用 Mega Menu（需 navMode.desktop="mega-menu"）
       productLines: true,      // 是否启用产品线系统
       mobileFooterNav: true,   // 是否启用移动端 Fixed Footer Tab

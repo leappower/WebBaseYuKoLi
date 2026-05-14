@@ -108,13 +108,7 @@
   --z-sticky: 200;
   --z-overlay: 800;
 
-  --font-display: "Public Sans", sans-serif;
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
   --radius-full: 9999px;
-  --transition-base: 150ms ease;
-  --transition-colors: colors 300ms ease;
   /* ── Design Tokens: 统一间距 ── */
   --section-py: 5rem; /* py-20 */
   --section-py-lg: 6rem; /* py-24 */

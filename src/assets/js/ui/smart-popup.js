@@ -19,10 +19,17 @@
  */
 (function (global) {
   "use strict";
+  // ─── Feature gate ────────────────────────────────────────────────────────
+  var _features = (global.SITE_CONFIG || {}).features || {};
+  if (_features.smartPopup === false) {
+    global.smartPopup = { showPopup: function() {}, closePopup: function() {}, scheduleAutoShow: function() {} };
+    return; // skip entire module
+  }
+
   function _extend(target) {
     for (var i = 1; i < arguments.length; i++) {
       var src = arguments[i];
-      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+      if (src) { for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) target[k] = src[k]; } }
     }
     return target;
   }

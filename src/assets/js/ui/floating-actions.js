@@ -25,7 +25,7 @@
    * 0. CONFIG
    * ───────────────────────────────────────────── */
 
-  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465"));
+  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((window.SITE_CONFIG || {}).contacts || {}).whatsapp || "8613163756465");
   var SCROLL_THRESHOLD = 300;
 
   // 可通过 window 覆盖
@@ -339,6 +339,10 @@
   var _ctrl = null;
 
   function mount() {
+    // Feature gate: skip if floatingWhatsApp disabled
+    var _features = (window.SITE_CONFIG || window._cfg || {}).features || {};
+    if (_features.floatingWhatsApp === false) return;
+
     // Ensure container exists (SPA navigation safety)
     if (!document.getElementById("floating-actions-container")) {
       if (!_ctrl) {
