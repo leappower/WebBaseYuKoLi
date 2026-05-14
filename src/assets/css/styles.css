@@ -30,6 +30,84 @@
   --color-primary-20: rgb(236, 91, 19, 0.2);
   --color-bg-light: #f8f6f6;
   --color-bg-dark: #221610;
+
+  /* ═══ 产品线强调色（data-accent 属性选择器使用） ═══ */
+  --accent-coral: #FF6F61;
+  --accent-coral-bg: #FFF5F4;
+  --accent-gold: #D4AF37;
+  --accent-gold-bg: #FFFBEB;
+  --accent-green: #00A67E;
+  --accent-green-bg: #F0FDF9;
+  --accent-teal: #006064;
+  --accent-teal-bg: #E0F7FA;
+  --accent-orange: #FF7A45;
+  --accent-orange-bg: #FFF7ED;
+
+  /* ═══ 表面与边框 ═══ */
+  --color-surface: #FFFFFF;
+  --color-surface-soft: #FAF8F3;
+  --color-border: #E7E1D6;
+  --color-border-soft: #F0EBE0;
+
+  /* ═══ 文字色阶 ═══ */
+  --color-text: #1F2937;
+  --color-text-soft: #4B5563;
+  --color-text-muted: #6B7280;
+  --color-text-inverse: #FFFFFF;
+  --color-text-inverse-soft: #E0E7EB;
+
+  /* ═══ 状态色 ═══ */
+  --color-success: #00A67E;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+
+  /* ═══ 字体系统 ═══ */
+  --font-heading: 'Plus Jakarta Sans', 'Satoshi', 'Public Sans', system-ui, sans-serif;
+  --font-body: 'Inter', 'Noto Sans SC', 'Public Sans', system-ui, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+
+  /* ═══ 字号（Mobile-First） ═══ */
+  --h1-size: clamp(28px, 4vw, 48px);
+  --h1-line: clamp(34px, 5vw, 56px);
+  --h2-size: clamp(22px, 3vw, 36px);
+  --h2-line: clamp(28px, 4vw, 44px);
+  --body-size: clamp(15px, 1.2vw, 16px);
+  --caption-size: 13px;
+
+  /* ═══ 字重 ═══ */
+  --fw-bold: 700;
+  --fw-semibold: 600;
+  --fw-medium: 500;
+  --fw-regular: 400;
+
+  /* ═══ 圆角 ═══ */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+
+  /* ═══ 阴影 ═══ */
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.10);
+
+  /* ═══ 动画 ═══ */
+  --transition-normal: all 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: all 0.48s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ═══ 间距 ═══ */
+  --space-xs: 8px;
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 40px;
+  --space-xl: 64px;
+  --space-2xl: 80px;
+  --space-3xl: 120px;
+
+  /* ═══ 布局 ═══ */
+  --container-wide: 1440px;
+  --z-sticky: 200;
+  --z-overlay: 800;
+
   --font-display: "Public Sans", sans-serif;
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
@@ -850,3 +928,40 @@ button.bg-primary[class*="hover:"]:hover {
     pointer-events: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   产品线色系（通过 data-accent 属性自动着色）
+   ═══════════════════════════════════════════════════════════ */
+[data-accent="coral"]  { --accent: var(--accent-coral);  --accent-bg: var(--accent-coral-bg); }
+[data-accent="gold"]   { --accent: var(--accent-gold);   --accent-bg: var(--accent-gold-bg); }
+[data-accent="green"]  { --accent: var(--accent-green);  --accent-bg: var(--accent-green-bg); }
+[data-accent="teal"]   { --accent: var(--accent-teal);   --accent-bg: var(--accent-teal-bg); }
+[data-accent="orange"] { --accent: var(--accent-orange); --accent-bg: var(--accent-orange-bg); }
+
+/* 产品卡片 accent 顶边 */
+[data-accent] { border-top: 4px solid var(--accent, var(--color-primary)); }
+
+/* CTA 按钮样式 */
+.btn-primary-cta {
+  background: var(--accent-gold, var(--color-primary));
+  color: #1F2937;
+  font-weight: var(--fw-semibold);
+  padding: 15px 32px;
+  border-radius: var(--radius-md);
+  transition: var(--transition-normal);
+  cursor: pointer;
+  border: none;
+}
+.btn-primary-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+
+.btn-whatsapp-cta {
+  background: #25D366;
+  color: white;
+  font-weight: 700;
+  padding: 15px 32px;
+  border-radius: var(--radius-md);
+  transition: var(--transition-normal);
+  cursor: pointer;
+  border: none;
+}
+.btn-whatsapp-cta:hover { box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35); }

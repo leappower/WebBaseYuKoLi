@@ -359,6 +359,45 @@
     },
 
     // ═══════════════════════════════════════════════════════════
+    // 产品线定义（配置驱动，导航/渲染/色系自动读取）
+    // ═══════════════════════════════════════════════════════════
+    productLines: [
+      // 每个产品线定义一条，key 用于路由和数据关联
+      // accent 映射到 theme.accentColors 中的色系
+      // icon 使用 Material Icons 名称或 emoji
+      // features 是该产品线的卖点列表（用于产品卡片渲染）
+      // sort 控制菜单显示顺序，越小越靠前
+      // hidden: true 可隐藏某条产品线（不显示在菜单中但保留数据）
+    ],
+
+    // ═══════════════════════════════════════════════════════════
+    // 导航模式配置
+    // ═══════════════════════════════════════════════════════════
+    navMode: {
+      desktop: "dropdown",        // "mega-menu" | "dropdown" | "simple"
+      mobile: "fullscreen",       // "fullscreen" | "slide" | "drawer"
+      footerTabs: true,           // 是否启用 Fixed Footer Tab
+      megaColumns: 4,             // Mega Menu 列数（仅 desktop=mega-menu 时有效）
+    },
+
+    // ═══════════════════════════════════════════════════════════
+    // CTA 配置
+    // ═══════════════════════════════════════════════════════════
+    cta: {
+      primary: {
+        text: { en: "Get Quote", "zh-CN": "获取报价" },
+        href: "/quote/",
+        style: "cta",             // "primary" | "cta" | "whatsapp" (映射到 .btn-* 类)
+      },
+      whatsapp: {
+        text: { en: "Chat on WhatsApp", "zh-CN": "WhatsApp 咨询" },
+        style: "whatsapp",        // 使用 .btn-whatsapp 样式
+        showFloat: true,          // 是否显示浮动 WhatsApp 按钮
+        floatPosition: { bottom: "82px", right: "16px" },
+      },
+    },
+
+    // ═══════════════════════════════════════════════════════════
     // 主题 / 视觉系统
     // ═══════════════════════════════════════════════════════════
     theme: {
@@ -371,6 +410,31 @@
         textPrimary: "#0f172a",
         textMuted: "#64748b",
         textLight: "#f1f5f9",
+      },
+      // 新增：产品线强调色（按 accent key 自动映射）
+      accentColors: {
+        coral:  { primary: "#FF6F61", bg: "#FFF5F4", light: "#FF8A80", dark: "#E05545" },
+        gold:   { primary: "#D4AF37", bg: "#FFFBEB", light: "#F6E5B0", dark: "#B8960F" },
+        green:  { primary: "#00A67E", bg: "#F0FDF9", light: "#6EE7B7", dark: "#008060" },
+        teal:   { primary: "#006064", bg: "#E0F7FA", light: "#4DD0E1", dark: "#004044" },
+        orange: { primary: "#FF7A45", bg: "#FFF7ED", light: "#FFB380", dark: "#E06030" },
+      },
+      // 新增：完整设计 token（对标设计稿 :root）
+      tokens: {
+        surface: "#FFFFFF",
+        surfaceSoft: "#FAF8F3",
+        border: "#E7E1D6",
+        borderSoft: "#F0EBE0",
+        text: "#1F2937",
+        textSoft: "#4B5563",
+        textMuted: "#6B7280",
+        textInverse: "#FFFFFF",
+        success: "#00A67E",
+        warning: "#F59E0B",
+        error: "#EF4444",
+        containerWide: "1440px",
+        zSticky: 200,
+        zOverlay: 800,
       },
       fonts: {
         heading: '"Public Sans", sans-serif',
@@ -396,6 +460,15 @@
         sm: "0.25rem", md: "0.5rem", lg: "0.75rem",
         xl: "1rem", "2xl": "1rem", "3xl": "1.5rem", full: "9999px",
       },
+      // 新增：间距系统
+      spacing: {
+        xs: "8px", sm: "16px", md: "24px", lg: "40px", xl: "64px", "2xl": "80px", "3xl": "120px",
+      },
+      // 新增：动画
+      animation: {
+        normal: "all 0.32s cubic-bezier(0.4, 0, 0.2, 1)",
+        bounce: "all 0.48s cubic-bezier(0.34, 1.56, 0.64, 1)",
+      },
     },
 
     // ═══════════════════════════════════════════════════════════
@@ -412,6 +485,10 @@
       screenshot: true,
       pdfExport: true,
       serviceMap: true,
+      megaMenu: true,          // 是否启用 Mega Menu（需 navMode.desktop="mega-menu"）
+      productLines: true,      // 是否启用产品线系统
+      mobileFooterNav: true,   // 是否启用移动端 Fixed Footer Tab
+      floatingWhatsApp: true,  // 是否启用浮动 WhatsApp 按钮
     },
   };
 

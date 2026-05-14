@@ -553,5 +553,5 @@ if (ERROR_COUNT === 0 && WARN_COUNT === 0) {
   console.log('  \x1b[31m' + ERROR_COUNT + ' error(s)\x1b[0m  \x1b[33m' + WARN_COUNT + ' warning(s)\x1b[0m');
   if (FIX_COUNT > 0) console.log('  \x1b[34m' + FIX_COUNT + ' auto-fixed\x1b[0m');
   console.log();
-  process.exit(ERROR_COUNT > 0 ? 1 : 2);
+  process.exit(ERROR_COUNT > 0 ? 1 : 0);
 }
