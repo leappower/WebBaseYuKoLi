@@ -93,7 +93,7 @@
   function contactsWhatsApp(opts) {
     opts = opts || {};
     var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
-    var message = opts.message || ("Hi " + (_brand.name || "YuKoLi"));
+    var message = opts.message || ("Hi " + (_brand.name || "Brand"));
     var source = opts.source || "";
 
     var text = message;
@@ -214,10 +214,10 @@
   }
   function startEmail() {
     var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
-    var subject = (_brand.name || "YuKoLi") + " 询价";
+    var subject = (_brand.name || "Brand") + " 询价";
     var body = buildQuoteMessage();
     window.location.href =
-      "mailto:" + ((_cfg.contacts || {}).supportEmail || "support@yukoli.com") + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      "mailto:" + ((_cfg.contacts || {}).supportEmail || "support@example.com") + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
   }
   function startFacebook() {
     window.open((_social.facebook || "https://www.facebook.com/people/Yukoli-Technology-Co-Ltd/61579549730250/"), "_blank");

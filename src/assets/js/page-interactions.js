@@ -101,7 +101,7 @@
     }
     var phone = window.Contacts && window.Contacts.whatsapp ? window.Contacts.whatsapp : "";
     var prefix = source ? " [" + source + "]" : "";
-    var text = encodeURIComponent((msg || ("Hi " + ((_brand || {}).name || "YuKoLi"))) + prefix);
+    var text = encodeURIComponent((msg || ("Hi " + ((_brand || {}).name || "Brand"))) + prefix);
     var url = phone ? "https://wa.me/" + phone.replace(/\D/g, "") + "?text=" + text : "https://wa.me/?text=" + text;
     window.open(url, "_blank");
   }

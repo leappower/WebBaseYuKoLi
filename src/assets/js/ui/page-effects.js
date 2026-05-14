@@ -290,26 +290,26 @@
       var s = document.createElement("style");
       s.id = "pi-toast-style";
       s.textContent = [
-        "#yukoli-toast-container{position:fixed;top:80px;right:24px;z-index:var(--z-toast, 400);",
+        "#toast-container{position:fixed;top:80px;right:24px;z-index:var(--z-toast, 400);",
         "display:flex;flex-direction:column;gap:10px;pointer-events:none;}",
-        ".yukoli-toast{padding:12px 18px 12px 14px;border-radius:8px;",
+        ".toast-item{padding:12px 18px 12px 14px;border-radius:8px;",
         'font-family:"Public Sans",sans-serif;font-size:.875rem;font-weight:600;',
         "display:flex;align-items:center;gap:10px;max-width:340px;",
         "box-shadow:0 8px 24px rgba(0,0,0,.14);pointer-events:auto;",
         "animation:toastIn .3s ease,toastOut .3s ease 2.7s forwards;}",
-        ".yukoli-toast.success{background:#16a34a;color:#fff;}",
-        ".yukoli-toast.error{background:#dc2626;color:#fff;}",
-        ".yukoli-toast.info{background:#0ea5e9;color:#fff;}",
+        ".toast-item.success{background:#16a34a;color:#fff;}",
+        ".toast-item.error{background:#dc2626;color:#fff;}",
+        ".toast-item.info{background:#0ea5e9;color:#fff;}",
         "@keyframes toastIn{from{opacity:0;transform:translateX(60px)}to{opacity:1;transform:none}}",
         "@keyframes toastOut{from{opacity:1}to{opacity:0;transform:translateX(60px)}}",
       ].join("");
       document.head.appendChild(s);
     }
 
-    var container = document.getElementById("yukoli-toast-container");
+    var container = document.getElementById("toast-container");
     if (!container) {
       container = document.createElement("div");
-      container.id = "yukoli-toast-container";
+      container.id = "toast-container";
       container.setAttribute("role", "status");
       container.setAttribute("aria-live", "polite");
       document.body.appendChild(container);
@@ -324,7 +324,7 @@
         container.removeChild(container.firstChild);
       }
       var toast = document.createElement("div");
-      toast.className = "yukoli-toast " + type;
+      toast.className = "toast-item " + type;
       toast.innerHTML =
         '<span class="material-symbols-outlined" style="font-size:18px;">' +
         (ICON_MAP[type] || "check_circle") +

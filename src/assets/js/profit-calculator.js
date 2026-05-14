@@ -11,7 +11,7 @@
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _roi = _cfg.roi || {};
   var _brandCfg = _cfg.brand || {};
-  var BRAND_NAME = _brandCfg.name || "YuKoLi";
+  var BRAND_NAME = _brandCfg.name || "Brand";
 
   /* ───────── Default salary data per country ───────── */
   var DEFAULT_SALARIES = _roi.salaries || {

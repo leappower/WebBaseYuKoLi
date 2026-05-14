@@ -62,7 +62,7 @@
   // Replace {brand} placeholders in templates
   function resolveTemplates(tpl) {
     if (!tpl) return FALLBACK_TEMPLATES;
-    var brandName = brand.name || "YuKoLi";
+    var brandName = brand.name || "Brand";
     var resolved = {};
     for (var key in tpl) {
       if (tpl.hasOwnProperty(key)) {

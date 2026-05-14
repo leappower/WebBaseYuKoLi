@@ -17,7 +17,7 @@
   /* ─── Case Study Data (config-driven) ─── */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _brand = _cfg.brand || {};
-  var BRAND_NAME = _brand.name || "YuKoLi";
+  var BRAND_NAME = _brand.name || "Brand";
   var _caseDetail = (_cfg.cases || {}).detail || {};
 
   /* Fallback when site.config not loaded */

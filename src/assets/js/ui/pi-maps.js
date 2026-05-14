@@ -81,11 +81,11 @@
       return;
     }
 
-    var mapEl = document.getElementById("yukoli-service-map");
+    var mapEl = document.getElementById("service-map");
     if (!mapEl) return;
 
     // Hide fallback background once Maps is ready
-    var fallback = document.getElementById("yukoli-service-map-fallback");
+    var fallback = document.getElementById("service-map-fallback");
     if (fallback) fallback.style.display = "none";
 
     // Initialize map centered on Southeast Asia (primary market)
@@ -105,7 +105,7 @@
     });
 
     // Store map instance for zoom buttons
-    window._yukolicServiceMap = map;
+    window._serviceMapInstance = map;
 
     // Place service center markers
     YUKOLI_SERVICE_CENTERS.forEach(function (center) {
@@ -145,14 +145,14 @@
    */
   // 暂时未被使用 — 依赖 Google Maps Places API
   function serviceCenterSearch(query) {
-    if (!window._yukolicServiceMap || !window.google || !window.google.maps) return;
+    if (!window._serviceMapInstance || !window.google || !window.google.maps) return;
 
     var geocoder = new window.google.maps.Geocoder();
     geocoder.geocode({ address: query }, function (results, status) {
       if (status === "OK" && results[0]) {
         var loc = results[0].geometry.location;
-        window._yukolicServiceMap.panTo(loc);
-        window._yukolicServiceMap.setZoom(8);
+        window._serviceMapInstance.panTo(loc);
+        window._serviceMapInstance.setZoom(8);
 
         // Find nearest Yukoli service center to the geocoded point
         var nearestCenter = null;
@@ -209,16 +209,16 @@
       var iconName = icon.textContent.trim();
       if (iconName === "add") {
         btn.addEventListener("click", function () {
-          if (window._yukolicServiceMap) {
-            window._yukolicServiceMap.setZoom(window._yukolicServiceMap.getZoom() + 1);
+          if (window._serviceMapInstance) {
+            window._serviceMapInstance.setZoom(window._serviceMapInstance.getZoom() + 1);
           } else {
             safeCall("showNotification", ["Interactive map: set API key to activate.", "success"]);
           }
         });
       } else if (iconName === "remove") {
         btn.addEventListener("click", function () {
-          if (window._yukolicServiceMap) {
-            window._yukolicServiceMap.setZoom(window._yukolicServiceMap.getZoom() - 1);
+          if (window._serviceMapInstance) {
+            window._serviceMapInstance.setZoom(window._serviceMapInstance.getZoom() - 1);
           } else {
             safeCall("showNotification", ["Interactive map: set API key to activate.", "success"]);
           }
@@ -237,7 +237,7 @@
         var query = input ? input.value.trim() : "";
         if (!query) return;
 
-        if (window._yukolicServiceMap && window.google && window.google.maps) {
+        if (window._serviceMapInstance && window.google && window.google.maps) {
           // Google Maps Places API loaded — run geocode search
           serviceCenterSearch(query);
         } else {
@@ -255,7 +255,7 @@
    * window.initGoogleMapsCallback() is set as the Maps API `callback` parameter.
    * When the API script loads, it calls this function, which then initialises
    * the service center map on the IoT Support page.
-   * On pages without #yukoli-service-map this is a safe no-op.
+   * On pages without #service-map this is a safe no-op.
    */
   // 暂时未被使用 — Google Maps API key 未配置
   window.initGoogleMapsCallback = function () {

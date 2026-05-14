@@ -246,7 +246,7 @@
     }),
     (r.prototype.interpolate = function (t) {
       if (typeof t !== 'string') return t;
-      var brand = this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || 'YuKoLi');
+      var brand = this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || 'Brand');
       return t.replace(/\{brand\}/g, brand);
     }),
     (r.prototype.translate = function (t) {

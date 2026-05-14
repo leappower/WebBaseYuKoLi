@@ -185,7 +185,7 @@
     for (var i = 0; i < logos.length; i++) {
       var el = logos[i];
       var hasIcon = el.querySelector('[data-icon="restaurant"], .material-symbols-outlined');
-      var hasBrand = el.textContent.toLowerCase().indexOf("yukoli") !== -1;
+      var hasBrand = el.textContent.toLowerCase().indexOf((window.SITE_CONFIG || {}).brandName || "brand") !== -1;
       var isRoot = el.getAttribute("href") === "/" || el.getAttribute("href") === "./";
       if (isRoot || hasIcon || hasBrand) {
         el.href = PAGES.home;
