@@ -226,7 +226,7 @@
     window.open((_social.instagram || ""), "_blank");
   }
   function startTwitter() {
-    window.open((_social.twitter || "https://twitter.com/baeckerei_profi"), "_blank");
+    window.open((_social.twitter || ""), "_blank");
   }
   function startLinkedIn() {
     window.open((_social.linkedin || ""), "_blank");
