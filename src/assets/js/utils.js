@@ -1,3 +1,9 @@
+// @deprecated — Only used by webpack bundle (optional dev server).
+// Static HTML pages load product-grid.js directly and never reference this file.
+// Callers (search-engine.js, profit-calculator.js) already have null checks.
+// TODO: Remove once webpack build is fully deprecated or product-grid.js
+//       provides a public buildProductCatalog() equivalent.
+//
 // utils.js - AppUtils IIFE (image assets + product catalog helpers)
 // Depends on: window.PRODUCT_SERIES, window.PRODUCT_DEFAULTS, window.ImageAssets
 // Outputs: window.AppUtils

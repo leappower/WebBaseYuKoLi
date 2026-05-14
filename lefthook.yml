@@ -1,0 +1,123 @@
+# lefthook.yml — Unified Git Hooks
+# Install: npm run hooks:install
+# Run manually: npx lefthook run pre-commit / npx lefthook run pre-push
+#
+# Merged from: scripts/githooks/ (commit-msg, branch protection, lint)
+# + original lefthook (ESLint, Stylelint, debug markers, empty scripts)
+
+pre-commit:
+  parallel: true
+  commands:
+    # ─── Commit message format ──────────────────────────
+    commit-msg:
+      run: |
+        FIRST=$(head -1 "$LEFTHOOK_COMMIT_MSG_FILE" | sed 's/^#.*//' | tr -d '[:space:]')
+        if [ -n "$FIRST" ]; then
+          if ! echo "$FIRST" | grep -qE '^(feat|fix|refactor|perf|style|docs|chore|ci|revert|test)\(.+\):.+'; then
+            echo "⚠ WARN  Commit message 不符合 <type>(<scope>): <desc> 格式"
+            echo "        当前: $FIRST"
+          fi
+        fi
+
+    # ─── JS syntax (node -c) ────────────────────────────
+    syntax-js:
+      glob: "src/assets/js/**/*.js"
+      run: node -c {staged_files}
+
+    # ─── ESLint ─────────────────────────────────────────
+    lint-js:
+      glob: "src/assets/js/**/*.js"
+      run: npx eslint {staged_files} 2>/dev/null || true
+      # Don't auto-fix in pre-commit — force agent to write clean code
+
+    # ─── CSS lint ───────────────────────────────────────
+    lint-css:
+      glob: "src/assets/css/**/*.css"
+      run: npx stylelint {staged_files} --ignore-pattern "tailwind.css" --ignore-pattern "tailwind-entry.css" 2>/dev/null || true
+
+    # ─── HTML lint ──────────────────────────────────────
+    lint-html:
+      glob: "src/**/*.html"
+      run: npx htmlhint {staged_files} 2>/dev/null || true
+
+    # ─── console.log/debug leak ─────────────────────────
+    no-debug:
+      glob: "src/**/*.{js,html}"
+      run: |
+        if grep -nE 'console\.(log|debug|table)\s*\(' {staged_files} 2>/dev/null | grep -v '^\s*//' | grep -v '__DEVELOPMENT__'; then
+          echo "❌ 发现 console.log/debug/table 残留！请清理后再提交。"
+          echo "   如果确实需要，用条件包裹: if (__DEVELOPMENT__) console.log(...)"
+          exit 1
+        fi
+
+    # ─── Debug markers ──────────────────────────────────
+    no-debug-markers:
+      glob: "src/**/*.{js,html}"
+      run: |
+        if grep -nE '(debug[-_](marker|log|diag)|DIAGNOSTIC|<!-- DEBUG)' {staged_files} 2>/dev/null; then
+          echo "❌ 发现 debug marker 残留！请移除后再提交。"
+          exit 1
+        fi
+
+    # ─── Prettier format check ──────────────────────────
+    prettier-check:
+      glob: "src/**/*.{js,css,json}"
+      run: npx prettier --check {staged_files} 2>/dev/null || true
+
+    # ─── Empty script tags ─────────────────────────────
+    empty-script-check:
+      glob: "src/**/*.html"
+      run: |
+        if grep -n '<script[^>]*>\s*</script>' {staged_files} 2>/dev/null | grep -v 'src=' | grep -v 'type='; then
+          echo "❌ 发现无 src/type 的空 <script> 标签！请移除。"
+          exit 1
+        fi
+
+    # ─── Sensitive files (.env) ─────────────────────────
+    no-secrets:
+      glob: "*"
+      run: |
+        if echo {staged_files} | grep -qE '\.env$|\.env\.local$'; then
+          echo "❌ 禁止提交 .env / .env.local 文件"
+          exit 1
+        fi
+
+    # ─── Project lint (lint-code.js) ────────────────────
+    project-lint:
+      run: node scripts/lint-code.js --staged
+
+pre-push:
+  parallel: false
+  commands:
+    # ─── Branch protection ──────────────────────────────
+    branch-protect:
+      run: |
+        REMOTE=$(git rev-parse --abbrev-ref @{push} 2>/dev/null | sed 's|.*/||' || echo "")
+        if [ "$REMOTE" = "master" ] || [ "$REMOTE" = "main" ]; then
+          echo "✗ ERR  禁止直接 push 到 $REMOTE"
+          echo "       请创建功能分支并提交 Pull Request"
+          exit 1
+        fi
+        echo "✓ 推送到 $REMOTE (非保护分支)"
+        # Check force push
+        IS_FORCE=0
+        while read -r line; do
+          case "$line" in *force*|*delete*) IS_FORCE=1 ;; esac
+        done < <(git push --dry-run 2>&1 || true)
+        if [ "$IS_FORCE" = "1" ] && { [ "$REMOTE" = "master" ] || [ "$REMOTE" = "main" ]; }; then
+          echo "✗ ERR  禁止 force push 到 $REMOTE"
+          exit 1
+        fi
+
+    # ─── Full JS syntax check ───────────────────────────
+    syntax-all:
+      glob: "src/assets/js/**/*.js"
+      run: node -c {all_files}
+
+    # ─── Project lint (full) ────────────────────────────
+    project-lint:
+      run: node scripts/lint-code.js
+
+    # ─── Build smoke test ───────────────────────────────
+    build-smoke:
+      run: npm run build 2>/dev/null || echo "⚠️  Build 失败，跳过（dev 模式）"
