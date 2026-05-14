@@ -30,7 +30,7 @@
    * @param {string} accentKey - accent 名称
    * @returns {string} accent primary 色值
    */
-  function getAccentColor(accentKey) {
+  function _getAccentColor(accentKey) {
     var cfg = window.SITE_CONFIG || window._cfg || {};
     var accents = (cfg.theme || {}).accentColors || {};
     return (accents[accentKey] || {}).primary || getPrimaryColor();

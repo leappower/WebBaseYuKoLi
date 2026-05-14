@@ -1,7 +1,7 @@
 {
-  "name": "yukoli-tech",
+  "name": "yukoli-scaffold",
   "version": "0.0.5",
-  "description": "YuKoLi Tech - 智能商厨专家 - 专业商业厨房设备网站，多语言支持与模块化架构",
+  "description": "YuKoLi B2B Website Scaffold - Config-driven multi-language responsive site framework",
   "main": "server.js",
   "scripts": {
     "start": "webpack serve --mode development",
