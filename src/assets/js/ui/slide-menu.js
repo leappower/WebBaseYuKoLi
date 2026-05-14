@@ -444,12 +444,44 @@
     return L1_ICON_MAP[navId] || "menu";
   }
 
+  /* ── Config-driven helpers ── */
+
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _nav = _cfg.nav || {};
+  var _categories = _cfg.categories || {};
+
   /**
-   * 构建导航菜单项数组（使用内置默认菜单）
+   * 从 categories 构建子菜单项（供 dropdown 使用）
+   * @param {string} categoryKey - categories 中的 key（products/applications/support）
+   * @param {string} parentPath - 路径前缀，如 "/products/"
+   * @returns {Array<{key, icon, emoji, href}>}
+   */
+  function buildCategoryItems(categoryKey, parentPath) {
+    var cats = _categories[categoryKey] || [];
+    var result = [];
+    for (var i = 0; i < cats.length; i++) {
+      var cat = cats[i];
+      result.push({
+        key: cat.i18nKey || cat.key || ("nav_" + categoryKey + "_" + cat.slug),
+        icon: cat.icon || "circle",
+        emoji: cat.emoji || "",
+        href: parentPath + cat.slug + "/",
+      });
+    }
+    return result;
+  }
+
+  /**
+   * 构建导航菜单项数组（配置驱动）
    * @returns {Array<{key, href, id, icon, children}>} 菜单项列表
    */
   function getMenuItems() {
     if (cachedMenuItems) return cachedMenuItems;
+
+    // 从 SITE_CONFIG.categories 构建产品/行业/支持的子菜单
+    var productChildren = buildCategoryItems("products", "/products/");
+    var applicationChildren = buildCategoryItems("applications", "/applications/");
+    var supportChildren = buildCategoryItems("support", "/support/");
 
     var items = [
       {
@@ -458,14 +490,7 @@
         href: "/products/",
         id: "products",
         icon: "kitchen",
-        children: [
-          { key: "nav_products_cutting", icon: "content_cut", emoji: "", href: "/products/cutting/" },
-          { key: "nav_products_stirfry", icon: "local_fire_department", emoji: "🔥", href: "/products/stirfry/" },
-          { key: "nav_products_frying", icon: "outdoor_grill", emoji: "", href: "/products/frying/" },
-          { key: "nav_products_stewing", icon: "soup_kitchen", emoji: "", href: "/products/stewing/" },
-          { key: "nav_products_steaming", icon: "cloud", emoji: "", href: "/products/steaming/" },
-          { key: "nav_products_other", icon: "more_horiz", emoji: "", href: "/products/other/" },
-        ],
+        children: productChildren,
       },
       {
         key: "nav_applications",
@@ -473,35 +498,7 @@
         href: "/applications/",
         id: "applications",
         icon: "apps",
-        children: [
-          {
-            key: "nav_applications_small_restaurant",
-            icon: "storefront",
-            emoji: "",
-            href: "/applications/small-restaurant/",
-          },
-          {
-            key: "nav_applications_central_kitchen",
-            icon: "apartment",
-            emoji: "",
-            href: "/applications/central-kitchen/",
-          },
-          {
-            key: "nav_applications_chain_restaurant",
-            icon: "ramen_dining",
-            emoji: "",
-            href: "/applications/chain-restaurant/",
-          },
-          { key: "nav_applications_canteen", icon: "restaurant", emoji: "", href: "/applications/canteen/" },
-          {
-            key: "nav_applications_cloud_kitchen",
-            icon: "delivery_dining",
-            emoji: "",
-            href: "/applications/cloud-kitchen/",
-          },
-          { key: "nav_applications_food_factory", icon: "factory", emoji: "", href: "/applications/food-factory/" },
-          { key: "nav_applications_menu_lab", icon: "science", emoji: "", href: "/applications/menu-lab/" },
-        ],
+        children: applicationChildren,
       },
       { key: "nav_cases", label: "真实案例", href: "/cases/", id: "cases", icon: "cases", children: [] },
       {
@@ -518,14 +515,7 @@
         href: "/support/",
         id: "support",
         icon: "support_agent",
-        children: [
-          { key: "nav_support_services", icon: "grid_view", emoji: "", href: "/support/" },
-          { key: "nav_support_installation", icon: "construction", emoji: "", href: "/support/installation/" },
-          { key: "nav_support_warranty", icon: "verified", emoji: "", href: "/support/warranty/" },
-          { key: "nav_support_spare_parts", icon: "build_circle", emoji: "", href: "/support/spare-parts/" },
-          { key: "nav_support_training", icon: "school", emoji: "", href: "/support/training/" },
-          { key: "nav_support_faq", icon: "contact_support", emoji: "", href: "/support/faq/" },
-        ],
+        children: supportChildren,
       },
       {
         key: "nav_about",

@@ -27,47 +27,26 @@
       email: ((_cfg.contacts || {}).supportEmail || "support@example.com"),
       phone: "紧急故障 随时待命 极速响应",
     },
-    faq: {
-      titleKey: "support_faq_contact_title",
-      title: "联系我们",
-      wechat: "扫码添加，在线咨询",
-      wa: "联系工程师",
-      email: "提交工单",
-      phone: "紧急故障",
-    },
-    installation: {
-      titleKey: "support_install_contact_title",
-      title: "联系我们",
-      wechat: "扫码添加，在线咨询",
-      wa: "预约安装咨询",
-      email: "获取安装方案",
-      phone: "紧急安装需求",
-    },
-    "spare-parts": {
-      titleKey: "support_spare_contact_title",
-      title: "联系我们",
-      wechat: "扫码添加，在线咨询",
-      wa: "配件咨询",
-      email: "配件订购",
-      phone: "紧急配件需求",
-    },
-    training: {
-      titleKey: "support_contact_channels_title",
-      title: "联系我们",
-      wechat: "扫码添加，在线咨询",
-      wa: "预约培训",
-      email: "获取培训资料",
-      phone: "培训咨询",
-    },
-    warranty: {
-      titleKey: "support_warranty_contact_title",
-      title: "联系我们",
-      wechat: "扫码添加，在线咨询",
-      wa: "质保政策咨询",
-      email: "保修登记",
-      phone: "故障报修",
-    },
   };
+
+  // Auto-generate support sub-page configs from SITE_CONFIG.categories.support
+  (function () {
+    var cats = (_cfg.categories || {}).support || [];
+    for (var i = 0; i < cats.length; i++) {
+      var cat = cats[i];
+      var slug = cat.slug;
+      if (!slug || CONFIG[slug]) continue;
+      var label = typeof cat.label === "object" ? (cat.label["zh-CN"] || cat.label.en || slug) : (cat.label || slug);
+      CONFIG[slug] = {
+        titleKey: "nav_support_" + slug + "_title",
+        title: "联系我们",
+        wechat: "扫码添加，在线咨询",
+        wa: label + "咨询",
+        email: label + "服务",
+        phone: "紧急需求",
+      };
+    }
+  })();
 
   var WECHAT_ICON =
     '<svg viewBox="0 0 24 24" class="w-6 h-6 fill-white"><path d="' +

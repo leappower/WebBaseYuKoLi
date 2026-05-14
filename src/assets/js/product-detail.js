@@ -18,7 +18,10 @@
   }
 
   // Category slugs used for product listing — NOT PDP pages
-  var CATEGORY_SLUGS = ["cutting", "stirfry", "frying", "stewing", "steaming", "other"];
+  // Read from SITE_CONFIG.categories.products (config-driven)
+  var _pdCfg = window.SITE_CONFIG || {};
+  var _pdCats = (_pdCfg.categories || {}).products || [];
+  var CATEGORY_SLUGS = _pdCats.map(function (c) { return c.slug || ""; }).filter(Boolean);
 
   function isCategorySlug(slug) {
     return CATEGORY_SLUGS.indexOf(slug) >= 0;

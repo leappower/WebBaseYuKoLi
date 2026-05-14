@@ -11,14 +11,25 @@
 
   /* ───────────────────────── DATA ───────────────────────── */
 
-  var SUBSERIES = [
-    { key: "nav_support_services", icon: "grid_view", href: "/support/", emoji: "" },
-    { key: "nav_support_installation", icon: "construction", href: "/support/installation/", emoji: "" },
-    { key: "nav_support_warranty", icon: "verified", href: "/support/warranty/", emoji: "" },
-    { key: "nav_support_spare_parts", icon: "build_circle", href: "/support/spare-parts/", emoji: "" },
-    { key: "nav_support_training", icon: "school", href: "/support/training/", emoji: "" },
-    { key: "nav_support_faq", icon: "contact_support", href: "/support/faq/", emoji: "" },
-  ];
+  var _cfg = window.SITE_CONFIG || {};
+  var _categories = _cfg.categories || {};
+
+  function _buildCategoryItems(categoryKey, parentPath) {
+    var cats = _categories[categoryKey] || [];
+    var items = [{ key: "nav_support_services", icon: "grid_view", href: parentPath, emoji: "" }];
+    for (var i = 0; i < cats.length; i++) {
+      var cat = cats[i];
+      items.push({
+        key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        icon: cat.icon || "circle",
+        href: parentPath + (cat.slug || "") + "/",
+        emoji: cat.emoji || "",
+      });
+    }
+    return items;
+  }
+
+  var SUBSERIES = _buildCategoryItems("support", "/support/");
 
   /* ───────────────────────── CSS ───────────────────────── */
 

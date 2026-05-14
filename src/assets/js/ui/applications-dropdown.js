@@ -11,25 +11,22 @@
 
   /* ───────────────────────── DATA ───────────────────────── */
 
-  var SUBSERIES = [
-    {
-      key: "nav_applications_small_restaurant",
-      icon: "storefront",
-      href: "/applications/small-restaurant/",
-      emoji: "",
-    },
-    { key: "nav_applications_central_kitchen", icon: "apartment", href: "/applications/central-kitchen/", emoji: "" },
-    {
-      key: "nav_applications_chain_restaurant",
-      icon: "ramen_dining",
-      href: "/applications/chain-restaurant/",
-      emoji: "",
-    },
-    { key: "nav_applications_canteen", icon: "restaurant", href: "/applications/canteen/", emoji: "" },
-    { key: "nav_applications_cloud_kitchen", icon: "delivery_dining", href: "/applications/cloud-kitchen/", emoji: "" },
-    { key: "nav_applications_food_factory", icon: "factory", href: "/applications/food-factory/", emoji: "" },
-    { key: "nav_applications_menu_lab", icon: "science", href: "/applications/menu-lab/", emoji: "" },
-  ];
+  var _cfg = window.SITE_CONFIG || {};
+  var _categories = _cfg.categories || {};
+
+  function _buildCategoryItems(categoryKey, parentPath) {
+    var cats = _categories[categoryKey] || [];
+    return cats.map(function (cat) {
+      return {
+        key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        icon: cat.icon || "circle",
+        href: parentPath + (cat.slug || "") + "/",
+        emoji: cat.emoji || "",
+      };
+    });
+  }
+
+  var SUBSERIES = _buildCategoryItems("applications", "/applications/");
 
   var EXTRAS = [];
 

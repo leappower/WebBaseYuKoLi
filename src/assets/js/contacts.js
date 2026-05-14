@@ -38,32 +38,42 @@
   // WHATSAPP SOURCE TRACKING
   // ============================================
   /** Page path → display name mapping for WhatsApp source tracking */
-  var PAGE_NAMES = {
-    "/support/": "售后支持",
-    "/support/installation/": "安装服务",
-    "/support/spare-parts/": "配件服务",
-    "/support/training/": "操作培训",
-    "/support/warranty/": "质保政策",
-    "/support/faq/": "常见问题",
-    "/products/": "产品中心",
-    "/products/compare/": "产品对比",
-    "/products/detail/": "产品详情",
-    "/quote/": "在线询价",
-    "/contact/": "联系我们",
-    "/landing/": "着陆页",
-    "/home/": "首页",
-    "/about/": "关于我们",
-    "/news/": "新闻资讯",
-    "/thank-you/": "感谢页",
-    "/applications/central-kitchen/": "中央厨房",
-    "/applications/chain-restaurant/": "连锁餐饮",
-    "/applications/small-restaurant/": "小型餐饮",
-    "/applications/canteen/": "智慧食堂",
-    "/applications/menu-lab/": "菜系实验室",
-    "/applications/cloud-kitchen/": "云厨房",
-    "/profit-calculator/": "利润计算器",
-    "/cases/": "案例",
-  };
+  var PAGE_NAMES = (function () {
+    var names = {
+      "/support/": "售后支持",
+      "/products/": "产品中心",
+      "/products/compare/": "产品对比",
+      "/products/detail/": "产品详情",
+      "/quote/": "在线询价",
+      "/contact/": "联系我们",
+      "/landing/": "着陆页",
+      "/home/": "首页",
+      "/about/": "关于我们",
+      "/news/": "新闻资讯",
+      "/thank-you/": "感谢页",
+      "/profit-calculator/": "利润计算器",
+      "/cases/": "案例",
+    };
+    // Dynamic: support sub-pages from config
+    var supportCats = (_cfg.categories || {}).support || [];
+    for (var i = 0; i < supportCats.length; i++) {
+      var cat = supportCats[i];
+      if (cat.slug && cat.label) {
+        var label = typeof cat.label === "object" ? (cat.label["zh-CN"] || cat.label.en || cat.slug) : cat.label;
+        names["/support/" + cat.slug + "/"] = label;
+      }
+    }
+    // Dynamic: application pages from config
+    var appCats = (_cfg.categories || {}).applications || [];
+    for (var j = 0; j < appCats.length; j++) {
+      var ac = appCats[j];
+      if (ac.slug && ac.label) {
+        var al = typeof ac.label === "object" ? (ac.label["zh-CN"] || ac.label.en || ac.slug) : ac.label;
+        names["/applications/" + ac.slug + "/"] = al;
+      }
+    }
+    return names;
+  })();
 
   function getPageName() {
     var path = window.location.pathname.replace(/\/index-(pc|mobile|tablet)\.html$/, "/");

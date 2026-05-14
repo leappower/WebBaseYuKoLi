@@ -14,14 +14,22 @@
 
   /* ───────────────────────── DATA ───────────────────────── */
 
-  var SUBSERIES = [
-    { key: "nav_products_cutting", icon: "content_cut", emoji: "", href: "/products/cutting/" },
-    { key: "nav_products_stirfry", icon: "local_fire_department", emoji: "🔥", href: "/products/stirfry/" },
-    { key: "nav_products_frying", icon: "outdoor_grill", emoji: "", href: "/products/frying/" },
-    { key: "nav_products_stewing", icon: "soup_kitchen", emoji: "", href: "/products/stewing/" },
-    { key: "nav_products_steaming", icon: "cloud", emoji: "", href: "/products/steaming/" },
-    { key: "nav_products_other", icon: "more_horiz", emoji: "", href: "/products/other/" },
-  ];
+  var _cfg = window.SITE_CONFIG || {};
+  var _categories = _cfg.categories || {};
+
+  function _buildCategoryItems(categoryKey, parentPath) {
+    var cats = _categories[categoryKey] || [];
+    return cats.map(function (cat) {
+      return {
+        key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        icon: cat.icon || "circle",
+        emoji: cat.emoji || "",
+        href: parentPath + (cat.slug || "") + "/",
+      };
+    });
+  }
+
+  var SUBSERIES = _buildCategoryItems("products", "/products/");
 
   /* ───────────────────────── CSS ───────────────────────── */
 

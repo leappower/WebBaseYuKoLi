@@ -60,8 +60,19 @@
     },
 
     // Category slugs used for /products/<slug>/ routing
-    // Known categories map to products list; everything else → PDP
-    CATEGORY_SLUGS: ["all", "cutting", "stirfry", "frying", "stewing", "steaming", "other"],
+    // Dynamically built from SITE_CONFIG.categories.products
+    CATEGORY_SLUGS: [],
+    PRODUCT_SLUG_PATTERN: "(?!x)x",
+
+    _initCategorySlugs: function () {
+      var cats = ((_cfg.categories || {}).products || []);
+      var slugs = ["all"];
+      for (var i = 0; i < cats.length; i++) {
+        if (cats[i].slug) slugs.push(cats[i].slug);
+      }
+      this.CATEGORY_SLUGS = slugs;
+      this.PRODUCT_SLUG_PATTERN = slugs.length ? slugs.join("|") : "(?!x)x";
+    },
 
     // 设备特定页面映射
     getDevicePage: function (basePath) {
@@ -632,6 +643,7 @@
     init: function () {
       var _self = this;
 
+      this._initCategorySlugs();
       this.log("Initializing...");
 
       // 监听 popstate
@@ -825,7 +837,7 @@
       }
 
       // 产品列表页需要 product-grid.js（含 /products/all/ 和 6 个分类子页）
-      if (path.match(/\/products\/(all|cutting|stirfry|frying|stewing|steaming|other)\//)) {
+      if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
         scripts.push({ src: "/assets/js/product-grid.js", id: "spa-product-grid" });
       }
 
@@ -835,7 +847,7 @@
       }
 
       // 产品分类页需要 cross-sell.js（搭配推荐 + 适用场景，/products/all/ 只显示适用场景）
-      if (path.match(/\/products\/(all|cutting|stirfry|frying|stewing|steaming|other)\//)) {
+      if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
         scripts.push({ src: "/assets/js/cross-sell.js", id: "spa-cross-sell" });
       }
 
