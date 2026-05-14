@@ -1,0 +1,67 @@
+# BrewYuKoLi 开发环境 Caddy 配置
+# 支持 HTTPS + 热更新 + 自动重载
+
+# 开发服务器配置
+localhost:3099 {
+    # 日志配置
+    log {
+        output file /var/log/caddy/brew-dev.log
+    }
+    
+    # 开发环境代理
+    reverse_proxy localhost:3099
+    
+    # 开发头部
+    @dev {
+        header Host localhost:3099
+    }
+    
+    # 热更新支持
+    handle @dev {
+        header Cache-Control "no-cache, no-store, must-revalidate"
+        header Pragma "no-cache"
+        header Expires "0"
+    }
+}
+
+# HTTPS 开发服务器
+localhost:3443 {
+    # 自动 HTTPS (自签名证书)
+    tls {
+        ca /usr/local/share/ca-certificates
+    }
+    
+    # 反向代理
+    reverse_proxy localhost:3099
+    
+    # 开发环境头部
+    header Cache-Control "no-cache, no-store, must-revalidate"
+    header Pragma "no-cache"
+    header Expires "0"
+}
+
+# 生产环境配置 (可选)
+# example.com {
+#     tls your-email@example.com
+#     root /var/www/brew-yukoli
+#     file_server
+#     
+#     # Gzip 压缩
+#     encode zstd gzip
+#     
+#     # 安全头部
+#     header {
+#         Strict-Transport-Security "max-age=31536000; includeSubdomains"
+#         X-Content-Type-Options "nosniff"
+#         X-Frame-Options "DENY"
+#         X-XSS-Protection "1; mode=block"
+#     }
+#     
+#     # 静态资源缓存
+#     @static {
+#        path *.css *.js *.png *.jpg *.gif *.svg *.ico *.woff *.woff2
+#     }
+#     handle @static {
+#        header Cache-Control "public, max-age=31536000, immutable"
+#     }
+# }

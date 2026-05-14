@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # 开发环境
+  brew-dev:
+    build:
+      context: .
+      dockerfile: devops/Dockerfile.dev
+    ports:
+      - "3099:3099"
+      - "3443:3443"
+    volumes:
+      - ./src:/app/src
+      - ./dist:/app/dist
+      - ./devops:/app/devops
+    environment:
+      - NODE_ENV=development
+      - PORT=3099
+      - SSL_PORT=3443
+      - ENABLE_SSL=true
+    command: ["./scripts/dev-server.sh"]
+    restart: unless-stopped
+    networks:
+      - brew-network
+
+  # Caddy 反向代理
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./devops/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - brew-dev
+    restart: unless-stopped
+    networks:
+      - brew-network
+
+  # 生产环境 (可选)
+  brew-prod:
+    build:
+      context: .
+      dockerfile: devops/Dockerfile.prod
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dist:/app/dist
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+      - ENABLE_SSL=false
+    restart: unless-stopped
+    networks:
+      - brew-network
+
+networks:
+  brew-network:
+    driver: bridge
+
+volumes:
+  caddy_data:
+  caddy_config:
