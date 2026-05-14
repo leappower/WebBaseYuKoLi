@@ -13,6 +13,8 @@ echo "🔧 Installing Git hooks..."
 # Try lefthook first (preferred)
 if command -v npx &>/dev/null && [ -f "lefthook.yml" ]; then
   echo "  Using lefthook (lefthook.yml)"
+  # Clean stale .old backups that block lefthook install
+  rm -f "$GIT_DIR/hooks/pre-commit.old" "$GIT_DIR/hooks/pre-push.old"
   npx lefthook install 2>/dev/null && {
     echo ""
     echo "✅ Git hooks installed via lefthook!"
