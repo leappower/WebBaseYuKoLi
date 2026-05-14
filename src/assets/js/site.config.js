@@ -146,12 +146,12 @@
     // ═══════════════════════════════════════════════════════════
     categories: {
       products: [
-        { slug: "stirfry", key: "nav_products_stirfry", label: "翻炒系列", icon: "local_fire_department", emoji: "🔥" },
-        { slug: "cutting", key: "nav_products_cutting", label: "切配系列", icon: "content_cut", emoji: "🔪" },
-        { slug: "frying", key: "nav_products_frying", label: "煎炸系列", icon: "outdoor_grill", emoji: "🍳" },
-        { slug: "stewing", key: "nav_products_stewing", label: "炖煮系列", icon: "soup_kitchen", emoji: "🥘" },
-        { slug: "steaming", key: "nav_products_steaming", label: "蒸煮系列", icon: "cloud", emoji: "⬆️" },
-        { slug: "other", key: "nav_products_other", label: "辅助设备", icon: "more_horiz", emoji: "⚙️" },
+        { slug: "stirfry", key: "nav_products_stirfry", label: "翻炒系列", icon: "local_fire_department", emoji: "🔥", accent: "coral" },
+        { slug: "cutting", key: "nav_products_cutting", label: "切配系列", icon: "content_cut", emoji: "🔪", accent: "gold" },
+        { slug: "frying", key: "nav_products_frying", label: "煎炸系列", icon: "outdoor_grill", emoji: "🍳", accent: "orange" },
+        { slug: "stewing", key: "nav_products_stewing", label: "炖煮系列", icon: "soup_kitchen", emoji: "🥘", accent: "green" },
+        { slug: "steaming", key: "nav_products_steaming", label: "蒸煮系列", icon: "cloud", emoji: "⬆️", accent: "teal" },
+        { slug: "other", key: "nav_products_other", label: "辅助设备", icon: "more_horiz", emoji: "⚙️", accent: "coral" },
       ],
       applications: [
         { slug: "small-restaurant", label: "小型餐饮", icon: "storefront" },

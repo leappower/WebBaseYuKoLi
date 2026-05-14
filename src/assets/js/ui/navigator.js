@@ -77,9 +77,22 @@
    */
   function getNavItems() {
     var cfg = window.SITE_CONFIG || window._cfg || {};
-    // 如果配置了自定义导航项，直接使用
+    // 如果配置了自定义导航项（nav.items 格式），转换为内部格式
     if (cfg.nav && Array.isArray(cfg.nav.items) && cfg.nav.items.length > 0) {
-      return cfg.nav.items;
+      return cfg.nav.items.map(function (navItem) {
+        var label = typeof navItem.label === "object"
+          ? (navItem.label["zh-CN"] || navItem.label.en || navItem.id)
+          : navItem.label;
+        return {
+          key: navItem.i18nKey || ("nav_" + navItem.id),
+          label: label,
+          path: navItem.href || ("/" + navItem.id + "/"),
+          id: navItem.id,
+          hasDropdown: !!(navItem.children && navItem.children.length > 0),
+          // 保留原始引用，供未来扩展
+          _source: navItem,
+        };
+      });
     }
     // 从 categories 构建导航项（如果有 productLines 配置）
     if (cfg.navMode && cfg.categories) {
