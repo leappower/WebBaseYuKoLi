@@ -69,25 +69,25 @@
     bindByText("button", "get a quote", function (e) {
       e.preventDefault();
       if (window.SpaRouter) {
-        window.SpaRouter.navigate("/quote/");
+        window.SpaRouter.navigate("/contact/");
       } else {
-        window.location.href = "/quote";
+        window.location.href = "/contact";
       }
     });
     bindByText("button", "request a quote", function (e) {
       e.preventDefault();
       if (window.SpaRouter) {
-        window.SpaRouter.navigate("/quote/");
+        window.SpaRouter.navigate("/contact/");
       } else {
-        window.location.href = "/quote";
+        window.location.href = "/contact";
       }
     });
     bindByText("button", "get quote", function (e) {
       e.preventDefault();
       if (window.SpaRouter) {
-        window.SpaRouter.navigate("/quote/");
+        window.SpaRouter.navigate("/contact/");
       } else {
-        window.location.href = "/quote";
+        window.location.href = "/contact";
       }
     });
   }
@@ -110,7 +110,7 @@
   function bindContactButtons() {
     bindByText("button", "whatsapp", function (e) {
       e.preventDefault();
-      openWhatsAppWithPreset("", "quote-btn");
+      openWhatsAppWithPreset("", "contact-btn");
     });
     bindByText("button", "consult an engineer", function (e) {
       e.preventDefault();

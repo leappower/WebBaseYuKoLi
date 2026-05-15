@@ -94,7 +94,7 @@
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     var result = { type: "none", slug: "", parentPath: "", parentLabel: "", currentLabel: "", siblings: [] };
 
-    // Product category pages: /products/stirfry/
+    // Product category pages: /products/coffee/
     var catMatch = path.match(new RegExp("^/products/(" + PRODUCT_SLUG_PATTERN + ")$"));
     if (catMatch) {
       var slug = catMatch[1];

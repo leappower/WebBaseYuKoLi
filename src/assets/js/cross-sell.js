@@ -62,70 +62,81 @@
 
   // ─── Cross-sell: read from site.config.js ────────────────
   var _fallbackCrossSell = {
-    stirfry: [
-      { slug: "cutting", reason: "切配后直接翻炒，备料到出餐无缝衔接", highlight: "效率 +200%" },
-      { slug: "steaming", reason: "蒸饭蒸菜同步进行，午高峰不排队", highlight: "出餐 -40min" },
-      { slug: "other", reason: "洗碗机+保温台，后厨动线一次到位", highlight: "人手 -3人" },
-      { slug: "stewing", reason: "炖汤+炒菜双线出餐，菜品更丰富", highlight: "菜品 +30%" },
+    coffee: [
+      { slug: "tea", reason: "咖啡+茶饮，打造完整饮品线", highlight: "饮品线 +100%" },
+      { slug: "beauty", reason: "咖啡+美容食品，健康内调外养", highlight: "客单价 +50%" },
+      { slug: "meal", reason: "咖啡+代餐，轻食健康一站式", highlight: "场景拓展" },
+      { slug: "lifestyle", reason: "咖啡+生活方式，品牌差异化升级", highlight: "品牌升级" },
     ],
-    cutting: [
-      { slug: "stirfry", reason: "切好直接下锅，备料到烹饪零等待", highlight: "效率 +180%" },
-      { slug: "steaming", reason: "切配+蒸煮一体化，前处理更高效", highlight: "备料 -60min" },
-      { slug: "other", reason: "传送带+分拣台，流水线式切配作业", highlight: "产能 +4倍" },
+    tea: [
+      { slug: "coffee", reason: "茶+咖啡，双饮品线覆盖更多客群", highlight: "客群 +80%" },
+      { slug: "weight", reason: "茶+体重管理，减肥茶饮热卖组合", highlight: "复购 +60%" },
+      { slug: "gut", reason: "茶+肠道健康，益生菌茶饮新趋势", highlight: "新趋势" },
     ],
-    frying: [
-      { slug: "stirfry", reason: "炸+炒双线并行，出餐速度翻倍", highlight: "出餐 +100%" },
-      { slug: "cutting", reason: "切配备料跟上油炸节奏，不缺料", highlight: "备料 0等待" },
-      { slug: "other", reason: "滤油台+排烟系统，油炸区干净整洁", highlight: "油烟 -80%" },
+    meal: [
+      { slug: "coffee", reason: "代餐+咖啡，白领早餐首选组合", highlight: "早餐场景" },
+      { slug: "weight", reason: "代餐+减脂，体重管理核心产品线", highlight: "核心品类" },
+      { slug: "gut", reason: "代餐+益生菌，营养均衡肠道养护", highlight: "营养均衡" },
     ],
-    stewing: [
-      { slug: "stirfry", reason: "炖汤+炒菜组合，满足多样化菜单", highlight: "菜品 +25%" },
-      { slug: "steaming", reason: "炖煮蒸饭同步，大锅饭不再手忙脚乱", highlight: "同步出餐" },
-      { slug: "cutting", reason: "自动切配炖菜食材，规格统一味道稳", highlight: "口味一致" },
+    beauty: [
+      { slug: "coffee", reason: "美容+咖啡，胶原蛋白咖啡热卖", highlight: "爆品组合" },
+      { slug: "tea", reason: "美容+花茶，天然植物美容新概念", highlight: "天然概念" },
+      { slug: "weight", reason: "美容+纤体，内调外养双效方案", highlight: "双效方案" },
+      { slug: "gut", reason: "美容+肠道，肠道健康改善肤质", highlight: "由内而外" },
     ],
-    steaming: [
-      { slug: "stirfry", reason: "蒸+炒搭档，炒菜蒸饭同时搞定", highlight: "效率 +150%" },
-      { slug: "cutting", reason: "蒸前切配自动完成，食材现切现蒸", highlight: "鲜度提升" },
-      { slug: "stewing", reason: "蒸+炖组合，汤饭粥一灶全出", highlight: "一灶多用" },
-      { slug: "other", reason: "保温分餐台搭配蒸柜，热菜直达窗口", highlight: "温度不降" },
+    weight: [
+      { slug: "meal", reason: "减脂+代餐，体重管理黄金搭档", highlight: "黄金搭档" },
+      { slug: "coffee", reason: "减脂+黑咖啡，加速代谢燃脂组合", highlight: "加速代谢" },
+      { slug: "beauty", reason: "减脂+美容，瘦身美颜一站式", highlight: "瘦身美颜" },
+      { slug: "lifestyle", reason: "减脂+生活方式，健康减重可持续", highlight: "可持续" },
     ],
-    other: [
-      { slug: "stirfry", reason: "核心烹饪+辅助设备，后厨全套配齐", highlight: "一站式" },
-      { slug: "cutting", reason: "切配+辅助传送，流水线完整配置", highlight: "流水线化" },
-      { slug: "steaming", reason: "蒸柜+保温台，从蒸到分餐不断链", highlight: "温度可控" },
+    gut: [
+      { slug: "meal", reason: "益生菌+代餐，肠道+营养双改善", highlight: "双改善" },
+      { slug: "tea", reason: "益生菌+茶，肠道养护清爽饮品", highlight: "清爽养肠" },
+      { slug: "beauty", reason: "益生菌+美容食品，肠道健康显现在肌肤", highlight: "肌肤改善" },
+    ],
+    lifestyle: [
+      { slug: "coffee", reason: "生活方式+咖啡，日常健康饮品标配", highlight: "日常标配" },
+      { slug: "tea", reason: "生活方式+茶，慢生活健康理念", highlight: "慢生活" },
+      { slug: "weight", reason: "生活方式+体重管理，健康管理闭环", highlight: "健康闭环" },
     ],
   };
 
   var _fallbackScenes = {
-    stirfry: [
-      { href: "/applications/small-restaurant/", slug: "small-restaurant", icon: "storefront", desc: "2-5人小后厨，一台炒菜机顶3个厨师" },
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂午高峰500-5000人，90分钟出完热菜" },
-      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房批量出餐，菜品口味标准化" },
+    coffee: [
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "从0到1打造咖啡品牌，OEM一站式交付" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁门店统一出品，品质标准化交付" },
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康食品品牌，功能性咖啡定制" },
     ],
-    cutting: [
-      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "千份级备料，切配规格统一不出错" },
-      { href: "/applications/food-factory/", slug: "food-factory", icon: "factory", desc: "食品工厂流水线切配，日产能提升6倍" },
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂切菜工序自动化，2小时→20分钟" },
+    tea: [
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "茶饮品牌定制，从配方到包装全链路" },
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康茶饮系列，天然成分功能定制" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁茶饮标准化出品，稳定供应链" },
     ],
-    frying: [
-      { href: "/applications/small-restaurant/", slug: "small-restaurant", icon: "storefront", desc: "炸鸡炸薯条出餐快，外卖高峰不爆单" },
-      { href: "/applications/chain-restaurant/", slug: "chain-restaurant", icon: "store", desc: "连锁店炸品口味统一，每批出品标准化" },
-      { href: "/applications/cloud-kitchen/", slug: "cloud-kitchen", icon: "delivery_dining", desc: "云厨房多品牌共用，炸炉轮流出餐" },
+    meal: [
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康代餐定制，营养配比科学配方" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁便利店代餐产品，标准化量产" },
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "代餐品牌从配方到上市全流程" },
     ],
-    stewing: [
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂炖汤一大锅，千人份同时供应" },
-      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房炖品批量出，口味稳定如一" },
-      { href: "/applications/chain-restaurant/", slug: "chain-restaurant", icon: "store", desc: "连锁店招牌炖品，每家店味道都一样" },
+    beauty: [
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "美容食品品牌定制，从概念到量产" },
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "口服美容产品线，胶原蛋白等功能食品" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "美容连锁品牌标准化供货" },
     ],
-    steaming: [
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂蒸饭蒸菜同步，千人份量轻松搞定" },
-      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房批量蒸制，配送前锁鲜保味" },
-      { href: "/applications/food-factory/", slug: "food-factory", icon: "factory", desc: "食品工厂蒸煮工序，全自动温度控制" },
+    weight: [
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "体重管理食品定制，科学配比低卡配方" },
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "减脂品牌OEM定制，差异化配方" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "健身房/便利店渠道标准化产品" },
     ],
-    other: [
-      { href: "/applications/canteen/", slug: "canteen", icon: "restaurant", desc: "食堂洗碗分餐一体，后厨人手省一半" },
-      { href: "/applications/chain-restaurant/", slug: "chain-restaurant", icon: "store", desc: "连锁店排烟+清洗标准化，后厨干净合规" },
-      { href: "/applications/central-kitchen/", slug: "central-kitchen", icon: "apartment", desc: "中央厨房传送+包装，全流程自动化" },
+    gut: [
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "益生菌食品定制，活性保障技术方案" },
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "肠道健康品牌定制，差异化菌种方案" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁药房/健康食品店供货" },
+    ],
+    lifestyle: [
+      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "生活方式品牌定制，全品类健康食品" },
+      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁零售渠道健康食品标准化供货" },
+      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康生活食品系列，日常营养补充" },
     ],
   };
 
@@ -136,7 +147,7 @@
 
   function detectCategorySlug() {
     var path = (window.location.pathname || "/").replace(/\/$/, "");
-    var match = path.match(/^\/products\/(all|stirfry|cutting|frying|stewing|steaming|other)$/);
+    var match = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle)$/);
     return match ? match[1] : null;
   }
 
@@ -331,7 +342,7 @@
 
   function trackPdpReferrer() {
     var path = (window.location.pathname || "/").replace(/\/$/, "");
-    if (/^\/products\/(stirfry|cutting|frying|stewing|steaming|other)$/.test(path)) {
+    if (/^\/products\/(coffee|tea|meal|beauty|weight|gut|lifestyle)$/.test(path)) {
       try { sessionStorage.setItem("pdp_referrer", path); } catch(e) {}
     }
   }

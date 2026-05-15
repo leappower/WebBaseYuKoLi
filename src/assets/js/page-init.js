@@ -31,7 +31,7 @@
     landing: _routes.landing || "/landing/",
     support: _routes.support || "/support/",
     cases: _routes.cases || "/cases/",
-    roiCalculator: _routes.roiCalculator || "/profit-calculator/",
+    roiCalculator: _routes.roiCalculator || "/contact/",
   });
   /* ═══════════════════════════════════════════════════════════════════
      SECTION 2: DEPRECATED (removed getDeviceType, resolveDeviceUrl)
