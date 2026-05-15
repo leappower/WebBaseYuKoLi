@@ -1,370 +1,538 @@
-<!DOCTYPE html>
+<!doctype html>
 
-<html class="light" lang="zh-CN"><head>
+<html class="light" lang="zh-CN">
+  <head>
   <script src="/site.config.js"></script>
   <script src="/assets/js/utils/dom-utils.js"></script>
-<!-- ═══ Responsive Redirect (injected by patch-responsive-redirect.py) ═══ -->
-<link rel="canonical" href="%DOMAIN%/home/" />
+    <!-- ═══ Responsive Redirect (injected by patch-responsive-redirect.py) ═══ -->
+    <link rel="canonical" href="%DOMAIN%/home/" />
   <link rel="alternate" hreflang="zh-CN" href="%DOMAIN%/home/" />
   <link rel="alternate" hreflang="en" href="%DOMAIN%/home/" />
   <link rel="alternate" hreflang="x-default" href="%DOMAIN%/home/" />
-<link rel="alternate" media="only screen and (max-width: 767px)"
-      href="/home/index-mobile.html"/>
-<link rel="alternate" media="only screen and (min-width: 768px) and (max-width: 1279px)"
-      href="/home/index-tablet.html"/>
-<link rel="alternate" media="only screen and (min-width: 1280px)"
-      href="/home/index-pc.html"/>
-<script>
-/* Responsive redirect — runs before render, no flash */
-(function(){
-  // 防止 bfcache 恢复时重复 redirect
-  if (window.__redirectChecked) return;
-  window.__redirectChecked = true;
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/home/index-mobile.html" />
+    <link
+      rel="alternate"
+      media="only screen and (min-width: 768px) and (max-width: 1279px)"
+      href="/home/index-tablet.html"
+    />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/home/index-pc.html" />
+    <script>
+      /* Responsive redirect — runs before render, no flash */
+      (function () {
+        // 防止 bfcache 恢复时重复 redirect
+        if (window.__redirectChecked) return;
+        window.__redirectChecked = true;
 
-  // 处理 clean-url 参数:重定向后清理 URL 为干净的目录 URL
-  var urlParams = new URLSearchParams(location.search);
-  var cleanUrl = urlParams.get('clean-url');
-  if (cleanUrl) {
-    history.replaceState({}, '', cleanUrl);
-    return;
-  }
+        // 处理 clean-url 参数:重定向后清理 URL 为干净的目录 URL
+        var urlParams = new URLSearchParams(location.search);
+        var cleanUrl = urlParams.get("clean-url");
+        if (cleanUrl) {
+          history.replaceState({}, "", cleanUrl);
+          return;
+        }
 
-  // SPA 导航时跳过响应式重定向
-  if (window.__spaNavigating) {
-    return;
-  }
+        // SPA 导航时跳过响应式重定向
+        if (window.__spaNavigating) {
+          return;
+        }
 
-  // 使用 DeviceUtils 统一管理设备判断
-  var currentFile = location.pathname.split('/').pop();
+        // 使用 DeviceUtils 统一管理设备判断
+        var currentFile = location.pathname.split("/").pop();
 
-  // 当访问目录 URL(以 / 结尾)时,不要重定向(SPA 导航使用干净的目录 URL)
-  if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) {
-    return;
-  }
+        // 当访问目录 URL(以 / 结尾)时,不要重定向(SPA 导航使用干净的目录 URL)
+        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) {
+          return;
+        }
 
-  // 使用 DeviceUtils 判断是否需要重定向
-  if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
-    var deviceType = window.DeviceUtils.getDeviceType();
-    var targetFile;
+        // 使用 DeviceUtils 判断是否需要重定向
+        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+          var deviceType = window.DeviceUtils.getDeviceType();
+          var targetFile;
 
-    if (deviceType === window.DeviceUtils.DeviceType.MOBILE) {
-      targetFile = 'index-mobile.html';
-    } else if (deviceType === window.DeviceUtils.DeviceType.TABLET) {
-      targetFile = 'index-tablet.html';
-    } else {
-      targetFile = 'index-pc.html';
-    }
+          if (deviceType === window.DeviceUtils.DeviceType.MOBILE) {
+            targetFile = "index-mobile.html";
+          } else if (deviceType === window.DeviceUtils.DeviceType.TABLET) {
+            targetFile = "index-tablet.html";
+          } else {
+            targetFile = "index-pc.html";
+          }
 
-    location.href = targetFile;
-    return;
-  }
+          location.href = targetFile;
+          return;
+        }
 
-})();
-</script>
-<!-- ═══ End Responsive Redirect ═══ -->
+      })();
+    </script>
+    <script>
+      /* Pre-apply cached translations to prevent flash */
+      (function () {
+        try {
+          var lang = localStorage.getItem("userLanguage") || "zh-CN";
+          if (lang === "zh-CN") return; // 默认中文，无需处理
+          var cacheKey = "yukoli-translations-ui-" + lang;
+          var cached = localStorage.getItem(cacheKey);
+          if (!cached) return;
+          var data = JSON.parse(cached);
+          if (!data.data) return;
+          var translations = data.data;
+          document.documentElement.lang = lang;
+          // 预应用关键翻译（仅处理无子元素的叶子节点）
+          var elements = document.querySelectorAll("[data-i18n]");
+          for (var i = 0; i < elements.length; i++) {
+            var el = elements[i];
+            var key = el.getAttribute("data-i18n");
+            if (translations[key] && el.children.length === 0) {
+              el.textContent = translations[key];
+            }
+          }
+        } catch (e) {
+          // 忽略错误，让主翻译系统处理
+        }
+      })();
+    </script>
+    <!-- ═══ End Responsive Redirect ═══ -->
 
-<meta charset="utf-8"/>
-<meta name="description" content="YuKoLi 跃迁力科技 — 20年专注智能商用厨房设备研发制造，200款智能设备覆盖烹饪、备料、冷链全场景，服务全球50+国家。"/>
-<meta property="og:type" content="website"/>
-<meta property="og:title" content="YuKoLi 智能厨具 | 专业商用厨房设备制造商"/>
-<meta property="og:description" content="YuKoLi 智能厨具 - 专业商用厨房设备制造商，提供智能炒菜机、炖煮机、油炸炉、蒸煮设备等200款产品。"/>
-<meta property="og:url" content="%DOMAIN%/home/"/>
-<meta property="og:image" content="%DOMAIN%/assets/images/logo_header.webp"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>YuKoLi 智能厨具 | 专业商用厨房设备制造商</title>
-<link rel="preload" href="/assets/fonts/local-fonts.css" as="style"/>
-<link rel="preload" href="/assets/css/styles.css" as="style"/>
-  <link rel="preload" href="/assets/css/tailwind.css" as="style"/>
-<link rel="preload" href="/assets/fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin/>
-<link rel="preload" href="/assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin/>
-<link href="/assets/fonts/local-fonts.css" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/css/styles.css"/>
-  <link rel="stylesheet" href="/assets/css/tailwind.css"/>
-<link rel="stylesheet" href="/assets/css/z-index-system.css"/>
-<link rel="stylesheet" href="/assets/css/performance-optimizations.css"/>
-<style>
-  body { font-family: 'Public Sans', sans-serif; min-height: 100dvh; }
-</style>
-<!-- Dark mode: apply saved preference before first paint (prevents flash) -->
-<script>(function(){
-if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.add('dark')})()</script>
-<link rel="stylesheet" href="/assets/css/skeleton.css"/>
-<link rel="icon" href="/assets/images/logo_header.webp" type="image/webp"/>
-</head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-clip">
-<navigator data-component="navigator"
-  data-variant="mobile"
-  data-active="home">
-</navigator>
+    <meta charset="utf-8" />
 
-<main id="spa-content" class="flex-1 overflow-x-hidden">
-  <!-- Hero Section -->
-  <section class="fullwidth-bg py-10">
-    <div class="section-content">
-      <div
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-4"
-      >
-        <span class="relative flex h-2 w-2">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-        </span>
-        <span data-i18n="home_hero_badge">智能商厨设备领导品牌</span>
-      </div>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="YuKoLi 优科力科技 | 专业健康食品 OEM/ODM 制造商" />
+    <meta
+      property="og:description"
+      content="YuKoLi 优科力科技 — 专业健康食品 OEM/ODM 制造商，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家。"
+    />
+    <meta property="og:url" content="%DOMAIN%/home/" />
+    <meta property="og:image" content="%DOMAIN%/assets/images/logo_header.webp" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="description" content="YuKoLi 优科力科技 — 20年专注健康食品 OEM/ODM 制造，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家，MOQ 500起。" />
+    <title>YuKoLi 优科力科技 | 专业健康食品 OEM/ODM 制造商</title>
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <link rel="preload" href="/assets/css/styles.css" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css" as="style" />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css" />
+    <link rel="stylesheet" href="/assets/css/z-index-system.css" />
+    <link rel="stylesheet" href="/assets/css/performance-optimizations.css" />
+    <style>
+      body { font-family: "Public Sans", sans-serif; min-height: 100dvh; }
+    </style>
+    <!-- Dark mode: apply saved preference before first paint (prevents flash) -->
+    <script>
+      (function () {
+        if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
+      })();
+    </script>
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+    <link rel="icon" href="/assets/images/logo_header.webp" type="image/webp" />
 
-      <h1 class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white mb-3">
-        智能<span class="text-primary" data-i18n="home_hero_title_2">烹饪</span>，标准化出品。
-      </h1>
-      <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4" data-i18n="home_hero_desc">
-        YuKoLi 全系列智能商厨设备，涵盖爆炒、炖煮、蒸煮、煎炸、切配，为食堂、中央厨房、餐饮连锁提供一站式自动化解决方案。产品远销全球50+国家。
-      </p>
-      <div
-        class="relative w-full h-[220px] bg-slate-200 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl border border-white/10 mb-5"
-        data-hero-video
-      >
-        <img
-          class="hero-video-poster w-full h-full object-cover"
-          src="/assets/images/products/esl-bxc800.webp"
-          loading="eager"
-          alt="Yukoli flagship"
-        />
-        <video
-          class="hero-video-player"
-          src="/assets/video/aboutus.mp4"
-          poster="/assets/images/products/esl-bxc800.webp"
-          preload="metadata"
-          muted
-          playsinline
-          loop
-        ></video>
-        <div class="hero-video-overlay">
-          <button class="hero-video-mute" aria-label="Toggle mute">🔇</button>
-        </div>
-        <button class="hero-video-fallback-btn" aria-label="Play video">▶</button>
-        <div class="hero-video-info absolute bottom-3 left-3 right-3 p-3 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl">
-          <div class="flex justify-between items-center text-white">
-            <div>
-              <p class="text-[10px] font-bold uppercase opacity-70" data-i18n="home_hero_flagship_label">旗舰型号</p>
-              <p class="text-sm font-black">ESL-GQ90 全自动语音炒菜机</p>
-            </div>
-            <div class="text-right">
-              <p class="text-[10px] font-bold uppercase opacity-70" data-i18n="home_hero_efficiency_label">效率提升</p>
-              <p class="text-sm font-black text-primary">+340%</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="flex gap-3">
-        <a href="/products/" class="flex-1 bg-primary text-white px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25">
-          <span data-i18n="home_hero_btn_products">浏览全系列产品</span>
-          <span class="material-symbols-outlined text-lg">inventory_2</span>
-        </a>
-        <a href="/quote" class="flex-1 border-2 border-slate-200 dark:border-slate-800 px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2" data-i18n="home_hero_btn_hardware_text">
-          获取报价
-        </a>
-      </div>
-    </div>
-  </section>
+    <!-- SEO JSON-LD: Organization + WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https:/schema.org",
+        "@type": "Organization",
+        "name": "YuKoLi 优科力科技",
+        "alternateName": "佛山优科力科技",
+        "url": "%DOMAIN%",
+        "logo": "%DOMAIN%/assets/images/logo_header.webp",
+        "description": "YuKoLi（优科力科技）— 20年专注健康食品 OEM/ODM 制造，4座自有工厂，7大产品线，出口30+国家。",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "佛山市",
+          "addressRegion": "广东",
+          "addressCountry": "CN"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+86-13163756465",
+          "contactType": "sales",
+          "availableLanguage": ["zh-CN", "en"]
+        },
+        "sameAs": []
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https:/schema.org",
+        "@type": "WebSite",
+        "name": "YuKoLi 健康食品 OEM/ODM",
+        "url": "%DOMAIN%",
+        "description": "YuKoLi 专业健康食品 OEM/ODM 制造商，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮。",
+        "inLanguage": ["zh-CN", "en"]
+      }
+    </script>
+  </head>
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-clip">
+    <!-- ═══ Navigator Component ═══ -->
+    <navigator
+      data-component="navigator"
+      data-variant="mobile"
+      data-active="home"
+      data-search="true"
+      data-cta-text-key="nav_get_quote"
+      data-cta-href="/contact"
+    ></navigator>
 
-  <!-- Product Matrix -->
-  <section class="fullwidth-bg py-10 bg-slate-100 dark:bg-slate-900/50">
-    <div class="section-content">
-        <div class="flex justify-between items-end mb-4">
-          <div>
-            <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_hw_title">核心产品</h2>
-            <p class="text-slate-500 text-xs" data-i18n="home_hw_subtitle">200款智能商厨设备，覆盖烹饪全流程</p>
-          <a class="text-primary font-bold text-sm flex items-center gap-1" href="/products/">
-            <span data-i18n="home_hw_view_inventory">查看全部</span>
-            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-          </a>
-        </div>
-        <!-- Dynamic Home Core Products (rendered by home-core-products.js) -->
-        <div id="home-core-products-mobile"></div>
-      </div>
-    </div>
-  </section>
+    <main id="spa-content" class="flex-1 overflow-x-hidden">
+      <!-- ═══ Hero Section ═══ -->
+      <section class="fullwidth-bg py-10 bg-white dark:bg-slate-950">
+        <div class="section-content">
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-4"
+          >
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            <span data-i18n="home_hero_badge">专业健康食品 OEM/ODM 制造商</span>
+          </div>
 
-  <!-- 行业解决方案 -->
-  <section class="fullwidth-bg py-10">
-    <div class="section-content">
-      <h2 class="text-xl font-black tracking-tight mb-4" data-i18n="home_int_title">覆盖全行业的智慧厨房方案</h2>
-      <div class="space-y-3">
-        <div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-          <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0">apartment</span>
-          <div>
-            <h4 class="font-bold text-sm mb-0.5" data-i18n="home_solution_canteen">学校/企业食堂</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_int_enterprise_desc">大批量标准化出餐，智能炒菜机一人操作即可满足千人食堂需求。</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-          <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0">factory</span>
-          <div>
-            <h4 class="font-bold text-sm mb-0.5" data-i18n="home_solution_central">中央厨房</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_int_cloud_desc">从前处理到烹饪全流程自动化，统一口味、统一标准、统一配送。</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-3 bg-white dark:bg-slate-900 p-4 rounded-xl shadow-sm border border-slate-200 dark:border-slate-800">
-          <span class="material-symbols-outlined text-primary text-2xl flex-shrink-0">storefront</span>
-          <div>
-            <h4 class="font-bold text-sm mb-0.5" data-i18n="home_solution_chain">餐饮连锁</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_int_health_desc">菜谱云端下发，所有门店同步出品，保证品牌口味一致性。</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Stats -->
-  <section class="fullwidth-bg py-10 bg-slate-100 dark:bg-slate-900/50">
-    <div class="section-content">
-        <div class="grid grid-cols-2 gap-3">
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
-            <p class="text-2xl font-black text-primary" data-i18n="home_stat_products">200+</p>
-            <p class="text-xs font-bold text-slate-500 uppercase" data-i18n="home_stat_products">产品型号</p>
-          </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
-            <p class="text-2xl font-black text-primary" data-i18n="home_stat_countries">50+</p>
-            <p class="text-xs font-bold text-slate-500 uppercase" data-i18n="home_stat_countries_label">出口国家</p>
-          </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
-            <p class="text-2xl font-black text-primary">20+</p>
-            <p class="text-xs font-bold text-slate-500 uppercase" data-i18n="home_stat_years">年制造经验</p>
-          </div>
-          <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
-            <p class="text-2xl font-black text-primary">CE/UL</p>
-            <p class="text-xs font-bold text-slate-500 uppercase" data-i18n="home_stat_certified">国际认证</p>
-          </div>
-        </div>
-      </div>
-  </section>
-
-  <!-- 核心优势 -->
-  <section class="fullwidth-bg py-10">
-    <div class="section-content">
-      <div class="text-center mb-4">
-        <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_advantage_title">为什么选择 YuKoLi</h2>
-        <p class="text-slate-500 text-xs" data-i18n="home_advantage_subtitle">20年商用厨具制造经验，产品远销全球50+国家</p>
-      </div>
-      <div class="grid grid-cols-1 gap-3">
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-4 flex items-center gap-3 border border-slate-200 dark:border-slate-800">
-          <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-primary text-xl">groups</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-sm" data-i18n="home_advantage_labor_title">节省人工 70%</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_advantage_labor_desc">1台智能炒菜机可替代3-5名厨师，降低人力成本</p>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-4 flex items-center gap-3 border border-slate-200 dark:border-slate-800">
-          <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-primary text-xl">verified</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-sm" data-i18n="home_advantage_quality_title">标准化出品</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_advantage_quality_desc">智能控温控时，800+菜谱程序，每份菜品品质一致</p>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-4 flex items-center gap-3 border border-slate-200 dark:border-slate-800">
-          <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-primary text-xl">bolt</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-sm" data-i18n="home_advantage_energy_title">节能30%+</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_advantage_energy_desc">电磁加热技术，比传统燃气灶节能30%以上</p>
-          </div>
-        </div>
-        <div class="bg-white dark:bg-slate-900 rounded-xl p-4 flex items-center gap-3 border border-slate-200 dark:border-slate-800">
-          <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="material-symbols-outlined text-primary text-xl">public</span>
-          </div>
-          <div>
-            <h4 class="font-bold text-sm" data-i18n="home_advantage_service_title">全球服务</h4>
-            <p class="text-sm text-slate-500" data-i18n="home_advantage_service_desc">CE/UL认证，全球物流，本地化技术支持与培训服务</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 资质认证 -->
-  <section class="fullwidth-bg py-10 border-t border-slate-200 dark:border-slate-800">
-    <div class="section-content">
-        <div class="text-center mb-4">
-          <h3 class="text-lg font-black mb-1" data-i18n="home_trust_title">品质保障，全球信赖</h3>
-          <p class="text-slate-500 text-xs" data-i18n="home_trust_subtitle">通过国际权威认证，产品远销全球50+国家</p>
-        <div class="flex flex-wrap justify-center gap-3">
-          <div class="flex items-center gap-1.5 border border-slate-300 dark:border-slate-700 px-3 py-2 rounded-lg font-bold text-sm">
-            <span class="material-symbols-outlined text-base">verified</span>
-            CE 认证
-          </div>
-          <div class="flex items-center gap-1.5 border border-slate-300 dark:border-slate-700 px-3 py-2 rounded-lg font-bold text-sm">
-            <span class="material-symbols-outlined text-base">electric_bolt</span>
-            UL 认证
-          </div>
-          <div class="flex items-center gap-1.5 border border-slate-300 dark:border-slate-700 px-3 py-2 rounded-lg font-bold text-sm">
-            <span class="material-symbols-outlined text-base">health_and_safety</span>
-            ISO 9001
-          </div>
-          <div class="flex items-center gap-1.5 border border-slate-300 dark:border-slate-700 px-3 py-2 rounded-lg font-bold text-sm">
-            <span class="material-symbols-outlined text-base">workspace_premium</span>
-            20年品牌
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Bottom -->
-  <section class="fullwidth-bg py-12">
-    <div class="section-content">
-      <div class="bg-primary rounded-2xl p-6 text-center text-white relative overflow-hidden">
-        <div class="absolute top-0 right-0 size-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-        <div class="relative z-10">
-          <h2 class="text-2xl font-black mb-3" data-i18n="home_cta_title">准备好升级您的厨房了吗？</h2>
-          <p class="text-white/80 text-sm mb-5" data-i18n="home_cta_desc">
-            与 YuKoLi 合作，加入全球3000+餐饮企业的智能化升级行列。免费获取定制方案。
+          <h1 class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white mb-3">
+            赋能全球品牌，<span class="text-primary" data-i18n="home_hero_title_2">定制健康未来</span>
+          </h1>
+          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4" data-i18n="home_hero_desc">
+            20 年专注健康食品 OEM/ODM，4 座自有工厂，7 大产品线，出口 30+ 国家，MOQ 500 起。从配方研发到成品交付，一站式为您打造专属品牌。
           </p>
-          <div class="flex flex-col gap-2">
-            <a href="/quote" class="bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm text-center" data-i18n="home_cta_btn_quote">
-              免费获取报价
+
+          <div class="relative w-full h-[220px] bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl border border-white/10 mb-5">
+            <img
+              alt="YuKoLi 健康食品 OEM/ODM 工厂"
+              class="w-full h-full object-cover"
+              src="/assets/images/oem/hero/hero-mobile.webp"
+              loading="eager"
+            />
+          </div>
+
+          <div class="flex gap-3">
+            <a href="/contact/" class="flex-1 bg-primary text-white px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25">
+              <span data-i18n="home_hero_btn_products">免费获取样品</span>
+              <span class="material-symbols-outlined text-lg">science</span>
             </a>
-            <a href="/products/" class="bg-slate-900 text-white px-5 py-3 rounded-xl font-bold text-sm text-center" data-i18n="home_cta_btn_products">
-              浏览全系列产品
+            <a href="/contact/" class="flex-1 border-2 border-slate-200 dark:border-slate-800 px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2" data-i18n="home_hero_btn_hardware_text">
+              了解解决方案
             </a>
+          </div>
         </div>
-      </div>
-      </div>
-    </div>
-  </section>
-</main>
+      </section>
+
+      <!-- ═══ Trust Bar ═══ -->
+      <section class="fullwidth-bg py-8 bg-slate-100 dark:bg-slate-900/50">
+        <div class="section-content">
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-xl font-black text-primary">4</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_factory">座工厂</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-xl font-black text-primary">20+</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_years">年经验</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-xl font-black text-primary">7</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_lines">大产品线</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-xl font-black text-primary">30+</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_countries">出口国家</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-xl font-black text-primary">6</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_certs">项认证</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-xl font-black text-primary">500</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_moq">起订量</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ Why YuKoLi ═══ -->
+      <section class="fullwidth-bg py-10 bg-white dark:bg-slate-950">
+        <div class="section-content">
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_advantage_title">为何选择优科力</h2>
+            <p class="text-slate-500 text-xs" data-i18n="home_advantage_subtitle">
+              20年健康食品制造经验，从配方研发到成品交付一站式服务
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-primary text-xl">factory</span>
+              </div>
+              <h3 class="text-sm font-bold mb-1" data-i18n="home_why_factory_title">自有工厂</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_factory_desc">
+                4 座自有工厂，全流程自主管控
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-primary text-xl">science</span>
+              </div>
+              <h3 class="text-sm font-bold mb-1" data-i18n="home_why_rd_title">研发实力</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_rd_desc">
+                专业配方团队，快速响应市场趋势
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-primary text-xl">verified</span>
+              </div>
+              <h3 class="text-sm font-bold mb-1" data-i18n="home_why_cert_title">国际认证</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_cert_desc">
+                通过 HACCP/FDA/ISO 等多项认证
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-primary text-xl">tune</span>
+              </div>
+              <h3 class="text-sm font-bold mb-1" data-i18n="home_why_flex_title">柔性生产</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_flex_desc">
+                配方、口味、包装全方位定制
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-primary text-xl">support_agent</span>
+              </div>
+              <h3 class="text-sm font-bold mb-1" data-i18n="home_why_service_title">一站式服务</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_service_desc">
+                从概念到上市全流程服务
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
+                <span class="material-symbols-outlined text-primary text-xl">public</span>
+              </div>
+              <h3 class="text-sm font-bold mb-1" data-i18n="home_why_export_title">出口经验</h3>
+              <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_export_desc">
+                产品远销 30+ 国家
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 产品展示 ═══ -->
+      <section class="fullwidth-bg py-10 bg-slate-100 dark:bg-slate-900/50">
+        <div class="section-content">
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_products_title">核心产品系列</h2>
+            <p class="text-slate-500 text-xs" data-i18n="home_products_subtitle">
+              七大品类覆盖，满足不同健康需求
+            </p>
+          </div>
+          <div class="space-y-3">
+            <!-- 咖啡冲调 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="咖啡冲调" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/coffee.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_coffee_name">咖啡冲调</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_coffee_tagline">醇香体验，instant 享受</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_coffee_desc">速溶咖啡、拿铁、卡布奇诺等多种风味定制</p>
+                </div>
+              </div>
+            </div>
+            <!-- 茶饮奶茶 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="茶饮奶茶" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/tea.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_tea_name">茶饮奶茶</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_tea_tagline">原叶萃取，新式茶饮</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_tea_desc">果茶、奶茶、纯茶粉，还原门店级口感</p>
+                </div>
+              </div>
+            </div>
+            <!-- 代餐蛋白 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="代餐蛋白" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/meal.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_meal_name">代餐蛋白</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_meal_tagline">营养均衡，便捷代餐</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_meal_desc">蛋白棒、代餐粉，科学配比饱腹感强</p>
+                </div>
+              </div>
+            </div>
+            <!-- 美容胶原 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="美容胶原" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/beauty.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_beauty_name">美容胶原</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_beauty_tagline">口服美容，焕活肌肤</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_beauty_desc">胶原蛋白肽饮品，添加多种美容精华</p>
+                </div>
+              </div>
+            </div>
+            <!-- 体重管理 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="体重管理" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/weight.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_weight_name">体重管理</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_weight_tagline">科学控重，健康塑形</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_weight_desc">燃脂饮、阻断剂，辅助健康体重管理方案</p>
+                </div>
+              </div>
+            </div>
+            <!-- 肠道健康 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="肠道健康" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/gut.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_gut_name">肠道健康</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_gut_tagline">益生菌群，平衡呵护</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_gut_desc">益生菌粉、膳食纤维，维护肠道微生态</p>
+                </div>
+              </div>
+            </div>
+            <!-- 功能冲饮 -->
+            <div class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl transition-shadow">
+              <div class="flex">
+                <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                  <img alt="功能冲饮" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/lifestyle.webp" loading="lazy" />
+                </div>
+                <div class="p-4 flex-1">
+                  <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_lifestyle_name">功能冲饮</h3>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_lifestyle_tagline">特定功效，精准补充</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_lifestyle_desc">提神、助眠、免疫支持等多种功能定制</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 制造实力 ═══ -->
+      <section class="fullwidth-bg py-10 bg-white dark:bg-slate-950">
+        <div class="section-content">
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_mfg_title">智造实力</h2>
+            <p class="text-slate-500 text-xs" data-i18n="home_mfg_subtitle">
+              4 座自有工厂，打造行业标准生产线
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="GMP 洁净车间" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-1.webp" loading="lazy" />
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-800">
+                <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_gmp_title">GMP 洁净车间</h3>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_gmp_desc">严格执行 HACCP/ISO 标准</p>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="自动化产线" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-2.webp" loading="lazy" />
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-800">
+                <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_auto_title">自动化产线</h3>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_auto_desc">确保效率与一致性</p>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="质量实验室" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-3.webp" loading="lazy" />
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-800">
+                <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_qc_title">质量实验室</h3>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_qc_desc">实时监控关键质量指标</p>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="智能仓储" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-4.webp" loading="lazy" />
+              </div>
+              <div class="p-3 bg-white dark:bg-slate-800">
+                <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_warehouse_title">智能仓储</h3>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_warehouse_desc">月产能千万级</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ CTA Bottom ═══ -->
+      <section class="fullwidth-bg py-12">
+        <div class="section-content">
+          <div class="bg-primary rounded-2xl p-6 text-center text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 size-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+            <div class="relative z-10">
+              <h2 class="text-2xl font-black mb-3" data-i18n="home_cta_title">准备好开始您的品牌了吗？</h2>
+              <p class="text-white/80 text-sm mb-5" data-i18n="home_cta_desc">
+                立即联系优科力专家，获取免费样品与定制方案。从概念到上市，我们为您全程护航。
+              </p>
+              <div class="flex flex-col gap-2">
+                <a href="/contact/" class="bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm text-center" data-i18n="home_cta_btn_quote">
+                  免费获取样品
+                </a>
+                <a href="/contact/" class="bg-slate-900 text-white px-5 py-3 rounded-xl font-bold text-sm text-center" data-i18n="home_cta_btn_contact">
+                  联系我们
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ═══ Footer Component ═══ -->
+    <footer data-component="footer" data-variant="mobile" data-active="home"></footer>
 
     <script src="/assets/js/ui/dropdown-styles.js"></script>
     <script src="/assets/js/ui/dropdown-base.js"></script>
-<script defer src="/assets/js/ui/products-dropdown.js?v=202605142207"></script>
+    <script defer src="/assets/js/ui/products-dropdown.js?v=202605142207"></script>
     <script defer src="/assets/js/ui/applications-dropdown.js?v=202605142207"></script>
     <script defer src="/assets/js/ui/support-dropdown.js?v=202605142207"></script>
     <script defer src="/assets/js/ui/about-dropdown.js?v=202605142207"></script>
     <script defer src="/assets/js/ui/navigator.js?v=202605142207"></script>
-  <script src="/assets/js/ui/hero-video.js"></script>
-<script defer src="/assets/js/ui/slide-menu.js?v=202605142207"></script>
-<script defer src="/assets/js/ui/search-engine.js"></script>
-<script defer src="/assets/js/ui/footer.js?v=202605142207"></script>
-<script defer src="/assets/js/lang-registry.js?v=202605142207"></script>
-<script defer src="/assets/js/translations.js?v=202605142207"></script><script defer src="/assets/js/translations-dropdown-template.js?v=202605142207"></script>
-<script defer src="/assets/js/contacts.js"></script>
-<script defer src="/assets/js/page-init.js"></script>
+    <script defer src="/assets/js/ui/slide-menu.js?v=202605142207"></script>
+    <script defer src="/assets/js/ui/search-engine.js"></script>
+    <script defer src="/assets/js/ui/footer.js?v=202605142207"></script>
+    <script defer src="/assets/js/lang-registry.js?v=202605142207"></script>
+    <script defer src="/assets/js/translations.js?v=202605142207"></script>
+    <script defer src="/assets/js/translations-dropdown-template.js?v=202605142207"></script>
+    <script defer src="/assets/js/contacts.js"></script>
+    <script defer src="/assets/js/page-init.js"></script>
 
     <script defer src="/assets/js/ui/helpers.js"></script>
     <script defer src="/assets/js/ui/page-effects.js"></script>
     <script defer src="/assets/js/ui/form-interactions.js"></script>
-<script defer src="/assets/js/page-interactions.js"></script>
-<script defer src="/assets/js/home-core-products.js?v=202605142207"></script><!-- ═══ Footer Component ═══ -->
-<footer data-component="footer"
-  data-variant="mobile"
-  data-active="home">
-</footer>
+    <script defer src="/assets/js/page-interactions.js"></script>
 
-<script src="/assets/js/utils/device-utils.js"></script>
-<script src="/assets/js/spa-router.js?v=202605142207"></script>
-
+    <script src="/assets/js/utils/device-utils.js"></script>
+    <script src="/assets/js/spa-router.js?v=202605142207"></script>
     <script defer src="/assets/js/ui/floating-actions.js"></script>
-  </body></html>
+  </body>
+</html>
