@@ -25,9 +25,28 @@
 
 /* ─── CSS Custom Properties ─────────────────────────────────────── */
 :root {
-  --color-primary: #006064;
-  --color-primary-10: rgba(0, 96, 100, 0.1);
-  --color-primary-20: rgba(0, 96, 100, 0.2);
+  --color-primary: #2E7D32;
+  --color-primary-10: rgba(46, 125, 50, 0.1);
+  --color-primary-20: rgba(46, 125, 50, 0.2);
+
+  /* ═══ 产品线颜色 + 品牌辅助色 ═══ */
+--line-coffee: #6F4E37;
+  --line-tea: #4CAF50;
+  --line-meal: #FF8F00;
+  --line-beauty: #E91E63;
+  --line-weight: #00ACC1;
+  --line-gut: #8BC34A;
+  --line-lifestyle: #7C4DFF;
+  --line-legacy: #607D8B;
+  --color-accent-500: #FFB300;
+  --color-accent-600: #FF9800;
+  --color-accent-700: #F57C00;
+  --color-accent-100: #FFF8E1;
+  --color-secondary-500: #8D6E63;
+  --color-secondary-700: #5D4037;
+  --color-secondary-100: #F5F1EE;
+  --color-cyan-600: #0097A7;
+  --color-cyan-100: #E0F7FA;;
   --color-bg-light: #f8f6f6;
   --color-bg-dark: #221610;
 
