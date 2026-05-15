@@ -431,11 +431,10 @@
   var cachedMenuItems = null;
 
   var L1_ICON_MAP = {
-    products: "kitchen",
-    applications: "apps",
-    cases: "cases",
-    "profit-calculator": "calculate",
-    support: "support_agent",
+    products: "inventory_2",
+    solutions: "lightbulb",
+    manufacturing: "factory",
+    compliance: "verified",
     about: "info",
     contact: "mail",
   };
@@ -478,10 +477,8 @@
   function getMenuItems() {
     if (cachedMenuItems) return cachedMenuItems;
 
-    // 从 SITE_CONFIG.categories 构建产品/行业/支持的子菜单
+    // 从 SITE_CONFIG.categories 构建产品子菜单
     var productChildren = buildCategoryItems("products", "/products/");
-    var applicationChildren = buildCategoryItems("applications", "/applications/");
-    var supportChildren = buildCategoryItems("support", "/support/");
 
     var items = [
       {
@@ -489,33 +486,36 @@
         label: "产品中心",
         href: "/products/",
         id: "products",
-        icon: "kitchen",
+        icon: "inventory_2",
         children: productChildren,
       },
       {
-        key: "nav_applications",
-        label: "行业场景",
-        href: "/applications/",
-        id: "applications",
-        icon: "apps",
-        children: applicationChildren,
+        key: "nav_solutions",
+        label: "解决方案",
+        href: "/solutions/",
+        id: "solutions",
+        icon: "lightbulb",
+        children: [
+          { key: "nav_solutions_oem", icon: "build", emoji: "", href: "/solutions/oem-customization/" },
+          { key: "nav_solutions_odm", icon: "design_services", emoji: "", href: "/solutions/odm-services/" },
+          { key: "nav_solutions_obm", icon: "handshake", emoji: "", href: "/solutions/obm-partnership/" },
+        ],
       },
-      { key: "nav_cases", label: "真实案例", href: "/cases/", id: "cases", icon: "cases", children: [] },
       {
-        key: "nav_profit_calculator",
-        label: "投资回报",
-        href: "/profit-calculator/",
-        id: "profit-calculator",
-        icon: "calculate",
+        key: "nav_manufacturing",
+        label: "制造实力",
+        href: "/manufacturing/",
+        id: "manufacturing",
+        icon: "factory",
         children: [],
       },
       {
-        key: "nav_support",
-        label: "服务支持",
-        href: "/support/",
-        id: "support",
-        icon: "support_agent",
-        children: supportChildren,
+        key: "nav_compliance",
+        label: "品质合规",
+        href: "/compliance/",
+        id: "compliance",
+        icon: "verified",
+        children: [],
       },
       {
         key: "nav_about",
@@ -644,17 +644,6 @@
           "</a>";
       }
 
-      // applications 分类末尾追加「查看全部行业场景」链接
-      if (item.id === "applications") {
-        subMenuHtml +=
-          '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/applications/">' +
-          '<span class="mobile-menu-l2-icon">' +
-          '<span class="material-symbols-outlined">grid_view</span>' +
-          "</span>" +
-          '<span class="mobile-menu-l2-label" data-i18n="nav_applications_view_all">查看全部行业场景</span>' +
-          "</a>";
-      }
-
       subMenuHtml += "</div>";
     }
 
@@ -713,7 +702,7 @@
       '<span class="material-symbols-outlined">mail</span>' +
       '<span data-i18n="btn_contact_us">Contact Us</span>' +
       "</a>" +
-      '<a class="mobile-menu-cta-btn primary" href="/quote/" data-nav="/quote/">' +
+      '<a class="mobile-menu-cta-btn primary" href="/contact/" data-nav="/contact/">' +
       '<span class="material-symbols-outlined">request_quote</span>' +
       '<span data-i18n="nav_get_quote">Get Quote</span>' +
       "</a>" +
