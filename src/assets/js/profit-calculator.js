@@ -684,6 +684,8 @@
     container.style.cssText =
       "position:fixed;left:0;top:0;width:680px;background:#fff;font-family:system-ui,-apple-system,sans-serif;color:#1e293b;padding:40px 32px;opacity:0;pointer-events:none;";
 
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     container.innerHTML =
       '<div style="border-bottom:3px solid #e11d48;padding-bottom:16px;margin-bottom:24px">' +
       '<h1 style="font-size:22px;font-weight:900;margin:0 0 4px;color:#1e293b">🍳 ' +

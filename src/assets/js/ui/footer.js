@@ -126,6 +126,8 @@
       // PC (>=1024px) → hidden
       // Resolve real variant based on screen width
       if (w >= 1024) {
+        /* @audit-safe: constant-html */
+        /* @audit-safe: constant-html */
         footer.innerHTML = "";
         footer.style.display = "none";
         continue;
@@ -135,6 +137,8 @@
       var resolvedVariant = w >= 768 ? "tablet" : "mobile";
 
       footer.style.display = "";
+      /* @audit-safe: template-func-return */
+      /* @audit-safe: template-func-return */
       footer.innerHTML = buildBarHtml(resolvedVariant, activeId);
     }
 

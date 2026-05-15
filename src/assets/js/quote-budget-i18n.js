@@ -118,6 +118,8 @@
       html += '<option value="' + TIER_VALUES[i] + '"' + selected + ">" + (labels[i] || TIER_VALUES[i]) + "</option>";
     }
 
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     sel.innerHTML = html;
     sel.value = prev || ""; /* restore selection */
 

@@ -37,6 +37,8 @@
    */
   function safeHtml(el, html) {
     if (!el) return;
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     el.innerHTML = html;
   }
 

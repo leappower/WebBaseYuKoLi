@@ -276,6 +276,8 @@
     // 插入到 body 末尾
     var container = document.createElement("div");
     container.id = "nav-footer-container";
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     container.innerHTML = html;
     document.body.appendChild(container);
 

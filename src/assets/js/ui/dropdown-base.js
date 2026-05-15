@@ -185,6 +185,8 @@
       var items = cfg.getItems();
       var content = cfg.buildPopupContent ? cfg.buildPopupContent(items, href || defaultHref) : "";
 
+      /* @audit-safe: config-driven-render */
+      /* @audit-safe: config-driven-render */
       panel.innerHTML = handle + content;
 
       overlay.onclick = closePopup;

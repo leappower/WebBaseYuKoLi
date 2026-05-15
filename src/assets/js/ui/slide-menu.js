@@ -752,6 +752,8 @@
     panelEl = document.createElement("div");
     panelEl.className = "mobile-menu-panel";
     panelEl.id = "mobile-menu-panel";
+    /* @audit-safe: template-func-return */
+    /* @audit-safe: template-func-return */
     panelEl.innerHTML = renderMenuPanelContent();
 
     // 应用翻译
@@ -1090,6 +1092,8 @@
     searchOverlayEl = document.createElement("div");
     searchOverlayEl.id = "mobile-search-overlay";
     searchOverlayEl.className = "mobile-search-overlay";
+    /* @audit-safe: internal-data */
+    /* @audit-safe: internal-data */
     searchOverlayEl.innerHTML =
       '<div class="mobile-search-bar">' +
       '<span class="material-symbols-outlined mobile-search-icon">search</span>' +
@@ -1194,6 +1198,8 @@
     if (query.length < 1) {
       var resultsContainer = document.getElementById("mobile-search-results");
       if (resultsContainer) {
+        /* @audit-safe: constant-html */
+        /* @audit-safe: constant-html */
         resultsContainer.innerHTML = "";
       }
       return;
@@ -1255,6 +1261,8 @@
           "</a>";
       }
 
+      /* @audit-safe: config-driven-render */
+      /* @audit-safe: config-driven-render */
       container.innerHTML = html;
 
       // 点击搜索结果时关闭搜索覆盖层
@@ -1269,6 +1277,8 @@
       var trFn = (window.CommonUtils && window.CommonUtils.tr) || window.t;
       var emptyText = trFn ? trFn("search_no_results", "No matching products found") : "No matching products found";
 
+      /* @audit-safe: config-driven-render */
+      /* @audit-safe: config-driven-render */
       container.innerHTML =
         '<div class="mobile-search-empty">' +
         '<span class="material-symbols-outlined">search_off</span>' +

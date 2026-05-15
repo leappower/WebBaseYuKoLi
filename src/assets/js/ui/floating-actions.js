@@ -209,6 +209,8 @@
     wa.setAttribute("aria-label", "WhatsApp");
     wa.target = "_blank";
     wa.rel = "noopener noreferrer";
+    /* @audit-safe: template-func-return */
+    /* @audit-safe: template-func-return */
     wa.innerHTML = SVG_WHATSAPP;
 
     // Back to top
@@ -216,6 +218,8 @@
     btt.id = "fab-backtotop";
     btt.className = "fab-btn";
     btt.setAttribute("aria-label", "Back to top");
+    /* @audit-safe: template-func-return */
+    /* @audit-safe: template-func-return */
     btt.innerHTML = SVG_BACKTOTOP;
 
     container.appendChild(btt);

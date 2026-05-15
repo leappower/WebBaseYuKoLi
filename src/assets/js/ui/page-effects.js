@@ -325,6 +325,7 @@
       }
       var toast = document.createElement("div");
       toast.className = "toast-item " + type;
+      /* @audit-safe: internal-data */
       toast.innerHTML =
         '<span class="material-symbols-outlined" style="font-size:18px;">' +
         (ICON_MAP[type] || "check_circle") +

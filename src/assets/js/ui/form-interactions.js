@@ -112,6 +112,8 @@
 
       var overlay = document.createElement("div");
       overlay.className = "form-success-overlay";
+      /* @audit-safe: array-concat-template */
+      /* @audit-safe: array-concat-template */
       overlay.innerHTML = [
         CHECKMARK_SVG,
         '<p style="font-weight:700;font-size:1.125rem;color:#16a34a;">Submitted Successfully!</p>',

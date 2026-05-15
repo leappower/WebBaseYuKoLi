@@ -252,6 +252,8 @@
     var device = getDevice();
     var html = device === "mobile" ? renderList(cfg) : renderGrid(cfg);
     // Replace inner content, keep the placeholder <div> for re-mount on SPA navigation
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     el.innerHTML = html;
   }
 

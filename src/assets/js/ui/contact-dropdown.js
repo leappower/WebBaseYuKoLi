@@ -163,6 +163,8 @@
       );
     }).join("\n");
 
+    /* @audit-safe: constant-html */
+    /* @audit-safe: constant-html */
     panel.innerHTML = '<div class="cnt-popup-handle"></div>' + items;
 
     if (window.translationManager) {

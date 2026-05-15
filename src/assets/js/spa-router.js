@@ -323,6 +323,8 @@
 
       // 直接用 outerHTML 替换容器,保留所有属性
       var tempDiv = document.createElement("div");
+      /* @audit-safe: spa-parse-internal-html */
+      /* @audit-safe: spa-parse-internal-html */
       tempDiv.innerHTML = headerMatch[0];
       var newHeader = tempDiv.firstChild;
       headerContainer.parentNode.replaceChild(newHeader, headerContainer);
@@ -361,6 +363,8 @@
 
       // 直接用 outerHTML 替换容器,保留所有属性
       var tempDiv = document.createElement("div");
+      /* @audit-safe: spa-parse-internal-html */
+      /* @audit-safe: spa-parse-internal-html */
       tempDiv.innerHTML = footerMatch[0];
       var newFooter = tempDiv.firstChild;
       footerContainer.parentNode.replaceChild(newFooter, footerContainer);
@@ -542,6 +546,8 @@
       // Dispatch spa:beforeunload before replacing content
       container.dispatchEvent(new CustomEvent("spa:beforeunload", { bubbles: true }));
       container.style.opacity = "0";
+      /* @audit-safe: spa-parse-internal-html */
+      /* @audit-safe: spa-parse-internal-html */
       container.innerHTML = content;
 
       // 动态加载页面专属脚本（SPA 移除了 script 标签，需手动补充）

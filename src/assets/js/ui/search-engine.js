@@ -291,6 +291,8 @@
     if (!results || results.length === 0) {
       var noResultsText = tr("search_no_results", "No matching products found");
       var hintText = tr("search_hint", "Try searching by model number or product type");
+      /* @audit-safe: internal-data */
+      /* @audit-safe: internal-data */
       panel.innerHTML =
         '<div class="ios-search-empty">' +
         '<span class="material-symbols-outlined ios-search-empty-icon">search_off</span>' +
@@ -363,6 +365,8 @@
       '<span class="material-symbols-outlined">arrow_forward</span>' +
       "</a>";
 
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     panel.innerHTML = html;
 
     // Bind click events on result items

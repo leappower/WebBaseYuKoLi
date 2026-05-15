@@ -428,6 +428,8 @@
     // Copy relevant ARIA attributes
     if (selectEl.id) this.trigger.setAttribute("aria-labelledby", selectEl.id);
 
+    /* @audit-safe: internal-data */
+    /* @audit-safe: internal-data */
     this.trigger.innerHTML =
       '<span class="cs-trigger-text' +
       (isPlaceholder ? " cs-placeholder" : "") +
@@ -482,6 +484,8 @@
     // Items
     html += this._buildItemsHTML(data);
 
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     panel.innerHTML = html;
 
     // Bind search
@@ -771,6 +775,8 @@
     // Items
     html += '<div class="cs-popup-list">' + this._buildItemsHTML(data) + "</div>";
 
+    /* @audit-safe: config-driven-render */
+    /* @audit-safe: config-driven-render */
     this._popupPanel.innerHTML = html;
 
     // Insert

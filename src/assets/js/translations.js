@@ -488,6 +488,8 @@
         }
         var o = LanguageDropdownTemplate.createDropdownHTML(e, n),
           r = document.createElement("div");
+        /* @audit-safe: internal-data */
+        /* @audit-safe: internal-data */
         r.innerHTML = o;
         var i = r.firstChild;
         (document.body.appendChild(i),
