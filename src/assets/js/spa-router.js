@@ -55,8 +55,13 @@
       "/home/": "/home/index.html",
       // Flat-file pattern (no directory, e.g. news/detail-pc.html)
       "/news/detail/": "/news/detail-pc.html",
-      // Applications cases alias
-      "/applications/cases/": "/cases/index.html",
+      // Solutions pages
+      "/solutions/oem/": "/solutions/oem/index-pc.html",
+      "/solutions/odm/": "/solutions/odm/index-pc.html",
+      "/solutions/obm/": "/solutions/obm/index-pc.html",
+      // Manufacturing & Compliance
+      "/manufacturing/": "/manufacturing/index-pc.html",
+      "/compliance/": "/compliance/index-pc.html",
     },
 
     // Category slugs used for /products/<slug>/ routing
@@ -412,8 +417,7 @@
           "/support": "support",
           "/about": "about",
           "/contact": "contact",
-          "/cases": "cases",
-          "/profit-calculator": "profit-calculator",
+
         };
         var best = "";
         for (var key in map) {
@@ -430,11 +434,6 @@
     loadRoute: function (routePath, navVersion) {
       var _self = this;
       var pagePath = this.routes[routePath];
-
-      // Special page: /products/compare/
-      if (!pagePath && routePath === "/products/compare/") {
-        pagePath = "/products/compare/index-pc.html";
-      }
 
       // Dynamic route: /products/<segment>/ — category or PDP
       if (!pagePath && routePath.match(/^\/products\/[^/]+\/$/)) {
@@ -780,20 +779,6 @@
       var scripts = [];
       var path = pagePath.replace(/\/index-(pc|mobile|tablet)\.html$/, "/");
 
-      // Profit calculator needs Chart.js + html2canvas + jsPDF
-      if (path.indexOf("/profit-calculator/") !== -1) {
-        if (typeof window.Chart === "undefined") {
-          scripts.push({ src: "/assets/js/vendor/chart.umd.min.js", id: "spa-chart-js" });
-        }
-        if (typeof window.html2canvas === "undefined") {
-          scripts.push({ src: "/assets/js/vendor/html2canvas.min.js", id: "spa-html2canvas" });
-        }
-        if (typeof window.jspdf === "undefined" && typeof window.jsPDF === "undefined") {
-          scripts.push({ src: "/assets/js/vendor/jspdf.umd.min.js", id: "spa-jspdf" });
-        }
-        scripts.push({ src: "/assets/js/profit-calculator.js", id: "spa-profit-calculator" });
-      }
-
       // Support 页面需要 contact-channels 组件 + 微信弹窗
       if (path.indexOf("/support/") !== -1) {
         scripts.push({ src: "/assets/js/support-contact-channels.js", id: "spa-support-contact-channels" });
@@ -808,15 +793,8 @@
       if (/\/deploy-/.test(path)) {
       }
 
-      // Cases 页面需要 cases-page.js（筛选、modal、CTA）
-      if (path.indexOf("/cases/") !== -1 || path.indexOf("/applications/cases/") !== -1) {
-        scripts.push({ src: "/assets/js/cases-page.js", id: "spa-cases-page" });
-      }
-
-      // Quote / profit-calculator / support / landing 需要 custom-select.js
+      // Support / landing 需要 custom-select.js
       if (
-        path.indexOf("/quote/") !== -1 ||
-        path.indexOf("/profit-calculator/") !== -1 ||
         path.indexOf("/support/") !== -1 ||
         path.indexOf("/landing/") !== -1
       ) {
@@ -824,12 +802,6 @@
           scripts.push({ src: "/assets/js/ui/dropdown-styles.js", id: "spa-dropdown-styles" });
           scripts.push({ src: "/assets/js/ui/custom-select.js", id: "spa-custom-select" });
         }
-      }
-
-      // Quote 页面需要表单逻辑 + 预算 i18n 脚本
-      if (path.indexOf("/quote/") !== -1) {
-        scripts.push({ src: "/assets/js/quote-form.js", id: "spa-quote-form" });
-        scripts.push({ src: "/assets/js/quote-budget-i18n.js?v=20260507", id: "spa-quote-budget-i18n" });
       }
 
       // News detail 页面需要 news-detail.js
@@ -847,11 +819,6 @@
         scripts.push({ src: "/assets/js/product-grid.js", id: "spa-product-grid" });
       }
 
-      // Compare 页面需要 compare.js
-      if (path.indexOf("/products/compare/") !== -1) {
-        scripts.push({ src: "/assets/js/compare.js", id: "spa-compare" });
-      }
-
       // 产品分类页需要 cross-sell.js（搭配推荐 + 适用场景，/products/all/ 只显示适用场景）
       if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
         scripts.push({ src: "/assets/js/cross-sell.js", id: "spa-cross-sell" });
@@ -860,11 +827,6 @@
       // 产品详情页需要 product-detail.js
       if (path.indexOf("/products/detail/") !== -1) {
         scripts.push({ src: "/assets/js/product-detail.js", id: "spa-product-detail" });
-      }
-
-      // Cases 页面需要 case-grid.js
-      if (path.indexOf("/cases/") !== -1 && !path.match(/\/applications\/cases\//)) {
-        scripts.push({ src: "/assets/js/case-grid.js", id: "spa-case-grid" });
       }
 
       // Load scripts: vendor scripts in parallel, dependent scripts after
@@ -880,9 +842,6 @@
           s.id === "spa-support-contact-channels" ||
           s.id === "spa-support-wechat-modal" ||
           s.id === "spa-pi-maps" ||
-          s.id === "spa-quote-budget-i18n" ||
-          s.id === "spa-cases-page" ||
-          s.id === "spa-case-grid" ||
           s.id === "spa-news-detail" ||
           s.id === "spa-home-core-products";
         if (isVendor) {

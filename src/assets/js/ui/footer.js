@@ -1,8 +1,8 @@
 /**
  * footer.js — Mobile & Tablet Bottom Navigation Bar
  *
- * Mobile (<768px): 4 items — 首页/产品/案例/WhatsApp
- * Tablet (768-1024px): 6 items — 首页/产品/场景/回报/关于/WhatsApp
+ * Mobile (<768px): 4 items — 首页/产品/解决方案/WhatsApp
+ * Tablet (768-1024px): 6 items — 首页/产品/解决方案/制造合规/关于/WhatsApp
  * PC (>=1024px): hidden
  */
 (function (window) {
@@ -13,17 +13,17 @@
   /* ─── Mobile items (4) ─── */
   var mobileItems = [
     { id: "home", icon: "home", key: "nav_home", href: "/home/", fill: true },
-    { id: "products", icon: "kitchen", key: "nav_products", href: "/products/", fill: false },
-    { id: "profit", icon: "calculate", key: "nav_roi", href: "/profit-calculator/", fill: false },
+    { id: "products", icon: "local_cafe", key: "nav_products", href: "/products/", fill: false },
+    { id: "solutions", icon: "business_center", key: "nav_solutions", href: "/solutions/", fill: false },
     { id: "whatsapp", icon: "chat", key: "nav_whatsapp", href: "", fill: false, isWhatsApp: true },
   ];
 
-  /* ─── Tablet items (6) — matches footer spec ─── */
+  /* ─── Tablet items (6) ─── */
   var tabletItems = [
     { id: "home", icon: "home", key: "nav_home", href: "/home/", fill: true },
-    { id: "products", icon: "kitchen", key: "nav_products", href: "/products/", fill: false },
-    { id: "applications", icon: "monitoring", key: "nav_applications", href: "/applications/", fill: false },
-    { id: "profit", icon: "calculate", key: "nav_roi", href: "/profit-calculator/", fill: false },
+    { id: "products", icon: "local_cafe", key: "nav_products", href: "/products/", fill: false },
+    { id: "solutions", icon: "business_center", key: "nav_solutions", href: "/solutions/", fill: false },
+    { id: "manufacturing", icon: "precision_manufacturing", key: "nav_manufacturing", href: "/manufacturing/", fill: false },
     { id: "about", icon: "info", key: "nav_about", href: "/about/", fill: false },
     { id: "whatsapp", icon: "chat", key: "nav_whatsapp", href: "", fill: false, isWhatsApp: true },
   ];

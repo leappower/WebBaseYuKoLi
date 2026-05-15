@@ -133,7 +133,7 @@
   }
 
   /**
-   * 从 categories 构建非产品的导航分类列表（如 Applications、Support）
+   * 从 categories 构建非产品的导航分类列表（如 Solutions、Support）
    * @returns {Array<{title: string, items: Array}>}
    */
   function buildNavSections() {
@@ -142,16 +142,16 @@
     var basePath = global.BASE_PATH || "";
     var sections = [];
 
-    if (cats.applications && cats.applications.length > 0) {
+    if (cats.solutions && cats.solutions.length > 0) {
       sections.push({
-        title: "Applications",
-        id: "applications",
-        items: cats.applications.map(function (app) {
+        title: "Solutions",
+        id: "solutions",
+        items: cats.solutions.map(function (sol) {
           return {
-            label: resolveLabel(app.label),
-            href: basePath + "/applications/" + (app.slug || app.id || "") + "/",
-            icon: app.icon || "",
-            emoji: app.emoji || "",
+            label: resolveLabel(sol.label),
+            href: basePath + "/solutions/" + (sol.slug || sol.id || "") + "/",
+            icon: sol.icon || "",
+            emoji: sol.emoji || "",
           };
         }),
       });
