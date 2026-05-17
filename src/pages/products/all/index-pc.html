@@ -78,32 +78,81 @@
 <link rel="stylesheet" href="/assets/css/performance-optimizations.css"/>
 <style>
   body { font-family: 'Public Sans', sans-serif; }
+
+  /* ─── Product Card ─── */
   .product-card {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -12px rgba(46, 125, 50, 0.15);
   }
+
+  /* ─── Category Tab ─── */
   .category-tab {
     position: relative;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
+    background: white;
+    border: 1.5px solid #e2e8f0;
   }
+  .dark .category-tab {
+    background: #1e293b;
+    border-color: #334155;
+  }
+  .category-tab:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: rgba(46, 125, 50, 0.04);
+  }
+  .dark .category-tab:hover {
+    background: rgba(46, 125, 50, 0.1);
+  }
+  .category-tab.active {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+    box-shadow: 0 4px 14px -3px rgba(46, 125, 50, 0.4);
+  }
+  .category-tab.active:hover {
+    color: white;
+    background: #256428;
+  }
+
+  /* ─── Tier Filter Chip ─── */
   .filter-chip {
     transition: all 0.2s ease;
+    background: white;
+    border: 1.5px solid #e2e8f0;
+  }
+  .dark .filter-chip {
+    background: #1e293b;
+    border-color: #334155;
   }
   .filter-chip:hover {
-    background: rgba(236, 91, 19, 0.1);
     border-color: var(--color-primary);
+    color: var(--color-primary);
   }
   .filter-chip.active {
     background: var(--color-primary);
     color: white;
     border-color: var(--color-primary);
   }
+
+  /* ─── Spec Badge ─── */
   .spec-badge {
-    background: linear-gradient(135deg, rgba(236, 91, 19, 0.1) 0%, rgba(236, 91, 19, 0.05) 100%);
-    border: 1px solid rgba(236, 91, 19, 0.2);
+    background: rgba(46, 125, 50, 0.08);
+    border: 1px solid rgba(46, 125, 50, 0.15);
+    color: var(--color-primary);
+  }
+
+  /* ─── Load More Button ─── */
+  .load-more-btn {
+    transition: all 0.25s ease;
+  }
+  .load-more-btn:hover {
+    background: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
   }
 </style>
 <!-- Dark mode: apply saved preference before first paint -->
@@ -185,21 +234,27 @@ if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.
   </section>
 
   <!-- Category Tabs + Product Grid Section -->
-  <section id="products" class="fullwidth-bg w-full py-12">
+  <section id="products" class="fullwidth-bg w-full py-16 bg-white dark:bg-slate-950">
     <div class="section-content">
-    <div class="flex flex-wrap items-center justify-between gap-4">
+    <!-- Section Header -->
+    <div class="text-center mb-10">
+      <h2 class="text-3xl font-black tracking-tight mb-3" data-i18n="products_all_grid_title">产品目录</h2>
+      <p class="text-slate-500 dark:text-slate-400 text-sm" data-i18n="products_all_grid_subtitle">按品类筛选，快速找到您需要的产品</p>
+    </div>
+    <!-- Filter Bar -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
       <!-- Category tabs -->
-      <div class="flex items-center gap-2 flex-wrap gap-2 category-tab-container">
+      <div class="flex items-center gap-2 flex-wrap category-tab-container">
       </div>
       <!-- Tier filter -->
       <div class="flex items-center gap-2 flex-shrink-0">
-        <button class="filter-chip active px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-medium" data-filter="all" data-i18n="all">全部</button>
-        <button class="filter-chip px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-medium" data-filter="入门" data-i18n="products_filter_starter">入门</button>
-        <button class="filter-chip px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 text-xs font-medium" data-filter="智能" data-i18n="products_filter_smart">智能</button>
+        <button class="filter-chip active px-4 py-2 rounded-xl text-xs font-semibold" data-filter="all" data-i18n="all">全部</button>
+        <button class="filter-chip px-4 py-2 rounded-xl text-xs font-semibold" data-filter="入门" data-i18n="products_filter_starter">入门</button>
+        <button class="filter-chip px-4 py-2 rounded-xl text-xs font-semibold" data-filter="智能" data-i18n="products_filter_smart">智能</button>
       </div>
     </div>
     <!-- Product Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mt-6" id="product-grid">
+    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid">
       <!-- Skeleton placeholders (cleared by product-grid.js) -->
       <div class="sk-product-card"><div class="sk-product-img"></div><div class="sk-product-text"></div></div>
       <div class="sk-product-card"><div class="sk-product-img"></div><div class="sk-product-text"></div></div>
@@ -207,7 +262,7 @@ if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.
       <div class="sk-product-card"><div class="sk-product-img"></div><div class="sk-product-text"></div></div>
     </div>
     <div class="flex justify-center mt-12">
-      <button class="flex items-center gap-2 px-8 py-4 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-bold text-slate-600 dark:text-slate-400 hover:border-primary hover:text-primary transition-all" data-i18n="products_load_more">
+      <button class="load-more-btn flex items-center gap-2 px-8 py-4 border-2 border-slate-200 dark:border-slate-700 rounded-2xl font-bold text-slate-600 dark:text-slate-400" data-i18n="products_load_more">
         加载更多产品
         <span class="material-symbols-outlined">expand_more</span>
       </button>
@@ -234,7 +289,7 @@ if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.
           <h2 class="text-4xl lg:text-5xl font-black mb-6" data-i18n="products_cta_title"></h2>
           <p class="text-white/80 text-lg mb-10 max-w-2xl mx-auto" data-i18n="products_cta_desc"></p>
           <div class="flex flex-wrap justify-center gap-4">
-            <a href="/quote" class="bg-white text-primary px-10 py-5 rounded-xl font-black hover:bg-slate-100 transition-colors shadow-xl">
+            <a href="/contact/" class="bg-white text-primary px-10 py-5 rounded-xl font-black hover:bg-slate-100 transition-colors shadow-xl">
               <span data-i18n="products_cta_btn_quote">获取定制报价</span>
             </a>
             <a href="https://wa.me/8618565788184" data-wa-message-key="wa_msg_products" target="_blank" rel="noopener noreferrer" class="bg-slate-900 text-white px-10 py-5 rounded-xl font-black hover:bg-slate-800 transition-colors shadow-xl">
@@ -251,24 +306,24 @@ if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.
 
     <script src="/assets/js/ui/dropdown-styles.js"></script>
     <script src="/assets/js/ui/dropdown-base.js"></script>
-<script defer src="/assets/js/ui/products-dropdown.js?v=202605171624"></script>
-    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605171624"></script>
-    <script defer src="/assets/js/ui/support-dropdown.js?v=202605171624"></script>
-    <script defer src="/assets/js/ui/about-dropdown.js?v=202605171624"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605171624"></script>
-<script defer src="/assets/js/ui/slide-menu.js?v=202605171624"></script>
+<script defer src="/assets/js/ui/products-dropdown.js?v=202605171634"></script>
+    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605171634"></script>
+    <script defer src="/assets/js/ui/support-dropdown.js?v=202605171634"></script>
+    <script defer src="/assets/js/ui/about-dropdown.js?v=202605171634"></script>
+    <script defer src="/assets/js/ui/navigator.js?v=202605171634"></script>
+<script defer src="/assets/js/ui/slide-menu.js?v=202605171634"></script>
 <script defer src="/assets/js/ui/search-engine.js"></script>
-<script defer src="/assets/js/ui/footer.js?v=202605171624"></script>
-<script defer src="/assets/js/lang-registry.js?v=202605171624"></script>
-<script defer src="/assets/js/translations.js?v=202605171624"></script><script defer src="/assets/js/translations-dropdown-template.js?v=202605171624"></script>
+<script defer src="/assets/js/ui/footer.js?v=202605171634"></script>
+<script defer src="/assets/js/lang-registry.js?v=202605171634"></script>
+<script defer src="/assets/js/translations.js?v=202605171634"></script><script defer src="/assets/js/translations-dropdown-template.js?v=202605171634"></script>
 <script defer src="/assets/js/contacts.js"></script>
 <script defer src="/assets/js/page-init.js"></script>
     <script defer src="/assets/js/ui/helpers.js"></script>
     <script defer src="/assets/js/ui/page-effects.js"></script>
     <script defer src="/assets/js/ui/form-interactions.js"></script>
 <script defer src="/assets/js/page-interactions.js"></script>
-    <script defer src="/assets/js/product-grid.js?v=202605171624"></script>
-    <script defer src="/assets/js/cross-sell.js?v=202605171624"></script>
+    <script defer src="/assets/js/product-grid.js?v=202605171634"></script>
+    <script defer src="/assets/js/cross-sell.js?v=202605171634"></script>
 
 <style>
   @keyframes fadeIn {
@@ -285,5 +340,5 @@ if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.
 </style>
 
 <script src="/assets/js/utils/device-utils.js"></script>
-<script src="/assets/js/spa-router.js?v=202605171624"></script>
+<script src="/assets/js/spa-router.js?v=202605171634"></script>
     <script defer src="/assets/js/ui/floating-actions.js"></script></body></html>
