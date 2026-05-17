@@ -1,121 +1,173 @@
 /**
- * bottom-tab.js — Fixed Bottom Tab Bar (mobile <768px)
- * 4 items: MENU (hamburger → slide-menu), SOLUTIONS (link),
- * INQUIRY (highlighted → contact popup), WHATSAPP (direct link)
+ * bottom-tab.js — Unified Bottom Navigation Bar
  *
- * ES5 compatible. Uses window.SlideMenu if available.
- * @audit-safe — static HTML, no user input
+ * Config-driven: reads items from window.SITE_CONFIG.footer.mobileItems / tabletItems
+ * Breakpoints:
+ *   Mobile (<768px)  → footer.mobileItems
+ *   Tablet (768–1023) → footer.tabletItems (falls back to mobileItems if absent)
+ *   PC     (≥1024px) → hidden
+ *
+ * Item type support:
+ *   "toggle"   → open slide-menu (via window.SlideMenu.toggle)
+ *   "link"     → SPA navigate (window.__spaNavigate) or location.href
+ *   "cta"      → highlighted green CTA button (navigates like "link")
+ *   "external" → window.open() in new tab (WhatsApp number from config)
+ *
+ * Feature gate:  window.SITE_CONFIG.features.unifiedBottomNav === true
+ * Brand colors:  window.SITE_CONFIG.theme.colors.primary / primaryHover
+ * WhatsApp:      window.SITE_CONFIG.contacts.whatsapp / whatsappDefaultMsg
+ *
+ * ES5 compatible.  No JSX, no ES6 features.
+ * @audit-safe — all content from config, no user-input injection
  */
-
-(function () {
+;(function () {
   "use strict";
 
-  // ── Config ────────────────────────────────────────────────────
-  var TABS = [
-    {
-      id: "menu",
-      icon: "menu",
-      label: { en: "Menu", "zh-CN": "菜单" },
-      action: "toggle-menu",
-    },
-    {
-      id: "solutions",
-      icon: "precision_manufacturing",
-      label: { en: "Solutions", "zh-CN": "方案" },
-      action: "link",
-      href: "/solutions/oem/",
-    },
-    {
-      id: "inquiry",
-      icon: "chat",
-      label: { en: "Inquiry", "zh-CN": "询盘" },
-      action: "link",
-      href: "/contact/",
-      highlight: true, // larger, amber-gold glow
-    },
-    {
-      id: "whatsapp",
-      icon: "chat",
-      label: { en: "WhatsApp", "zh-CN": "WhatsApp" },
-      action: "whatsapp",
-      href: "https://wa.me/8613924828214?text=Hi%20YuKoLi%2C%20I%27m%20interested%20in%20your%20OEM%2FODM%20solutions.",
-      whatsapp: true,
-    },
-  ];
+  /* ── Config access (lazy) ──────────────────────────────────── */
+  var _cfg, _features, _footer, _colors, _contacts;
 
-  // ── Icons (Material Symbols outlined, static) ─────────────────
-  /** @type {Object.<string,string>} */
-  var ICONS = {
-    menu: '<span class="material-symbols-outlined" aria-hidden="true">menu</span>',
-    precision_manufacturing:
-      '<span class="material-symbols-outlined" aria-hidden="true">precision_manufacturing</span>',
-    chat: '<span class="material-symbols-outlined" aria-hidden="true">chat</span>',
-  };
+  function getCfg() { return _cfg || (_cfg = window.SITE_CONFIG || {}); }
+  function getFeatures() { return _features || (_features = getCfg().features || {}); }
+  function getFooter() { return _footer || (_footer = getCfg().footer || {}); }
+  function getColors() { return _colors || (_colors = (getCfg().theme && getCfg().theme.colors) || {}); }
+  function getContacts() { return _contacts || (_contacts = getCfg().contacts || {}); }
 
-  /** @type {string} WhatsApp brand color */
-  var WHATSAPP_COLOR = "#25D366";
+  /* ── Feature gate ──────────────────────────────────────────── */
+  if (!getFeatures().unifiedBottomNav) return;
 
-  // ── Build HTML ────────────────────────────────────────────────
-  /** @returns {string} Bottom tab bar HTML */
+  /* ── Design tokens ─────────────────────────────────────────── */
+  var PRIMARY   = getColors().primary || "#2E7D32";
+  var PRIMARY_HOVER = getColors().primaryHover || "#1B5E20";
+  var WA_COLOR  = "#25D366";
+  var BAR_HEIGHT = 64;
+
+  /* ── Breakpoint helpers ────────────────────────────────────── */
+  function getBreakpoint() {
+    var w = window.innerWidth;
+    if (w < 768) return "mobile";
+    if (w < 1024) return "tablet";
+    return "pc";
+  }
+
+  /**
+   * Return the item array for the current breakpoint.
+   * @returns {Array|null} null → PC / no items
+   */
+  function getItems() {
+    var bp = getBreakpoint();
+    if (bp === "pc") return null;
+    var footer = getFooter();
+    if (bp === "tablet" && footer.tabletItems && footer.tabletItems.length > 0) {
+      return footer.tabletItems;
+    }
+    return footer.mobileItems || [];
+  }
+
+  /* ── Item helpers ──────────────────────────────────────────── */
+
+  /**
+   * Resolve item type: explicit "type" field wins, otherwise infer.
+   */
+  function resolveType(item) {
+    if (item.type) return item.type;
+    // Infer from clues
+    if (item.id === "menu" || item.id === "hamburger") return "toggle";
+    if (item.href && item.href.indexOf("wa.me") >= 0) return "external";
+    if (item.id === "whatsapp") return "external";
+    if (item.highlight) return "cta";  // legacy support
+    return "link";
+  }
+
+  /**
+   * Localize a label that may be a plain string or { en, zh-CN… } object.
+   */
+  function localize(label) {
+    if (typeof label === "string") return label;
+    if (!label || typeof label !== "object") return "";
+    var lang = (getCfg().lang || document.documentElement.lang || "en").toLowerCase();
+    if (label[lang]) return label[lang];
+    if (label.en) return label.en;
+    if (label["zh-CN"]) return label["zh-CN"];
+    var keys = Object.keys(label);
+    return keys.length > 0 ? (label[keys[0]] || "") : "";
+  }
+
+  /* ── Icon HTML ─────────────────────────────────────────────── */
+  function iconHTML(name) {
+    return '<span class="material-symbols-outlined" aria-hidden="true">' + (name || "circle") + '</span>';
+  }
+
+  /**
+   * Build WhatsApp href from config — ensures correct number + message.
+   */
+  function buildWhatsAppHref() {
+    var c = getContacts();
+    var num = c.whatsapp || "";
+    var msg = c.whatsappDefaultMsg || "";
+    var href = "https://wa.me/" + num;
+    if (msg) href += "?text=" + encodeURIComponent(msg);
+    return href;
+  }
+
+  /* ── Build bar HTML ────────────────────────────────────────── */
   function buildHTML() {
-    var lang =
-      (window.SITE_CONFIG && window.SITE_CONFIG.lang) ||
-      document.documentElement.lang ||
-      "en";
+    var items = getItems();
+    if (!items || !items.length) return "";
 
-    var itemsHtml = "";
-    for (var i = 0; i < TABS.length; i++) {
-      var tab = TABS[i];
-      var labelText =
-        (tab.label[lang] || tab.label.en || tab.label["zh-CN"]);
+    var parts = [];
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      var type = resolveType(item);
+      var label = localize(item.label);
+      var icon = iconHTML(item.icon);
+      var href = item.href || "#";
 
-      var classes = "bottom-tab__item";
-      if (tab.highlight) classes += " bottom-tab__item--highlight";
-      if (tab.whatsapp) classes += " bottom-tab__item--whatsapp";
+      // CSS classes per type
+      var cls = "btab-item";
+      if (type === "cta") cls += " btab-item--cta";
+      if (type === "external") cls += " btab-item--wa";
 
-      var attrs = "data-tab-action='" + tab.action + "'";
-      if (tab.href) attrs += " data-tab-href='" + tab.href + "'";
+      var attrs = ' data-btab-type="' + type + '"';
+      if (href !== "#") attrs += ' data-btab-href="' + href + '"';
 
-      var iconHtml = ICONS[tab.icon] || "";
-
-      itemsHtml +=
-        '<button class="' + classes + '" ' + attrs + ' aria-label="' + labelText + '">' +
-          iconHtml +
-          '<span class="bottom-tab__label">' + labelText + "</span>" +
-        "</button>";
+      parts.push(
+        '<button class="' + cls + '"' + attrs + ' aria-label="' + label + '">' +
+          icon + '<span class="btab-label">' + label + "</span>" +
+        "</button>"
+      );
     }
 
     return (
-      '<div id="bottom-tab-bar" class="bottom-tab" role="navigation" aria-label="Mobile navigation">' +
-        itemsHtml +
-      "</div>"
+      '<nav id="bottom-tab-bar" class="btab-bar" role="navigation" aria-label="Bottom navigation">' +
+        parts.join("") +
+      "</nav>"
     );
   }
 
-  // ── Click handler ─────────────────────────────────────────────
+  /* ── Click router ──────────────────────────────────────────── */
   function handleClick(e) {
-    var btn = e.target.closest(".bottom-tab__item");
+    /** @type {HTMLElement|null} */
+    var btn = e.target.closest ? e.target.closest(".btab-item") : null;
     if (!btn) return;
 
-    var action = btn.getAttribute("data-tab-action");
-    var href = btn.getAttribute("data-tab-href");
+    var type = btn.getAttribute("data-btab-type");
+    var href = btn.getAttribute("data-btab-href");
 
-    switch (action) {
-      case "toggle-menu":
+    switch (type) {
+      case "toggle":
+        e.preventDefault();
         if (window.SlideMenu) {
-          e.preventDefault();
           window.SlideMenu.toggle();
         } else {
-          // Fallback: show mobile header menu toggle
           var toggle = document.getElementById("mobile-menu-toggle");
           if (toggle) toggle.click();
         }
         break;
 
       case "link":
-        if (href) {
+      case "cta":
+        if (href && href !== "#") {
           e.preventDefault();
-          // Use SPA router if available
           if (window.__spaNavigate) {
             window.__spaNavigate(href);
           } else {
@@ -124,10 +176,14 @@
         }
         break;
 
-      case "whatsapp":
-        if (href) {
-          window.open(href, "_blank");
+      case "external":
+        e.preventDefault();
+        var extHref = href;
+        // Always rebuild WhatsApp URL from config to ensure correct number
+        if (!extHref || extHref === "#" || extHref.indexOf("wa.me") >= 0) {
+          extHref = buildWhatsAppHref();
         }
+        window.open(extHref, "_blank", "noopener");
         break;
 
       default:
@@ -135,85 +191,109 @@
     }
   }
 
-  // ── Inject ────────────────────────────────────────────────────
-  function inject() {
-    if (document.getElementById("bottom-tab-bar")) return; // already injected
+  /* ── Styles (minimal — most visual via CSS-injected classes) ─ */
+  function injectStyles() {
+    if (document.getElementById("btab-styles")) return;
 
-    // Only inject on mobile
-    if (window.innerWidth >= 768) return;
+    var css = [
+      /* Bar */
+      ".btab-bar {",
+        "position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;",
+        "display: flex; align-items: stretch;",
+        "height: " + BAR_HEIGHT + "px;",
+        "background: #fff;",
+        "border-top: 1px solid #E7E1D6;",
+        "box-shadow: 0 -2px 10px rgba(0,0,0,.06);",
+      "}",
+      /* Item */
+      ".btab-item {",
+        "flex: 1; display: flex; flex-direction: column;",
+        "align-items: center; justify-content: center;",
+        "border: none; background: transparent; cursor: pointer;",
+        "color: #6B7280; font-size: 10px;",
+        "padding: 6px 0; transition: color .2s;",
+        "-webkit-tap-highlight-color: transparent;",
+        "position: relative;",
+      "}",
+      ".btab-item .material-symbols-outlined {",
+        "font-size: 26px; margin-bottom: 2px;",
+      "}",
+      ".btab-label { line-height: 1.2; }",
+      /* CTA — centered raised green pill */
+      ".btab-item--cta {",
+        "flex: 1.4;",
+        "background: " + PRIMARY + ";",
+        "color: #fff;",
+        "border-radius: 28px 28px 0 0;",
+        "margin-top: -8px; padding-top: 14px;",
+        "box-shadow: 0 -2px 14px " + PRIMARY + "40;",
+      "}",
+      ".btab-item--cta .material-symbols-outlined {",
+        "font-size: 28px;",
+      "}",
+      /* External / WhatsApp */
+      ".btab-item--wa { color: " + WA_COLOR + "; }",
+      /* Active */
+      ".btab-item:active { opacity: .7; }",
+      /* Hide on PC */
+      "@media (min-width: 1024px) { .btab-bar { display: none !important; } }",
+      /* Push body content above bar */
+      "@media (max-width: 1023px) { body { padding-bottom: " + BAR_HEIGHT + "px; } }",
+      /* Footer spacing compensation */
+      "@media (max-width: 1023px) { footer#footer { padding-bottom: " + (BAR_HEIGHT + 10) + "px; } }",
+    ].join("\n");
 
-    var bar = document.createElement("div");
-    bar.innerHTML = buildHTML();
-    document.body.appendChild(bar.firstElementChild);
-
-    // Inject CSS
     var style = document.createElement("style");
-    style.id = "bottom-tab-style";
-    style.textContent =
-      ".bottom-tab {" +
-        "  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;" +
-        "  display: flex; height: 60px;" +
-        "  background: #fff; border-top: 1px solid #e0e0e0;" +
-        "  box-shadow: 0 -2px 8px rgba(0,0,0,0.08);" +
-        "}" +
-        ".bottom-tab__item {" +
-        "  flex: 1; display: flex; flex-direction: column;" +
-        "  align-items: center; justify-content: center;" +
-        "  border: none; background: transparent; cursor: pointer;" +
-        "  color: #666; font-size: 10px; padding: 6px 0;" +
-        "  transition: color 0.2s;" +
-        "  -webkit-tap-highlight-color: transparent;" +
-        "  position: relative;" +
-        "}" +
-        ".bottom-tab__item .material-symbols-outlined {" +
-        "  font-size: 26px; margin-bottom: 2px;" +
-        "}" +
-        ".bottom-tab__label { line-height: 1.2; }" +
-        /* Highlight: INQUIRY button */
-        ".bottom-tab__item--highlight {" +
-        "  flex: 1.5; background: var(--color-primary, #2E7D32);" +
-        "  color: #fff; border-radius: 30px 30px 0 0;" +
-        "  margin-top: -8px; padding-top: 14px;" +
-        "  box-shadow: 0 -2px 12px rgba(46,125,50,0.3);" +
-        "}" +
-        ".bottom-tab__item--highlight .material-symbols-outlined {" +
-        "  font-size: 28px;" +
-        "}" +
-        /* WhatsApp color */
-        ".bottom-tab__item--whatsapp { color: " + WHATSAPP_COLOR + "; }" +
-        /* Active state */
-        ".bottom-tab__item:active { opacity: 0.7; }" +
-        /* Hide on desktop */
-        "@media (min-width: 768px) {" +
-        "  .bottom-tab { display: none !important; }" +
-        "}" +
-        /* Push body content up by 60px on mobile */
-        "@media (max-width: 767px) {" +
-        "  body { padding-bottom: 60px; }" +
-        "}" +
-        /* Footer spacing compensation */
-        "@media (max-width: 767px) {" +
-        "  footer#footer { padding-bottom: 70px; }" +
-        "}";
+    style.id   = "btab-styles";
+    style.type = "text/css";
+    if (style.styleSheet) {
+      /* @audit-safe: cssText from constants */
+      style.styleSheet.cssText = css;
+    } else {
+      /* @audit-safe: createTextNode with constant string */
+      style.appendChild(document.createTextNode(css));
+    }
     document.head.appendChild(style);
+  }
 
-    // Add click listener
-    var barEl = document.getElementById("bottom-tab-bar");
-    barEl.addEventListener("click", handleClick);
+  /* ── Inject into DOM ───────────────────────────────────────── */
+  function inject() {
+    if (document.getElementById("bottom-tab-bar")) return;
 
-    // Add resize listener to show/hide
-    var resizeTimer = null;
+    var bp = getBreakpoint();
+    if (bp === "pc") return;
+
+    injectStyles();
+
+    var html = buildHTML();
+    if (!html) return;
+
+    var wrapper = document.createElement("div");
+    /* @audit-safe: config-driven html */
+    wrapper.innerHTML = html;
+    var bar = wrapper.firstElementChild;
+    if (!bar) return;
+
+    document.body.appendChild(bar);
+    bar.addEventListener("click", handleClick);
+
+    // Resize: hide on PC, re-show on mobile/tablet
+    var resizeTimer;
     window.addEventListener("resize", function () {
-      if (resizeTimer) clearTimeout(resizeTimer);
+      clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
-        if (window.innerWidth < 768 && !document.getElementById("bottom-tab-bar")) {
+        var existing = document.getElementById("bottom-tab-bar");
+        var bp2 = getBreakpoint();
+        if (bp2 === "pc") {
+          if (existing) existing.remove();
+        } else if (!existing) {
           inject();
         }
-      }, 300);
+      }, 250);
     });
   }
 
-  // ── Bootstrap ─────────────────────────────────────────────────
+  /* ── Bootstrap ─────────────────────────────────────────────── */
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", inject);
   } else {

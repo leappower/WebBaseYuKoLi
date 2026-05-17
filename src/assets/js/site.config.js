@@ -43,7 +43,7 @@
     // 联系渠道
     // ═══════════════════════════════════════════════════════════
     contacts: {
-      whatsapp: (typeof WHATSAPP_NUMBER !== 'undefined') ? WHATSAPP_NUMBER : "8618565788184",
+      whatsapp: (typeof WHATSAPP_NUMBER !== 'undefined') ? WHATSAPP_NUMBER : "8613924828214",
       whatsappDefaultMsg: (typeof WHATSAPP_DEFAULT_MSG !== 'undefined') ? WHATSAPP_DEFAULT_MSG : "Hi YuKoLi, I'm interested in your health food OEM/ODM services.",
       email: (typeof INFO_EMAIL !== 'undefined') ? INFO_EMAIL : "support.brew@yukoli.com",
       supportEmail: "support.brew@yukoli.com",
@@ -425,7 +425,7 @@
         coral:  { primary: "#FF6F61", bg: "#FFF5F4", light: "#FF8A80", dark: "#E05545" },
         gold:   { primary: "#D4AF37", bg: "#FFFBEB", light: "#F6E5B0", dark: "#B8960F" },
         green:  { primary: "#00A67E", bg: "#F0FDF9", light: "#6EE7B7", dark: "#008060" },
-        teal:   { primary: "#006064", bg: "#E0F7FA", light: "#4DD0E1", dark: "#004044" },
+        teal:   { primary: "#2E7D32", bg: "#E0F7FA", light: "#4DD0E1", dark: "#004044" },
         orange: { primary: "#FF7A45", bg: "#FFF7ED", light: "#FFB380", dark: "#E06030" },
       },
       // 新增：完整设计 token（对标设计稿 :root）
@@ -505,6 +505,7 @@
       megaMenu: true,          // 是否启用 Mega Menu（需 navMode.desktop="mega-menu"）
       productLines: true,      // 是否启用产品线系统
       mobileFooterNav: true,   // 是否启用移动端 Fixed Footer Tab
+      unifiedBottomNav: true,  // 是否启用统一底部导航（bottom-tab.js 统一接管，取代旧 footer.js 导航）
       floatingWhatsApp: true,  // 是否启用浮动 WhatsApp 按钮
     },
   };

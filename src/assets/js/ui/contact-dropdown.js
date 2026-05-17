@@ -24,7 +24,7 @@
     {
       key: "nav_contact_whatsapp",
       icon: "chat",
-      href: "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8618565788184")),
+      href: "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613924828214")),
       isWhatsApp: true,
     },
   ];

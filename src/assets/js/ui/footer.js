@@ -48,7 +48,7 @@
         esc(item.key) +
         "</p>"
       : "";
-    var waHref = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8618565788184"));
+    var waHref = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613924828214"));
 
     if (item.isWhatsApp) {
       return (
