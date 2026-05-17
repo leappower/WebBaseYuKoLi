@@ -404,6 +404,8 @@
 
       var dropdownModules = {
         products: window.ProductsDropdown,
+        applications: window.ApplicationsDropdown,
+        support: window.SupportDropdown,
         solutions: window.SolutionsDropdown,
         about: window.AboutDropdown,
       };

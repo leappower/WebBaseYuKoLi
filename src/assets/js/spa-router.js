@@ -664,7 +664,9 @@
         });
       }
 
-      // 处理初始加载
+      // 处理初始加载 — assign initVersion for race-condition protection
+      var initVersion = 0;
+      this._navVersion = 0;
       var currentPath = this.getCurrentPath();
       var initialHash = window.location.hash.replace("#", "");
       if (this.routes[currentPath]) {
@@ -674,27 +676,22 @@
           this._pendingScroll = initialHash;
         }
         // 但需要初始化组件
-        this.loadRoute(currentPath);
+        this.loadRoute(currentPath, initVersion);
       } else if (currentPath === "/" || currentPath === "//") {
         this.replace("/home/");
       } else if (currentPath.match(/^\/products\/[^/]+\/$/)) {
-        // Dynamic PDP/category route — only load if container is empty
-        // (SGS pages already have content in DOM; SPA shell has empty container)
         var container = document.getElementById("spa-content");
         if (!container || !container.innerHTML.trim()) {
           this.log("Dynamic route on init (empty container):", currentPath);
-          this.loadRoute(currentPath);
+          this.loadRoute(currentPath, initVersion);
         } else {
           this.log("Dynamic route on init (content exists, skip loadRoute):", currentPath);
         }
       } else {
-        // Standalone SSG page — content may already be in DOM (production),
-        // or empty if served SPA shell (dev mode / hot reload).
-        // Always check container and load if empty.
         var container = document.getElementById("spa-content");
         if (!container || !container.innerHTML.trim()) {
           this.log("Standalone page but container empty — loading:", currentPath);
-          this.loadRoute(currentPath);
+          this.loadRoute(currentPath, initVersion);
         } else {
           this.log("Standalone page (content exists, skip load):", currentPath);
         }
