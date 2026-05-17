@@ -653,7 +653,7 @@
     }
 
     return (
-      '<header class="fixed top-0 left-0 right-0 z-[var(--z-header)] ' +
+      '<header id="main-header" class="fixed top-0 left-0 right-0 z-[var(--z-header)] ' +
       "border-b border-slate-200 dark:border-slate-800 " +
       'bg-background-light/90 dark:bg-background-dark/90">' +
       '<div class="max-w-[1920px] mx-auto px-3 md:px-5 lg:px-5 xl:px-10 ' +
