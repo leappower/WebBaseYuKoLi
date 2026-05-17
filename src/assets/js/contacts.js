@@ -32,7 +32,7 @@
    */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _social = ((_cfg.contacts || {}).social) || {};
-  var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp) || "8613163756465";
+  var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp) || "8618565788184";
 
   // ============================================
   // WHATSAPP SOURCE TRACKING

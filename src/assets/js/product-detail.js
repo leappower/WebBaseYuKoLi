@@ -304,7 +304,7 @@
         }) || product.images[0];
       if (pi && pi.filePath) imgSrc = pi.filePath;
     }
-    document.title = product.model + " | Yukoli 智能商厨设备";
+    document.title = product.model + " | Yukoli 健康冲调食品";
 
     // Highlight matching category in navigator dropdown
     if (product.category && window.Navigator && typeof window.Navigator.highlightCategory === "function") {
@@ -368,7 +368,7 @@
         esc(product.badge) +
         "</span>"
       : "";
-    var wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613163756465");
+    var wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8618565788184");
 
     // Video support: product.video or product.videoUrl from CMS
     var videoUrl = product.video || product.videoUrl || "";

@@ -21,21 +21,21 @@
       fullNameCN: "跃迁力科技",
       legalName: "Foshan YuKoLi Technology Co., Ltd.",
       legalNameCN: "佛山市跃迁力科技有限公司",
-      slogan: { en: "Smart Commercial Kitchen Equipment", "zh-CN": "智能商厨设备领导品牌" },
+      slogan: { en: "Health Food OEM/ODM Solutions", "zh-CN": "健康冲调食品 OEM/ODM 专家" },
       logo: "/assets/images/logo_html.webp",
       logoDark: "/assets/images/logo_html_2.webp",
       logoFooter: "/assets/images/logo_footer.webp",
       logoHeader: "/assets/images/logo_header.webp",
-      domain: "www.kitchen.yukoli.com",
-      url: "https://www.kitchen.yukoli.com",
+      domain: "brew.yukoli.com",
+      url: "https://brew.yukoli.com",
     },
 
     // ═══════════════════════════════════════════════════════════
     // SEO
     // ═══════════════════════════════════════════════════════════
     seo: {
-      title: "YuKoLi 智能厨具 | 专业商用厨房设备制造商",
-      description: "YuKoLi 跃迁力科技 — 23年专注智能商厨设备研发制造，200+产品型号，服务50+国家。提供翻炒、切配、煎炸、炖煮、蒸煮全系列自动化解决方案。",
+      title: "YuKoLi 优科力 | 健康冲调食品 OEM/ODM 专家",
+      description: "YuKoLi 优科力科技 — 20年专注健康冲调食品 OEM/ODM，7大产品线（咖啡、茶饮、代餐、胶原、体重管理、肠道健康、功能冲饮），4座自有工厂，出口30+国家。提供配方研发、生产制造、品牌定制一站式服务。",
       ogImage: "/assets/images/logo_header.webp",
     },
 
@@ -43,12 +43,12 @@
     // 联系渠道
     // ═══════════════════════════════════════════════════════════
     contacts: {
-      whatsapp: (typeof WHATSAPP_NUMBER !== 'undefined') ? WHATSAPP_NUMBER : "8613163756465",
-      whatsappDefaultMsg: (typeof WHATSAPP_DEFAULT_MSG !== 'undefined') ? WHATSAPP_DEFAULT_MSG : "Hi YuKoLi, I'm interested in your commercial kitchen equipment.",
-      email: (typeof INFO_EMAIL !== 'undefined') ? INFO_EMAIL : "info@yukoli.com",
-      supportEmail: "support.kitchen@yukoli.com",
+      whatsapp: (typeof WHATSAPP_NUMBER !== 'undefined') ? WHATSAPP_NUMBER : "8618565788184",
+      whatsappDefaultMsg: (typeof WHATSAPP_DEFAULT_MSG !== 'undefined') ? WHATSAPP_DEFAULT_MSG : "Hi YuKoLi, I'm interested in your health food OEM/ODM services.",
+      email: (typeof INFO_EMAIL !== 'undefined') ? INFO_EMAIL : "support.brew@yukoli.com",
+      supportEmail: "support.brew@yukoli.com",
       formEmail: (typeof FORM_EMAIL !== 'undefined') ? FORM_EMAIL : "179564128@qq.com",
-      phone: "",
+      phone: "+86 18565718814",
       address: "Room 502-6, Building 12, Fangchuangyuan, No.83 Zhanlun Road, Honggang, Foshan, Guangdong, China",
       addressCN: "广东省佛山市顺德区容桂街道展业路83号方创园12栋502-6",
       social: {
@@ -67,7 +67,7 @@
         qrImage: "/assets/images/wechat-qr.webp",
       },
       support: {
-        email: "support.kitchen@yukoli.com",
+        email: "support.brew@yukoli.com",
         channels: ["email", "whatsapp", "wechat"],
       },
     },
@@ -81,24 +81,22 @@
           id: "products", label: { en: "Products", "zh-CN": "产品中心" }, i18nKey: "nav_products",
           children: [
             { id: "all", label: { en: "All Products", "zh-CN": "全部产品" }, icon: "grid_view", slug: "all" },
-            { id: "stirfry", label: { en: "Stir-fry", "zh-CN": "翻炒系列" }, icon: "local_fire_department", slug: "stirfry", i18nKey: "nav_products_stirfry" },
-            { id: "cutting", label: { en: "Cutting", "zh-CN": "切配系列" }, icon: "content_cut", slug: "cutting", i18nKey: "nav_products_cutting" },
-            { id: "frying", label: { en: "Frying", "zh-CN": "煎炸系列" }, icon: "outdoor_grill", slug: "frying", i18nKey: "nav_products_frying" },
-            { id: "stewing", label: { en: "Stewing", "zh-CN": "炖煮系列" }, icon: "soup_kitchen", slug: "stewing", i18nKey: "nav_products_stewing" },
-            { id: "steaming", label: { en: "Steaming", "zh-CN": "蒸煮系列" }, icon: "cloud", slug: "steaming", i18nKey: "nav_products_steaming" },
-            { id: "other", label: { en: "Auxiliary", "zh-CN": "辅助设备" }, icon: "more_horiz", slug: "other", i18nKey: "nav_products_other" },
+            { id: "coffee", label: { en: "Coffee", "zh-CN": "咖啡系列" }, icon: "coffee", slug: "coffee", i18nKey: "nav_products_coffee" },
+            { id: "tea", label: { en: "Tea", "zh-CN": "茶饮系列" }, icon: "local_cafe", slug: "tea", i18nKey: "nav_products_tea" },
+            { id: "meal", label: { en: "Meal Replacement", "zh-CN": "代餐系列" }, icon: "restaurant", slug: "meal", i18nKey: "nav_products_meal" },
+            { id: "beauty", label: { en: "Collagen & Beauty", "zh-CN": "胶原养颜" }, icon: "spa", slug: "beauty", i18nKey: "nav_products_beauty" },
+            { id: "weight", label: { en: "Weight Management", "zh-CN": "体重管理" }, icon: "monitor_weight", slug: "weight", i18nKey: "nav_products_weight" },
+            { id: "gut", label: { en: "Gut Health", "zh-CN": "肠道健康" }, icon: "biotech", slug: "gut", i18nKey: "nav_products_gut" },
+            { id: "lifestyle", label: { en: "Functional Drinks", "zh-CN": "功能冲饮" }, icon: "energy_savings_leaf", slug: "lifestyle", i18nKey: "nav_products_lifestyle" },
           ],
         },
         {
           id: "applications", label: { en: "Applications", "zh-CN": "行业场景" }, i18nKey: "nav_applications",
           children: [
-            { id: "small-restaurant", label: { en: "Small Restaurant", "zh-CN": "小型餐饮" }, icon: "storefront", slug: "small-restaurant" },
-            { id: "central-kitchen", label: { en: "Central Kitchen", "zh-CN": "中央厨房" }, icon: "apartment", slug: "central-kitchen" },
-            { id: "canteen", label: { en: "Smart Canteen", "zh-CN": "智慧食堂" }, icon: "school", slug: "canteen" },
-            { id: "chain-restaurant", label: { en: "Chain Restaurant", "zh-CN": "连锁餐饮" }, icon: "store", slug: "chain-restaurant" },
-            { id: "cloud-kitchen", label: { en: "Cloud Kitchen", "zh-CN": "云厨房/外卖" }, icon: "cloud", slug: "cloud-kitchen" },
-            { id: "food-factory", label: { en: "Food Factory", "zh-CN": "食品工厂" }, icon: "factory", slug: "food-factory" },
-            { id: "menu-lab", label: { en: "Menu Lab", "zh-CN": "菜系实验室" }, icon: "science", slug: "menu-lab" },
+            { id: "brand_owner", label: { en: "Brand Owner", "zh-CN": "品牌方" }, icon: "badge", slug: "brand_owner" },
+            { id: "chain_brand", label: { en: "Chain Brand", "zh-CN": "连锁品牌" }, icon: "store", slug: "chain_brand" },
+            { id: "ecommerce", label: { en: "E-commerce", "zh-CN": "跨境电商" }, icon: "shopping_cart", slug: "ecommerce" },
+            { id: "health_brand", label: { en: "Health Brand", "zh-CN": "大健康品牌" }, icon: "health_and_safety", slug: "health_brand" },
           ],
         },
         {
@@ -146,21 +144,19 @@
     // ═══════════════════════════════════════════════════════════
     categories: {
       products: [
-        { slug: "stirfry", key: "nav_products_stirfry", label: "翻炒系列", icon: "local_fire_department", emoji: "🔥", accent: "coral" },
-        { slug: "cutting", key: "nav_products_cutting", label: "切配系列", icon: "content_cut", emoji: "🔪", accent: "gold" },
-        { slug: "frying", key: "nav_products_frying", label: "煎炸系列", icon: "outdoor_grill", emoji: "🍳", accent: "orange" },
-        { slug: "stewing", key: "nav_products_stewing", label: "炖煮系列", icon: "soup_kitchen", emoji: "🥘", accent: "green" },
-        { slug: "steaming", key: "nav_products_steaming", label: "蒸煮系列", icon: "cloud", emoji: "⬆️", accent: "teal" },
-        { slug: "other", key: "nav_products_other", label: "辅助设备", icon: "more_horiz", emoji: "⚙️", accent: "coral" },
+        { slug: "coffee", key: "nav_products_coffee", label: "咖啡系列", icon: "coffee", emoji: "☕", accent: "coral" },
+        { slug: "tea", key: "nav_products_tea", label: "茶饮系列", icon: "local_cafe", emoji: "🍵", accent: "green" },
+        { slug: "meal", key: "nav_products_meal", label: "代餐系列", icon: "restaurant", emoji: "🥤", accent: "gold" },
+        { slug: "beauty", key: "nav_products_beauty", label: "胶原养颜", icon: "spa", emoji: "✨", accent: "pink" },
+        { slug: "weight", key: "nav_products_weight", label: "体重管理", icon: "monitor_weight", emoji: "⚖️", accent: "orange" },
+        { slug: "gut", key: "nav_products_gut", label: "肠道健康", icon: "biotech", emoji: "🦠", accent: "teal" },
+        { slug: "lifestyle", key: "nav_products_lifestyle", label: "功能冲饮", icon: "energy_savings_leaf", emoji: "🌿", accent: "green" },
       ],
       applications: [
-        { slug: "small-restaurant", label: "小型餐饮", icon: "storefront" },
-        { slug: "central-kitchen", label: "中央厨房", icon: "apartment" },
-        { slug: "canteen", label: "智慧食堂", icon: "school" },
-        { slug: "chain-restaurant", label: "连锁餐饮", icon: "store" },
-        { slug: "cloud-kitchen", label: "云厨房/外卖", icon: "cloud" },
-        { slug: "food-factory", label: "食品工厂", icon: "factory" },
-        { slug: "menu-lab", label: "菜系实验室", icon: "science" },
+        { slug: "brand_owner", label: "品牌方", icon: "badge" },
+        { slug: "chain_brand", label: "连锁品牌", icon: "store" },
+        { slug: "ecommerce", label: "跨境电商", icon: "shopping_cart" },
+        { slug: "health_brand", label: "大健康品牌", icon: "health_and_safety" },
       ],
       support: [
         { slug: "faq", label: "技术问答", icon: "help" },
@@ -246,16 +242,14 @@
         updatedAt: "2026-05-01",
       },
       whatsappTemplates: {
-        "small-restaurant": "Hi, I run a small restaurant (approx __ orders/day). I want to know the price for your smart cooking machines.",
-        "central-kitchen": "Hi, I am setting up a central kitchen. I need equipment for large volume production.",
-        "chain-restaurant": "Hi, I manage a chain restaurant with __ stores. I'm looking for standardized cooking equipment.",
-        canteen: "Hi, I manage a canteen serving __ people daily. I need high-volume cooking equipment.",
-        "cloud-kitchen": "Hi, I run a cloud kitchen. I need compact multi-functional cooking equipment.",
-        "menu-lab": "Hi, I'm curious if your machines can cook our local dishes. Can you test our menu?",
-        "product-detail": "Hi, I'm interested in the {product name} ({model}). Please send me pricing and specs.",
+        "brand_owner": "Hi, I'm a brand owner looking for OEM/ODM services for health food products. Can you help?",
+        "chain_brand": "Hi, I manage a chain brand and need a reliable OEM partner for our private label health drinks.",
+        "ecommerce": "Hi, I sell on e-commerce platforms and want to create my own health food brand. What's the MOQ?",
+        "health_brand": "Hi, I'm in the health & wellness industry and need OEM manufacturing for functional food products.",
+        "product-detail": "Hi, I'm interested in the {product name}. Please send me pricing, specs, and MOQ.",
         "roi-result": "Hi {brand}, I calculated my ROI:\n...",
         case: "Hi, I read the {country} {industry} case on your website. I have a similar situation.",
-        global: "Hi, I'm interested in {brand} commercial equipment. Please help me find the right machine.",
+        global: "Hi, I'm interested in {brand} health food OEM/ODM services. Please help me find the right solution.",
       },
     },
 
@@ -264,21 +258,20 @@
     // ═══════════════════════════════════════════════════════════
     cases: {
       grid: [
-        { slug: 'manila-lunchbox-studio-2025', country: '🇵🇭 Philippines', industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback', dailyOutput: 320, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 36,000', payback: 5.2, title: '马尼拉 Liempo 快餐店：从 3 个厨师到 1 台机器', quote: '"开业三年一直为招不到稳定的炒锅师傅发愁。现在一个人就能搞定，出餐速度还更快了。"' },
-        { slug: 'jakarta-catering-hub-2025', country: '🇮🇩 Indonesia', industry: '中央厨房', volume: '500-1000', benefit: 'Consistency', dailyOutput: 600, laborBefore: 12, laborAfter: 5, monthlySaving: 'IDR 22M', payback: 8.0, title: '雅加达送餐中央厨房：6 家门店统一出品', quote: '"以前每个门店味道都不一样，客户经常投诉。现在六家店的味道完全一样，回头客明显多了。"' },
-        { slug: 'hcmc-cloud-kitchen-compact', country: '🇻🇳 Vietnam', industry: '云厨房', volume: '<200', benefit: 'Space Saving', dailyOutput: 150, laborBefore: 3, laborAfter: 1, monthlySaving: 'VND 14M', payback: 5.5, title: '胡志明市云厨房：15㎡ 完成全品类出餐', quote: '"空间小但能做的菜很多，客户都以为是专业大厨房。"' },
-        { slug: 'bangkok-chain-8-stores', country: '🇹🇭 Thailand', industry: '连锁餐饮', volume: '1000+', benefit: 'Consistency', dailyOutput: 1200, laborBefore: 24, laborAfter: 12, monthlySaving: 'THB 270K', payback: 11.3, title: '曼谷火锅连锁 8 店：口味标准化 + 培训周期缩短 75%', quote: '"新店开业第 2 周就能正常出餐，以前至少要 2 个月。"' },
-        { slug: 'kl-canteen-2000-meals', country: '🇲🇾 Malaysia', industry: '智慧食堂', volume: '1000+', benefit: 'Fast Payback', dailyOutput: 2000, laborBefore: 15, laborAfter: 6, monthlySaving: 'MYR 13,500', payback: 6.2, title: '吉隆坡工厂食堂：2000 餐/天，6.2 个月回本', quote: '"工人最喜欢的是清洗方便，10 分钟就能搞定。"' },
-        { slug: 'cebu-small-resto-payback', country: '🇵🇭 Philippines', industry: '小型餐饮', volume: '200-500', benefit: 'Fast Payback', dailyOutput: 280, laborBefore: 3, laborAfter: 1, monthlySaving: 'PHP 32,000', payback: 4.8, title: 'Cebu 小吃店：投资 1 台，4.8 个月回本', quote: '"最好的投资决定，省下来的钱已经买第二台了。"' },
-        { slug: 'surabaya-central-automation', country: '🇮🇩 Indonesia', industry: '中央厨房', volume: '500-1000', benefit: 'Labor Cost Reduction', dailyOutput: 800, laborBefore: 18, laborAfter: 8, monthlySaving: 'IDR 24M', payback: 8.5, title: '泗水中央厨房：自动化后废品率从 8% 降至 1.2%', quote: '"食品浪费大幅减少，每个月节省的食材钱就很可观。"' },
-        { slug: 'hanoi-street-food-modern', country: '🇻🇳 Vietnam', industry: '小型餐饮', volume: '<200', benefit: 'Consistency', dailyOutput: 180, laborBefore: 2, laborAfter: 1, monthlySaving: 'VND 8M', payback: 5.1, title: '河内街头小吃升级：1 台机器 + 1 个人 = 全品类菜单', quote: '"Phở 和 Bánh Mì 都能用，外国游客也夸味道好。"' },
+        { slug: 'sea-brand-coffee-private-label-2025', country: '🇸🇬 Singapore', industry: '品牌定制', volume: '500K+', benefit: 'Full Service', title: '新加坡咖啡品牌：从配方到成品的 OEM 一站式', quote: '"从配方研发到包装设计，YuKoLi 全程跟进，产品上市周期缩短了 60%。"' },
+        { slug: 'uk-ecommerce-meal-replacement', country: '🇬🇧 UK', industry: '跨境电商', volume: '1M+', benefit: 'Speed to Market', title: '英国 DTC 品牌：3 个月完成代餐粉产品线上线', quote: '"YuKoLi 的研发团队对欧洲市场合规非常了解，省了我们大量时间。"' },
+        { slug: 'th-chain-tea-brand-2025', country: '🇹🇭 Thailand', industry: '连锁茶饮', volume: '2M+', benefit: 'Consistency', title: '泰国连锁茶饮品牌：全国 200+ 门店统一供货', quote: '"每批产品的口感完全一致，客户投诉率降了 90%。"' },
+        { slug: 'ph-pharmacy-collagen-2025', country: '🇵🇭 Philippines', industry: '连锁药房', volume: '300K+', benefit: 'Certification', title: '菲律宾连锁药房：胶原肽粉 OEM 代工', quote: '"所有认证（FDA、GMP、ISO）YuKoLi 全部搞定，我们只负责销售。"' },
+        { slug: 'my-weight-management-brand', country: '🇲🇾 Malaysia', industry: '体重管理', volume: '800K+', benefit: 'R&D Strength', title: '马来西亚体重管理品牌：独家配方定制', quote: '"他们的研发团队帮我们开发了一个差异化配方，市场反馈非常好。"' },
+        { slug: 'id-gut-health-supplement', country: '🇮🇩 Indonesia', industry: '肠道健康', volume: '600K+', benefit: 'Local Compliance', title: '印尼肠道健康品牌：益生菌冲饮 OEM', quote: '"对 BPOM 认证流程很熟悉，产品顺利通过注册。"' },
+        { slug: 'vn-functional-drink-brand', country: '🇻🇳 Vietnam', industry: '功能冲饮', volume: '1.5M+', benefit: 'Scale', title: '越南功能饮品品牌：月产能 100 万袋', quote: '"产能和质量都稳定，旺季也能保证供货。"' },
+        { slug: 'jp-beauty-collagen-2025', country: '🇯🇵 Japan', industry: '胶原养颜', volume: '400K+', benefit: 'Quality Control', title: '日本美妆品牌：高纯度胶原蛋白肽代工', quote: '"产品质量完全达到日本市场标准，客户复购率超过 70%。"' },
       ],
       detail: {},
       filters: {
-        industries: ["小型餐饮", "中央厨房", "连锁餐饮", "智慧食堂", "云厨房"],
-        volumes: ["<200", "200-500", "500-1000", "1000+"],
-        countries: ["Philippines", "Indonesia", "Vietnam", "Thailand", "Malaysia"],
-        benefits: ["Labor Cost Reduction", "Consistency", "Space Saving", "Fast Payback"],
+        industries: ["品牌定制", "跨境电商", "连锁茶饮", "连锁药房", "体重管理", "肠道健康", "功能冲饮", "胶原养颜"],
+        countries: ["Singapore", "UK", "Thailand", "Philippines", "Malaysia", "Indonesia", "Vietnam", "Japan"],
+        benefits: ["Full Service", "Speed to Market", "Consistency", "Certification", "R&D Strength", "Local Compliance", "Scale", "Quality Control"],
       },
     },
 
@@ -289,13 +282,10 @@
       map: {},    // Optional override; cross-sell.js has built-in fallback
       scenes: {}, // Optional override; cross-sell.js has built-in fallback
       appLabels: {
-        "small-restaurant": "小型餐饮",
-        "central-kitchen": "中央厨房",
-        canteen: "智慧食堂",
-        "chain-restaurant": "连锁餐饮",
-        "cloud-kitchen": "云厨房/外卖",
-        "food-factory": "食品工厂",
-        "menu-lab": "菜系实验室",
+        "brand_owner": "品牌方",
+        "chain_brand": "连锁品牌",
+        "ecommerce": "跨境电商",
+        "health_brand": "大健康品牌",
       },
     },
 

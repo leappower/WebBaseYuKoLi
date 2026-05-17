@@ -39,6 +39,12 @@
       "label_en": "Low MOQ"
     },
     {
+      "icon": "icon-sample",
+      "number": "免费",
+      "label_cn": "打样服务",
+      "label_en": "Free Sampling"
+    },
+    {
       "icon": "icon-shield",
       "number": "100%",
       "label_cn": "全体系认证",

@@ -25,7 +25,7 @@
    * 0. CONFIG
    * ───────────────────────────────────────────── */
 
-  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((window.SITE_CONFIG || {}).contacts || {}).whatsapp || "8613163756465");
+  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((window.SITE_CONFIG || {}).contacts || {}).whatsapp || "8618565788184");
   var SCROLL_THRESHOLD = 300;
 
   // 可通过 window 覆盖

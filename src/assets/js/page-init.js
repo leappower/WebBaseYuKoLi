@@ -21,7 +21,7 @@
      ═══════════════════════════════════════════════════════════════════ */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp)
-    || (window.Contacts && window.Contacts.whatsapp) || "8613163756465";
+    || (window.Contacts && window.Contacts.whatsapp) || "8618565788184";
   var _routes = (_cfg.routes || {}).pages || {};
   var PAGES = Object.freeze({
     home: _routes.home || "/home/",

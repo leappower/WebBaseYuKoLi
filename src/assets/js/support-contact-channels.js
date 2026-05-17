@@ -148,7 +148,7 @@
 
   function renderWaCard(cfg, device) {
     if (device === "mobile") {
-      var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
+      var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565788184";
       return (
         '<a href="https://wa.me/' +
         _wa +
@@ -164,7 +164,7 @@
         "</a>"
       );
     }
-    var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
+    var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565788184";
     return (
       '<a href="https://wa.me/' +
       _wa +
@@ -208,7 +208,7 @@
 
   function renderPhoneCard(cfg, device) {
     if (device === "mobile") {
-      var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
+      var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565788184";
       return (
         '<a href="tel:+' +
         _tel +
@@ -223,7 +223,7 @@
     }
     var phoneKey = cfg.phoneKey || "support_contact_phone_label";
     var phoneDescKey = cfg.phoneDescKey || "support_contact_phone_desc";
-    var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8613163756465";
+    var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565788184";
     return (
       '<a href="tel:+' +
       _tel +
