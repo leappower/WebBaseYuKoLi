@@ -480,7 +480,45 @@
     // 从 SITE_CONFIG.categories 构建产品子菜单
     var productChildren = buildCategoryItems("products", "/products/");
 
-    var items = [
+    // 从 SITE_CONFIG.nav 获取导航定义（保证与桌面端一致）
+    var navFromConfig = [];
+    try {
+      var cfgItems = window.SITE_CONFIG && window.SITE_CONFIG.nav && window.SITE_CONFIG.nav.items;
+      if (cfgItems && cfgItems.length > 0) {
+        navFromConfig = cfgItems.map(function (item) {
+          var label = typeof item.label === "object"
+            ? (item.label["zh-CN"] || item.label.en || item.id)
+            : item.label || item.id;
+          var mapped = {
+            key: item.i18nKey || ("nav_" + item.id),
+            label: label,
+            href: item.href || ("/" + item.id + "/"),
+            id: item.id,
+            icon: item.icon || "link",
+            children: [],
+          };
+          if (item.children && item.children.length > 0) {
+            mapped.children = item.children.map(function (child) {
+              var childLabel = typeof child.label === "object"
+                ? (child.label["zh-CN"] || child.label.en || child.id)
+                : child.label || child.id;
+              return {
+                key: child.i18nKey || ("nav_" + child.id),
+                label: childLabel,
+                href: child.href || ("/" + child.id + "/"),
+                id: child.id,
+                icon: child.icon || "arrow_forward",
+                emoji: child.emoji || "",
+              };
+            });
+          }
+          return mapped;
+        });
+      }
+    } catch (e) { /* fall through to hardcoded defaults */ }
+
+    var items = navFromConfig.length > 0 ? navFromConfig : [
+      // Hardcoded fallback (overridden by SITE_CONFIG if available)
       {
         key: "nav_products",
         label: "产品中心",
@@ -496,9 +534,11 @@
         id: "solutions",
         icon: "lightbulb",
         children: [
-          { key: "nav_solutions_oem", icon: "build", emoji: "", href: "/solutions/oem-customization/" },
-          { key: "nav_solutions_odm", icon: "design_services", emoji: "", href: "/solutions/odm-services/" },
-          { key: "nav_solutions_obm", icon: "handshake", emoji: "", href: "/solutions/obm-partnership/" },
+          { key: "nav_oem", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
+          { key: "nav_odm", icon: "design_services", emoji: "", href: "/solutions/odm/" },
+          { key: "nav_obm", icon: "verified", emoji: "", href: "/solutions/obm/" },
+          { key: "nav_rd", icon: "science", emoji: "", href: "/solutions/rd/" },
+          { key: "nav_packaging", icon: "inventory", emoji: "", href: "/solutions/packaging/" },
         ],
       },
       {
@@ -507,29 +547,51 @@
         href: "/manufacturing/",
         id: "manufacturing",
         icon: "factory",
-        children: [],
+        children: [
+          { key: "nav_bases", icon: "factory", emoji: "", href: "/manufacturing/#bases" },
+          { key: "nav_quality", icon: "verified", emoji: "", href: "/manufacturing/#quality" },
+          { key: "nav_smart", icon: "precision_manufacturing", emoji: "", href: "/manufacturing/#smart" },
+          { key: "nav_supplychain", icon: "public", emoji: "", href: "/manufacturing/#supplychain" },
+        ],
       },
       {
         key: "nav_compliance",
-        label: "品质合规",
+        label: "认证合规",
         href: "/compliance/",
         id: "compliance",
-        icon: "verified",
-        children: [],
-      },
-      {
-        key: "nav_about",
-        label: "关于我们",
-        href: "/about/",
-        id: "about",
-        icon: "info",
+        icon: "verified_user",
         children: [
-          { key: "nav_about_profile", icon: "apartment", emoji: "", href: "/about/#profile" },
-          { key: "nav_about_factory", icon: "factory", emoji: "", href: "/about/#factory" },
-          { key: "nav_about_cert", icon: "verified", emoji: "", href: "/about/#cert" },
+          { key: "nav_certs", icon: "verified_user", emoji: "", href: "/compliance/#certs" },
+          { key: "nav_halal", icon: "assured_workload", emoji: "", href: "/compliance/#halal" },
+          { key: "nav_coa", icon: "description", emoji: "", href: "/compliance/#coa" },
         ],
       },
-      { key: "nav_contact", label: "联系我们", href: "/contact/", id: "contact", icon: "mail", children: [] },
+      {
+        key: "nav_resources",
+        label: "资源中心",
+        href: "/resources/",
+        id: "resources",
+        icon: "menu_book",
+        children: [
+          { key: "nav_catalog", icon: "menu_book", emoji: "", href: "/resources/catalog/" },
+          { key: "nav_whitepapers", icon: "article", emoji: "", href: "/resources/whitepapers/" },
+          { key: "nav_cases", icon: "analytics", emoji: "", href: "/cases/" },
+          { key: "nav_videos", icon: "play_circle", emoji: "", href: "/resources/videos/" },
+        ],
+      },
+      {
+        key: "nav_contact",
+        label: "联系我们",
+        href: "/contact/",
+        id: "contact",
+        icon: "mail",
+        children: [
+          { key: "nav_quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
+          { key: "nav_samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
+          { key: "nav_visit", icon: "tour", emoji: "", href: "/contact/#visit" },
+          { key: "nav_network", icon: "language", emoji: "", href: "/contact/#network" },
+        ],
+      },
     ];
 
     cachedMenuItems = items;
