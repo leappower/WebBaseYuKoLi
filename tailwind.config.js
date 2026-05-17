@@ -1,3 +1,4 @@
+'use strict';
 // tailwind.config.js
 // ─────────────────────────────────────────────────────────────────────────────
 // Unified build-time Tailwind config (replaces 432 KB CDN per-page load).
@@ -24,7 +25,7 @@ module.exports = {
       },
       colors: {
         // ── Core brand tokens (used by 39+ pages) ────────────────────────────
-        'primary':            '#ec5b13',   // Yukoli orange (canonical)
+        'primary':            '#2E7D32',   // BrewYuKoLi forest green
         'background-light':   '#f8f6f6',
         'background-dark':    '#221610',
 
@@ -43,8 +44,8 @@ module.exports = {
         // ── Legacy landing-page tokens ──────────────────────────────────────────
         // Note: vitality-orange/#F26522 intentionally mapped to primary #ec5b13
         // after brand-color unification (F5). Keep alias for backward compat.
-        'vitality-orange':    '#ec5b13',
-        'yukoli-orange':      '#ec5b13',
+        'vitality-orange':    '#2E7D32',
+        'yukoli-orange':      '#2E7D32',
         'yukoli-obsidian':    '#121417',
         'yukoli-dark-grey':   '#1A1D21',
         'yukoli-muted-grey':  '#2A2E35',
