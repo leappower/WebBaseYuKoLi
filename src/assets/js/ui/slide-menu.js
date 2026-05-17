@@ -462,6 +462,7 @@
       var cat = cats[i];
       result.push({
         key: cat.i18nKey || cat.key || ("nav_" + categoryKey + "_" + cat.slug),
+        label: cat.label || cat.key || cat.slug,
         icon: cat.icon || "circle",
         emoji: cat.emoji || "",
         href: parentPath + cat.slug + "/",
