@@ -111,7 +111,6 @@
 <script defer src="/assets/js/product-grid.js?v=20260508-b6"></script>
 <script defer src="/assets/js/product-detail.js?v=20260508-b6"></script>
 <script defer src="/assets/js/home-core-products.js?v=20260508-b6"></script>
-<script defer src="/assets/js/quote-form.js?v=20260508-b6"></script>
 <script defer src="/assets/js/ui/currency.js?v=20260508-b6"></script>
 <script defer src="/assets/js/spa-router.js?v=20260508-b6"></script>
 
@@ -135,26 +134,8 @@
   // Use cached > initial (only if version matches)
   window.PRODUCT_DATA_TABLE = cached || initial;
   // Step 3: fetch latest from API (skip cache to always get fresh data after publish)
-  fetch('/api/public/products-data?_t=' + Date.now())
-    .then(function(r) {
-      if (!r.ok) throw new Error('API ' + r.status);
-      return r.json().then(function(data) {
-        // Cache to localStorage with version
-        try {
-          localStorage.setItem(KEY, JSON.stringify(data));
-          localStorage.setItem(VERSION_KEY, version);
-        } catch(e) {}
-        return data;
-      });
-    })
-    .then(function(data) {
-      if (data && data.length) window.PRODUCT_DATA_TABLE = data;
-      window.dispatchEvent(new Event('product-data-ready'));
-    })
-    .catch(function() {
-      // API failed — already have initial or cached data, just fire ready event
-      window.dispatchEvent(new Event('product-data-ready'));
-    });
+  // No backend API — use static data only
+  window.dispatchEvent(new Event('product-data-ready'));
 })();
 </script>
 
