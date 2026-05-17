@@ -971,3 +971,8 @@ button.bg-primary[class*="hover:"]:hover {
   border: none;
 }
 .btn-whatsapp-cta:hover { box-shadow: 0 10px 25px rgba(37, 211, 102, 0.35); }
+
+/* ── Global anchor scroll offset ── */
+[id] {
+  scroll-margin-top: 80px;
+}
