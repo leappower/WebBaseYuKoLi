@@ -411,9 +411,9 @@
     // ═══════════════════════════════════════════════════════════
     theme: {
       colors: {
-        primary: "#ec5b13",
-        primaryHover: "#d4521a",
-        primaryRgb: "236, 91, 19",
+        primary: "#2E7D32",
+        primaryHover: "#256028",
+        primaryRgb: "46, 125, 50",
         bgLight: "#f8f6f6",
         bgDark: "#221610",
         textPrimary: "#0f172a",
