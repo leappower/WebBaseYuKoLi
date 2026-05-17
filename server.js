@@ -67,6 +67,10 @@ app.use(helmet({
       connectSrc: ["'self'", "wa.me", "*.googleapis.com"],
       frameSrc: ["'self'"],
       frameAncestors: ["'none'"],
+      // Disable upgrade-insecure-requests — Express runs HTTP-only behind Caddy.
+      // This directive forces browsers to upgrade HTTP→HTTPS fetch calls,
+      // breaking SPA router on localhost:3097 (ERR_SSL_PROTOCOL_ERROR).
+      upgradeInsecureRequests: null,
     },
   },
 }));
@@ -398,13 +402,20 @@ app.use((req, res) => {
 });
 
 const PORT = process.env.PORT || 3099;
-const SSL_PORT = process.env.SSL_PORT ? parseInt(process.env.SSL_PORT) : 3443;
-const ENABLE_SSL = SSL_PORT > 0;
-const https = require('https');
-const sslOptions = {
-  key: fs.readFileSync('/Users/chee/certs/Open C la w-key.pem'),
-  cert: fs.readFileSync('/Users/chee/certs/Open C la w-new.pem'),
-};
+const SSL_PORT = process.env.SSL_PORT ? parseInt(process.env.SSL_PORT) : 0;
+const ENABLE_SSL = false;
+var https;
+var sslOptions = {};
+try {
+  https = require('https');
+  sslOptions = {
+    key: fs.readFileSync('/Users/chee/certs/192.168.3.181-key.pem'),
+    cert: fs.readFileSync('/Users/chee/certs/192.168.3.181-new.pem'),
+  };
+} catch (e) {
+  // SSL cert files missing — skip HTTPS (behind Caddy reverse proxy anyway)
+  console.log('⚠️  SSL certs not found, HTTPS disabled (use Caddy for TLS)');
+}
 
 // Start server with error handling
 const server = app.listen(PORT, (err) => {

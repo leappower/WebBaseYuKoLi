@@ -118,7 +118,7 @@
           href: "/about/",
         },
       ],
-      cta: { text: { en: "Get Quote", "zh-CN": "获取报价" }, href: "/quote/", i18nKey: "nav_get_quote" },
+      cta: { text: { en: "Get Quote", "zh-CN": "获取报价" }, href: "/contact/", i18nKey: "nav_get_quote" },
     },
 
     // ═══════════════════════════════════════════════════════════
@@ -128,12 +128,12 @@
       mobileItems: [
         { id: "products", label: { en: "Products", "zh-CN": "产品" }, icon: "inventory_2", href: "/products/" },
         { id: "cases", label: { en: "Cases", "zh-CN": "案例" }, icon: "analytics", href: "/cases/" },
-        { id: "quote", label: { en: "Quote", "zh-CN": "报价" }, icon: "request_quote", href: "/quote/" },
+        { id: "contact", label: { en: "Contact", "zh-CN": "联系" }, icon: "request_quote", href: "/contact/" },
         { id: "support", label: { en: "Support", "zh-CN": "支持" }, icon: "support_agent", href: "/support/" },
       ],
       tabletItems: [
         { id: "products", label: { en: "Products", "zh-CN": "产品中心" }, icon: "inventory_2", href: "/products/" },
-        { id: "applications", label: { en: "Applications", "zh-CN": "行业场景" }, icon: "storefront", href: "/applications/small-restaurant/" },
+        { id: "about", label: { en: "About", "zh-CN": "关于我们" }, icon: "business", href: "/about/" },
         { id: "cases", label: { en: "Case Studies", "zh-CN": "客户案例" }, icon: "analytics", href: "/cases/" },
         { id: "support", label: { en: "Support", "zh-CN": "服务支持" }, icon: "support_agent", href: "/support/" },
       ],
