@@ -83,6 +83,8 @@
             { id: "oem", label: { en: "OEM", "zh-CN": "OEM 代工" }, icon: "precision_manufacturing", slug: "oem", href: "/solutions/oem/" },
             { id: "odm", label: { en: "ODM", "zh-CN": "ODM 贴牌" }, icon: "design_services", slug: "odm", href: "/solutions/odm/" },
             { id: "obm", label: { en: "OBM", "zh-CN": "OBM 自有品牌" }, icon: "verified", slug: "obm", href: "/solutions/obm/" },
+            { id: "rd", label: { en: "R&D & Flavor Lab", "zh-CN": "研发与风味实验室" }, icon: "science", slug: "rd", href: "/solutions/rd/" },
+            { id: "packaging", label: { en: "Packaging & Labeling", "zh-CN": "包装与标签合规" }, icon: "inventory", slug: "packaging", href: "/solutions/packaging/" },
           ],
         },
         {
@@ -90,32 +92,50 @@
           children: [
             { id: "all", label: { en: "All Products", "zh-CN": "全部产品" }, icon: "grid_view", slug: "all" },
             { id: "coffee", label: { en: "Coffee", "zh-CN": "咖啡系列" }, icon: "coffee", slug: "coffee", i18nKey: "nav_products_coffee" },
-            { id: "tea", label: { en: "Tea", "zh-CN": "茶饮系列" }, icon: "local_cafe", slug: "tea", i18nKey: "nav_products_tea" },
+            { id: "tea", label: { en: "Tea & Milk Tea", "zh-CN": "茶饮奶茶系列" }, icon: "local_cafe", slug: "tea", i18nKey: "nav_products_tea" },
             { id: "meal", label: { en: "Meal Replacement", "zh-CN": "代餐系列" }, icon: "restaurant", slug: "meal", i18nKey: "nav_products_meal" },
-            { id: "beauty", label: { en: "Collagen & Beauty", "zh-CN": "胶原养颜" }, icon: "spa", slug: "beauty", i18nKey: "nav_products_beauty" },
+            { id: "beauty", label: { en: "Beauty & Collagen", "zh-CN": "美容胶原系列" }, icon: "spa", slug: "beauty", i18nKey: "nav_products_beauty" },
             { id: "weight", label: { en: "Weight Management", "zh-CN": "体重管理" }, icon: "monitor_weight", slug: "weight", i18nKey: "nav_products_weight" },
             { id: "gut", label: { en: "Gut Health", "zh-CN": "肠道健康" }, icon: "biotech", slug: "gut", i18nKey: "nav_products_gut" },
-            { id: "lifestyle", label: { en: "Functional Drinks", "zh-CN": "功能冲饮" }, icon: "energy_savings_leaf", slug: "lifestyle", i18nKey: "nav_products_lifestyle" },
+            { id: "lifestyle", label: { en: "Lifestyle Functional", "zh-CN": "功能冲饮" }, icon: "energy_savings_leaf", slug: "lifestyle", i18nKey: "nav_products_lifestyle" },
           ],
         },
         {
           id: "manufacturing", label: { en: "Manufacturing", "zh-CN": "制造实力" }, i18nKey: "nav_manufacturing",
-          href: "/manufacturing/",
+          children: [
+            { id: "bases", label: { en: "Our 4 Production Bases", "zh-CN": "四大生产基地" }, icon: "factory", slug: "bases", href: "/manufacturing/" },
+            { id: "quality", label: { en: "Quality Control", "zh-CN": "质量管控体系" }, icon: "verified", slug: "quality", href: "/manufacturing/" },
+            { id: "smart", label: { en: "Smart Factory", "zh-CN": "智能工厂" }, icon: "precision_manufacturing", slug: "smart", href: "/manufacturing/" },
+            { id: "supplychain", label: { en: "Global Supply Chain", "zh-CN": "全球供应链" }, icon: "public", slug: "supplychain", href: "/manufacturing/" },
+          ],
+        },
+        {
+          id: "compliance", label: { en: "Compliance", "zh-CN": "认证合规" }, i18nKey: "nav_compliance",
+          children: [
+            { id: "certs", label: { en: "Global Certifications", "zh-CN": "国际认证" }, icon: "verified_user", slug: "certs", href: "/compliance/" },
+            { id: "halal", label: { en: "Halal Dedicated Lines", "zh-CN": "清真认证专线" }, icon: "assured_workload", slug: "halal", href: "/compliance/" },
+            { id: "coa", label: { en: "Lab Reports & COA", "zh-CN": "检测报告与 COA" }, icon: "description", slug: "coa", href: "/compliance/" },
+          ],
         },
         {
           id: "resources", label: { en: "Resources", "zh-CN": "资源中心" }, i18nKey: "nav_resources",
           children: [
-            { id: "cases", label: { en: "Case Studies", "zh-CN": "客户案例" }, icon: "analytics", slug: "cases", href: "/cases/" },
-            { id: "support", label: { en: "Support", "zh-CN": "服务支持" }, icon: "support_agent", slug: "support", href: "/support/" },
-            { id: "compliance", label: { en: "Compliance", "zh-CN": "资质认证" }, icon: "verified_user", slug: "compliance", href: "/compliance/" },
+            { id: "catalog", label: { en: "2026 Product Catalog", "zh-CN": "2026 产品目录" }, icon: "menu_book", slug: "catalog", href: "/resources/catalog/" },
+            { id: "whitepapers", label: { en: "Whitepapers & Trends", "zh-CN": "行业白皮书" }, icon: "article", slug: "whitepapers", href: "/resources/whitepapers/" },
+            { id: "cases", label: { en: "Case Studies", "zh-CN": "成功案例" }, icon: "analytics", slug: "cases", href: "/cases/" },
+            { id: "videos", label: { en: "Video Library", "zh-CN": "视频中心" }, icon: "play_circle", slug: "videos", href: "/resources/videos/" },
           ],
         },
         {
-          id: "about", label: { en: "About", "zh-CN": "关于我们" }, i18nKey: "nav_about",
-          href: "/about/",
+          id: "contact", label: { en: "Contact Us", "zh-CN": "联系我们" }, i18nKey: "nav_contact",
+          children: [
+            { id: "quote", label: { en: "Get a Quote", "zh-CN": "获取报价" }, icon: "request_quote", slug: "quote", href: "/contact/" },
+            { id: "samples", label: { en: "Request Free Samples", "zh-CN": "免费样品" }, icon: "redeem", slug: "samples", href: "/contact/" },
+            { id: "visit", label: { en: "Visit Our Factory", "zh-CN": "参观工厂" }, icon: "tour", slug: "visit", href: "/contact/" },
+            { id: "network", label: { en: "Global Sales Network", "zh-CN": "全球销售网络" }, icon: "language", slug: "network", href: "/contact/" },
+          ],
         },
       ],
-      cta: { text: { en: "Contact Us", "zh-CN": "联系我们" }, href: "/contact/", i18nKey: "nav_contact_us" },
     },
 
     // ═══════════════════════════════════════════════════════════
@@ -124,15 +144,15 @@
     footer: {
       mobileItems: [
         { id: "products", label: { en: "Products", "zh-CN": "产品" }, icon: "inventory_2", href: "/products/" },
-        { id: "cases", label: { en: "Cases", "zh-CN": "案例" }, icon: "analytics", href: "/cases/" },
-        { id: "contact", label: { en: "Contact", "zh-CN": "联系" }, icon: "request_quote", href: "/contact/" },
-        { id: "support", label: { en: "Support", "zh-CN": "支持" }, icon: "support_agent", href: "/support/" },
+        { id: "solutions", label: { en: "Solutions", "zh-CN": "方案" }, icon: "design_services", href: "/solutions/oem/" },
+        { id: "inquiry", label: { en: "Inquiry", "zh-CN": "询盘" }, icon: "request_quote", href: "/contact/" },
+        { id: "whatsapp", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, icon: "chat", href: "https://wa.me/8613924828214" },
       ],
       tabletItems: [
         { id: "products", label: { en: "Products", "zh-CN": "产品中心" }, icon: "inventory_2", href: "/products/" },
-        { id: "about", label: { en: "About", "zh-CN": "关于我们" }, icon: "business", href: "/about/" },
-        { id: "cases", label: { en: "Case Studies", "zh-CN": "客户案例" }, icon: "analytics", href: "/cases/" },
-        { id: "support", label: { en: "Support", "zh-CN": "服务支持" }, icon: "support_agent", href: "/support/" },
+        { id: "manufacturing", label: { en: "Manufacturing", "zh-CN": "制造实力" }, icon: "factory", href: "/manufacturing/" },
+        { id: "compliance", label: { en: "Compliance", "zh-CN": "资质认证" }, icon: "verified_user", href: "/compliance/" },
+        { id: "contact", label: { en: "Contact", "zh-CN": "联系" }, icon: "request_quote", href: "/contact/" },
       ],
     },
 
