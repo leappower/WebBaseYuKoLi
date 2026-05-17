@@ -392,15 +392,25 @@
         .catch(function (err) {
           console.error("[ProductGrid] Failed to load product data:", err);
           // Fallback: restore from localStorage
+          var restored = false;
           try {
             var cached = JSON.parse(localStorage.getItem("pdt_v2"));
             if (Array.isArray(cached) && cached.length > 0) {
               window[STORE_KEY] = cached;
-              _dataLoaded = true;
-              window.dispatchEvent(new Event("product-data-ready"));
+              restored = true;
             }
           } catch (e) {}
+          // Fallback: use whatever static data is in window[STORE_KEY]
+          if (!restored && !Array.isArray(window[STORE_KEY])) {
+            window[STORE_KEY] = [];
+          }
+          _dataLoaded = true;
+          _dataCallbacks.forEach(function (cb) {
+            cb();
+          });
           _dataCallbacks = [];
+          _fetchPromise = null;
+          window.dispatchEvent(new Event("product-data-ready"));
         });
     }
   }
@@ -790,7 +800,15 @@
     var cats = getCategories();
     var prods = getAllProducts();
     if (!cats.length) {
-      console.warn("[ProductGrid] doRender ABORT: no categories");
+      console.warn("[ProductGrid] doRender: no categories, showing empty state");
+      var target = document.getElementById("product-list") || document.getElementById("product-grid");
+      if (target) {
+        target.innerHTML = '<div class="col-span-full text-center py-16 text-gray-400">' +
+          '<span class="material-symbols-outlined text-5xl mb-3 block">inventory_2</span>' +
+          '<p>No products available yet.</p></div>';
+      }
+      var overlay = document.getElementById("skeleton-overlay");
+      if (overlay) overlay.setAttribute("hidden", "");
       return;
     }
     if (document.getElementById("product-list")) {
