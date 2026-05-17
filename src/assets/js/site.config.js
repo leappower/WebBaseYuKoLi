@@ -219,11 +219,11 @@
         Other: { monthly: 2000, currency: "USD", symbol: "$", rateToUSD: 1 },
       },
       equipmentCost: {
-        smart_wok: { min: 3000, max: 8000, label: { en: "Smart Wok", "zh-CN": "智能炒菜机" } },
-        rice_cooker: { min: 1500, max: 4000, label: { en: "Rice Cooker", "zh-CN": "蒸饭柜" } },
-        dishwasher: { min: 2000, max: 5000, label: { en: "Dishwasher", "zh-CN": "洗碗机" } },
-        induction_cooker: { min: 500, max: 2000, label: { en: "Induction Cooker", "zh-CN": "电磁炉" } },
-        deep_fryer: { min: 1000, max: 3000, label: { en: "Deep Fryer", "zh-CN": "油炸炉" } },
+        coffee_drink: { min: 0.3, max: 1.5, label: { en: "Coffee Drink", "zh-CN": "咖啡冲调" } },
+        tea_drink: { min: 0.2, max: 1.0, label: { en: "Tea Drink", "zh-CN": "茶饮" } },
+        meal_replacement: { min: 0.5, max: 2.0, label: { en: "Meal Replacement", "zh-CN": "代餐蛋白" } },
+        collagen: { min: 0.5, max: 2.5, label: { en: "Collagen", "zh-CN": "胶原蛋白" } },
+        weight_mgmt: { min: 0.3, max: 1.5, label: { en: "Weight Management", "zh-CN": "体重管理" } },
       },
       exchangeRates: {
         base: "USD",

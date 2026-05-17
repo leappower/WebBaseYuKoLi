@@ -202,23 +202,46 @@
 
     // 提取主要内容（<main id="spa-content"> 内部内容）
     extractContent: function (html) {
-      var doc = new DOMParser().parseFromString(html, "text/html");
-      var main = doc.getElementById("spa-content");
-      if (!main) {
-        // Debug: log parsed body structure
-        var body = doc.body;
-        this.log("extractContent: spa-content NOT found. body children: " + body.children.length);
-        for (var i = 0; i < Math.min(body.children.length, 5); i++) {
-          this.log("  child[" + i + "]: " + body.children[i].tagName + "#" + body.children[i].id + "." + (body.children[i].className || "").substring(0, 40));
+      var _self = this;
+      var result = null;
+
+      // Method 1: DOMParser + getElementById
+      try {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var main = doc.getElementById("spa-content");
+        if (main) {
+          result = main.innerHTML;
+        } else {
+          // Method 2: fallback to getElementsByTagName
+          var mains = doc.getElementsByTagName("main");
+          if (mains.length > 0) {
+            _self.log("extractContent: getElementById failed, using getElementsByTagName[0] (id=" + mains[0].id + ")");
+            result = mains[0].innerHTML;
+          } else {
+            // Debug: log parsed body structure
+            var body = doc.body;
+            _self.log("extractContent: spa-content NOT found. body children: " + body.children.length + ", htmlLen=" + html.length);
+            for (var i = 0; i < Math.min(body.children.length, 5); i++) {
+              _self.log("  child[" + i + "]: " + body.children[i].tagName + "#" + body.children[i].id + "." + (body.children[i].className || "").substring(0, 40));
+            }
+          }
         }
-        // Fallback: try querying by tag name
-        var mains = doc.getElementsByTagName("main");
-        this.log("extractContent: <main> count: " + mains.length);
-        if (mains.length > 0) {
-          this.log("extractContent: first <main> id=\"" + mains[0].id + "\"");
+      } catch (e) {
+        _self.log("extractContent: DOMParser error: " + e.message);
+      }
+
+      // Method 3: regex fallback (works even if DOMParser strips content)
+      if (!result) {
+        _self.log("extractContent: DOMParser failed, trying regex fallback");
+        var regex = /<main[^>]*id\s*=\s*["']spa-content["'][^>]*>([\\s\\S]*)<\/main>/i;
+        var match = html.match(regex);
+        if (match) {
+          _self.log("extractContent: regex fallback succeeded");
+          result = match[1];
         }
       }
-      return main ? main.innerHTML : null;
+
+      return result;
     },
 
     // 提取标题
