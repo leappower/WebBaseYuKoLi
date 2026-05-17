@@ -8,6 +8,7 @@
 (function (window) {
   "use strict";
 
+  var _cfg = window.SITE_CONFIG || window._cfg || {};
   var resizeTimer;
 
   /* ─── Mobile items (4) ─── */
@@ -155,7 +156,7 @@
     }
 
     window.requestAnimationFrame(function () {
-  var _cfg = window.SITE_CONFIG || window._cfg || {};
+  /* _cfg declared at top of IIFE */
       if (bar) bar.style.opacity = "1";
       if (!document.body.style.paddingBottom) {
         document.body.style.paddingBottom = (bar ? bar.offsetHeight : 80) + 20 + "px";
