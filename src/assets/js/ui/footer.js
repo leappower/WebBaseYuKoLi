@@ -1,14 +1,19 @@
 /**
- * footer.js — Mobile & Tablet Bottom Navigation Bar
+ * footer.js — Footer component (bottom nav & page footer)
  *
- * Mobile (<768px): 4 items — 首页/产品/解决方案/WhatsApp
- * Tablet (768-1024px): 6 items — 首页/产品/解决方案/制造合规/关于/WhatsApp
- * PC (>=1024px): hidden
+ * ⚠️ Bottom navigation is now handled by bottom-tab.js when
+ *    SITE_CONFIG.features.unifiedBottomNav === true.
+ *    This file retains pure page-footer responsibilities only.
  */
 (function (window) {
   "use strict";
 
   var _cfg = window.SITE_CONFIG || window._cfg || {};
+  var _features = _cfg.features || {};
+
+  /* ── Guard: bottom nav delegated to bottom-tab.js ── */
+  if (_features.unifiedBottomNav) return;
+
   var resizeTimer;
 
   /* ─── Mobile items (4) ─── */
