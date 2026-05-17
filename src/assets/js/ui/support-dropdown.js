@@ -16,11 +16,12 @@
 
   function _buildCategoryItems(categoryKey, parentPath) {
     var cats = _categories[categoryKey] || [];
-    var items = [{ key: "nav_support_services", icon: "grid_view", href: parentPath, emoji: "" }];
+    var items = [{ key: "nav_support_services", label: "全部服务", icon: "grid_view", href: parentPath, emoji: "" }];
     for (var i = 0; i < cats.length; i++) {
       var cat = cats[i];
       items.push({
         key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        label: cat.label || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         href: parentPath + (cat.slug || "") + "/",
         emoji: cat.emoji || "",
@@ -105,7 +106,7 @@
       '<span class="sup-dropdown-label" data-i18n="' +
       esc(sub.key) +
       '">' +
-      esc(sub.key) +
+      esc(sub.label || sub.key) +
       "</span>" +
       emojiHtml +
       chevron +

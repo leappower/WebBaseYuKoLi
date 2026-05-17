@@ -22,6 +22,7 @@
     return cats.map(function (cat) {
       return {
         key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        label: cat.label || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         emoji: cat.emoji || "",
         href: parentPath + (cat.slug || "") + "/",
@@ -140,7 +141,7 @@
       '<span class="prod-dropdown-label" data-i18n="' +
       esc(sub.key) +
       '">' +
-      esc(sub.key) +
+      esc(sub.label || sub.key) +
       "</span>" +
       emojiHtml +
       chevron +

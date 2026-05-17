@@ -92,12 +92,7 @@
         },
         {
           id: "applications", label: { en: "Applications", "zh-CN": "行业场景" }, i18nKey: "nav_applications",
-          children: [
-            { id: "brand_owner", label: { en: "Brand Owner", "zh-CN": "品牌方" }, icon: "badge", slug: "brand_owner" },
-            { id: "chain_brand", label: { en: "Chain Brand", "zh-CN": "连锁品牌" }, icon: "store", slug: "chain_brand" },
-            { id: "ecommerce", label: { en: "E-commerce", "zh-CN": "跨境电商" }, icon: "shopping_cart", slug: "ecommerce" },
-            { id: "health_brand", label: { en: "Health Brand", "zh-CN": "大健康品牌" }, icon: "health_and_safety", slug: "health_brand" },
-          ],
+          href: "/applications/",
         },
         {
           id: "cases", label: { en: "Case Studies", "zh-CN": "客户案例" }, i18nKey: "nav_case_studies",
@@ -105,13 +100,7 @@
         },
         {
           id: "support", label: { en: "Support", "zh-CN": "服务支持" }, i18nKey: "nav_support",
-          children: [
-            { id: "faq", label: { en: "FAQ", "zh-CN": "技术问答" }, icon: "help", slug: "faq" },
-            { id: "installation", label: { en: "Installation", "zh-CN": "安装调试" }, icon: "build", slug: "installation" },
-            { id: "warranty", label: { en: "Warranty", "zh-CN": "质保维护" }, icon: "verified", slug: "warranty" },
-            { id: "spare-parts", label: { en: "Spare Parts", "zh-CN": "配件支持" }, icon: "settings", slug: "spare-parts" },
-            { id: "training", label: { en: "Training", "zh-CN": "培训下载" }, icon: "school", slug: "training" },
-          ],
+          href: "/support/",
         },
         {
           id: "about", label: { en: "About", "zh-CN": "关于我们" }, i18nKey: "nav_about",
