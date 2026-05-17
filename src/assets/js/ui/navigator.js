@@ -422,6 +422,23 @@
         }
       }
 
+      /* 通用 NavDropdown 模块（处理所有未定制的有子项菜单） */
+      if (typeof window.NavDropdown !== "undefined") {
+        var genericRenderArgs = {
+          href: href,
+          labelKey: navItem.key,
+          label: navItem.label,
+          activeClass: activeClass,
+          navItem: navItem,
+        };
+        if (variant === "pc") {
+          return window.NavDropdown.renderPC(genericRenderArgs);
+        }
+        if (variant === "tablet") {
+          return window.NavDropdown.renderTablet(genericRenderArgs);
+        }
+      }
+
       /* dropdown 模块未加载时，降级为纯文本占位 */
       return '<span class="' + activeClass + ' pointer-events-none">' + navItem.label + "</span>";
     }
