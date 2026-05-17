@@ -118,7 +118,7 @@
         "desc_en": "Fruit tea, milk tea, pure tea powder，restoring store-level taste"
       },
       {
-        "slug": "meal-replacement",
+        "slug": "meal",
         "name_cn": "代餐蛋白",
         "name_en": "Meal Replacement & Protein",
         "tagline_cn": "营养均衡，便捷代餐",
@@ -127,7 +127,7 @@
         "desc_en": "Protein bars, meal replacement powder, scientific ratio for strong satiety"
       },
       {
-        "slug": "collagen",
+        "slug": "beauty",
         "name_cn": "美容胶原",
         "name_en": "Beauty Collagen",
         "tagline_cn": "口服美容，焕活肌肤",
@@ -136,7 +136,7 @@
         "desc_en": "Collagen peptide drinks with added beauty essences"
       },
       {
-        "slug": "weight-management",
+        "slug": "weight",
         "name_cn": "体重管理",
         "name_en": "Weight Management",
         "tagline_cn": "科学控重，健康塑形",
@@ -145,7 +145,7 @@
         "desc_en": "Fat burning drinks, blockers, assisting healthy weight management plans"
       },
       {
-        "slug": "gut-health",
+        "slug": "gut",
         "name_cn": "肠道健康",
         "name_en": "Gut Health",
         "tagline_cn": "益生菌群，平衡呵护",
@@ -154,7 +154,7 @@
         "desc_en": "Probiotic powder, dietary fiber, maintaining gut microecology"
       },
       {
-        "slug": "functional-drinks",
+        "slug": "lifestyle",
         "name_cn": "功能冲饮",
         "name_en": "Functional Drinks",
         "tagline_cn": "特定功效，精准补充",
