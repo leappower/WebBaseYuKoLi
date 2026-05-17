@@ -199,7 +199,7 @@
     if (country) lines.push("🌍 " + t("quote_country_region") + ": " + country);
     if (equipType) lines.push("🍽️ " + t("quote_equipment_type") + ": " + equipType);
     if (quantity) lines.push("📦 " + t("quote_quantity") + ": " + quantity);
-    if (capacity) lines.push("🏭 " + t("quote_kitchen_capacity") + ": " + capacity);
+    if (capacity) lines.push("🏭 " + t("quote_production_capacity") + ": " + capacity);
     if (budget) lines.push("💰 " + t("quote_budget_range") + ": " + budget);
     if (message) lines.push("📝 " + t("quote_detailed_requirements") + ": " + message);
     return lines.length > 0 ? "🔧 " + t("quote_get_quote") + "\n" + lines.join("\n") : "🔧 " + t("quote_get_quote");

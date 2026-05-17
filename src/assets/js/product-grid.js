@@ -842,7 +842,7 @@
     getCategories().forEach(function (cat) {
       var name = cat.categoryName || cat.category;
       if (name) {
-        // Translate category if it's an i18n key (e.g. nav_products_stirfry)
+        // Translate category if it's an i18n key (e.g. nav_products_coffee)
         var translated = typeof window.t === "function" ? window.t(cat.category) : null;
         var label = translated && translated !== cat.category ? translated : name;
         categories.push({ key: cat.category, name: label });
@@ -1045,7 +1045,7 @@
 
   // ─── Init ──────────────────────────────────────────────────────
 
-  // Resolve initial category from URL for SSG page loads (e.g. /products/cutting/ → "nav_products_cutting")
+  // Resolve initial category from URL for SSG page loads (e.g. /products/cutting/ → "nav_products_ingredient")
   // This runs before autoRender so the first render filters correctly.
   (function initCategoryFromUrl() {
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);

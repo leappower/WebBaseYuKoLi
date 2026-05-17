@@ -37,7 +37,7 @@
   };
 
   function getCategoryI18nKey(category) {
-    // Support both i18n keys (nav_products_stirfry) and Chinese category names
+    // Support both i18n keys (nav_products_coffee) and Chinese category names
     if (!category) return "filter_unknown";
     // If it's already an i18n key (nav_products_xxx), use directly
     if (category.indexOf("nav_products_") === 0 || category.indexOf("nav_") === 0) return category;
