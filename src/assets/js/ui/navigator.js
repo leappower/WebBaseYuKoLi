@@ -47,20 +47,9 @@
    *  常量 & 配置
    * ================================================================ */
 
-  /**
-   * 主导航项
-   * @type {Array<{key:string, label:string, path:string, id:string, hasDropdown:boolean}>}
-   */
-  var DEFAULT_NAV_ITEMS = [
-    { key: "nav_products", label: "产品中心", path: "/products/", id: "products", hasDropdown: true },
-    { key: "nav_solutions", label: "解决方案", path: "/solutions/", id: "solutions", hasDropdown: true },
-    { key: "nav_manufacturing", label: "制造实力", path: "/manufacturing/", id: "manufacturing", hasDropdown: false },
-    { key: "nav_compliance", label: "品质合规", path: "/compliance/", id: "compliance", hasDropdown: false },
-    { key: "nav_about", label: "关于我们", path: "/about/", id: "about", hasDropdown: true },
-    { key: "nav_contact", label: "联系我们", path: "/contact/", id: "contact", hasDropdown: false },
-  ];
-
   /** @type {Array} 当前生效的导航项 (recomputed per-call to avoid stale closure) */
+
+  /* CANONICAL_NAV_ITEMS 定义在文件末尾，作为 config 完全不可用时的 fallback */
 
   /**
    * 获取导航项（配置驱动）
@@ -86,12 +75,8 @@
         };
       });
     }
-    // 从 categories 构建导航项（如果有 productLines 配置）
-    if (cfg.navMode && cfg.categories) {
-      return buildNavFromConfig(cfg);
-    }
-    // Fallback 到硬编码
-    return DEFAULT_NAV_ITEMS;
+    // Fallback 到 CANONICAL_NAV_ITEMS（定义在文件末尾）
+    return CANONICAL_NAV_ITEMS;
   }
 
   /**
@@ -100,68 +85,23 @@
    * @returns {Array} 导航项数组
    */
   function buildNavFromConfig(cfg) {
-    var cats = cfg.categories || {};
-    var items = [];
-
-    // 产品
-    if (cats.products && cats.products.length > 0) {
-      items.push({
-        key: "nav_products",
-        label: cfg.brand ? cfg.brand.name + " " + "Products" : "Products",
-        path: "/products/",
-        id: "products",
-        hasDropdown: true
-      });
+    var navItems = (cfg.nav || {}).items;
+    if (!navItems || !Array.isArray(navItems) || navItems.length === 0) {
+      return CANONICAL_NAV_ITEMS;
     }
-
-    // 解决方案
-    if (cats.solutions && cats.solutions.length > 0) {
-      items.push({
-        key: "nav_solutions",
-        label: "解决方案",
-        path: "/solutions/",
-        id: "solutions",
-        hasDropdown: true
-      });
-    }
-
-    // 制造实力
-    items.push({
-      key: "nav_manufacturing",
-      label: "制造实力",
-      path: "/manufacturing/",
-      id: "manufacturing",
-      hasDropdown: false
+    return navItems.map(function (navItem) {
+      var label = typeof navItem.label === "object"
+        ? (navItem.label["zh-CN"] || navItem.label.en || navItem.id)
+        : navItem.label;
+      return {
+        key: navItem.i18nKey || ("nav_" + navItem.id),
+        label: label,
+        path: navItem.href || ("/" + navItem.id + "/"),
+        id: navItem.id,
+        hasDropdown: !!(navItem.children && navItem.children.length > 0),
+        _source: navItem,
+      };
     });
-
-    // 品质合规
-    items.push({
-      key: "nav_compliance",
-      label: "品质合规",
-      path: "/compliance/",
-      id: "compliance",
-      hasDropdown: false
-    });
-
-    // About
-    items.push({
-      key: "nav_about",
-      label: "关于我们",
-      path: "/about/",
-      id: "about",
-      hasDropdown: true
-    });
-
-    // Contact
-    items.push({
-      key: "nav_contact",
-      label: "联系我们",
-      path: "/contact/",
-      id: "contact",
-      hasDropdown: false
-    });
-
-    return items;
   }
 
   /**
@@ -1712,6 +1652,21 @@
 
     if (needsRemount) mountNavigator();
   });
+
+  /* ================================================================
+   *  CANONICAL_NAV_ITEMS — 全局共享导航项常量
+   *  当 SITE_CONFIG.nav.items 完全不可用时作为 fallback
+   *  navigator.js 与 slide-menu.js 共用同一份定义
+   * ================================================================ */
+
+  var CANONICAL_NAV_ITEMS = [
+    { key: "nav_solutions", label: "Solutions", path: "/solutions/", id: "solutions", hasDropdown: true },
+    { key: "nav_products", label: "Products", path: "/products/", id: "products", hasDropdown: true },
+    { key: "nav_manufacturing", label: "Manufacturing", path: "/manufacturing/", id: "manufacturing", hasDropdown: false },
+    { key: "nav_compliance", label: "Compliance", path: "/compliance/", id: "compliance", hasDropdown: false },
+    { key: "nav_resources", label: "Resources", path: "/resources/", id: "resources", hasDropdown: true },
+    { key: "nav_contact", label: "Contact", path: "/contact/", id: "contact", hasDropdown: false },
+  ];
 
   /* ================================================================
    *  公开 API — window.Navigator
