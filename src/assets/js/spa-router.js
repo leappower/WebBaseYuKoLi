@@ -204,6 +204,20 @@
     extractContent: function (html) {
       var doc = new DOMParser().parseFromString(html, "text/html");
       var main = doc.getElementById("spa-content");
+      if (!main) {
+        // Debug: log parsed body structure
+        var body = doc.body;
+        this.log("extractContent: spa-content NOT found. body children: " + body.children.length);
+        for (var i = 0; i < Math.min(body.children.length, 5); i++) {
+          this.log("  child[" + i + "]: " + body.children[i].tagName + "#" + body.children[i].id + "." + (body.children[i].className || "").substring(0, 40));
+        }
+        // Fallback: try querying by tag name
+        var mains = doc.getElementsByTagName("main");
+        this.log("extractContent: <main> count: " + mains.length);
+        if (mains.length > 0) {
+          this.log("extractContent: first <main> id=\"" + mains[0].id + "\"");
+        }
+      }
       return main ? main.innerHTML : null;
     },
 

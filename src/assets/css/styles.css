@@ -476,6 +476,16 @@ main#spa-content:not([class*="p-"], [class*="px-"], [class*="py-"]) .fullwidth-b
   margin-inline: auto;
 }
 
+/* ─── Hero section text padding ──────────────
+ *
+ * In hero sections, .section-content is nested inside absolute overlays,
+ * so .fullwidth-bg > .section-content won't match. This ensures
+ * hero text has proper left/right breathing room.
+ */
+.hero-banner .section-content {
+  padding-inline: var(--container-px, 0.75rem);
+}
+
 /* ─── section-passthrough: flex layout transparency ──────────────
  *
  * Purpose: Make section-content transparent in flex/grid parent sections
