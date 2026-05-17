@@ -50,7 +50,7 @@
   <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-clip">
     <navigator data-component="navigator" data-variant="mobile" data-active="manufacturing" data-search="true" data-cta-text-key="nav_contact_us" data-cta-href="/contact/"></navigator>
     <main id="spa-content">
-      <section class="fullwidth-bg hero-banner w-full h-[300px] relative overflow-hidden">
+      <section id="bases" class="fullwidth-bg hero-banner w-full h-[300px] relative overflow-hidden">
         <img alt="制造实力" class="w-full h-full object-cover" src="/assets/images/oem/factory/factory-1.webp" loading="eager" />
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="absolute inset-0 flex items-center">
@@ -62,7 +62,7 @@
           </div>
         </div>
       </section>
-      <section class="fullwidth-bg py-16">
+      <section id="quality" class="fullwidth-bg py-16">
         <div class="section-content">
           <div class="max-w-4xl mx-auto text-center">
             <h2 class="text-3xl font-black mb-6">制造实力</h2>
@@ -71,7 +71,7 @@
           </div>
         </div>
       </section>
-      <section class="fullwidth-bg bg-slate-50 dark:bg-slate-900 py-16">
+      <section id="smart" class="fullwidth-bg bg-slate-50 dark:bg-slate-900 py-16">
         <div class="section-content">
           <h2 class="text-3xl font-black text-center mb-12">服务内容</h2>
           <div class="grid grid-cols-1 grid-cols-1 gap-8">
@@ -99,7 +99,7 @@
           </div>
         </div>
       </section>
-      <section class="fullwidth-bg bg-primary py-16">
+      <section id="supplychain" class="fullwidth-bg bg-primary py-16">
         <div class="section-content">
           <div class="w-full text-center text-white">
             <h2 class="text-3xl lg:text-4xl font-black mb-6">立即咨询</h2>
@@ -129,5 +129,7 @@
     <script src="/assets/js/utils/device-utils.js"></script>
     <script src="/assets/js/spa-router.js"></script>
     <script defer src="/assets/js/ui/floating-actions.js"></script>
-  </body>
+    <script defer src="/assets/js/ui/trust-bar.js?v=202605171936"></script>
+  <script defer src="/assets/js/ui/bottom-tab.js?v=202605171936"></script>
+</body>
 </html>

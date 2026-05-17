@@ -569,7 +569,16 @@
     "quote_field_production_capacity": "سعة الإنتاج: ",
     "quote_production_capacity": "سعة الإنتاج",
     "quote_type_auto_blender": "خلاط أوتوماتيكي",
-    "quote_type_semi_auto_blender": "خلاط شبه أوتوماتيكي"
+    "quote_type_semi_auto_blender": "خلاط شبه أوتوماتيكي",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "de": {
     "all": "Alle",
@@ -1141,7 +1150,16 @@
     "quote_field_production_capacity": "Produktionskapazität: ",
     "quote_production_capacity": "Produktionskapazität",
     "quote_type_auto_blender": "Automatische Blender-Maschine",
-    "quote_type_semi_auto_blender": "Halbautomatische Blender-Maschine"
+    "quote_type_semi_auto_blender": "Halbautomatische Blender-Maschine",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "en": {
     "all": "All",
@@ -2819,7 +2837,7 @@
     "prod_card_blending_desc": "Precise temp control ±1°C with auto oil filtration. Consistent quality every batch.",
     "prod_card_processing_desc": "Large-capacity multi-layer processing with auto temp control and drip-free design. 500 servings ready on time.",
     "prod_card_brewing_desc": "Precise temp slow-production with auto keep-warm. Zero batch-to-batch variation in broth flavor.",
-    "nav_products_coffee": "Mix-Fry Series",
+    "nav_products_coffee": "Coffee",
     "nav_products_ingredient": "Prep Series",
     "nav_products_blending": "Deep Fryer",
     "nav_products_processing": "Processing Series",
@@ -3378,7 +3396,17 @@
     "coffee_cta_btn_quote": "Get a Custom Quote",
     "coffee_cta_btn_contact": "Contact Sales",
     "brewing_cta_btn_quote": "Get a Custom Quote",
-    "brewing_cta_btn_contact": "Contact Sales"
+    "brewing_cta_btn_contact": "Contact Sales",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources",
+    "nav_products_legacy": "Legacy Classics"
   },
   "es": {
     "all": "Todo",
@@ -3950,7 +3978,16 @@
     "quote_field_production_capacity": "Capacidad de Producción: ",
     "quote_production_capacity": "Capacidad de Producción",
     "quote_type_auto_blender": "Máquina Blender Automática",
-    "quote_type_semi_auto_blender": "Blender Semiautomático"
+    "quote_type_semi_auto_blender": "Blender Semiautomático",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "fil": {
     "all": "Lahat",
@@ -4522,7 +4559,16 @@
     "quote_field_production_capacity": "Kapasidad ng Kusina: ",
     "quote_production_capacity": "Kapasidad ng Kusina",
     "quote_type_auto_blender": "Automatic Mixing Equipment",
-    "quote_type_semi_auto_blender": "Semi-Automatic Blender"
+    "quote_type_semi_auto_blender": "Semi-Automatic Blender",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "fr": {
     "all": "Tout",
@@ -5094,7 +5140,16 @@
     "quote_field_production_capacity": "Capacité de la production : ",
     "quote_production_capacity": "Capacité de la production",
     "quote_type_auto_blender": "Blender Automatique",
-    "quote_type_semi_auto_blender": "Blender Semi-Automatique"
+    "quote_type_semi_auto_blender": "Blender Semi-Automatique",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "he": {
     "all": "הכל",
@@ -5666,7 +5721,16 @@
     "quote_field_production_capacity": "קיבולת הייצור: ",
     "quote_production_capacity": "קיבולת הייצור",
     "quote_type_auto_blender": "מכינת ווק אוטומטית",
-    "quote_type_semi_auto_blender": "מכינת ווק חצי-אוטומטית"
+    "quote_type_semi_auto_blender": "מכינת ווק חצי-אוטומטית",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "hi": {
     "all": "सभी",
@@ -6238,7 +6302,16 @@
     "quote_field_production_capacity": "किचन क्षमता: ",
     "quote_production_capacity": "किचन क्षमता",
     "quote_type_auto_blender": "ऑटोमैटिक वोक मशीन",
-    "quote_type_semi_auto_blender": "सेमी-ऑटोमैटिक वोक"
+    "quote_type_semi_auto_blender": "सेमी-ऑटोमैटिक वोक",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "id": {
     "all": "Semua",
@@ -8222,7 +8295,7 @@
     "central_factory_pain_title": "Central Factory Pain Points",
     "formula_lab_hero_subtitle": "800+ recipes covering Thai, Malay, Indonesian, Vietnamese, and Chinese productions — one device handles multi-production switching, no need to hire five chefs.",
     "chain_brand_roi_expand": "New Store Ramp-Up",
-    "nav_products_coffee": "Mix-Fry Series",
+    "nav_products_coffee": "Kopi",
     "nav_applications_formula_lab": "Formula Customization",
     "chain_brand_advantage_4_title": "Energy Efficient",
     "brand_owner_compare_1_label": "Staff Reduction",
@@ -8475,7 +8548,16 @@
     "coffee_solution_badge": "Smart Mix-Fry",
     "coffee_solution_subtitle": "107+ model dari pemula hingga pintar. Insinyur kami merekomendasikan pilihan sempurna untuk menu Anda.",
     "coffee_solution_title": "Kontrol Suhu Pintar Menciptakan Blender Hei — Setiap Hidangan Adalah Hidangan Spesial",
-    "coffee_solution_transition": "Saat memilih mesin blender, fokus pada variasi menu dan output jam sibuk."
+    "coffee_solution_transition": "Saat memilih mesin blender, fokus pada variasi menu dan output jam sibuk.",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "it": {
     "all": "Tutti",
@@ -9047,7 +9129,16 @@
     "quote_field_production_capacity": "Capacità Produzione: ",
     "quote_production_capacity": "Capacità Produzione",
     "quote_type_auto_blender": "Macchina Blender Automatica",
-    "quote_type_semi_auto_blender": "Blender Semi-Automatico"
+    "quote_type_semi_auto_blender": "Blender Semi-Automatico",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "ja": {
     "all": "すべて",
@@ -9619,7 +9710,16 @@
     "quote_field_production_capacity": "キッチン規模：",
     "quote_production_capacity": "キッチン規模",
     "quote_type_auto_blender": "全自動炒め鍋",
-    "quote_type_semi_auto_blender": "半自動炒め鍋"
+    "quote_type_semi_auto_blender": "半自動炒め鍋",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "km": {
     "all": "ទាំងអស់",
@@ -10191,7 +10291,16 @@
     "quote_field_production_capacity": "សមត្ថភាពផ្ទៃបាយ៖ ",
     "quote_production_capacity": "សមត្ថភាពផ្ទៃបាយ",
     "quote_type_auto_blender": "ម៉ាស៊ីនឆាខ្ទះស្វ័យប្រវត្តិ",
-    "quote_type_semi_auto_blender": "ម៉ាស៊ីនឆាខ្ទះក្រោមបញ្ជាកម្ម"
+    "quote_type_semi_auto_blender": "ម៉ាស៊ីនឆាខ្ទះក្រោមបញ្ជាកម្ម",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "ko": {
     "all": "전체",
@@ -10763,7 +10872,16 @@
     "quote_field_production_capacity": "생산 규모: ",
     "quote_production_capacity": "생산 규모",
     "quote_type_auto_blender": "자동 웍",
-    "quote_type_semi_auto_blender": "반자동 웍"
+    "quote_type_semi_auto_blender": "반자동 웍",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "lo": {
     "all": "ທັງໝົດ",
@@ -11335,7 +11453,16 @@
     "quote_field_production_capacity": "ຄວາມສາມາດຫ້ອງຄົວ: ",
     "quote_production_capacity": "ຄວາມສາມາດຫ້ອງຄົວ",
     "quote_type_auto_blender": "ເຄື່ອງກະທຽມອັດຕະໂນມັດ",
-    "quote_type_semi_auto_blender": "ເຄື່ອງກະທຽມກົງກັນຂ້າມ"
+    "quote_type_semi_auto_blender": "ເຄື່ອງກະທຽມກົງກັນຂ້າມ",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "ms": {
     "all": "Semua",
@@ -13319,7 +13446,7 @@
     "central_factory_pain_title": "Central Factory Pain Points",
     "formula_lab_hero_subtitle": "800+ recipes covering Thai, Malay, Indonesian, Vietnamese, and Chinese productions — one device handles multi-production switching, no need to hire five chefs.",
     "chain_brand_roi_expand": "New Store Ramp-Up",
-    "nav_products_coffee": "Mix-Fry Series",
+    "nav_products_coffee": "Kopi",
     "nav_applications_formula_lab": "Formula Customization",
     "chain_brand_advantage_4_title": "Energy Efficient",
     "brand_owner_compare_1_label": "Staff Reduction",
@@ -13572,7 +13699,16 @@
     "coffee_solution_badge": "Tumis Pintar",
     "coffee_solution_subtitle": "107+ model dari asas ke pintar. Jurutera kami mencadangkan pilihan terbaik untuk menu anda.",
     "coffee_solution_title": "Kawalan Suhu Pintar Mencipta Semula Blender Hei — Setiap Hidangan Adalah Hidangan Istimewa",
-    "coffee_solution_transition": "Apabila memilih mesin kuali, fokus pada kepelbagaian menu dan output waktu puncak."
+    "coffee_solution_transition": "Apabila memilih mesin kuali, fokus pada kepelbagaian menu dan output waktu puncak.",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "my": {
     "all": "အားလုံး",
@@ -14144,7 +14280,16 @@
     "quote_field_production_capacity": "မီးဖိုချောင် စွမ်းရည် - ",
     "quote_production_capacity": "မီးဖိုချောင် စွမ်းရည်",
     "quote_type_auto_blender": "အလိုအလျောက် ဒယ်အိုးစက်",
-    "quote_type_semi_auto_blender": "အခြမ်းအလိုအလျောက် ဒယ်အိုးစက်"
+    "quote_type_semi_auto_blender": "အခြမ်းအလိုအလျောက် ဒယ်အိုးစက်",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "nl": {
     "all": "Alles",
@@ -14716,7 +14861,16 @@
     "quote_field_production_capacity": "Keukencapaciteit: ",
     "quote_production_capacity": "Keukencapaciteit",
     "quote_type_auto_blender": "Automatische Blendermachine",
-    "quote_type_semi_auto_blender": "Semi-automatische Blender"
+    "quote_type_semi_auto_blender": "Semi-automatische Blender",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "pl": {
     "all": "Wszystko",
@@ -15288,7 +15442,16 @@
     "quote_field_production_capacity": "Wydajność kuchni: ",
     "quote_production_capacity": "Wydajność kuchni",
     "quote_type_auto_blender": "Automatyczna Maszyna do Blendera",
-    "quote_type_semi_auto_blender": "Półautomatyczny Blender"
+    "quote_type_semi_auto_blender": "Półautomatyczny Blender",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "pt": {
     "all": "Tudo",
@@ -15860,7 +16023,16 @@
     "quote_field_production_capacity": "Capacidade da Produção: ",
     "quote_production_capacity": "Capacidade da Produção",
     "quote_type_auto_blender": "Máquina de Blender Automática",
-    "quote_type_semi_auto_blender": "Blender Semiautomático"
+    "quote_type_semi_auto_blender": "Blender Semiautomático",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "ru": {
     "all": "Все",
@@ -16432,7 +16604,16 @@
     "quote_field_production_capacity": "Мощность кухни: ",
     "quote_production_capacity": "Мощность кухни",
     "quote_type_auto_blender": "Автоматическая вок-машина",
-    "quote_type_semi_auto_blender": "Полуавтоматическая вок-машина"
+    "quote_type_semi_auto_blender": "Полуавтоматическая вок-машина",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "th": {
     "all": "ทั้งหมด",
@@ -18416,7 +18597,7 @@
     "central_factory_pain_title": "Central Factory Pain Points",
     "formula_lab_hero_subtitle": "800+ recipes covering Thai, Malay, Indonesian, Vietnamese, and Chinese productions — one device handles multi-production switching, no need to hire five chefs.",
     "chain_brand_roi_expand": "New Store Ramp-Up",
-    "nav_products_coffee": "Automatic Mixing Equipment",
+    "nav_products_coffee": "กาแฟ",
     "nav_applications_formula_lab": "Formula Customization",
     "chain_brand_advantage_4_title": "Energy Efficient",
     "brand_owner_compare_1_label": "Staff Reduction",
@@ -18669,7 +18850,16 @@
     "brewing_cta_btn_contact": "ติดต่อฝ่ายขาย",
     "brewing_cta_btn_quote": "ขอใบเสนอราคาเฉพาะ",
     "coffee_cta_btn_contact": "ติดต่อฝ่ายขาย",
-    "coffee_cta_btn_quote": "ขอใบเสนอราคาเฉพาะ"
+    "coffee_cta_btn_quote": "ขอใบเสนอราคาเฉพาะ",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "tr": {
     "all": "Hepsi",
@@ -19241,7 +19431,16 @@
     "quote_field_production_capacity": "Üretim Kapasitesi: ",
     "quote_production_capacity": "Üretim Kapasitesi",
     "quote_type_auto_blender": "Otomatik Blender Makinesi",
-    "quote_type_semi_auto_blender": "Yarı Otomatik Blender"
+    "quote_type_semi_auto_blender": "Yarı Otomatik Blender",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "vi": {
     "all": "Tất cả",
@@ -21225,7 +21424,7 @@
     "central_factory_pain_title": "Central Factory Pain Points",
     "formula_lab_hero_subtitle": "800+ recipes covering Thai, Malay, Indonesian, Vietnamese, and Chinese productions — one device handles multi-production switching, no need to hire five chefs.",
     "chain_brand_roi_expand": "New Store Ramp-Up",
-    "nav_products_coffee": "Mix-Fry Series",
+    "nav_products_coffee": "Cà Phê",
     "nav_applications_formula_lab": "Formula Customization",
     "chain_brand_advantage_4_title": "Energy Efficient",
     "brand_owner_compare_1_label": "Staff Reduction",
@@ -21478,7 +21677,16 @@
     "coffee_solution_subtitle": "107+ mẫu từ cơ bản đến thông minh. Kỹ sư của chúng tôi đề xuất lựa chọn hoàn hảo cho thực đơn của bạn.",
     "coffee_solution_title": "Điều Khiển Nhiệt Thông Minh Tái Tạo Blender Hei — Mọi Món Ăn Đều Là Món Đặc Trưng",
     "coffee_solution_transition": "Khi chọn máy bếp xào, hãy tập trung vào sự đa dạng thực đơn và đầu ra vào giờ cao điểm.",
-    "brewing_faq_title": "Câu hỏi thường gặp về thiết bị hầm"
+    "brewing_faq_title": "Câu hỏi thường gặp về thiết bị hầm",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "zh-CN": {
     "all": "全部",
@@ -22089,7 +22297,17 @@
     "quote_production_capacity": "冲调规模",
     "quote_field_production_capacity": "冲调规模: ",
     "profit_calc_scene_brand_owner": "连锁品牌",
-    "profit_calc_eq_blender": "智能冲调设备"
+    "profit_calc_eq_blender": "智能冲调设备",
+    "nav_products_tea": "茶饮奶茶系列",
+    "nav_products_meal": "代餐系列",
+    "nav_products_beauty": "美容胶原系列",
+    "nav_products_weight": "体重管理系列",
+    "nav_products_gut": "肠道健康系列",
+    "nav_products_lifestyle": "功能冲饮系列",
+    "nav_manufacturing": "制造实力",
+    "nav_compliance": "认证合规",
+    "nav_resources": "资源中心",
+    "nav_products_legacy": "经典冲饮"
   },
   "zh-TW": {
     "all": "全部",
@@ -22661,7 +22879,16 @@
     "quote_field_production_capacity": "廚房規模：",
     "quote_production_capacity": "廚房規模",
     "quote_type_auto_blender": "全自動炒爐",
-    "quote_type_semi_auto_blender": "半自動炒爐"
+    "quote_type_semi_auto_blender": "半自動炒爐",
+    "nav_products_tea": "Tea & Milk Tea",
+    "nav_products_meal": "Meal Replacement",
+    "nav_products_beauty": "Beauty & Collagen",
+    "nav_products_weight": "Weight Management",
+    "nav_products_gut": "Gut Health",
+    "nav_products_lifestyle": "Lifestyle Functional",
+    "nav_manufacturing": "Manufacturing",
+    "nav_compliance": "Compliance",
+    "nav_resources": "Resources"
   },
   "nav_applications": {
     "zh-CN": "场景应用",
