@@ -372,6 +372,42 @@ if (window.innerWidth > 768) { ... }
 1. 浏览器 DevTools → Toggle Device Toolbar (Ctrl+Shift+M)
 2. 依次切换三个断点验证：
    - PC: 1440px / 1280px / 1024px
+
+### 4.9 CSS Section Spacing 🔴
+
+Section 间距由 `main > section + section { margin-top }` 控制。
+修改前必须理解以下规则：
+
+**计算方式**：相邻 section 的 `padding-top + padding-bottom` 之和 − `margin-top` collapse。
+例如两个 `py-12` section = `(3rem + 3rem) − 1.5rem = 4.5rem` 净间距。
+
+**场景矩阵**（更新于 2026-05-17, commit c218575）：
+
+| 场景 | 移动端 | 桌面端 | 说明 |
+|------|--------|--------|------|
+| 普通 section 之间 | `-1.5rem` | `-2rem` | 默认 collapse |
+| hero-overlap 之后 | `0` | `0` | hero 已处理间距 |
+| hero-banner 之后 | `0` | `0` | 固定高度，防止重叠 |
+| CTA/彩色背景之后 | `0` | `0` | 视觉上需要明确分隔 |
+| 交替背景之间 | 同默认 | 同默认 | 不再单独减 collapse |
+
+**规则**：
+1. 新增 section 时必须指定它是什么类型（同背景/交替背景/CTA）
+2. 不要修改默认 collapse 值（-1.5rem/-2rem），改用特异性覆盖
+3. 新增 hero banner section 时必须添加 `.hero-banner` class
+
+### 4.10 Hero Type Architecture 🔴
+
+项目有 3 种 Hero 模式，每种有独立的 CSS 规则：
+
+**hero-overlap**：首页用，与 navbar 重叠，`margin-top: calc(var(--nav-height) * -1)`
+**hero-banner**：产品子页面用，固定高度 `h-[500px]`，无重叠
+**section-passthrough**：内容型页面，无特殊处理
+
+**规则**：
+1. 新增页面时必须声明 hero 类型 class
+2. hero-banner 后必须加 `+ section { margin-top: 0 }`（已在 styles.css 中）
+3. 修改 hero 高度时要同步调整后续 section 的 collapse 行为
    - Tablet: 768px / 900px
    - Mobile: 375px / 414px
 3. 刷新页面，检查布局、交互、功能是否正常
@@ -1181,6 +1217,38 @@ if (!/'use strict'/.test(content) && !/"use strict"/.test(content)) {
   error(f, 0, "Missing 'use strict'");
 }
 ```
+
+### 10.8 正则表达式陷阱 🔴
+
+**⚠️ 最重要的规则：在 regex literal `/pattern/` 中，`\\` 是字面反斜杠，不是转义。**
+
+```javascript
+// ❌ 错误：期望匹配所有字符
+var re = /[\\s\\S]*/;
+// 实际：匹配 \\s\\S 四个字面字符（反斜杠+s+反斜杠+S）
+
+// ✅ 正确
+var re = /[\s\S]*/;
+// 或用非正则方式
+var content = html.substring(html.indexOf('<main'), html.lastIndexOf('</main>'));
+```
+
+**陷阱清单**：
+
+| # | 陷阱 | 错误写法 | 正确写法 |
+|---|------|----------|----------|
+| 1 | 字面量中双重转义 | `/[\\d]+/` | `/[\d]+/` |
+| 2 | 字符串构造函数双重转义 | `new RegExp("[\\\\s\\\\S]")` | `new RegExp("[\\s\\S]")` |
+| 3 | 反向引用误解 | `/(\w+)\s\1/` | 同上（\1 是反向引用，语法正确） |
+| 4 | 捕获组 + 嵌套单引号 | `/'(.+)'/` | `/'([^']+)'/`（避免贪婪） |
+| 5 | `new RegExp` 字符串变量注入 | `new RegExp("^/products/" + slug + "$")` | `new RegExp("^/products/" + escapeRegex(slug) + "$")` |
+
+**最佳实践**：
+1. 能用 `indexOf/lastIndexOf` 解决的问题，不用正则
+2. regex literal 中永远不写 `\\`（除非真的需要匹配字面反斜杠）
+3. `new RegExp` 的字符串参数中用 `\\` 代表 regex 的 `\`
+4. 复杂正则先用 `test/regex-patterns.js` 验证
+5. 所有正则添加注释说明匹配意图
 
 ---
 

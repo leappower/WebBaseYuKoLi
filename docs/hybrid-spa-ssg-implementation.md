@@ -250,6 +250,39 @@ console.log('[SpaRouter]', 'Loading:', pagePath);
 console.log('[SpaRouter]', 'Cache hit for:', pagePath);
 ```
 
+### 4. 已知限制（2026-05-17）
+
+#### 4.1 Content Extraction 三层 fallback
+
+`extractContent()` 使用三层机制提取页面内容：
+
+**Method 1 — DOMParser + getElementById**（首选）
+- 使用 `new DOMParser().parseFromString(html, "text/html")` 解析完整 HTML
+- 然后用 `doc.getElementById("spa-content")` 提取
+- 限制：DOMParser 在 HTML 不完整时可能静默失败（节点被丢弃）
+
+**Method 2 — getElementsByTagName**（fallback）
+- 当 getElementById 失败时，遍历所有 `<main>` 标签
+- 问题：不能保证找到正确的 `main` 元素（可能匹配到页面中的其他 `main`）
+
+**Method 3 — 字符串 indexOf/lastIndexOf**（最终 fallback）
+- 用 `html.indexOf('<main id="spa-content"')` + `html.lastIndexOf('</main>')` 截取
+- 不依赖 DOM 解析，纯字符串操作
+- 限制：如果 HTML 中没有 `</main>` 标签（被截断），提取失败
+
+#### 4.2 内容截断问题（未解决）
+
+- 部分产品子页面（如 /products/tea/index-pc.html）的 fetch 响应被截断
+- 服务端返回 9671 字节，浏览器仅收到 7668 字节
+- `</main>` 标签位于 8111 位置，恰好超出截断范围
+- 当前加有 `cache: 'no-store'` 和 content-length 日志，根因待查明
+
+#### 4.3 内容长度监测
+
+- `extractContent()` 在 Method 1 中输出 `htmlLen` 日志
+- 当 `htmlLen` 明显小于预期时，应对比 Content-Length 响应头
+- 当前未自动告警，需人工检查控制台
+
 ## 🎉 总结
 
 混合 SPA + SSG 架构已成功实施，完美满足所有需求：
