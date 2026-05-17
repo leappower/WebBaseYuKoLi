@@ -535,11 +535,11 @@
         id: "solutions",
         icon: "lightbulb",
         children: [
-          { key: "nav_oem", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
-          { key: "nav_odm", icon: "design_services", emoji: "", href: "/solutions/odm/" },
-          { key: "nav_obm", icon: "verified", emoji: "", href: "/solutions/obm/" },
-          { key: "nav_rd", icon: "science", emoji: "", href: "/solutions/rd/" },
-          { key: "nav_packaging", icon: "inventory", emoji: "", href: "/solutions/packaging/" },
+          { key: "nav_oem", label: "OEM 代工", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
+          { key: "nav_odm", label: "ODM 贴牌", icon: "design_services", emoji: "", href: "/solutions/odm/" },
+          { key: "nav_obm", label: "OBM 自有品牌", icon: "verified", emoji: "", href: "/solutions/obm/" },
+          { key: "nav_rd", label: "研发与风味实验室", icon: "science", emoji: "", href: "/solutions/rd/" },
+          { key: "nav_packaging", label: "包装与标签合规", icon: "inventory", emoji: "", href: "/solutions/packaging/" },
         ],
       },
       {
@@ -549,10 +549,10 @@
         id: "manufacturing",
         icon: "factory",
         children: [
-          { key: "nav_bases", icon: "factory", emoji: "", href: "/manufacturing/#bases" },
-          { key: "nav_quality", icon: "verified", emoji: "", href: "/manufacturing/#quality" },
-          { key: "nav_smart", icon: "precision_manufacturing", emoji: "", href: "/manufacturing/#smart" },
-          { key: "nav_supplychain", icon: "public", emoji: "", href: "/manufacturing/#supplychain" },
+          { key: "nav_bases", label: "四大生产基地", icon: "factory", emoji: "", href: "/manufacturing/#bases" },
+          { key: "nav_quality", label: "质量管控体系", icon: "verified", emoji: "", href: "/manufacturing/#quality" },
+          { key: "nav_smart", label: "智能工厂", icon: "precision_manufacturing", emoji: "", href: "/manufacturing/#smart" },
+          { key: "nav_supplychain", label: "全球供应链", icon: "public", emoji: "", href: "/manufacturing/#supplychain" },
         ],
       },
       {
@@ -562,9 +562,9 @@
         id: "compliance",
         icon: "verified_user",
         children: [
-          { key: "nav_certs", icon: "verified_user", emoji: "", href: "/compliance/#certs" },
-          { key: "nav_halal", icon: "assured_workload", emoji: "", href: "/compliance/#halal" },
-          { key: "nav_coa", icon: "description", emoji: "", href: "/compliance/#coa" },
+          { key: "nav_certs", label: "国际认证", icon: "verified_user", emoji: "", href: "/compliance/#certs" },
+          { key: "nav_halal", label: "清真认证专线", icon: "assured_workload", emoji: "", href: "/compliance/#halal" },
+          { key: "nav_coa", label: "检测报告与 COA", icon: "description", emoji: "", href: "/compliance/#coa" },
         ],
       },
       {
@@ -574,10 +574,10 @@
         id: "resources",
         icon: "menu_book",
         children: [
-          { key: "nav_catalog", icon: "menu_book", emoji: "", href: "/resources/catalog/" },
-          { key: "nav_whitepapers", icon: "article", emoji: "", href: "/resources/whitepapers/" },
-          { key: "nav_cases", icon: "analytics", emoji: "", href: "/cases/" },
-          { key: "nav_videos", icon: "play_circle", emoji: "", href: "/resources/videos/" },
+          { key: "nav_catalog", label: "2026 产品目录", icon: "menu_book", emoji: "", href: "/resources/catalog/" },
+          { key: "nav_whitepapers", label: "行业白皮书", icon: "article", emoji: "", href: "/resources/whitepapers/" },
+          { key: "nav_cases", label: "成功案例", icon: "analytics", emoji: "", href: "/cases/" },
+          { key: "nav_videos", label: "视频中心", icon: "play_circle", emoji: "", href: "/resources/videos/" },
         ],
       },
       {
@@ -587,10 +587,10 @@
         id: "contact",
         icon: "mail",
         children: [
-          { key: "nav_quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
-          { key: "nav_samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
-          { key: "nav_visit", icon: "tour", emoji: "", href: "/contact/#visit" },
-          { key: "nav_network", icon: "language", emoji: "", href: "/contact/#network" },
+          { key: "nav_quote", label: "获取报价", icon: "request_quote", emoji: "", href: "/contact/#quote" },
+          { key: "nav_samples", label: "免费样品", icon: "redeem", emoji: "", href: "/contact/#samples" },
+          { key: "nav_visit", label: "参观工厂", icon: "tour", emoji: "", href: "/contact/#visit" },
+          { key: "nav_network", label: "全球销售网络", icon: "language", emoji: "", href: "/contact/#network" },
         ],
       },
     ];
