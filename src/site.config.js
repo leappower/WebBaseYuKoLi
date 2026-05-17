@@ -216,6 +216,21 @@
     },
 
     // ═══════════════════════════════════════════════════════════
+    // Analytics（GA4 数据分析）
+    // ═══════════════════════════════════════════════════════════
+    analytics: {
+      ga4Id: '',        // GA4 Measurement ID, 留空则不注入
+      enabled: false,   // 默认关闭，设为 true + 填入 ga4Id 才激活
+      events: {
+        quoteClick: 'quote_click',
+        sampleClick: 'sample_click',
+        whatsappClick: 'whatsapp_click',
+        catalogDownload: 'catalog_download',
+        specDownload: 'spec_download'
+      }
+    },
+
+    // ═══════════════════════════════════════════════════════════
     // Images（图片路径）
     // ═══════════════════════════════════════════════════════════
     images: {
