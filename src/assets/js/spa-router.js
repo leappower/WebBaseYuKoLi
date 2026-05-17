@@ -233,11 +233,17 @@
       // Method 3: regex fallback (works even if DOMParser strips content)
       if (!result) {
         _self.log("extractContent: DOMParser failed, trying regex fallback");
-        var regex = /<main[^>]*id\s*=\s*["']spa-content["'][^>]*>([\\s\\S]*)<\/main>/i;
-        var match = html.match(regex);
-        if (match) {
-          _self.log("extractContent: regex fallback succeeded");
-          result = match[1];
+        var startTag = html.match(/<main[^>]*id=["']spa-content["'][^>]*>/i);
+        if (startTag) {
+          var startIdx = html.indexOf(startTag[0]) + startTag[0].length;
+          var endTag = "</main>";
+          var endIdx = html.lastIndexOf(endTag);
+          if (endIdx > startIdx) {
+            result = html.substring(startIdx, endIdx);
+            _self.log("extractContent: regex fallback succeeded, contentLen=" + result.length);
+          } else {
+            _self.log("extractContent: </main> not found in HTML (htmlLen=" + html.length + ")");
+          }
         }
       }
 
@@ -518,9 +524,12 @@
       this.showSkeleton();
 
       // 加载页面（不使用内存缓存，始终获取最新内容）
-      fetch(devicePath)
+      fetch(devicePath, { cache: 'no-store' })
         .then(function (response) {
           if (!response.ok) throw new Error("HTTP " + response.status);
+          var contentLength = response.headers.get('content-length');
+          var contentEncoding = response.headers.get('content-encoding');
+          _self.log("loadRoute: fetch headers content-length=" + contentLength + " encoding=" + contentEncoding + " url=" + devicePath);
           return response.text();
         })
         .then(function (html) {

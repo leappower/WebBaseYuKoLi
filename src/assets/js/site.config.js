@@ -78,6 +78,14 @@
     nav: {
       items: [
         {
+          id: "solutions", label: { en: "Solutions", "zh-CN": "解决方案" }, i18nKey: "nav_solutions",
+          children: [
+            { id: "oem", label: { en: "OEM", "zh-CN": "OEM 代工" }, icon: "precision_manufacturing", slug: "oem", href: "/solutions/oem/" },
+            { id: "odm", label: { en: "ODM", "zh-CN": "ODM 贴牌" }, icon: "design_services", slug: "odm", href: "/solutions/odm/" },
+            { id: "obm", label: { en: "OBM", "zh-CN": "OBM 自有品牌" }, icon: "verified", slug: "obm", href: "/solutions/obm/" },
+          ],
+        },
+        {
           id: "products", label: { en: "Products", "zh-CN": "产品中心" }, i18nKey: "nav_products",
           children: [
             { id: "all", label: { en: "All Products", "zh-CN": "全部产品" }, icon: "grid_view", slug: "all" },
@@ -91,23 +99,23 @@
           ],
         },
         {
-          id: "applications", label: { en: "Applications", "zh-CN": "行业场景" }, i18nKey: "nav_applications",
-          href: "/applications/",
+          id: "manufacturing", label: { en: "Manufacturing", "zh-CN": "制造实力" }, i18nKey: "nav_manufacturing",
+          href: "/manufacturing/",
         },
         {
-          id: "cases", label: { en: "Case Studies", "zh-CN": "客户案例" }, i18nKey: "nav_case_studies",
-          href: "/cases/",
-        },
-        {
-          id: "support", label: { en: "Support", "zh-CN": "服务支持" }, i18nKey: "nav_support",
-          href: "/support/",
+          id: "resources", label: { en: "Resources", "zh-CN": "资源中心" }, i18nKey: "nav_resources",
+          children: [
+            { id: "cases", label: { en: "Case Studies", "zh-CN": "客户案例" }, icon: "analytics", slug: "cases", href: "/cases/" },
+            { id: "support", label: { en: "Support", "zh-CN": "服务支持" }, icon: "support_agent", slug: "support", href: "/support/" },
+            { id: "compliance", label: { en: "Compliance", "zh-CN": "资质认证" }, icon: "verified_user", slug: "compliance", href: "/compliance/" },
+          ],
         },
         {
           id: "about", label: { en: "About", "zh-CN": "关于我们" }, i18nKey: "nav_about",
           href: "/about/",
         },
       ],
-      cta: { text: { en: "Get Quote", "zh-CN": "获取报价" }, href: "/contact/", i18nKey: "nav_get_quote" },
+      cta: { text: { en: "Contact Us", "zh-CN": "联系我们" }, href: "/contact/", i18nKey: "nav_contact_us" },
     },
 
     // ═══════════════════════════════════════════════════════════

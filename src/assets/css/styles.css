@@ -350,63 +350,43 @@ main#spa-content > .hero-overlap {
   }
 }
 
-/* ── Section Spacing Collapse ────────────────────────────────────────
+/* ── Section Spacing ────────────────────────────────────────
  *
- * Prevents double-padding between adjacent sections.
- * Each section keeps its py-* for first/last position, but consecutive
- * sections collapse their overlapping padding.
+ * Adjacent sections with py-* classes create double-padding.
+ * A mild negative margin collapses this to a single gap.
  *
- * Net gap between consecutive same-bg sections:
- *   Mobile (<768px):   ~2.5rem (40px)  ← py-12 − collapse
- *   Tablet (768-1279): ~3rem   (48px)  ← py-16 − collapse
- *   PC (≥1280px):      ~4rem   (64px)  ← py-20 − collapse
+ * Net gap between consecutive sections:
+ *   Mobile:  ~2rem (32px)  ← py-12 − collapse
+ *   Desktop: ~3rem (48px)  ← py-20 − collapse
  */
 
 main > section + section {
-  margin-top: -3.5rem;
+  margin-top: -1.5rem;
 }
 
 @media (min-width: 768px) {
   main > section + section {
-    margin-top: -5rem;
+    margin-top: -2rem;
   }
 }
 
-/* After hero sections: use mild collapse instead of full collapse.
- * Full collapse (margin-top: -3.5rem) conflicts with hero's negative margin-top,
- * but margin-top: 0 leaves short-hero pages too cramped.
- * 0.5rem provides ~8px extra breathing room for short heroes. */
+/* After hero-overlap: no extra collapse (hero already handles spacing) */
 main > section.section-passthrough + section,
 main > section.hero-overlap + section {
-  margin-top: 0.5rem;
+  margin-top: 0;
 }
 
-/* After image-hero banners (product subpages): no negative margin.
- * These Hero sections use fixed-height images (h-[500px]) without
- * hero-overlap, so the generic section+section collapse would pull
- * the Overview section up into the hero image. */
+/* After image-hero banners (product subpages): no collapse */
 main > section.hero-banner + section {
   margin-top: 0;
 }
 
-/* Alternating background sections need more visual separation (less collapse) */
-main > section + section[class*="bg-slate-100"],
-main > section + section[class*="bg-slate-900"],
-main > section + section[class*="bg-primary"],
-main > section + section[class*="bg-slate-800/"] {
-  margin-top: -1rem;
+/* After CTA/colored sections: slight extra gap */
+main > section.bg-primary + section {
+  margin-top: 0;
 }
 
-@media (min-width: 768px) {
-  main > section + section[class*="bg-slate-100"],
-  main > section + section[class*="bg-slate-900"],
-  main > section + section[class*="bg-primary"],
-  main > section + section[class*="bg-slate-800/"] {
-    margin-top: -1.5rem;
-  }
-}
-
-/* ── End Section Spacing Collapse ───────────────────────────────────── */
+/* ── End Section Spacing ───────────────────────────────────── */
 
 /* Left/right inline padding — only when main has NO Tailwind padding class */
 main#spa-content:not([class*="p-"], [class*="px-"], [class*="py-"]) {
