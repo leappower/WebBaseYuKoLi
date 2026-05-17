@@ -1063,13 +1063,14 @@
 
   // ─── Init ──────────────────────────────────────────────────────
 
-  // Resolve initial category from URL for SSG page loads (e.g. /products/cutting/ → "nav_products_ingredient")
+  // Resolve initial category from URL for SSG page loads (e.g. /products/coffee/ → "nav_products_coffee")
   // This runs before autoRender so the first render filters correctly.
   (function initCategoryFromUrl() {
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (match) {
       var slug = match[1];
-      var SLUG_MAP = (_cfgCats.products || []).reduce(function (m, c) {
+      var cats = (window.SITE_CONFIG || window._cfg || {}).categories || {};
+      var SLUG_MAP = (cats.products || []).reduce(function (m, c) {
         if (c.slug && c.key) m[c.slug] = c.key;
         return m;
       }, {});
@@ -1155,7 +1156,8 @@
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (match) {
       var slug = match[1];
-      var SLUG_MAP = (_cfgCats.products || []).reduce(function (m, c) {
+      var cats = (window.SITE_CONFIG || window._cfg || {}).categories || {};
+      var SLUG_MAP = (cats.products || []).reduce(function (m, c) {
         if (c.slug && c.key) m[c.slug] = c.key;
         return m;
       }, {});
