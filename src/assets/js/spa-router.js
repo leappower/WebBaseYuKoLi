@@ -107,7 +107,14 @@
     footerMounted: false,
 
     // 日志函数
-    log: function () {},
+    log: function () {
+      var isDev = window.__DEVELOPMENT__ || location.hostname === "localhost" || location.hostname === "127.0.0.1";
+      if (isDev || window.SpaRouter && SpaRouter.debug) {
+        var args = Array.prototype.slice.call(arguments);
+        args.unshift("[SPA]");
+        console.log.apply(console, args);
+      }
+    },
 
     // 获取当前路径（规范化）
     getCurrentPath: function () {
@@ -482,9 +489,11 @@
         .then(function (html) {
           // 竞态保护：丢弃过期导航的结果
           if (navVersion && navVersion !== _self._navVersion) {
+            _self.log("loadRoute: stale result discarded (navVersion=" + navVersion + " _navVersion=" + _self._navVersion + ")");
             _self.hideSkeleton(); // 安全恢复：防止 display:none 残留
             return;
           }
+          _self.log("loadRoute: fetch succeeded for " + devicePath + " htmlLen=" + html.length);
           _self.renderContent(devicePath, html);
         })
         .catch(function (error) {
@@ -545,9 +554,11 @@
       // Dispatch spa:beforeunload before replacing content
       container.dispatchEvent(new CustomEvent("spa:beforeunload", { bubbles: true }));
       container.style.opacity = "0";
+      this.log("renderContent: innerHTML replacing, oldLen=" + container.innerHTML.length + " newLen=" + content.length);
       /* @audit-safe: spa-parse-internal-html */
       /* @audit-safe: spa-parse-internal-html */
       container.innerHTML = content;
+      this.log("renderContent: innerHTML set, container children=" + container.children.length);
 
       // 动态加载页面专属脚本（SPA 移除了 script 标签，需手动补充）
       var scriptsPromise = _self.loadPageScripts(pagePath);
@@ -569,6 +580,7 @@
 
       // Fade in 新内容（双 rAF 保险：单次 rAF 在 tab 后台/Chrome 节流时可能跳过）
       function doFadeIn() {
+        _self.log("renderContent: doFadeIn called, opacity was " + container.style.opacity);
         container.style.transition = "opacity 0.6s ease-out";
         container.style.opacity = "1";
         setTimeout(function () {
@@ -597,6 +609,7 @@
       // 等待动态脚本加载完成后，再触发 spa:load（避免重复触发）
       var _self2 = this;
       Promise.resolve(scriptsPromise).then(function () {
+        _self2.log("renderContent: scriptsPromise resolved, dispatching spa:load for " + pagePath);
         // Re-mount footer for SPA-loaded pages (only if not already mounted)
         if (window.Footer && window.Footer.mount && !_self2.footerMounted) {
           try {

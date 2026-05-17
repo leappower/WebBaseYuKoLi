@@ -367,6 +367,10 @@
   }
   // Setup bfcache recovery handlers
   setupBfcacheRecovery();
+  // Re-init on SPA navigation (wire new links/forms in dynamically loaded content)
+  document.addEventListener("spa:load", function () {
+    init();
+  });
   // Export public API for debugging and external use
   window.PageInit = {
     navigate: navigate,
