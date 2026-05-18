@@ -456,6 +456,17 @@ main#spa-content:not([class*="p-"], [class*="px-"], [class*="py-"]) .fullwidth-b
   margin-inline: auto;
 }
 
+/* w-full + fullwidth-bg 冲突修复:
+ * `w-full` = width: 100% 与 fullwidth-bg 的负 margin-right 冲突，
+ * CSS 盒模型方程会忽略 margin-right 并将其重新计算为正值，
+ * 导致 section 右侧出现空白间距。
+ * hero-banner 是块级布局无需 w-full，width: auto 配合负 margin
+ * 自动撑满全宽。
+ * 其他 flex 布局的 section-passthrough + w-full 不受影响。 */
+.fullwidth-bg.hero-banner.w-full {
+  width: auto;
+}
+
 /* ─── Hero section text padding ──────────────
  *
  * In hero sections, .section-content is nested inside absolute overlays,
