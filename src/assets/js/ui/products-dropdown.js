@@ -76,6 +76,7 @@
       "}",
       ".prod-viewall-item:hover { background: rgba(236,91,19,.06); color: ' + _primary + '; }",
       ".prod-viewall-item .material-symbols-outlined { font-size: 16px; }",
+      ".prod-dropdown-icon .material-symbols-outlined, .prod-popup-item .prod-dropdown-icon .material-symbols-outlined { font-size: 16px; color: " + _primary + "; }",
       "html.dark .prod-viewall-item { color: #f5f5f7; }",
       "html.dark .prod-viewall-item:hover { background: rgba(236,91,19,.10); color: #f97316; }",
       ".prod-popup-emoji {",
