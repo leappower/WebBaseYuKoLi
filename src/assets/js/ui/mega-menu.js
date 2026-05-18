@@ -4,27 +4,35 @@
  * 当 SITE_CONFIG.navMode.desktop === "mega-menu" 时启用。
  * 从 SITE_CONFIG 读取导航数据和产品线数据，渲染网格布局的 Mega Menu。
  *
+ * hover 模式：与 DropdownBase 体系一致
+ *   - touch 设备：click toggle is-open
+ *   - 非 touch：CSS :not(.touch-device):hover 控制
+ *
+ * 依赖：DropdownBase (isTouch, esc, _spaOn)
  * 导出：window.MegaMenu
- * 依赖：SITE_CONFIG.theme.accentColors, SITE_CONFIG.nav.items
  */
 (function (global) {
   "use strict";
 
   /* ================================================================
-   *  工具
+   *  工具（从 DropdownBase 借用）
    * ================================================================ */
 
-  /**
-   * HTML 实体转义
-   * @param {string} str
-   * @returns {string}
-   */
-  function esc(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+  var base = global.DropdownBase;
+  var esc = base ? base.esc : function (str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  };
+  var isTouch = base ? base.isTouch : function () {
+    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  };
+  var _spaOn = base ? base._spaOn : _fallbackSpaOn;
+
+  var _spaRegs = {};
+  function _fallbackSpaOn(tgt, evt, fn, key) {
+    if (_spaRegs[key]) _spaRegs[key].abort();
+    var ac = new AbortController();
+    _spaRegs[key] = ac;
+    tgt.addEventListener(evt, fn, { signal: ac.signal });
   }
 
   /**
@@ -333,7 +341,7 @@
 
     /* ── Wrap ── */
     return (
-      '<div class="mega-menu-wrap" data-mega-nav="' + esc(navId) + '">' +
+      '<div class="mega-menu-wrap' + (isTouch() ? ' touch-device' : '') + '" data-mega-nav="' + esc(navId) + '">' +
         triggerHtml +
         '<div class="mega-menu-panel">' + contentHtml + "</div>" +
       "</div>"
@@ -379,7 +387,7 @@
       "  z-index: var(--z-overlay, 800);",
       "}",
       ".mega-menu-wrap.is-open .mega-menu-panel,",
-      ".mega-menu-wrap:hover .mega-menu-panel {",
+      ".mega-menu-wrap:not(.touch-device):hover .mega-menu-panel {",,
       "  opacity: 1;",
       "  visibility: visible;",
       "  transform: translateX(-50%) translateY(0);",
@@ -461,7 +469,7 @@
       "  transition: transform .2s ease;",
       "}",
       ".mega-menu-wrap.is-open .mega-dropdown-trigger::after,",
-      ".mega-menu-wrap:hover .mega-dropdown-trigger::after {",
+      ".mega-menu-wrap:not(.touch-device):hover .mega-dropdown-trigger::after {",,
       "  transform: rotate(180deg);",
       "}",
 
@@ -487,27 +495,16 @@
   }
 
   /* ================================================================
-   *  事件绑定
+   *  事件绑定（走 DropdownBase 统一模式）
    * ================================================================ */
 
-  var _spaRegs = {};
+  var WRAP_CLASS = "mega-menu-wrap";
+  var TRIGGER_CLASS = "mega-dropdown-trigger";
+  var _triggerBoundFlag = "_megaTriggerBound";
+  var _docClickBound = false;
 
   /**
-   * 使用 AbortController 绑定事件（与 navigator.js _spaOn 风格一致）
-   * @param {EventTarget} tgt
-   * @param {string} evt
-   * @param {Function} fn
-   * @param {string} key
-   */
-  function _spaOn(tgt, evt, fn, key) {
-    if (_spaRegs[key]) _spaRegs[key].abort();
-    var ac = new AbortController();
-    _spaRegs[key] = ac;
-    tgt.addEventListener(evt, fn, { signal: ac.signal });
-  }
-
-  /**
-   * 绑定 Mega Menu 的鼠标交互事件
+   * 绑定 Mega Menu 交互事件（统一 DropdownBase 模式）
    *
    * @param {HTMLElement} [container]  挂载容器（默认 document）
    */
@@ -515,23 +512,31 @@
     container = container || document;
     injectStyles();
 
-    /* 鼠标移入显示 */
-    _spaOn(container, "mouseenter", function (e) {
-      var wrap = e.target.closest(".mega-menu-wrap");
-      if (!wrap) return;
-      /* 关闭其他 dropdown */
-      if (typeof global.Navigator !== "undefined" && typeof global.Navigator._closeOtherDropdowns === "function") {
-        global.Navigator._closeOtherDropdowns(wrap);
-      }
-      wrap.classList.add("is-open");
-    }, "mega-mouseenter");
+    /* 绑定 trigger click（touch 设备 toggle，非 touch 不拦截） */
+    container.querySelectorAll("." + TRIGGER_CLASS).forEach(function (t) {
+      if (t[_triggerBoundFlag]) return;
+      t[_triggerBoundFlag] = true;
+      t.addEventListener("click", function (e) {
+        if (window.innerWidth <= 720) return;
+        if (isTouch()) {
+          e.preventDefault();
+          e.stopPropagation();
+          var wrap = t.closest("." + WRAP_CLASS);
+          if (wrap) wrap.classList.toggle("is-open");
+        }
+        /* 非 touch: click 不拦截，hover 已打开 dropdown，click 用于导航 */
+      });
+    });
 
-    /* 鼠标移出隐藏 */
-    _spaOn(container, "mouseleave", function (e) {
-      var wrap = e.target.closest(".mega-menu-wrap");
-      if (!wrap) return;
-      wrap.classList.remove("is-open");
-    }, "mega-mouseleave");
+    /* 全局 click 关闭 */
+    if (!_docClickBound) {
+      _docClickBound = true;
+      document.addEventListener("click", function () {
+        document.querySelectorAll("." + WRAP_CLASS + ".is-open").forEach(function (d) {
+          d.classList.remove("is-open");
+        });
+      });
+    }
   }
 
   /* ================================================================

@@ -9,12 +9,22 @@
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   "use strict";
 
+  var base = window.DropdownBase;
+  var _spaOn = base ? base._spaOn : _fallbackSpaOn;
+  var isTouch = base ? base.isTouch : function () {
+    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  };
+  var esc = base ? base.esc : _fallbackEsc;
+
   var _spaRegs = {};
-  function _spaOn(tgt, evt, fn, key) {
+  function _fallbackSpaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
     var ac = new AbortController();
     _spaRegs[key] = ac;
     tgt.addEventListener(evt, fn, { signal: ac.signal });
+  }
+  function _fallbackEsc(str) {
+    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
   /* ───────────────────────── DATA ───────────────────────── */
@@ -28,16 +38,6 @@
       isWhatsApp: true,
     },
   ];
-
-  /* ───────────────────────── HELPERS ───────────────────────── */
-
-  function esc(str) {
-    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
-
-  function isTouch() {
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  }
 
   /* ───────────────────────── CSS ───────────────────────── */
 
@@ -126,9 +126,11 @@
     document.querySelectorAll(".cnt-dropdown-trigger").forEach(function (t) {
       t.addEventListener("click", function (e) {
         if (window.innerWidth <= 720) return;
-        e.preventDefault();
-        e.stopPropagation();
-        t.closest(".cnt-dropdown-wrap").classList.toggle("is-open");
+        if (isTouch()) {
+          e.preventDefault();
+          e.stopPropagation();
+          t.closest(".cnt-dropdown-wrap").classList.toggle("is-open");
+        }
       });
     });
   }

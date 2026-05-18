@@ -58,7 +58,7 @@
       ".mobile-menu-overlay {",
       "  position: fixed; inset: 0;",
       "  background: rgba(0,0,0,.4);",
-      "  z-index: var(--z-header, 2000);",
+      "  z-index: var(--z-drawer, 10000);",
       "  opacity: 0; visibility: hidden;",
       "  transition: opacity .3s ease, visibility 0s .3s;",
       "}",
@@ -74,9 +74,9 @@
       "  background: rgba(246,246,248,.98);",
       "  backdrop-filter: blur(40px) saturate(200%);",
       "  -webkit-backdrop-filter: blur(40px) saturate(200%);",
-      "  z-index: calc(var(--z-header, 2000) + 10);",
+      "  z-index: calc(var(--z-drawer, 10000) + 10);",
       "  transform: translateX(-100%);",
-      "  transition: transform .35s cubic-bezier(.32,.72,0,1);",
+      "  transition: transform .35s cubic-bezier(.32,.72,0,1);",,
       "  overflow-y: auto; -webkit-overflow-scrolling: touch;",
       "  box-shadow: 4px 0 24px rgba(0,0,0,.08);",
       "}",
@@ -455,6 +455,16 @@
    * @param {string} parentPath - 路径前缀，如 "/products/"
    * @returns {Array<{key, icon, emoji, href}>}
    */
+  /**
+   * Resolve a label object to current language string
+   */
+  function resolveLabel(labelObj) {
+    if (!labelObj) return "";
+    if (typeof labelObj === "string") return labelObj;
+    var lang = (document.documentElement && document.documentElement.lang) || "zh-CN";
+    return labelObj[lang] || labelObj.en || labelObj["zh-CN"] || "";
+  }
+
   function buildCategoryItems(categoryKey, parentPath) {
     var cats = _categories[categoryKey] || [];
     var result = [];
@@ -462,7 +472,7 @@
       var cat = cats[i];
       result.push({
         key: cat.i18nKey || cat.key || ("nav_" + categoryKey + "_" + cat.slug),
-        label: cat.label || cat.key || cat.slug,
+        label: resolveLabel(cat.label) || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         emoji: cat.emoji || "",
         href: parentPath + cat.slug + "/",
@@ -501,7 +511,7 @@
           if (item.children && item.children.length > 0) {
             mapped.children = item.children.map(function (child) {
               var childLabel = typeof child.label === "object"
-                ? (child.label["zh-CN"] || child.label.en || child.id)
+                ? resolveLabel(child.label)
                 : child.label || child.id;
               return {
                 key: child.i18nKey || ("nav_" + child.id),
@@ -669,7 +679,7 @@
       '<span class="mobile-menu-l2-label" data-i18n="' +
       escapeHtml(child.key) +
       '">' +
-      escapeHtml(child.key) +
+      escapeHtml(child.label || child.key) +
       "</span>" +
       (child.emoji ? '<span class="mobile-menu-l2-emoji">' + escapeHtml(child.emoji) + "</span>" : "") +
       badgeHtml +
@@ -703,7 +713,7 @@
           '<span class="mobile-menu-l2-icon">' +
           '<span class="material-symbols-outlined">grid_view</span>' +
           "</span>" +
-          '<span class="mobile-menu-l2-label" data-i18n="nav_mega_view_all">查看全部产品</span>' +
+          '<span class="mobile-menu-l2-label" data-i18n="nav_mega_view_all">View All Products</span>' +
           "</a>";
       }
 

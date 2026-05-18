@@ -116,12 +116,15 @@
     document.head.appendChild(style);
 
     // Push navigator down by trust bar height
+    // Also account for trust-bar height in spa-content padding so content
+    // isn't hidden behind the pushed-down header.
     var navStyle = document.createElement("style");
     navStyle.id = "trust-bar-nav-fix";
     navStyle.textContent =
       "#main-header, #mobile-header { top: " + barHeight + "px !important; }" +
       ".section-passthrough, .hero-overlap { margin-top: " + barHeight + "px; }" +
-      ":root { --trust-bar-height: " + barHeight + "px; }";
+      ":root { --trust-bar-height: " + barHeight + "px; }" +
+      "main#spa-content, #skeleton-overlay { padding-top: calc(var(--nav-height, 109px) + " + barHeight + "px) !important; }";
     document.head.appendChild(navStyle);
   }
 

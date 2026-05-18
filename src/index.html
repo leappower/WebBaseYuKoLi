@@ -96,13 +96,13 @@
 <script defer src="/assets/js/lang-registry.js?v=20260508-b6"></script>
 <script defer src="/assets/js/translations.js?v=20260508-b6"></script>
 <script defer src="/assets/js/translations-dropdown-template.js?v=20260508-b6"></script>
-<script defer src="/assets/js/ui/dropdown-styles.js"></script>
-<script defer src="/assets/js/ui/dropdown-base.js"></script>
-<script defer src="/assets/js/ui/products-dropdown.js"></script>
-<script defer src="/assets/js/ui/applications-dropdown.js"></script>
-<script defer src="/assets/js/ui/support-dropdown.js"></script>
-<script defer src="/assets/js/ui/about-dropdown.js"></script>
-<script defer src="/assets/js/ui/nav-dropdown.js"></script>
+<script defer src="/assets/js/ui/dropdown-styles.js?v=20260518"></script>
+<script defer src="/assets/js/ui/dropdown-base.js?v=20260518"></script>
+<script defer src="/assets/js/ui/products-dropdown.js?v=20260518"></script>
+<script defer src="/assets/js/ui/applications-dropdown.js?v=20260518"></script>
+<script defer src="/assets/js/ui/support-dropdown.js?v=20260518"></script>
+<script defer src="/assets/js/ui/about-dropdown.js?v=20260518"></script>
+<script defer src="/assets/js/ui/nav-dropdown.js?v=20260518"></script>
     <script defer src="/assets/js/ui/navigator.js?v=20260508-b6"></script>
 <script defer src="/assets/js/ui/slide-menu.js"></script>
 <script defer src="/assets/js/ui/search-engine.js"></script>
@@ -179,5 +179,36 @@
     <script defer src="/assets/js/breadcrumb.js?v=20260508-b6"></script>
     <script defer src="/assets/js/ui/trust-bar.js?v=20260517"></script>
   <script defer src="/assets/js/ui/bottom-tab.js?v=20260517"></script>
+
+<script>
+(function() {
+  window.addEventListener('load', function diag() {
+    setTimeout(function() {
+      var d = [];
+      d.push('--- NAV/TRANS DIAG ---');
+      d.push('SITE_CONFIG=' + !!window.SITE_CONFIG);
+      d.push('LANG_REGISTRY=' + !!window.LANG_REGISTRY + ' langs=' + (window.LANG_REGISTRY ? window.LANG_REGISTRY.LANGUAGES.length : '-'));
+      d.push('TM=' + !!window.translationManager + ' init=' + (window.translationManager ? window.translationManager.isInitialized : '-'));
+      d.push('TM.lang=' + (window.translationManager ? window.translationManager.currentLanguage : '-'));
+      d.push('TM.cache.ui-en=' + (window.translationManager ? !!window.translationManager.translationsCache.get('ui-en') : '-'));
+      var header = document.querySelector('header');
+      d.push('header=' + !!header);
+      if (header) {
+        var items = header.querySelectorAll('[data-i18n]');
+        d.push('nav.data-i18n.count=' + items.length);
+        for (var i = 0; i < Math.min(items.length, 8); i++) {
+          d.push('  [' + i + '] ' + items[i].getAttribute('data-i18n') + ' = "' + items[i].textContent.replace(/\s+/g,' ').trim() + '"');
+        }
+      }
+      var footer = document.querySelector('footer');
+      d.push('footer=' + !!footer);
+      var spa = document.getElementById('spa-content');
+      if (spa) d.push('spa.content.len=' + spa.innerHTML.length + ' hasMain=' + (!!spa.querySelector('section')));
+      console.log(d.join('\n'));
+    }, 5000);
+  });
+})();
+</script>
+
 </body>
 </html>

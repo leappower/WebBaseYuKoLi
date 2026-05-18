@@ -260,7 +260,7 @@
 
     panel.style.position = "fixed";
     panel.style.top = rect.bottom + 6 + "px";
-    panel.style.zIndex = "9998";
+    panel.style.zIndex = "2500";
 
     var panelWidth = Math.max(rect.width, 320);
     var vpWidth = window.innerWidth;

@@ -11,8 +11,8 @@
   --z-content: 1;
 
   /* 固定元素层级 */
-  --z-header: 2000; /* 页面顶部导航 (must be above all page content including dropdown panels at 1200) */
-  --z-footer: 10; /* 页面底部导航 */
+  --z-header: 2000; /* 页面顶部导航 (above all page content) */
+  --z-footer: 9000; /* 移动端底部 Tab 导航 */
   --z-back-to-top: 20; /* 返回顶部按钮 */
 
   /* Hero 视频层级 */
@@ -32,25 +32,25 @@
 
   /* 交互元素层级 */
   --z-dropdown: 200; /* 下拉菜单 */
-  --z-language-dropdown: 2500; /* 语言选择下拉框 (must be above header at 2000) */
+  --z-language-dropdown: 2500; /* 语言选择下拉框 (above header) */
   --z-popover: 210; /* 气泡提示 */
   --z-sticky: 100; /* 粘性元素 */
 
   /* 覆盖层层级 */
   --z-modal-backdrop: 300; /* 模态框背景 */
   --z-modal: 310; /* 模态框内容 */
-  --z-drawer: 320; /* 抽屉式菜单 */
+  --z-drawer: 10000; /* 抽屉式菜单 (above footer) */
   --z-dialog: 330; /* 对话框 */
 
-  /* 通知层级 (must be above header at 2000) */
-  --z-toast: 3000; /* 消息提示 */
-  --z-notification: 3010; /* 通知提醒 */
-  --z-alert: 3020; /* 警告提示 */
+  /* 通知层级 (above header) */
+  --z-toast: 11000; /* 消息提示 (above drawer) */
+  --z-notification: 11100; /* 通知提醒 */
+  --z-alert: 11200; /* 警告提示 */
 
-  /* 最高层级 (must be above toast at 3000) */
-  --z-tooltip: 3100; /* 工具提示 */
-  --z-loading: 3200; /* 加载遮罩 */
-  --z-overlay: 3300; /* 遮罩层 (最高) */
+  /* 最高层级 */
+  --z-tooltip: 12000; /* 工具提示 */
+  --z-loading: 13000; /* 加载遮罩 */
+  --z-overlay: 14000; /* 遮罩层 (最高) */
 }
 
 /* Tailwind CSS 映射类

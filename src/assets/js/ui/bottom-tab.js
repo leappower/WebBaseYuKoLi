@@ -129,6 +129,7 @@
 
       var attrs = ' data-btab-type="' + type + '"';
       if (href !== "#") attrs += ' data-btab-href="' + href + '"';
+      attrs += ' data-btab-id="' + (item.id || "") + '"';
 
       parts.push(
         '<button class="' + cls + '"' + attrs + ' aria-label="' + label + '">' +
@@ -198,7 +199,7 @@
     var css = [
       /* Bar */
       ".btab-bar {",
-        "position: fixed; bottom: 0; left: 0; right: 0; z-index: 9998;",
+        "position: fixed; bottom: 0; left: 0; right: 0; z-index: var(--z-footer, 9000);",,
         "display: flex; align-items: stretch;",
         "height: " + BAR_HEIGHT + "px;",
         "background: #fff;",
@@ -234,6 +235,8 @@
       /* External / WhatsApp */
       ".btab-item--wa { color: " + WA_COLOR + "; }",
       /* Active */
+      ".btab-item--active { color: " + PRIMARY + " !important; }",
+      ".btab-item--active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }",
       ".btab-item:active { opacity: .7; }",
       /* Hide on PC */
       "@media (min-width: 1024px) { .btab-bar { display: none !important; } }",
@@ -277,6 +280,12 @@
     document.body.appendChild(bar);
     bar.addEventListener("click", handleClick);
 
+    // Active state management
+    updateActiveState();
+    window.addEventListener("popstate", updateActiveState);
+    document.addEventListener("spa:navigate", updateActiveState);
+    document.addEventListener("spa:load", updateActiveState);
+
     // Resize: hide on PC, re-show on mobile/tablet
     var resizeTimer;
     window.addEventListener("resize", function () {
@@ -292,6 +301,53 @@
       }, 250);
     });
   }
+
+  /* ── Active state ──────────────────────────────────────── */
+
+  /**
+   * Match current URL to a bottom-tab item and highlight it.
+   * - Home item: exact /home/ match
+   * - Link items: path starts with item href
+   * - External/toggle items: never active
+   */
+  function updateActiveState() {
+    var bar = document.getElementById("bottom-tab-bar");
+    if (!bar) return;
+    var items = bar.querySelectorAll(".btab-item");
+    var path = (window.location.pathname || "/").replace(/\/$/, "");
+
+    for (var i = 0; i < items.length; i++) {
+      var btn = items[i];
+      var type = btn.getAttribute("data-btab-type");
+      var href = btn.getAttribute("data-btab-href") || "";
+      var itemPath = href.replace(/\/$/, "");
+
+      // External and toggle never active
+      if (type === "external" || type === "toggle") {
+        btn.classList.remove("btab-item--active");
+        continue;
+      }
+
+      // Match: /home/ is exact; others match by prefix
+      var isActive = false;
+      if (itemPath === "/home" && path === "/home") {
+        isActive = true;
+      } else if (itemPath && itemPath !== "/home" && path.indexOf(itemPath) === 0) {
+        isActive = true;
+      }
+
+      if (isActive) {
+        btn.classList.add("btab-item--active");
+      } else {
+        btn.classList.remove("btab-item--active");
+      }
+    }
+  }
+
+  /* ── Public API ───────────────────────────────────────────── */
+  window.BottomTab = {
+    updateActive: updateActiveState,
+  };
 
   /* ── Bootstrap ─────────────────────────────────────────────── */
   if (document.readyState === "loading") {

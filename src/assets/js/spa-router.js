@@ -41,8 +41,8 @@
     // Route resolution: convention over configuration.
     // No hardcoded route table — the server's file-system resolver is
     // the single source of truth.  The SPA router mirrors the same logic:
-    //   /foo/          → fetch /foo/index-pc.html   (server resolves to dist/pages/foo/index-pc.html)
-    //   /news/detail/  → fetch /news/detail/index-pc.html  (server resolves to dist/pages/news/detail/index-pc.html)
+    //   /foo/          → fetch /pages/foo/index-pc.html   (server resolves to dist/pages/foo/index-pc.html)
+    //   /news/detail/  → fetch /pages/news/detail/index-pc.html  (server resolves to dist/pages/news/detail/index-pc.html)
     //   /products/<model>/  → dynamic PDP (see loadRoute)
     //
     // SPA shell paths that use index.html (not index-pc.html) are
@@ -51,17 +51,26 @@
     // NOTE: Only exceptions need listing here — everything else follows convention.
     routes: {
       // Aliases / redirects
-      "/": "/home/index.html",
-      "/home/": "/home/index.html",
+      "/": "/pages/home/index.html",
+      "/home/": "/pages/home/index.html",
       // Flat-file pattern (no directory, e.g. news/detail-pc.html)
-      "/news/detail/": "/news/detail-pc.html",
+      "/news/detail/": "/pages/news/detail-pc.html",
       // Solutions pages
-      "/solutions/oem/": "/solutions/oem/index-pc.html",
-      "/solutions/odm/": "/solutions/odm/index-pc.html",
-      "/solutions/obm/": "/solutions/obm/index-pc.html",
+      "/solutions/oem/": "/pages/solutions/oem/index-pc.html",
+      "/solutions/odm/": "/pages/solutions/odm/index-pc.html",
+      "/solutions/obm/": "/pages/solutions/obm/index-pc.html",
+      // Resources pages
+      "/resources/catalog/": "/pages/resources/catalog/index-pc.html",
+      "/resources/videos/": "/pages/resources/videos/index-pc.html",
+      "/resources/whitepapers/": "/pages/resources/whitepapers/index-pc.html",
+      // Solutions pages (all 5)
+      "/solutions/rd/": "/pages/solutions/rd/index-pc.html",
+      "/solutions/packaging/": "/pages/solutions/packaging/index-pc.html",
       // Manufacturing & Compliance
-      "/manufacturing/": "/manufacturing/index-pc.html",
-      "/compliance/": "/compliance/index-pc.html",
+      "/manufacturing/": "/pages/manufacturing/index-pc.html",
+      "/compliance/": "/pages/compliance/index-pc.html",
+      // Cases
+      "/cases/": "/pages/cases/index-pc.html",
     },
 
     // Category slugs used for /products/<slug>/ routing
@@ -77,6 +86,14 @@
       }
       this.CATEGORY_SLUGS = slugs;
       this.PRODUCT_SLUG_PATTERN = slugs.length ? slugs.join("|") : "(?!x)x";
+
+      // Auto-register redirect routes: /beauty/ → /products/beauty/
+      for (var j = 1; j < slugs.length; j++) {
+        var redirectPath = "/" + slugs[j] + "/";
+        if (!this.routes[redirectPath]) {
+          this.routes[redirectPath] = "/pages/products/" + slugs[j] + "/index-pc.html";
+        }
+      }
     },
 
     // 设备特定页面映射
@@ -489,19 +506,18 @@
       if (!pagePath && routePath.match(/^\/products\/[^/]+\/$/)) {
         var segment = routePath.replace(/^\/products\/|\/$/g, "");
         if (this.CATEGORY_SLUGS.indexOf(segment) >= 0) {
-          // Category page — convention: /products/<slug>/ → /products/<slug>/index-pc.html
-          pagePath = "/products/" + segment + "/index-pc.html";
+          // Category page — convention: /products/<slug>/ → /pages/products/<slug>/index-pc.html
+          pagePath = "/pages/products/" + segment + "/index-pc.html";
         } else {
-          // PDP — convention: /products/<model>/ → /products/detail/index-pc.html
-          pagePath = "/products/detail/index-pc.html";
+          // PDP — convention: /products/<model>/ → /pages/products/detail/index-pc.html
+          pagePath = "/pages/products/detail/index-pc.html";
         }
       }
 
-      // Convention: any path not in routes[] → /<path>/index-pc.html
-      // This mirrors server.js resolvePage() step 4.
+      // Convention: any path not in routes[] → /pages/<path>/index-pc.html
       if (!pagePath) {
         var clean = routePath.replace(/\/+$/, "");
-        pagePath = clean + "/index-pc.html";
+        pagePath = "/pages" + clean + "/index-pc.html";
       }
 
       // Never redirect — let the server return SPA shell if file doesn't exist.
@@ -799,7 +815,7 @@
           }
 
           // Intercept all internal links — loadRoute handles unknown paths via
-          // convention (/<path>/index-pc.html). Only skip non-page paths.
+          // convention (/pages/<path>/index-pc.html). Only skip non-page paths.
           var isPage = targetPath.match(/^\/[a-z0-9][a-z0-9._-]*(?:\/[a-z0-9][a-z0-9._-]*)*\/$/i);
           if (!isPage) {
             _self.log("Skipping SPA for non-page path:", targetPath);

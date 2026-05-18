@@ -17,12 +17,24 @@
   var _cfg = window.SITE_CONFIG || {};
   var _categories = _cfg.categories || {};
 
+  /**
+   * Resolve a label object to current language string
+   * @param {*} labelObj
+   * @returns {string}
+   */
+  function resolveLabel(labelObj) {
+    if (!labelObj) return "";
+    if (typeof labelObj === "string") return labelObj;
+    var lang = (document.documentElement && document.documentElement.lang) || "zh-CN";
+    return labelObj[lang] || labelObj.en || labelObj["zh-CN"] || "";
+  }
+
   function _buildCategoryItems(categoryKey, parentPath) {
     var cats = _categories[categoryKey] || [];
     return cats.map(function (cat) {
       return {
         key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
-        label: cat.label || cat.i18nKey || cat.slug,
+        label: resolveLabel(cat.label) || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         emoji: cat.emoji || "",
         href: parentPath + (cat.slug || "") + "/",
@@ -129,6 +141,12 @@
     var itemHref = sub.href || parentHref;
     var chevron = '<span class="material-symbols-outlined prod-dropdown-chevron">chevron_right</span>';
     var emojiHtml = sub.emoji ? '<span class="prod-dropdown-emoji">' + sub.emoji + "</span>" : "";
+    // NOTE: L2 items use config label directly (not data-i18n).
+    // Translation keys like nav_products_tea don't exist in language files
+    // (carried over from old KitchenYuKoLi), so data-i18n would cause the
+    // translation manager to show the key string as fallback text.
+    // Labels from SITE_CONFIG.categories are already bilingual objects
+    // resolved by _buildCategoryItems → resolveLabel().
     return (
       '<a href="' +
       esc(itemHref) +
@@ -138,9 +156,7 @@
       esc(sub.icon) +
       "</span>" +
       "</span>" +
-      '<span class="prod-dropdown-label" data-i18n="' +
-      esc(sub.key) +
-      '">' +
+      '<span class="prod-dropdown-label">' +
       esc(sub.label || sub.key) +
       "</span>" +
       emojiHtml +
@@ -175,10 +191,8 @@
           esc(s.icon) +
           "</span>" +
           "</span>" +
-          '<span class="prod-popup-label" data-i18n="' +
-          esc(s.key) +
-          '">' +
-          esc(s.key) +
+          '<span class="prod-popup-label">' +
+          esc(s.label || s.key) +
           "</span>" +
           emojiHtml +
           chevron +
