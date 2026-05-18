@@ -196,7 +196,7 @@
     "html.dark .{{PREFIX}}-popup-chevron { color: rgba(235,235,245,.25); }",
   ].join("\n");
 
-  var PREFIXES = ["abt", "cnt", "prod", "sol", "sup", "app"];
+  var PREFIXES = ["abt", "cnt", "prod", "sol", "sup", "app", "nav"];
   var STYLE_ID = "dd-base-styles";
 
   /**

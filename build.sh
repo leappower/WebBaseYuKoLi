@@ -84,6 +84,8 @@ echo "🔄 Bumping JS version to $VERSION..."
 # Replace all version query params (handles v=20260508, v=20260508-v3, v=anystring, v=this)
 find "$DIST" -name '*.html' -exec sed -i '' "s|?v=[a-zA-Z0-9._-]*|?$VERSION|g" {} +
 find "$SRC/pages" -name '*.html' -exec sed -i '' "s|?v=[a-zA-Z0-9._-]*|?$VERSION|g" {} +
+# Also update src/index.html (SPA shell)
+sed -i '' "s|?v=[a-zA-Z0-9._-]*|?$VERSION|g" "$SRC/index.html" 2>/dev/null || true
 
 # Generate sitemap.xml
 if command -v node &>/dev/null; then

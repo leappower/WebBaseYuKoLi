@@ -159,7 +159,6 @@
       '<span class="prod-dropdown-label">' +
       esc(sub.label || sub.key) +
       "</span>" +
-      emojiHtml +
       chevron +
       "</a>"
     );

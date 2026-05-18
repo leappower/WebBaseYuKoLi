@@ -113,6 +113,7 @@
     ".sol-dropdown-wrap",
     ".abt-dropdown-wrap",
     ".cnt-dropdown-wrap",
+    ".nav-dropdown-wrap",
     ".mega-menu-wrap",
   ];
 
@@ -824,6 +825,10 @@
     if (window.ProductsDropdown) window.ProductsDropdown.injectAllStyles();
     if (window.SolutionsDropdown) window.SolutionsDropdown.injectAllStyles();
     if (window.AboutDropdown) window.AboutDropdown.injectAllStyles();
+    if (window.ApplicationsDropdown) window.ApplicationsDropdown.injectAllStyles();
+    if (window.SupportDropdown) window.SupportDropdown.injectAllStyles();
+    if (window.NavDropdown) window.NavDropdown.injectAllStyles();
+    if (window.ContactDropdown) window.ContactDropdown.injectAllStyles();
   }
 
   /* ================================================================
@@ -1328,7 +1333,7 @@
       "click",
       function (e) {
         var clickedWrap = e.target.closest(
-          ".prod-dropdown-wrap, .sol-dropdown-wrap, .abt-dropdown-wrap, .cnt-dropdown-wrap"
+          ".prod-dropdown-wrap, .sol-dropdown-wrap, .abt-dropdown-wrap, .cnt-dropdown-wrap, .nav-dropdown-wrap, .mega-menu-wrap"
         );
         closeOtherDropdowns(clickedWrap || null);
       },
@@ -1398,6 +1403,8 @@
     if (window.ProductsDropdown) window.ProductsDropdown.initDropdownClick();
     if (window.SolutionsDropdown) window.SolutionsDropdown.initDropdownClick();
     if (window.AboutDropdown) window.AboutDropdown.initDropdownClick();
+    if (window.ContactDropdown) window.ContactDropdown.initDropdownClick();
+    if (window.NavDropdown) window.NavDropdown.initDropdownClick();
   }
 
   /* ================================================================
@@ -1712,6 +1719,8 @@
     if (window.ProductsDropdown) window.ProductsDropdown.initDropdownClick();
     if (window.SolutionsDropdown) window.SolutionsDropdown.initDropdownClick();
     if (window.AboutDropdown) window.AboutDropdown.initDropdownClick();
+    if (window.ContactDropdown) window.ContactDropdown.initDropdownClick();
+    if (window.NavDropdown) window.NavDropdown.initDropdownClick();
 
     /* 重新初始化 custom-select（navigator 可能创建了新的 lang-selector） */
     if (typeof CustomSelect !== "undefined" && CustomSelect.initAll) {

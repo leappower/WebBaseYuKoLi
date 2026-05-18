@@ -387,7 +387,7 @@
       "  z-index: var(--z-overlay, 800);",
       "}",
       ".mega-menu-wrap.is-open .mega-menu-panel,",
-      ".mega-menu-wrap:not(.touch-device):hover .mega-menu-panel {",,
+      ".mega-menu-wrap:not(.touch-device):hover .mega-menu-panel {",
       "  opacity: 1;",
       "  visibility: visible;",
       "  transform: translateX(-50%) translateY(0);",
@@ -469,7 +469,7 @@
       "  transition: transform .2s ease;",
       "}",
       ".mega-menu-wrap.is-open .mega-dropdown-trigger::after,",
-      ".mega-menu-wrap:not(.touch-device):hover .mega-dropdown-trigger::after {",,
+      ".mega-menu-wrap:not(.touch-device):hover .mega-dropdown-trigger::after {",
       "  transform: rotate(180deg);",
       "}",
 
