@@ -293,7 +293,7 @@
       ".mobile-menu-panel { padding-bottom: 100px !important; }",
 
       /* ---------- 智能头部隐藏 ---------- */
-      "#mobile-header.header-hidden { transform: translateY(-100%); }",
+      "#mobile-header.header-hidden { transform: translateY(calc(-100% - var(--trust-bar-height, 0px))); }",
 
       /* ---------- 移动端搜索覆盖层 ---------- */
       ".mobile-search-overlay {",
