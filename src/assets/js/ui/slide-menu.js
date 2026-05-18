@@ -18,6 +18,7 @@
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
   var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primaryHover = ((_theme.colors || {}).primaryHover) || "#1B5E20";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -270,21 +271,21 @@
       "}",
       ".mobile-menu-cta-btn.primary:hover,",
       ".mobile-menu-cta-btn.primary:active {",
-      "  background: #d54f0f;",
+      "  background: ' + _primaryHover + ';",
       "}",
       ".mobile-menu-cta-btn.secondary {",
-      "  background: rgba(236,91,19,.10); color: ' + _primary + ';",
+      "  background: rgba(46,125,50,.10); color: ' + _primary + ';",
       "}",
       "html.dark .mobile-menu-cta-btn.secondary {",
-      "  background: rgba(236,91,19,.18); color: #ff8c5a;",
+      "  background: rgba(46,125,50,.18); color: #4CAF50;",
       "}",
       ".mobile-menu-cta-btn.secondary:hover,",
       ".mobile-menu-cta-btn.secondary:active {",
-      "  background: rgba(236,91,19,.20); color: #d54f0f;",
+      "  background: rgba(46,125,50,.20); color: ' + _primaryHover + ';",
       "}",
       "html.dark .mobile-menu-cta-btn.secondary:hover,",
       "html.dark .mobile-menu-cta-btn.secondary:active {",
-      "  background: rgba(236,91,19,.25); color: #ff9f70;",
+      "  background: rgba(46,125,50,.25); color: #66BB6A;",
       "}",
       ".mobile-menu-cta-btn .material-symbols-outlined { font-size: 20px; }",
 
