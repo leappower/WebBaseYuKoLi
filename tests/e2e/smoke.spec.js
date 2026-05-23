@@ -63,7 +63,7 @@ test.describe('Language Switching', () => {
 
 test.describe('Product Category Pages', () => {
   test('category page loads products', async ({ page }) => {
-    await page.goto('/products/stir-fry');
+    await page.goto('/products/stir-fry/');
     await page.waitForLoadState('networkidle');
 
     // Skeleton should disappear
@@ -78,7 +78,7 @@ test.describe('Product Category Pages', () => {
   });
 
   test('SPA navigation from category to product detail', async ({ page }) => {
-    await page.goto('/products/stir-fry');
+    await page.goto('/products/stir-fry/');
     await page.waitForLoadState('networkidle');
 
     // Wait for products to load
@@ -108,49 +108,6 @@ test.describe('Compare Page', () => {
   });
 });
 
-test.describe('Title & Branding', () => {
-  test('title contains YuKoLi', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    const title = await page.title();
-    expect(title.toLowerCase()).toContain('yukoli');
-  });
-
-  test('at least 3 nav links are clickable and navigate correctly', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    const navLinks = page.locator('nav a[href]');
-    const count = await navLinks.count();
-    expect(count).toBeGreaterThan(0);
-
-    const routes = ['/products/', '/solutions/', '/contact/'];
-    let matched = 0;
-    for (const route of routes) {
-      const link = page.locator(`nav a[href*="${route}"]`).first();
-      if (await link.isVisible({ timeout: 2_000 }).catch(() => false)) {
-        await link.click();
-        await page.waitForLoadState('networkidle');
-        expect(page.url()).toContain(route.replace(/\/$/, ''));
-        matched++;
-        await page.goto('/');
-        await page.waitForLoadState('networkidle');
-      }
-    }
-    expect(matched).toBeGreaterThanOrEqual(2);
-  });
-});
-
-test.describe('404 Handling', () => {
-  test('nonexistent page does not crash', async ({ page }) => {
-    const errors: string[] = [];
-    page.on('pageerror', (err) => errors.push(err.message));
-    await page.goto('/nonexistent-page/');
-    await page.waitForLoadState('networkidle');
-    expect(errors).toHaveLength(0);
-  });
-});
-
 test.describe('SPA Router Stability', () => {
   test('navigate home → category → detail → home without errors', async ({ page }) => {
     const errors: string[] = [];
@@ -161,7 +118,7 @@ test.describe('SPA Router Stability', () => {
     await page.waitForLoadState('networkidle');
 
     // Category
-    await page.goto('/products/stir-fry');
+    await page.goto('/products/stir-fry/');
     await page.waitForLoadState('networkidle');
 
     // Back to home

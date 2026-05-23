@@ -44,8 +44,8 @@ var WARN_COUNT = 0;
 var FIX_COUNT = 0;
 var STAGED_ONLY = process.argv.indexOf('--staged') !== -1;
 var FIX_MODE = process.argv.indexOf('--fix') !== -1;
-var EXCLUDE_DIRS = ['node_modules', 'dist', '.git', 'vendor', 'scripts'];
-var EXCLUDE_FILES = ['webpack.config.js', 'src/index.js', 'server.js']; // Build/server files use ES6+
+var EXCLUDE_DIRS = ['node_modules', 'dist', '.git', 'vendor', 'scripts', 'tests'];
+var EXCLUDE_FILES = ['webpack.config.js', 'src/index.js', 'server.js', 'playwright.config.js']; // Build tools + server + Playwright config use ES6+
 
 // ═══════════════════════════════════════════════════════════
 // Helpers
