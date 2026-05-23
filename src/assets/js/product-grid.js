@@ -416,7 +416,46 @@
   }
 
   function getCategories() {
-    return Array.isArray(window[STORE_KEY]) ? window[STORE_KEY] : [];
+    var raw = window[STORE_KEY];
+    if (!Array.isArray(raw)) return [];
+
+    // If raw is a flat array of products (each has a category field),
+    // group them by category for the category-tab and product-grid system.
+    // Check first element: if it has a "category" field but no "products" array,
+    // it's flat format → convert to grouped format.
+    if (raw.length > 0 && raw[0].category && !raw[0].products) {
+      var CATEGORY_EMOJI = {};
+      var KEY_TO_SLUG = {};
+      var cfgCats = ((window.SITE_CONFIG || window._cfg || {}).categories || {}).products || [];
+      cfgCats.forEach(function (c) {
+        if (c.key) CATEGORY_EMOJI[c.key] = c.emoji || "";
+        if (c.slug && c.key) KEY_TO_SLUG[c.slug] = c.key;
+      });
+
+      var grouped = {};
+      raw.forEach(function (p) {
+        var catKey = p.category || "other";
+        grouped[catKey] = grouped[catKey] || [];
+        grouped[catKey].push(p);
+      });
+
+      var result = [];
+      for (var cat in grouped) {
+        if (!grouped.hasOwnProperty(cat)) continue;
+        var first = grouped[cat][0] || {};
+        result.push({
+          category: cat,
+          slug: cat,
+          categoryName: first.category || cat,
+          products: grouped[cat],
+          emoji: CATEGORY_EMOJI[cat] || "",
+        });
+      }
+      return result;
+    }
+
+    // Legacy: raw is already grouped format
+    return raw;
   }
 
   function getAllProducts() {
@@ -424,17 +463,25 @@
     getCategories().forEach(function (cat) {
       if (!cat.products || !Array.isArray(cat.products)) return;
       cat.products.forEach(function (p) {
-        var img = "/assets/images/products/" + (p.model || "default") + ".webp";
+        // Build image URL from category + id sequence, or fall back to p.image
+        var img = p.image || "";
+        if (!img && p.category) {
+          var seq = "001";
+          if (p.id) {
+            var parts = p.id.split("-");
+            seq = parts[parts.length - 1];
+          }
+          img = "/assets/images/products/" + p.category + "/" + seq + ".webp";
+        }
+        if (!img) {
+          img = "/assets/images/products/default.webp";
+        }
         if (p.images && Array.isArray(p.images) && p.images.length > 0) {
           var primary =
             p.images.find(function (i) {
               return i.isPrimary;
             }) || p.images[0];
           if (primary && primary.filePath) img = primary.filePath;
-        } else if (p.image) {
-          img = p.image;
-        } else if (p.imageUrl) {
-          img = p.imageUrl;
         }
         result.push(
           (function() { var o = {}; for (var k in p) o[k] = p[k]; o._category = cat.category || cat.slug || ""; o._imageUrl = img; return o; })()
@@ -1184,19 +1231,17 @@
 
   // ─── Init ──────────────────────────────────────────────────────
 
-  // Resolve initial category from URL for SSG page loads (e.g. /products/coffee/ → "nav_products_coffee")
+  // Resolve initial category from URL for SSG page loads (e.g. /products/coffee/ → "coffee")
   // This runs before autoRender so the first render filters correctly.
+  // Note: _activeCategory stores the raw category slug (matching data.category field),
+  // NOT the i18n key. The i18n key → slug mapping is in the site.config categories.
   (function initCategoryFromUrl() {
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (match) {
       var slug = match[1];
-      var cats = (window.SITE_CONFIG || window._cfg || {}).categories || {};
-      var SLUG_MAP = (cats.products || []).reduce(function (m, c) {
-        if (c.slug && c.key) m[c.slug] = c.key;
-        return m;
-      }, {});
-      var cat = SLUG_MAP[slug] || slug;
-      if (cat) _activeCategory = cat;
+      // Slug is the canonical category identifier (coffee, tea, ...)
+      // data.category uses the same slug format
+      if (slug) _activeCategory = slug;
     }
   })();
 
