@@ -1,722 +1,427 @@
-# 系统架构与模块原理
+# ARCHITECTURE.md — 项目架构 v2.2 (BrewYuKoLi)
 
-## 整体架构
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              浏览器（客户端）                                │
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │ src/ (2026 新版 — 主生产目录)                                       │    │
-│  │   index.js    ── 可选 webpack ESM 入口（副作用导入所有 IIFE 模块）    │    │
-│  │   pages/                                                            │    │
-│  │     <page>/index.html  ── 响应式统一入口（方案C，JS 检测屏宽重定向）   │    │
-│  │     <page>/index-pc.html / index-tablet.html / index-mobile.html    │    │
-│  │     home / catalog / landing / case-studies / quote / thank-you     │    │
-│  │     pdp / support / strategy（2026 新增）                             │    │
-│  │   internal/  ── 内部工具（ab-test / crm / strategy，仅团队访问）          │  │
-│  │   assets/                                                            │    │
-│  │     css/styles.css          独立设计系统（品牌变量 + Tailwind CDN）    │    │
-│  │     js/                     IIFE 模块（window.xxx，无构建工具依赖）    │    │
-│  │       common.js             window.CommonUtils                       │    │
-│  │       media-queries.js      window.MediaQueries                      │    │
-│  │       lang-registry.js      window.LANG_REGISTRY                     │    │
-│  │       translations.js       window.TranslationManager                │    │
-│  │       image-assets.js       window.ImageAssets                       │    │
-│  │       contacts.js           window.Contacts                          │    │
-│  │       navigation.js         window.Navigation                        │    │
-│  │       product-data-table.js window.PRODUCT_DATA_TABLE（手动维护）     │    │
-│  │       product-list.js       window.PRODUCT_SERIES                    │    │
-│  │       utils.js              window.AppUtils                          │    │
-│  │       products.js           window.Products                          │    │
-│  │       smart-popup.js        window.smartPopup                        │    │
-│  │       sidebar.js            window.Sidebar                           │    │
-│  │       main.js               window.app                               │    │
-│  │       init.js               window.userActivity（SW 注册 + 追踪）     │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                              │
-│  运行时按需 fetch（需配套 assets/lang/ 目录）：                               │
-│  └── /assets/lang/{lang}-ui.json      UI 文本（约 16KB/语言）               │
-│  └── /assets/lang/{lang}-product.json 产品文本（约 200KB/语言）             │
-└──────────────────────────────────────────────────────────────────────────────┘
-                             ↑ 静态资产服务
-┌──────────────────────────────────────────────────────────────────────────────┐
-│              服务端 / 静态托管                                                │
-│  开发：Express (server.js)   生产：Nginx / 静态 CDN（零构建直接托管 src/）   │
-└──────────────────────────────────────────────────────────────────────────────┘
-                             ↑ 数据/翻译写入
-┌──────────────────────────────────────────────────────────────────────────────┐
-│              数据层（手动维护）                                                │
-│  产品数据 → src/assets/js/product-data-table.js（手动编辑）                   │
-│  翻译文件 → assets/lang/{lang}-product.json（手动维护）                       │
-└──────────────────────────────────────────────────────────────────────────────┘
-```
-
-> **⚠️ 行业转型说明（2026-05-15）**
-> 本项目已从**商用厨房设备**转型为**健康食品 OEM/ODM**。
-> 核心模块（SPA Router / Config-driven / 多语言 / 构建管线）保持不变。
-> 页面内容和产品数据已全部重写。
-> 参见 `docs/NAVIGATION-ARCHITECTURE-v1.md`、`docs/BUG-ROOT-CAUSE-LOG.md`。
-
-> **目录说明（2026-03-16 重组后）**
-> - `src/` — **主生产目录**：多页面静态 HTML，IIFE 模块体系，可零构建直接部署
+> **最后更新**：2026-05-23
+> **当前架构**：SWUP SPA + SSG 三屏分离 + 骨架屏 CSS 过渡
+> **分支**：feat/swup-replace-spa-v2 → dev
 
 ---
 
-## 前端模块详解
+## 目录
 
-### 1. `init.js` — 立即执行层
-
-**职责：** 页面加载时第一批执行的代码，不等待 DOM ready。
-
-**Service Worker 注册流程：**
-```
-navigator.serviceWorker.register('./sw.js')
-  ├── updatefound 事件 → 新 SW 安装中
-  │     └── statechange === 'installed' + controller 存在
-  │           → showServiceWorkerUpdateNotification()（弹出"有新版本"提示）
-  ├── controllerchange 事件 → 新 SW 已激活 → window.location.reload()
-  └── registration.waiting 存在 → 直接弹出更新提示（页面刷新前已有等待中的 SW）
-```
-
-**更新通知机制：**
-- 通过 `document.getElementById('sw-update-notification')` 判断是否已弹出，避免重复
-- 用户点击"立即更新" → 向 waiting SW 发送 `{ type: 'SKIP_WAITING' }` → 触发 `controllerchange` → 自动刷新
-- 用户点击关闭 → 仅移除通知 DOM，不触发更新（下次加载页面时再次提示）
-
-**用户行为追踪（`userActivity` 对象）：**
-- 每秒递增 `timeOnPage`、`timeOnProductSection`
-- 监听 scroll / mousemove / click 更新 `lastActivityTime` 和 `scrollDepth`
-- `inProductSection` 通过 `#produkten` 区域的 IntersectionObserver 维护
-- 追踪数据供 `smart-popup.js` 的弹窗系统（Smart Popup）使用，控制弹出时机
+1. [整体架构概览](#1-整体架构概览)
+2. [请求处理流程](#2-请求处理流程)
+3. [前端运行时架构](#3-前端运行时架构)
+4. [SWUP SPA 路由系统](#4-swup-spa-路由系统)
+5. [SSG 三屏构建系统](#5-ssg-三屏构建系统)
+6. [骨架屏过渡系统](#6-骨架屏过渡系统)
+7. [JS 模块完整索引](#7-js-模块完整索引)
+8. [数据流](#8-数据流)
+9. [构建与部署](#9-构建与部署)
+10. [产品分类与路由映射](#10-产品分类与路由映射)
 
 ---
 
-### 2. `main.js` — App 容器与模块注册
+## 1. 整体架构概览
 
-**架构模式：** `App` 类持有所有功能模块，统一初始化，单点管理。
-
-```javascript
-// 注册顺序决定初始化顺序
-app.registerModule('formValidation', new FormValidationModule());
-app.registerModule('lazyLoading',    new LazyLoadingModule());
-app.registerModule('errorHandling',  new ErrorHandlingModule());
+```
+                    请求进入
+                       │
+              ┌────────▼────────┐
+              │   server.js     │  Express (Node.js)
+              │   端口 3099     │  HTTPS 端口可配
+              │   dist/ 静态    │
+              └────────┬────────┘
+                       │
+          ┌────────────┼────────────┐
+          │            │            │
+    直接请求        首次访问       CDN/GitHub Pages
+    /home/          /              静态部署
+    返回 SSG      返回 index.html
+    index-pc.html  SPA Shell
+          │            │
+          │       ┌────▼────┐
+          │       │ SWUP 启用│
+          │       │ 检测容器 │
+          │       │ 状态     │
+          │       └────┬────┘
+          │         ┌──┴──┐
+          │    容器空│      │容器有内容
+          │         │      │(SSG模式)
+          │    swup.│      │
+          │    navigate│   │hideSkeleton()
+          │    → fetch │   │→ 内容fadeIn
+          │    当前路由│   │
+          │         └──┘  │
+          │               │
+          └───────┬───────┘
+                  │
+            SWUP 接管导航
+            客户端 SPA 路由
+            每次导航→ fetch
+            device-specific SSG
 ```
 
-**初始化流程：**
-1. DOM ready（`DOMContentLoaded` 或已加载）时调用 `app.initialize()`
-2. 遍历所有注册模块，依次调用 `module.init()`
-3. 全部无错误 → `<main>` 元素添加 `.loaded` 类（消除 FOUC）
-4. 设置 `this.initialized = true`，防止重复初始化
+### 核心设计决策
 
-**三个内置模块：**
-
-| 模块 | 类名 | 职责 |
-|------|------|------|
-| formValidation | `FormValidationModule` | 拦截 `<form>` submit，校验 `required` 字段 |
-| lazyLoading | `LazyLoadingModule` | `IntersectionObserver` 管理 `img[data-src]` 懒加载 |
-| errorHandling | `ErrorHandlingModule` | 全局 JS 错误、未处理 Promise rejection、网络状态监听 |
-
-**LazyLoadingModule 详细机制：**
-- `rootMargin: '100px'`：图片进入视口前 100px 即开始加载
-- 使用 `data-lazyObserved='1'` 标记已被 Observer 观察的图片，避免重复注册
-- `MutationObserver` 监听 `#product-grid`（或 `#products`），自动处理动态渲染的产品卡片图片
-- 加载失败降级：WebP → PNG（同名）→ 内联 SVG 占位图
-
----
-
-### 3. `utils.js` — 业务函数库
-
-**加载方式：** IIFE（立即执行函数表达式），所有函数挂载到 `window.AppUtils`，供其他模块调用。
-
-```javascript
-(function attachAppUtils(global) {
-  global.AppUtils = {
-    IMAGE_ASSETS, PRODUCT_SERIES,
-    resolveImage, applyImageAssets,
-    buildProductCatalog, getSeriesFilters, getCategoryI18nKey
-  };
-})(window);
-```
-
-**事件绑定机制（CSP 兼容）：**
-
-服务端 CSP 配置了 `script-src-attr 'none'`，**全站禁止内联事件属性**（`onclick="..."`、`onsubmit="..."` 等）。所有事件通过以下两种方式绑定：
-
-1. **静态 HTML 元素** — 由 `bindAllEvents()` 函数在 `DOMContentLoaded` 时统一用 `addEventListener` 绑定。该函数在 IIFE 末尾定义并自动调用。
-
-2. **动态渲染的 HTML**（`innerHTML` 方式注入）— 每次渲染后立即在容器内用 `querySelectorAll` + `addEventListener` 重新绑定。涉及函数：
-   - `renderProductFilters()` — filter 按钮，通过 `data-filter` 属性委托绑定
-   - `renderMobileProductSideControls()` — 移动端轮播导航，通过 `id` 直接绑定
-   - `renderProducts()` — 产品卡片按钮，通过 `data-action="show-popup"` 委托绑定；同时重新绑定 filter 按钮
-   - `renderPagination()` — 分页按钮，通过 `data-page` 属性委托绑定
-   - meta 区域分页上/下页按钮，通过 `data-page` 属性委托绑定（随 `renderProducts` 内调用的 meta 渲染一并处理）
-
-**数据属性约定：**
-
-| 属性 | 用途 |
+| 决策 | 原因 |
 |------|------|
-| `data-filter="<key>"` | 产品系列过滤按钮标识 |
-| `data-page="<n>"` | 分页按钮目标页码 |
-| `data-action="show-popup"` | 触发 Smart Popup 弹窗的按钮（静态 HTML 与动态卡片统一） |
-| `data-code="<lang>"` | 语言切换按钮语言代码 |
-| `data-i18n="<key>"` | 需要国际化翻译的元素 |
-
-**函数分类：**
-
-| 分类 | 主要函数 |
-|------|---------|
-| 翻译 | `tr(key, fallback)` — 翻译快捷函数 |
-| 产品展示 | `renderProducts()` `renderProductFilters()` `renderPagination()` |
-| 分页 | `goToPage(page)` `getItemsPerPage()` |
-| 移动端适配 | `isMobileProductCarousel()` `scrollMobileProducts()` |
-| 图片 | `resolveImage(key)` `applyImageAssets(root)` |
-| 联系方式 | `startWhatsApp()` `startEmail()` `startPhone()` 等 |
-| 暗色模式 | `initDarkMode()` |
-| 弹窗 | `applyPopupVisibility()` `showSmartPopupManual()` `closeSmartPopup()` |
-| 表单 | `submitViaMailto(formData, formType)` |
-| 状态追踪 | `loadUserState()` `saveUserState()` `trackScrollDepth()` |
-| 事件绑定 | `bindAllEvents()` — DOMContentLoaded 时统一绑定所有静态 HTML 事件 |
+| **SSG 预渲染 + SWUP SPA 路由** | SEO 友好 + 零刷新导航体验 |
+| **三屏分离 (PC/Tablet/Mobile)** | 每种设备独立 HTML 布局 |
+| **SWUP v4.9.0** 替代手工 SpaRouter | 消除 ~1000 行 DIY 代码 |
+| **SSG 作为 SWUP 数据源** | 导航时 fetch 设备特定 SSG HTML |
+| **骨架屏 CSS 过渡** | `opacity` transition 代替 `display:none` |
 
 ---
 
-### 4. `translations.js` — 国际化核心
+## 2. 请求处理流程
 
-**TranslationManager 类结构：**
+### 2.1 server.js 路由解析
 
 ```
-currentLanguage      当前语言（localStorage 优先，默认 zh-CN）
-translationsCache    Map<lang, mergedTranslations>  已加载缓存
-pendingLoads         Map<lang, Promise>             防并发重复加载
-keyPathCache         Map<key, path>                 键路径缓存（性能优化）
-domObserver          MutationObserver               DOM 变化自动翻译
-cachedElements       已缓存的 DOM 元素引用（减少 querySelectorAll 开销）
+请求 /home/
+  │
+  ├─ path.join(dist, '/home/')           → 不存在（目录）
+  ├─ path.join(dist, 'pages', '/home/')  → 不存在（目录）
+  ├─ 尝试 index.html 变体:
+  │   ├─ dist/pages/home/index.html       → 不存在
+  │   ├─ dist/pages/home/index-pc.html    → 存在 ✅ 返回
+  │   └─ dist/pages/home-pc.html          → 回退
+  └─ 都不存在 → 返回 dist/index.html (SPA Shell)
 ```
 
-**翻译加载流程：**
+### 2.2 三种运行模式
+
 ```
-loadTranslations(lang)
-  ├── 命中 translationsCache → 直接返回
-  ├── 命中 pendingLoads → 等待已有 Promise（防重复请求）
-  └── fetchTranslations(lang)
-        ├── loadUITranslations(lang)     → fetch /assets/lang/{lang}-ui.json
-        ├── loadProductTranslations(lang) → fetch /assets/lang/{lang}-product.json
-        ├── mergeTranslations(ui, product)
-        ├── 写入 translationsCache
-        └── 失败时 fallback 到 zh-CN
-```
+模式 1: SPA Shell (从 / 访问)
+  → index.html #spa-content 为空
+  → SWUP enable hook → swup.navigate("/home/")
+  → fetch /home/index-pc.html → 填充 → hideSkeleton()
 
-**文件分离策略（UI 优先）：**
-- `{lang}-ui.json`：约 16KB，页面文本、导航、标签等，首屏必需
-- `{lang}-product.json`：约 200KB，产品名称、参数描述等，按需加载
+模式 2: SSG 预渲染 (直接访问 /home/)
+  → 返回完整 HTML（含 navigator, footer, 内容）
+  → SWUP enable hook 检测容器有内容 → hideSkeleton()
 
-**DOM 自动翻译：**  
-通过 `data-i18n="key"` 属性标记需要翻译的元素，`TranslationManager` 在语言切换时批量更新。
-
----
-
-### 5. `image-assets.js` — 图片路径映射
-
-**src/ 版本（静态 HTML 体系，无构建工具）：**
-```javascript
-// 静态资源（logo、cert 等）硬编码
-// 产品图通过 loadFromManifest() 运行时异步加载
-global.ImageAssets = { IMAGE_ASSETS, resolveImage, imgTag, loadFromManifest };
-```
-
-**分类规则：**
-- `NON_PRODUCT_KEYS`：logo、背景、证书、工厂图等固定资产（硬编码路径）
-- `productImages`：从 manifest 自动展开，过滤 NON_PRODUCT_KEYS 后动态生成
-
-**对外 API：**
-```javascript
-IMAGE_ASSETS['esl_gb60_1']   // → 'images/esl_gb60_1.webp'
-resolveImage('esl_gb60_1')   // → 'images/esl_gb60_1.webp'
-imgTag('esl_gb60_1', 'alt')  // → '<img src="images/esl_gb60_1.webp" ...>'
+模式 3: 静态部署 (GitHub Pages / CDN)
+  → 同模式 2，直接 serve dist/
 ```
 
 ---
 
-### 6. `product-list.js` — 产品数据处理
+## 3. 前端运行时架构
 
-见 [PRODUCT_DATA.md](./PRODUCT_DATA.md) 的详细说明。
-
----
-
-## 服务端（`server.js`）
-
-**技术栈：** Express + Helmet + express-rate-limit + compression
-
-**安全配置（Helmet）：**
-
-| 策略 | 值 |
-|------|-----|
-| CSP defaultSrc | `'self'` |
-| CSP styleSrc | `'self'` `'unsafe-inline'` `fonts.googleapis.com` |
-| CSP scriptSrc | `'self'` `cdn.tailwindcss.com` |
-| CSP scriptSrcAttr | `'none'`（禁止所有内联事件属性，如 `onclick="..."`） |
-| CSP imgSrc | `'self'` `data:` `https:` `http:` |
-| HSTS | maxAge=31536000，includeSubDomains，preload |
-
-> **注意：** `script-src-attr 'none'` 要求全站 HTML（包括 JS 动态生成的 innerHTML）不得使用内联事件属性。所有事件必须通过 `addEventListener` 绑定。详见 [utils.js 事件绑定机制](#3-utilsjs--业务函数库)。
-
-**限流：** 15 分钟窗口，每 IP 最多 100 次请求。
-
-**用途区分：**
-- 开发环境：运行 Express 提供 webpack-dev-server 的代理（可选，webpack 构建模式时使用）
-- 生产环境：推荐使用 Nginx 直接托管 `src/`，Express 仅在需要服务端逻辑时使用
-
----
-
-## webpack 构建配置（可选辅助入口）
-
-> **说明：** `src/index.js` 作为可选的 webpack ESM 入口，用于将 IIFE 模块打包为单一 bundle。`src/` 静态多页面可直接部署，无需 webpack 构建。
-
-**入口/出口：**
-```
-入口：  src/index.js
-输出：  dist/bundle.[contenthash:8].js    （生产，带哈希用于缓存破坏）
-        dist/bundle.js                    （开发，无哈希）
-        dist/styles.[contenthash:8].css   （生产）
-publicPath: '/'（固定根路径，避免 Nginx/Docker 子路径误检测）
-clean: true（每次重建自动清空 dist/）
-```
-
-**CSS 处理链：**
-```
-开发：  style-loader → css-loader → postcss-loader（热更新）
-生产：  MiniCssExtractPlugin → css-loader → postcss-loader（提取为独立 CSS 文件）
-```
-
-**生产额外复制（CopyWebpackPlugin）：**
-```
-src/assets/lang/         → dist/assets/lang/    （仅 *-ui.json、*-product.json、languages.json）
-src/assets/images/       → dist/images/
-src/sw.js                → dist/sw.js
-factory-tour.mp4         → dist/factory-tour.mp4（如存在）
-```
-
-**开发服务器（devServer）：**
-- 端口 5000
-- 静态目录优先级：`dist/assets/lang` > `src/assets/lang`（支持构建后预览）
-- 图片目录：`dist/images` > `src/assets/images`
-- `Service-Worker-Allowed: /`（允许 SW 在根路径注册）
-
----
-
-## src/ — 2026 主版 UI（静态多页面）
-
-> **2026-03-16 升格为主生产目录**（原 `src2/`）。纯静态多页面 HTML，**不经过 Webpack 构建，无构建工具依赖，图片通过 ImageAssets IIFE 模块按需加载**，可零配置直接 CDN 托管。
-
-### 目录结构
+### 3.1 脚本加载顺序
 
 ```
-src/
-├── index.html                          ← 路由中枢（按屏幕宽度跳转 PC/Tablet/Mobile）
-├── assets/
-│   ├── css/
-│   │   └── styles.css                  ← 独立设计系统（Public Sans + 品牌变量）
-│   └── js/                             ← 所有 JS 模块（IIFE + window.xxx）
-│       ├── common.js           window.CommonUtils
-│       ├── media-queries.js    window.MediaQueries
-│       ├── lang-registry.js    window.LANG_REGISTRY
-│       ├── translations.js     window.TranslationManager
-│       ├── image-assets.js     window.ImageAssets
-│       ├── contacts.js         window.Contacts
-│       ├── navigation.js       window.Navigation
-│       ├── product-data-table.js  window.PRODUCT_DATA_TABLE
-│       ├── product-list.js     window.PRODUCT_SERIES
-│       ├── utils.js            window.AppUtils
-│       ├── products.js         window.Products
-│       ├── smart-popup.js      window.smartPopup
-│       ├── sidebar.js          window.Sidebar
-│       ├── main.js             window.app
-│       ├── init.js             window.userActivity
-│       └── page-interactions.js  window.PageInteractions（2026新增，全站按钮/表单/弹窗交互层）
-│
-├── pages/                              ← 面向用户的功能页面（36 个 HTML）
-│   ├── home/           (6 files)       PC / Tablet / Laptop / Mobile / Mobile-Unified + index.html 入口
-│   ├── catalog/        (4 files)       PC / Tablet / Mobile + index.html 入口
-│   ├── landing/        (4 files)       PC / Tablet / Mobile + index.html 入口
-│   ├── case-studies/   (8 files)       PC+Tablet+Mobile × 案例列表 + PDF下载 + index.html 入口
-│   ├── quote/          (4 files)       PC / Tablet / Mobile + index.html 入口
-│   ├── thank-you/      (3 files)       PC / Mobile + index.html 入口
-│   ├── pdp/            (4 files)       PC / Tablet / Laptop / Mobile（产品详情页）
-│   ├── support/        (3 files)       ESG-PC / IoT-Support-PC / IoT-Support-Mobile
-│   ├── emails/         (7 files)       Follow-Up #1~#3 × PC+Mobile + Auto-Responder（面向终端用户）
-│   └── linkedin/       (5 files)       Carousel + Single Image + Lead Gen Form × 2 + Video Storyboard（面向终端用户）
-│
-└── internal/                           ← 内部工具（仅团队访问，无响应式路由，65 个 HTML 总计）
-    ├── ab-test/        (6 files)       Email Variants × 3 + Dashboard + Strategy + Logic Analysis
-    ├── crm/            (6 files)       Scaling Dashboard + Lead Scoring + Lead Journey × SE Asia/Western + Market Journey + SE Asia Simulation
-    └── strategy/       (5 files)       ROI Calculator + Home Specs + Media Buying Plan + Budget Simulator + SE Asia Budget Strategy
+阶段 1: Vendor 库（先于业务模块）
+  ├─ device-utils.js         → 设备检测
+  ├─ swup.umd.js             → SWUP 核心 v4.9.0
+  ├─ swup-head-plugin.umd.js
+  ├─ swup-scroll-plugin.umd.js
+  ├─ swup-scripts-plugin.umd.js
+  ├─ swup-debug-plugin.umd.js
+  └─ swup-init.js            → SWUP 初始化 + SpaRouter 兼容层
+
+阶段 2: 国际化 + UI 组件
+  ├─ lang-registry.js, translations.js
+  ├─ translations-dropdown-template.js
+  ├─ dropdown-styles.js, dropdown-base.js
+  ├─ products-dropdown.js, applications-dropdown.js
+  ├─ support-dropdown.js, about-dropdown.js
+  ├─ nav-dropdown.js, navigator.js
+  ├─ slide-menu.js, search-engine.js
+  ├─ footer.js, floating-actions.js
+  └─ contacts.js
+
+阶段 3: 业务模块
+  ├─ product-grid.js, product-detail.js
+  ├─ home-core-products.js, currency.js
+  └─ page-init.js（spa:load 监听 + 页面 wiring）
+
+阶段 4: 产品数据
+  └─ product-data-table.js（内联脚本，ETag/缓存）
 ```
 
-**合计：1 导航页 + 1 CSS + 16 JS + 65 HTML = 83 个文件**
-
-### JS 模块加载顺序（依赖顺序）
+### 3.2 模块分类
 
 ```
-1. common.js             → window.CommonUtils
-2. media-queries.js      → window.MediaQueries
-3. lang-registry.js      → window.LANG_REGISTRY
-4. translations.js       → window.TranslationManager（依赖 LANG_REGISTRY）
-5. image-assets.js       → window.ImageAssets
-6. contacts.js           → window.Contacts
-7. navigation.js         → window.Navigation（依赖 MediaQueries + CommonUtils）
-8. product-data-table.js → window.PRODUCT_DATA_TABLE（手动维护，332KB 数据）
-9. product-list.js       → window.PRODUCT_SERIES（依赖 PRODUCT_DATA_TABLE + ImageAssets）
-10. utils.js             → window.AppUtils（依赖 PRODUCT_SERIES + ImageAssets）
-11. products.js          → window.Products（依赖 MediaQueries + CommonUtils + AppUtils）
-12. smart-popup.js       → window.smartPopup（依赖 MediaQueries + Contacts）
-13. sidebar.js           → window.Sidebar（依赖 MediaQueries）
-14. main.js              → window.app（懒加载 + 表单验证 + 错误处理）
-15. init.js              → window.userActivity（SW 注册 + 用户行为追踪）
-16. page-interactions.js → window.PageInteractions（依赖 contacts.js + smart-popup.js，全站按钮/表单/弹窗交互层，DOMContentLoaded 自动初始化）
+核心引擎层
+  ├─ swup-init.js           SWUP 初始化、路由映射、骨架屏控制
+  ├─ spa-router.js          旧版 SPA 路由器 (保留不加载)
+  ├─ device-utils.js        设备检测、断点匹配
+  └─ translations.js        国际化引擎
 
-── 可复用 UI 组件（按需引入，顺序不限，依赖 translations.js）──
-17. ui/navigator.js → window.Navigator （PC/Tablet 顶部导航组件，统一版）
-18. ui/min-display-footer.js → window.MinDisplayFooter （Mobile/Tablet 底部导航栏 + FAB 组件）
+UI 组件层 (15+ 文件)
+  ├─ navigator.js           PC/Tablet 顶部导航
+  ├─ footer.js              页脚
+  ├─ floating-actions.js    Mobile FAB
+  ├─ slide-menu.js          移动端侧滑菜单
+  ├─ search-engine.js       站内搜索
+  └─ ...下拉菜单组件
+
+业务模块层 (10+ 文件)
+  ├─ product-grid.js        产品网格
+  ├─ product-detail.js      产品详情
+  ├─ home-core-products.js  首页核心产品
+  ├─ case-grid.js           案例网格
+  ├─ page-init.js           页面 wiring + spa:load 监听
+  └─ product-data-table.js  产品数据表
 ```
 
 ---
 
-### 可复用 UI 组件
+## 4. SWUP SPA 路由系统
 
-三个组件统一采用 **占位符替换模式**：在 HTML 中放置一个 `<div data-component="xxx">` 占位，JS 加载后自动读取 `data-*` 属性配置并替换为完整 HTML。
+### 4.1 SWUP Hooks 流转
 
-#### `navigator.js` — PC / Tablet 顶部导航（统一版）
-
-> **取代旧版 `pc-header.js`（已废弃）。** 支持 PC 和 Tablet 两种变体，通过 `data-variant` 区分。
-
-```html
-<!-- PC variant -->
-<div data-component="navigator"
-     data-variant="pc"
-     data-active="catalog"
-     data-search="true"
-     data-cta-text-key="nav_get_quote"
-     data-cta-href="/pages/quote/index-pc.html">
-</div>
-
-<!-- Tablet variant -->
-<div data-component="navigator"
-  data-variant="tablet"
-  data-active="home"
-  data-cta-text-key="nav_get_quote"
-  data-cta-href="/quote/index-tablet.html">
-</div>
-
-<script src="/assets/js/ui/navigator.js"></script>
+```
+enable        → 首次启动: 空容器→navigate 或 hideSkeleton
+visit:start   → showSkeleton() + 清除 .swup-fade-in
+fetch:request → routeToFetchUrl() 改写 fetch URL
+content:replace → hideSkeleton() + runPageInitByRoute() + updateActiveState()
+page:view     → dispatchEvent("spa:load") 兼容事件
+visit:end     → __spaNavigating = false
 ```
 
-| 属性 | 默认值 | 说明 |
-|------|--------|------|
-| `data-variant` | `"pc"` | 渲染变体：`pc`（语言下拉右对齐 absolute）/ `tablet`（语言下拉居中 fixed） |
-| `data-active` | `""` | 高亮导航项 ID：`home` / `catalog` / `case-studies` / `pdp` / `support` |
-| `data-search` | `"false"` | 是否显示搜索框 |
-| `data-search-i18n` | `"search_placeholder"` | 搜索框 i18n key |
-| `data-search-bp` | `"xl"` | 搜索框显示断点（`xl` / `lg`） |
-| `data-lang` | `"true"` | 是否显示语言切换器 |
-| `data-cta` | `"true"` | 是否显示 CTA 按钮 |
-| `data-cta-text-key` | `"nav_get_quote"` | CTA 按钮文字的 i18n key |
-| `data-cta-href` | 按 variant 自动解析 | CTA 按钮链接目标 |
+### 4.2 设备感知 URL 映射
 
+```
+用户看到的 URL         SWUP fetch 的 URL (PC)
+─────────────────────  ──────────────────────────
+/ /home/               /home/index-pc.html
+/products/             /products/index-pc.html
+/products/coffee/      /products/coffee/index-pc.html
+/products/<model>/     /products/detail/index-pc.html
+/solutions/oem/        /solutions/oem/index-pc.html
+/manufacturing/        /manufacturing/index-pc.html
+/compliance/           /compliance/index-pc.html
+/cases/                /cases/index-pc.html
+/resources/catalog/    /resources/catalog/index-pc.html
+/news/detail/          /news/detail-pc.html (flat-file)
 
-
-#### `min-display-footer.js` — Mobile / Tablet 底部导航 + FAB
-
-```html
-<div data-component="min-display-footer"
-     data-variant="mobile"
-     data-active="home"
-     data-fab="true"
-     data-whatsapp="https://wa.me/yournumber"
-     data-line="https://line.me/R/ti/p/@yourlineid">
-</div>
-<script defer src="/assets/js/ui/min-display-footer.js"></script>
+设备后缀:
+  PC     (w >= 1280): index-pc.html
+  Tablet (768-1279):  index-tablet.html
+  Mobile (w < 768):   index-mobile.html
 ```
 
-| 属性 | 默认值 | 说明 |
-|------|--------|------|
-| `data-variant` | `"mobile"` | 导航项集合：`mobile`（4项）/ `tablet`（5项） |
-| `data-active` | `""` | 高亮导航项 ID（见下表） |
-| `data-fab` | `"true"` | 是否显示右侧浮动按钮（WhatsApp / LINE / 回到顶部） |
-| `data-whatsapp` | `"https://wa.me/yournumber"` | WhatsApp 链接 |
-| `data-line` | `"https://line.me/R/ti/p/@yourlineid"` | LINE 链接 |
-
-Mobile 导航项 ID：`home` / `catalog` / `insights` / `support`  
-Tablet 导航项 ID：`home` / `catalog` / `solutions` / `iot` / `config`
-
-> **Back-to-top 交互：** 组件挂载后自动绑定 scroll 监听，当 `scrollY > 300` 时显示「回到顶部」按钮，点击平滑滚动至顶部。无需额外 JS。
-
-### 设计系统（`src/assets/css/styles.css`）
-
-| Token | 值 |
-|---|---|
-| `--color-primary` | `#ec5b13`（Yukoli orange） |
-| `--color-bg-light` | `#f8f6f6` |
-| `--color-bg-dark` | `#221610` |
-| `--font-display` | `'Public Sans', sans-serif` |
-| Tailwind | CDN（`cdn.tailwindcss.com`），每个页面内嵌 `tailwind.config` |
-| Icons | Material Symbols Outlined（Google Fonts CDN） |
-
-### 响应式路由机制
-
-每个 `index.html` 顶部注入多屏幕跳转逻辑，在 `<head>` 最顶部执行：
+### 4.3 SpaRouter 兼容层
 
 ```javascript
-// 断点：<768px → Mobile，768-1279px → Tablet，≥1280px → PC
-(function() {
-  var w = screen.width;
-  if (w < 768) location.replace('/pages/home/mobile.html');
-  else if (w < 1280) location.replace('/pages/home/tablet.html');
-  else location.replace('/pages/home/pc.html');
-})();
+window.SpaRouter = {
+  navigate: function(path) { swup.navigate(url); },
+  replace:  function(path) { swup.navigate(url, { history: "replace" }); },
+  getCurrentPath: function() { /* 从 location.pathname 解析 */ },
+};
 ```
-
-`scripts/patch-responsive-redirect.py` 负责批量注入/更新所有 HTML 页面的跳转脚本。
 
 ---
 
-## 前端模块详解
+## 5. SSG 三屏构建系统
 
-### 1. `init.js` — 立即执行层
+### 5.1 页面层级
 
-**职责：** 页面加载时第一批执行的代码，不等待 DOM ready。
-
-**Service Worker 注册流程：**
 ```
-navigator.serviceWorker.register('./sw.js')
-  ├── updatefound 事件 → 新 SW 安装中
-  │     └── statechange === 'installed' + controller 存在
-  │           → showServiceWorkerUpdateNotification()（弹出"有新版本"提示）
-  ├── controllerchange 事件 → 新 SW 已激活 → window.location.reload()
-  └── registration.waiting 存在 → 直接弹出更新提示（页面刷新前已有等待中的 SW）
+src/pages/
+├── home/                 (三屏: index-pc/mobile/tablet.html)
+├── products/
+│   ├── all/ (三屏)
+│   ├── coffee/ (三屏)
+│   ├── tea/, meal/, beauty/, weight/, gut/, lifestyle/, legacy/ (三屏)
+│   └── detail/ (三屏 + index.html)
+├── solutions/
+│   ├── oem/ (三屏)
+│   ├── odm/ (三屏)
+│   ├── obm/ (三屏)
+│   ├── rd/ (三屏)
+│   └── packaging/ (三屏)
+├── manufacturing/ (三屏)
+├── compliance/ (三屏)
+├── cases/ (三屏)
+├── resources/
+│   ├── catalog/ (三屏)
+│   ├── videos/ (三屏)
+│   └── whitepapers/ (三屏)
+├── support/ (三屏)
+├── about/, contact/, landing/, thank-you/ (三屏)
+└── applications/ (三屏)
 ```
 
-**更新通知机制：**
-- 通过 `document.getElementById('sw-update-notification')` 判断是否已弹出，避免重复
-- 用户点击"立即更新" → 向 waiting SW 发送 `{ type: 'SKIP_WAITING' }` → 触发 `controllerchange` → 自动刷新
-- 用户点击关闭 → 仅移除通知 DOM，不触发更新（下次加载页面时再次提示）
+总计: 88 个 SSG HTML 文件
 
-**用户行为追踪（`userActivity` 对象）：**
-- 每秒递增 `timeOnPage`、`timeOnProductSection`
-- 监听 scroll / mousemove / click 更新 `lastActivityTime` 和 `scrollDepth`
-- `inProductSection` 通过 `#produkten` 区域的 IntersectionObserver 维护
-- 追踪数据供 `utils.js` 的弹窗系统（Smart Popup）使用，控制弹出时机
+### 5.2 build.sh 构建流程
+
+```
+npm run build
+  ├─ site.config.js → dist/
+  ├─ src/pages/**/*.html → dist/pages/
+  ├─ src/assets/js/ → dist/assets/js/ (含 vendor/)
+  ├─ src/assets/css/ → dist/assets/css/
+  ├─ src/assets/lang/ → dist/assets/lang/
+  ├─ src/assets/images/ → dist/assets/images/ (增量)
+  ├─ src/index.html → dist/index.html
+  ├─ 版本戳: ?v=OLD → ?v=TIMESTAMP
+  └─ sitemap.xml (47 URLs)
+```
 
 ---
 
-### 2. `main.js` — App 容器与模块注册
+## 6. 骨架屏过渡系统
 
-**架构模式：** `App` 类持有所有功能模块，统一初始化，单点管理。
+### 6.1 CSS transition 方案
 
-```javascript
-// 注册顺序决定初始化顺序
-app.registerModule('formValidation', new FormValidationModule());
-app.registerModule('lazyLoading',    new LazyLoadingModule());
-app.registerModule('errorHandling',  new ErrorHandlingModule());
+```css
+#skeleton-overlay {
+  opacity: 1;
+  transition: opacity 350ms ease-out;
+}
+#skeleton-overlay[hidden] {
+  opacity: 0;
+  pointer-events: none;
+}
+#spa-content {
+  opacity: 0;
+  transition: opacity 350ms ease-in;
+}
+#spa-content.swup-fade-in {
+  opacity: 1;
+}
 ```
 
-**初始化流程：**
-1. DOM ready（`DOMContentLoaded` 或已加载）时调用 `app.initialize()`
-2. 遍历所有注册模块，依次调用 `module.init()`
-3. 全部无错误 → `<main>` 元素添加 `.loaded` 类（消除 FOUC）
-4. 设置 `this.initialized = true`，防止重复初始化
+### 6.2 过渡时序
 
-**三个内置模块：**
+```
+0ms     → skeleton fadeOut 开始 (opacity 1→0, 350ms)
+350ms   → skeleton 不可见
+350ms+  → content fadeIn (opacity 0→1)
+700ms   → 过渡完成
+```
 
-| 模块 | 类名 | 职责 |
+---
+
+## 7. JS 模块完整索引
+
+| 文件 | 作用 | 依赖 |
 |------|------|------|
-| formValidation | `FormValidationModule` | 拦截 `<form>` submit，校验 `required` 字段 |
-| lazyLoading | `LazyLoadingModule` | `IntersectionObserver` 管理 `img[data-src]` 懒加载 |
-| errorHandling | `ErrorHandlingModule` | 全局 JS 错误、未处理 Promise rejection、网络状态监听 |
-
-**LazyLoadingModule 详细机制：**
-- `rootMargin: '100px'`：图片进入视口前 100px 即开始加载
-- 使用 `data-lazyObserved='1'` 标记已被 Observer 观察的图片，避免重复注册
-- `MutationObserver` 监听 `#product-grid`（或 `#products`），自动处理动态渲染的产品卡片图片
-- 加载失败降级：WebP → PNG（同名）→ 内联 SVG 占位图
+| `swup-init.js` | SWUP 初始化 + 路由 + 骨架屏 | Swup + plugins |
+| `spa-router.js` | 旧版 SPA 路由器（保留不加载）| 无 |
+| `device-utils.js` | 设备检测 | 无 |
+| `translations.js` | 国际化引擎 | 无 |
+| `navigator.js` | PC/Tablet 导航 | SITE_CONFIG |
+| `footer.js` | 页脚 | SITE_CONFIG |
+| `page-init.js` | 页面 wiring + spa:load 监听 | 无 |
+| `product-grid.js` | 产品网格 | 外部 API |
+| `product-detail.js` | 产品详情 | 外部 API |
+| `home-core-products.js` | 首页核心产品 | 无 |
 
 ---
 
-### 3. `utils.js` — 业务函数库
+## 8. 数据流
 
-**加载方式：** IIFE（立即执行函数表达式），所有函数挂载到 `window` 对象，供其他模块调用。
+### 8.1 配置 → 渲染
 
-```javascript
-(function attachAppUtils(global) {
-  // 所有函数定义在此闭包内
-  global.tr = tr;
-  global.renderProducts = renderProducts;
-  global.goToPage = goToPage;
-  // ...
-})(window);
+```
+site.config.js → window.SITE_CONFIG → 所有模块读取
+  ├─ brand.* → navigator, footer, meta
+  ├─ nav.items → navigator 菜单渲染
+  ├─ contacts.* → footer, floating-actions
+  ├─ categories.products → 产品分类 (spa-router, swup-init)
+  └─ seo.* → <meta> 标签
 ```
 
-**事件绑定机制（CSP 兼容）：**
+### 8.2 SWUP 导航数据流
 
-服务端 CSP 配置了 `script-src-attr 'none'`，**全站禁止内联事件属性**（`onclick="..."`、`onsubmit="..."` 等）。所有事件通过以下两种方式绑定：
+```
+点击链接 → SWUP intercept → routeToFetchUrl(path)
+  → fetch device-specific SSG HTML
+  → 解析: HeadPlugin 更新 <head>
+         #spa-content 内容替换
+         persist: navigator, footer
+         ScriptsPlugin: data-swup-reload-script
+  → content:replace → runPageInitByRoute() → dispatchSpaLoad()
+```
 
-1. **静态 HTML 元素** — 由 `bindAllEvents()` 函数在 `DOMContentLoaded` 时统一用 `addEventListener` 绑定。该函数在 IIFE 末尾定义并自动调用。
+---
 
-2. **动态渲染的 HTML**（`innerHTML` 方式注入）— 每次渲染后立即在容器内用 `querySelectorAll` + `addEventListener` 重新绑定。涉及函数：
-   - `renderProductFilters()` — filter 按钮，通过 `data-filter` 属性委托绑定
-   - `renderMobileProductSideControls()` — 移动端轮播导航，通过 `id` 直接绑定
-   - `renderProducts()` — 产品卡片按钮，通过 `data-action="show-popup"` 委托绑定；同时重新绑定 filter 按钮
-   - `renderPagination()` — 分页按钮，通过 `data-page` 属性委托绑定
-   - meta 区域分页上/下页按钮，通过 `data-page` 属性委托绑定（随 `renderProducts` 内调用的 meta 渲染一并处理）
+## 9. 构建与部署
 
-**数据属性约定：**
+### 9.1 开发命令
 
-| 属性 | 用途 |
+```bash
+npm run dev              # nodemon server.js (端口 3099)
+npm run build            # ./build.sh
+npm run watch            # fswatch src/ → ./build.sh
+npm run test:e2e         # Playwright
+```
+
+### 9.2 部署
+
+| 目标 | 配置 |
 |------|------|
-| `data-filter="<key>"` | 产品系列过滤按钮标识 |
-| `data-page="<n>"` | 分页按钮目标页码 |
-| `data-action="show-popup"` | 触发 Smart Popup 弹窗的按钮（静态 HTML 与动态卡片统一） |
-| `data-code="<lang>"` | 语言切换按钮语言代码 |
-| `data-i18n="<key>"` | 需要国际化翻译的元素 |
-
-**函数分类：**
-
-| 分类 | 主要函数 |
-|------|---------|
-| 翻译 | `tr(key, fallback)` — 翻译快捷函数 |
-| 产品展示 | `renderProducts()` `renderProductFilters()` `renderPagination()` |
-| 分页 | `goToPage(page)` `getItemsPerPage()` |
-| 移动端适配 | `isMobileProductCarousel()` `scrollMobileProducts()` |
-| 图片 | `resolveImage(key)` `applyImageAssets(root)` |
-| 联系方式 | `startWhatsApp()` `startEmail()` `startPhone()` 等 |
-| 暗色模式 | `initDarkMode()` |
-| 弹窗 | `applyPopupVisibility()` `showSmartPopupManual()` `closeSmartPopup()` |
-| 表单 | `submitViaMailto(formData, formType)` |
-| 状态追踪 | `loadUserState()` `saveUserState()` `trackScrollDepth()` |
-| 事件绑定 | `bindAllEvents()` — DOMContentLoaded 时统一绑定所有静态 HTML 事件 |
+| Node.js Server | server.js 端口 3099 |
+| GitHub Pages | dist/ 静态 serve |
+| HTTPS | SSL_PORT 环境变量 |
 
 ---
 
-### 4. `translations.js` — 国际化核心
+## 10. 产品分类与路由映射
 
-**TranslationManager 类结构：**
+### 10.1 产品分类（健康产品线）
 
 ```
-currentLanguage      当前语言（localStorage 优先，默认 zh-CN）
-translationsCache    Map<lang, mergedTranslations>  已加载缓存
-pendingLoads         Map<lang, Promise>             防并发重复加载
-keyPathCache         Map<key, path>                 键路径缓存（性能优化）
-domObserver          MutationObserver               DOM 变化自动翻译
-cachedElements       已缓存的 DOM 元素引用（减少 querySelectorAll 开销）
+categories.products (site.config.js):
+  all       → 全部产品
+  coffee    → 咖啡系列
+  tea       → 茶饮系列
+  meal      → 代餐系列
+  beauty    → 胶原养颜
+  weight    → 体重管理
+  gut       → 肠道健康
+  lifestyle → 功能冲饮
+  legacy    → 经典冲饮
 ```
 
-**翻译加载流程：**
+### 10.2 路由映射
+
 ```
-loadTranslations(lang)
-  ├── 命中 translationsCache → 直接返回
-  ├── 命中 pendingLoads → 等待已有 Promise（防重复请求）
-  └── fetchTranslations(lang)
-        ├── loadUITranslations(lang)     → fetch /assets/lang/{lang}-ui.json
-        ├── loadProductTranslations(lang) → fetch /assets/lang/{lang}-product.json
-        ├── mergeTranslations(ui, product)
-        ├── 写入 translationsCache
-        └── 失败时 fallback 到 zh-CN
-```
-
-**文件分离策略（UI 优先）：**
-- `{lang}-ui.json`：约 16KB，页面文本、导航、标签等，首屏必需
-- `{lang}-product.json`：约 200KB，产品名称、参数描述等，按需加载
-
-**DOM 自动翻译：**  
-通过 `data-i18n="key"` 属性标记需要翻译的元素，`TranslationManager` 在语言切换时批量更新。
-
----
-
-### 5. `image-assets.js` — 图片路径映射
-
-**构建时静态 import manifest：**
-```javascript
-import manifest from './images/image-manifest.json';
-// → IMAGE_ASSETS 在模块加载时同步可用，无运行时 fetch
-```
-
-**分类规则：**
-- `NON_PRODUCT_KEYS`：logo、背景、证书、工厂图等固定资产（硬编码路径）
-- `productImages`：从 manifest 自动展开，过滤 NON_PRODUCT_KEYS 后动态生成
-
-**对外 API：**
-```javascript
-IMAGE_ASSETS['esl_gb60_1']   // → 'images/esl_gb60_1.webp'
-resolveImage('esl_gb60_1')   // → 'images/esl_gb60_1.webp'
-imgTag('esl_gb60_1', 'alt')  // → '<img src="images/esl_gb60_1.webp" ...>'
+/products/<slug>/  → /products/<slug>/index-{device}.html
+/<slug>/           → /products/<slug>/index-{device}.html (redirect)
+/products/<model>/ → /products/detail/index-{device}.html (PDP)
 ```
 
 ---
 
-### 6. `product-list.js` — 产品数据处理
+## 附录: 目录结构
 
-见 [PRODUCT_DATA.md](./PRODUCT_DATA.md) 的详细说明。
-
----
-
-## 服务端（`server.js`）
-
-**技术栈：** Express + Helmet + express-rate-limit + compression
-
-**安全配置（Helmet）：**
-
-| 策略 | 值 |
-|------|-----|
-| CSP defaultSrc | `'self'` |
-| CSP styleSrc | `'self'` `'unsafe-inline'` `fonts.googleapis.com` |
-| CSP scriptSrc | `'self'` `cdn.tailwindcss.com` |
-| CSP scriptSrcAttr | `'none'`（禁止所有内联事件属性，如 `onclick="..."`） |
-| CSP imgSrc | `'self'` `data:` `https:` `http:` |
-| HSTS | maxAge=31536000，includeSubDomains，preload |
-
-> **注意：** `script-src-attr 'none'` 要求全站 HTML（包括 JS 动态生成的 innerHTML）不得使用内联事件属性。所有事件必须通过 `addEventListener` 绑定。详见 [utils.js 事件绑定机制](#3-utilsjs--业务函数库)。
-
-**限流：** 15 分钟窗口，每 IP 最多 100 次请求。
-
-**用途区分：**
-- 开发环境：运行 Express 提供 webpack-dev-server 的代理（可选，webpack 构建模式时使用）
-- 生产环境：推荐使用 Nginx 直接托管 `src/`，Express 仅在需要服务端逻辑时使用
-
----
-
-## webpack 构建配置（可选辅助入口）
-
-> **说明：** `src/index.js` 作为可选的 webpack ESM 入口，用于将 IIFE 模块打包为单一 bundle。`src/` 静态多页面可直接部署，无需 webpack 构建。
-
-**入口/出口：**
 ```
-入口：  src/index.js
-输出：  dist/bundle.[contenthash:8].js    （生产，带哈希用于缓存破坏）
-        dist/bundle.js                    （开发，无哈希）
-        dist/styles.[contenthash:8].css   （生产）
-publicPath: '/'（固定根路径，避免 Nginx/Docker 子路径误检测）
-clean: true（每次重建自动清空 dist/）
+BrewYuKoLi/
+├── src/
+│   ├── index.html                     ← SPA Shell
+│   ├── pages/                         ← 88 SSG 页面
+│   │   ├── home/, products/, solutions/
+│   │   ├── manufacturing/, compliance/
+│   │   ├── cases/, resources/, support/
+│   │   └── about/, contact/, landing/, thank-you/
+│   └── assets/
+│       ├── js/
+│       │   ├── swup-init.js           ← SWUP 初始化
+│       │   ├── spa-router.js          ← 旧版 SPA Router (保留)
+│       │   ├── page-init.js, translations.js
+│       │   ├── product-grid.js, product-detail.js
+│       │   ├── ui/ (navigator, footer, ...)
+│       │   └── vendor/ (swup + plugins)
+│       ├── css/ (styles, skeleton, tailwind)
+│       └── lang/ (i18n JSON)
+├── dist/                              ← 构建产物
+├── docs/                              ← 项目文档
+│   ├── ARCHITECTURE.md
+│   ├── DEV-STANDARDS.md
+│   ├── MULTI-AGENT-OPERATIONS.md
+│   ├── TESTING.md
+│   └── ...
+├── tests/e2e/
+│   ├── smoke.spec.js
+│   └── swup-navigation.spec.js
+└── scripts/
+    ├── build.sh
+    └── lint-code.js
 ```
-
-**CSS 处理链：**
-```
-开发：  style-loader → css-loader → postcss-loader（热更新）
-生产：  MiniCssExtractPlugin → css-loader → postcss-loader（提取为独立 CSS 文件）
-```
-
-**生产额外复制（CopyWebpackPlugin）：**
-```
-src/assets/lang/         → dist/assets/lang/    （仅 *-ui.json、*-product.json、languages.json）
-src/assets/images/       → dist/images/
-src/sw.js                → dist/sw.js
-factory-tour.mp4         → dist/factory-tour.mp4（如存在）
-```
-
-**开发服务器（devServer）：**
-- 端口 3000
-- 静态目录优先级：`dist/assets/lang` > `src/assets/lang`（支持构建后预览）
-- 图片目录：`dist/images` > `src/assets/images`
-- `Service-Worker-Allowed: /`（允许 SW 在根路径注册）
-
----
-
-
