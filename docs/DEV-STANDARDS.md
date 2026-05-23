@@ -1314,3 +1314,334 @@ node scripts/lint-code.js
 3. **改完验证** — `node -c` 验证语法
 4. **不改编译产物** — 禁止修改 `dist/` 目录
 5. **三屏同步** — 修改 JS/CSS 时确认三端 HTML 都受影响
+## 12. 正则表达式使用规范 🔴
+
+> 正则表达式是项目中最容易引入隐匿 bug 的技术之一。本规范约束所有 JS 文件（不含 vendor 和测试文件）中的正则使用。
+
+### 12.1 正则的四种使用方式及选择优先级
+
+| 优先级 | 方式 | 适用场景 | 风险等级 |
+|--------|------|---------|---------|
+| 🥇 | `String.prototype.includes()` / `startsWith()` / `endsWith()` | 固定字符串匹配 | 无风险 |
+| 🥇 | `String.prototype.indexOf()` / `lastIndexOf()` | 子串位置查找 | 无风险 |
+| 🥈 | 字面量正则 `/pattern/flags` | 已知固定模式 | 低（见 §12.2） |
+| ❌ 谨慎 | `new RegExp(pattern)` 动态构造 | 模式中包含变量 | 🔴 高（见 §12.3） |
+
+**黄金规则**: 能用 `includes()` 解决的，绝不用正则。能用字面量 `/pattern/` 解决的，绝不用 `new RegExp()`。
+
+```javascript
+// ✅ 正确: includes 匹配固定子串
+if (url.includes('/products/')) { ... }
+
+// ❌ 错误: 用正则做 includes 能做的事
+if (/\/products\//.test(url)) { ... }
+
+// ✅ 正确: 字面量正则
+if (/^\/products\/coffee\/$/.test(path)) { ... }
+
+// ❌ 错误: 固定模式用 new RegExp
+if (new RegExp("^/products/coffee/$").test(path)) { ... }
+```
+
+### 12.2 字面量正则编写规范 🔴
+
+#### 12.2.1 优先用 test() 而不是 match()
+
+```javascript
+// ✅ 正确: 只检查存在性用 test
+if (/^\/products\//.test(path)) { ... }
+
+// ❌ 错误: match 创建了不需要的数组
+if (path.match(/^\/products\//)) { ... }
+```
+
+#### 12.2.2 捕获组只在你确实需要提取内容时使用
+
+```javascript
+// ✅ 正确: 需要提取内容时用捕获组
+var m = path.match(/^\/products\/([^/]+)\/$/);
+if (m) { var slug = m[1]; }
+
+// ❌ 错误: 不需要捕获时用 ()，产生无意义的分组
+if (/^\/products\/([^/]+)\/$/.test(path)) { ... }
+// ✅ 正确: 非捕获组 (?:...) 或不分组
+if (/^\/products\/[^/]+\/$/.test(path)) { ... }
+```
+
+#### 12.2.3 转义规则
+
+| 字符 | 字面量中 | 字符串中（new RegExp） | 说明 |
+|------|---------|----------------------|------|
+| `/` | `\/` | 不需要转义 | 字面量的分隔符需要转义 |
+| `.` | `\.` | `\\.` | 匹配字面量点号 |
+| 空格 | 直接写 | 直接写 | 多余空格会变成模式的一部分 |
+| `\\` | `\\\\` | `\\\\` | 匹配反斜杠本身 |
+
+#### 12.2.4 必须使用 ^ 和 $ 锚定
+
+```javascript
+// ✅ 正确: 明确起始和结束
+if (/^\/products\/coffee\/$/.test(path)) { ... }
+
+// ❌ 错误: 无锚定，/abc/ 在 "/xxx/abc/xxx" 中也会匹配
+if (/\/products\/coffee\//.test(path)) { ... }
+// 这条会匹配 /products/coffee/ 但也可能匹配 /something/products/coffee/extra
+```
+
+### 12.3 new RegExp() 动态构造规则 🔴
+
+`new RegExp()` 是项目中 Bug 最多的正则写法。当前项目的 7 处使用中至少 3 处有潜在风险。
+
+#### 12.3.1 必须对变量中的特殊字符做转义
+
+**问题**: 当 `new RegExp()` 的字符串中有用户输入或配置数据时，特殊字符会被当作正则语法解析。
+
+```javascript
+// ❌ 危险: categorySlug 可能包含 "(" 或 "+" 等正则字符
+var slug = "coffee(2026)";  // 用户输入或配置数据
+var re = new RegExp("^/products/" + slug + "/$");
+// 实际正则: /^/products/coffee(2026)/$/  → (2026) 被当作捕获组！
+
+// ✅ 安全: 先对变量的正则特殊字符做转义
+function escapeRegex(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+var slug = escapeRegex("coffee(2026)");
+var re = new RegExp("^/products/" + slug + "/$");
+```
+
+**项目中需转义的正则特殊字符**:
+
+```
+. * + ? ^ $ { } ( ) | [ ] \
+```
+
+这 14 个字符在任何 `new RegExp()` 中如果来自变量源，必须先调用 `escapeRegex()`。
+
+#### 12.3.2 禁止直接拼接用户输入
+
+```javascript
+// ❌ 绝对禁止: 直接拼接用户输入
+var re = new RegExp("^" + userInput + "$");
+
+// ✅ 安全: 转义后再拼
+var re = new RegExp("^" + escapeRegex(userInput) + "$");
+
+// ✅ 更推荐: 用 includes() 替代
+if (str.includes(userInput)) { ... }
+```
+
+#### 12.3.3 当前项目中的问题代码
+
+以下 `new RegExp()` 调用包含动态变量，需立即修复：
+
+```javascript
+// src/assets/js/breadcrumb.js:98
+new RegExp("^/products/(" + PRODUCT_SLUG_PATTERN + ")$")
+// 问题: PRODUCT_SLUG_PATTERN 是用 '|' 拼接的 slug 列表
+//      'coffee|tea|meal' 等，slug 来自配置，应确保不含正则字符
+// 缓解: slug 来自 SITE_CONFIG，可控，风险低但仍是隐患
+
+// src/assets/js/breadcrumb.js:142
+new RegExp("^/applications/(" + APP_SLUG_PATTERN + ")$")
+// 同上
+
+// src/assets/js/breadcrumb.js:155
+new RegExp("^/support/(" + SUPPORT_SLUG_PATTERN + ")$")
+// 同上
+
+// src/assets/js/ui/custom-select.js:373
+cls.replace(/^(sm:|md:|lg:|xl:|dark:|focus:|hover:|active:)+/, "")
+// 问题: 无 ^ 和 $，在字符串中间也可能匹配
+// 风险: 低（匹配特定前缀，误匹配概率低）
+```
+
+#### 12.3.4 动态正则的替代方案
+
+| 场景 | 正则方案 | 更安全的替代 |
+|------|---------|-------------|
+| 检查路径前缀 | `new RegExp("^" + prefix)` | `path.startsWith(prefix)` |
+| 检查路径后缀 | `new RegExp(suffix + "$")` | `path.endsWith(suffix)` |
+| 按分隔符分割 | `str.split(/[,，]/)` | 如果固定分隔符，直接用字符串 |
+| 替换固定字符串 | `str.replace(/old/g, "new")` | 如果 old 不含正则字符，用 `str.replaceAll("old", "new")`（ES2021，本项目需要 ES5 兼容时用 `split().join()`） |
+
+### 12.4 常见正则 Bug 场景
+
+#### 场景 1：`.` 号未转义（最常见的 Bug）
+
+```javascript
+var version = "1.0.5";
+// ❌ 错误: . 匹配任意字符
+if (/1.0.5/.test(version)) { ... }  // 永远 true（1+任意字符+0+任意字符+5）
+// ✅ 正确: 转义 .
+if (/1\.0\.5/.test(version)) { ... }
+```
+
+#### 场景 2：`/` 未转义
+
+```javascript
+// ✅ 字面量中 / 需要转义
+if (/\/products\//.test(path)) { ... }
+
+// ✅ 但可以用 indexOf 更简单
+if (path.indexOf("/products/") !== -1) { ... }
+```
+
+#### 场景 3：缺少锚点导致意外匹配
+
+```javascript
+// ❌ 错误: 想匹配 "/products/" 开头的路径
+if (/\/products\/coffee/.test("/blog/products/coffee")) { ... }  // true!
+
+// ✅ 正确: 加锚点
+if (/^\/products\/coffee/.test("/blog/products/coffee")) { ... }  // false
+```
+
+#### 场景 4：全局匹配 g 标志的陷阱
+
+```javascript
+// ❌ 错误: 同一 regex 对象多次调用 test()
+var re = /foo/g;
+console.log(re.test("foo"));  // true
+console.log(re.test("foo"));  // false ← lastIndex 没重置
+
+// ✅ 正确: 不用 g 标志，或每次新建 RegExp 对象
+var re = /foo/;
+console.log(re.test("foo"));  // true
+console.log(re.test("foo"));  // true
+```
+
+### 12.5 正则审查清单（代码评审时必须检查）
+
+| 检查项 | 说明 |
+|--------|------|
+| 🟢 能用 `includes`/`startsWith`/`endsWith` 吗？ | 固定字符串匹配优先用字符串方法 |
+| 🟢 字面量 `/pattern/` 是否带 `^` 和 `$` 锚点？ | 没有锚点的正则很可能匹配到意外的内容 |
+| 🟢 捕获组 `()` 是否确实需要提取内容？ | 不需要则用非捕获组 `(?:...)` 或去掉括号 |
+| 🟢 `new RegExp()` 中的变量是否调用了 `escapeRegex()`？ | 动态构造必须转义 14 个特殊字符 |
+| 🟢 是否有 `g` 标志且重复使用了同一个 RegExp 对象？ | `g` 标志的 `test()` 有 lastIndex 状态 |
+| 🟢 `.` 号有没有被错误地当作字面量点号？ | `.` 未转义时匹配任意字符 |
+| 🟢 `split()` 中的参数是否真的是正则而非固定字符串？ | `split(/[,，]/)` 和 `split(",")` 语义不同 |
+
+---
+
+## 13. 修改历史/他人代码的前置分析规范 🔴
+
+> **原则：不了解就修改，是引入 Bug 的第一来源。所有对他人代码或历史代码的修改，必须先完成前置分析。**
+
+### 13.1 必须回答的 5 个问题
+
+在修改任何不是你亲手写的、或超过 30 天前写的代码之前，**必须先回答以下 5 个问题**。任一问题答不上来 → 先分析，不改。
+
+```text
+① 这段代码在干什么？
+   └─ 必须能用自己的话说清楚，而不是复制代码注释
+
+② 谁依赖这段代码？
+   └─ 哪些其他函数/模块调用了它？改了会影响到什么地方？
+
+③ 当前有没有 Bug？
+   └─ 如果没有 Bug，为什么要改？如果有 Bug，根因是这段代码本身
+      还是调用方的问题？
+
+④ 改动的最小范围是什么？
+   └─ 只改 1 行就能解决问题吗？还是需要重构整个函数？
+
+⑤ 怎么验证改动不影响现有功能？
+   └─ 测试方法是什么？有没有 E2E/lint/build 可以跑？
+```
+
+### 13.2 前置分析步骤 🔴
+
+```bash
+# [STEP 1] 找到调用链: 这个函数/模块被谁调用了？
+grep -rn "函数名\|模块导出名" src/ --include="*.js" --include="*.html" | grep -v vendor | grep -v node_modules
+
+# [STEP 2] 找到数据流: 数据从哪里来、到哪里去？
+#   例如: 修改 product-grid.js 的 renderProducts() →
+#   谁调用了 renderProducts？→ 它的入参怎么生成的？→ 渲染结果谁消费？
+
+# [STEP 3] 找到历史变更: 这段代码上一次被改是什么时候？为什么改？
+git log -5 --oneline -- <文件路径>
+git log -p --follow -S "要改的具体内容" -- <文件路径> | head -100
+#   -S 可以搜索某段代码的变更历史
+
+# [STEP 4] 确认边界条件:
+#   - 有没有空值/未定义的可能性？
+#   - 有没有数组越界？
+#   - 有没有类型假设（假设参数是 string 但实际可能是 null）？
+
+# [STEP 5] 写测试或验证方案:
+#   描述改完后你准备怎么验证
+```
+
+### 13.3 禁止做的事
+
+| 禁止 | 原因 |
+|------|------|
+| **看到看不懂的代码直接加 try/catch 包住** | 掩盖了根因，下次出 Bug 时更难排查 |
+| **看到看不懂的代码直接加 if (!x) return** | 跳过执行路径但不理解为什么，可能漏掉关键逻辑 |
+| **把长函数拆成小函数但不理解原逻辑** | 重构出的新函数可能有同样的 Bug 只是被分散了 |
+| **复制粘贴相似代码
+ | **复制粘贴相似代码而不理解差异** | 粘贴的代码和原代码之间的细微差异可能就是 Bug |
+| **假设别人写的代码一定有 Bug** | 先假设别人的代码是正确的，你的理解可能是错的 |
+| **不运行测试就提交** | 减少一次测试可能节省 2 分钟，但引入的 Bug 可能要花 2 小时排查 |
+
+### 13.4 修改历史代码的决策树
+
+```text
+遇到一段需要修改的历史代码
+    │
+    ├── ① 这段代码你写过吗？
+    │     ├─ 是 → 你了解它，可以改
+    │     └─ 否 → 必须先执行 §13.2 的前置分析
+    │
+    ├── ② 代码有测试覆盖吗？
+    │     ├─ 有 → 改完跑测试，看有没有 break
+    │     └─ 无 → 先加测试再改（否则你不知道改坏了什么）
+    │
+    ├── ③ 你能用 1 句话说明它做了什么吗？
+    │     ├─ 能 → 进去看具体实现
+    │     └─ 不能 → 先读代码，弄懂为止
+    │
+    ├── ④ 改完后怎么验证？
+    │     ├─ 有 E2E → 跑 E2E
+    │     ├─ 可手动测 → 描述手动测试步骤
+    │     └─ 无法验证 → 先写测试再改
+    │
+    └── ⑤ 改动影响了多少个文件？
+          ├─ 1-2 个 → 直接改
+          └─ 3+ 个 → 拆分为多个 commit，逐层推进
+```
+
+### 13.5 子 Agent 修改他人代码的额外约束
+
+子 Agent 修改他人/历史代码时，在任务描述中**必须额外包含以下字段**：
+
+```text
+### 前置分析要求（本节为修改他人/历史代码时必填）
+
+- 🎯 调用链确认: 执行 `grep -rn "函数名" src/ --include="*.js"` 列出所有调用方
+- 🎯 数据流确认: 数据从哪里来、经过什么处理、最终到哪里去
+- 🎯 历史变更: `git log -5 -- <文件路径>` 了解最近修改
+- 🎯 不可触碰的代码: 修改范围边界，禁止越界
+- 🎯 验证方法: 改完后如何确认原有功能不受影响
+
+🔴 如果无法完成以上分析 → 不修改，报告给主 agent
+🔴 禁止在分析完成前直接改代码
+```
+
+### 13.6 被修改代码的原作者不在时的处理原则
+
+| 场景 | 处理方式 |
+|------|---------|
+| 原作者在团队中 | 改之前先和原作者确认改动意图 |
+| 原作者不在（离职/开源代码） | 先用 `git blame` 找到最后修改者，看 commit message 有没有说明 |
+| git blame 也没有说明 | 用 `git log -p --follow` 看完整变更历史 |
+| 历史已经不可追溯 | 按最小改动原则：只改目标行，不加新逻辑，不改结构 |
+
+**最小改动原则**：
+```text
+修改历史代码时，你的改动行数应该等于或少于你理解了的行数。
+不理解的行 = 保持不动 = 不引入新风险。
+```

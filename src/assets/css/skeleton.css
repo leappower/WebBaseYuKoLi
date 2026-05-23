@@ -28,8 +28,14 @@
     padding-top: var(--nav-height, 109px);
   }
 }
+#skeleton-overlay {
+  opacity: 1;
+  transition: opacity 350ms ease-out;
+  pointer-events: auto;
+}
 #skeleton-overlay[hidden] {
-  display: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ───────── 容器 ───────── */
