@@ -93,6 +93,15 @@
 <!-- All scripts deferred: browser parses HTML + renders skeleton immediately,
      scripts download in parallel and execute in order after DOM is ready -->
 <script defer src="/assets/js/utils/device-utils.js"></script>
+
+<!-- SWUP SPA Router v4.9.0 + plugins (replaces spa-router.js) -->
+<script defer src="/assets/js/vendor/swup.umd.js"></script>
+<script defer src="/assets/js/vendor/swup-head-plugin.umd.js"></script>
+<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js"></script>
+<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js"></script>
+<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js"></script>
+<script defer src="/assets/js/swup-init.js"></script>
+
 <script defer src="/assets/js/lang-registry.js?v=202605181538"></script>
 <script defer src="/assets/js/translations.js?v=202605181538"></script>
 <script defer src="/assets/js/translations-dropdown-template.js?v=202605181538"></script>
@@ -113,7 +122,7 @@
 <script defer src="/assets/js/product-detail.js?v=202605181538"></script>
 <script defer src="/assets/js/home-core-products.js?v=202605181538"></script>
 <script defer src="/assets/js/ui/currency.js?v=202605181538"></script>
-<script defer src="/assets/js/spa-router.js?v=202605181538"></script>
+<!-- spa-router.js replaced by swup-init.js + SWUP vendor -->
 
 <!-- Product data: static initial data → API refresh with ETag → localStorage cache -->
 <script src="/assets/js/product-data-table.js"></script>
