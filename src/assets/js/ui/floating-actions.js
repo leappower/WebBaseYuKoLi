@@ -245,10 +245,25 @@
     if (this._btnWa) {
       this._btnWa.addEventListener("click", function (e) {
         e.preventDefault();
-        var url = buildWhatsAppUrl();
-        window.open(url, "_blank", "noopener,noreferrer");
+        FloatingActionsController.openWhatsApp();
       });
     }
+  };
+
+  /**
+   * Public API: open WhatsApp from any page CTA button.
+   * Usage: <button onclick="YuKoLiFAB.openWhatsApp('source','msg_key')">
+   * Falls back to opening WhatsApp directly if FAB not initialized.
+   */
+  FloatingActionsController.openWhatsApp = function (source, msgKey) {
+    var url;
+    // Use Contacts module if available (adds tracking)
+    if (window.Contacts && typeof window.Contacts.contactsWhatsApp === "function") {
+      url = window.Contacts.contactsWhatsApp({ source: source || "page-cta", messageKey: msgKey });
+    } else {
+      url = buildWhatsAppUrl();
+    }
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   FloatingActionsController.prototype._bindScroll = function () {
@@ -392,5 +407,6 @@
     }
   });
 
-  window.FloatingActions = { mount: mount };
+  window.FloatingActions = { mount: mount, openWhatsApp: FloatingActionsController.openWhatsApp };
+  window.YuKoLiFAB = { openWhatsApp: FloatingActionsController.openWhatsApp };
 })(window);
