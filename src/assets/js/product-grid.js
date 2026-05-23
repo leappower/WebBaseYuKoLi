@@ -710,6 +710,115 @@
   var _activeCategory = "all";
   var _activeTier = "all";
 
+  // ─── Gallery pagination state (data-gallery="true") ───────────
+  var _galleryPage = {};
+
+  function isGalleryMode(containerId) {
+    var el = document.getElementById(containerId);
+    return el && el.getAttribute("data-gallery") === "true";
+  }
+
+  function getGalleryPageSize(containerId) {
+    var el = document.getElementById(containerId);
+    if (!el) return 12;
+    var size = parseInt(el.getAttribute("data-gallery-size"), 10);
+    if (!isNaN(size) && size > 0) return size;
+    // Default per device
+    var w = window.innerWidth || 1024;
+    if (w >= 1280) return 12;
+    if (w >= 768) return 9;
+    return 6;
+  }
+
+  function getGalleryTotalPages(containerId, totalItems) {
+    var pageSize = getGalleryPageSize(containerId);
+    return Math.max(1, Math.ceil(totalItems / pageSize));
+  }
+
+  function renderGalleryPagination(containerId, totalItems) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    var totalPages = getGalleryTotalPages(containerId, totalItems);
+    var currentPage = _galleryPage[containerId] || 0;
+
+    var oldNav = container.parentNode ? container.parentNode.querySelector(".gallery-pagination") : null;
+    if (oldNav && oldNav.parentNode) oldNav.parentNode.removeChild(oldNav);
+
+    if (totalPages <= 1) return;
+
+    var nav = document.createElement("div");
+    nav.className = "gallery-pagination flex items-center justify-center gap-4 mt-8 mb-4";
+
+    var prevBtn = document.createElement("button");
+    prevBtn.className = "gallery-prev px-4 py-2 rounded-xl font-bold text-sm transition-all " +
+      (currentPage === 0
+        ? "text-slate-300 dark:text-slate-600 cursor-not-allowed"
+        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800");
+    prevBtn.disabled = currentPage === 0;
+    prevBtn.innerHTML = '<span class="material-symbols-outlined text-base">chevron_left</span>';
+
+    var indicator = document.createElement("span");
+    indicator.className = "text-sm font-semibold text-slate-600 dark:text-slate-400";
+    indicator.textContent = (currentPage + 1) + " / " + totalPages;
+
+    var nextBtn = document.createElement("button");
+    nextBtn.className = "gallery-next px-4 py-2 rounded-xl font-bold text-sm transition-all " +
+      (currentPage >= totalPages - 1
+        ? "text-slate-300 dark:text-slate-600 cursor-not-allowed"
+        : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800");
+    nextBtn.disabled = currentPage >= totalPages - 1;
+    nextBtn.innerHTML = '<span class="material-symbols-outlined text-base">chevron_right</span>';
+
+    nav.appendChild(prevBtn);
+    nav.appendChild(indicator);
+    nav.appendChild(nextBtn);
+
+    container.parentNode.insertBefore(nav, container.nextSibling);
+
+    if (!nav._galleryBound) {
+      nav._galleryBound = true;
+      nav.addEventListener("click", function (e) {
+        var bp = e.target.closest(".gallery-prev");
+        var bn = e.target.closest(".gallery-next");
+        if (!bp && !bn) return;
+        var cur = _galleryPage[containerId] || 0;
+        if (bp && cur > 0) {
+          _galleryPage[containerId] = cur - 1;
+        } else if (bn && cur < totalPages - 1) {
+          _galleryPage[containerId] = cur + 1;
+        } else {
+          return;
+        }
+        renderGalleryPage(containerId);
+      });
+    }
+  }
+
+  function renderGalleryPage(containerId) {
+    var container = document.getElementById(containerId);
+    if (!container) return;
+    var products = getFilteredProducts();
+    var pageSize = getGalleryPageSize(containerId);
+    var currentPage = _galleryPage[containerId] || 0;
+    var start = currentPage * pageSize;
+    var end = start + pageSize;
+    var pageItems = products.slice(start, end);
+
+    var renderer;
+    if (container.classList.contains("md:grid-cols-2")) {
+      renderer = renderMobile;
+    } else if (window.innerWidth >= 768) {
+      renderer = renderTablet;
+    } else {
+      renderer = renderPC;
+    }
+
+    /* @audit-safe: config-driven-render */
+    container.innerHTML = pageItems.map(renderer).join("");
+    renderGalleryPagination(containerId, products.length);
+    updateCompareButtons();
+  }
+
   function getFilteredProducts() {
     var products = getAllProducts();
     if (_activeCategory !== "all") {
@@ -738,6 +847,15 @@
   function renderGrid(containerId, renderer, maxCount) {
     var container = document.getElementById(containerId);
     if (!container) return;
+
+    // Gallery mode: use pagination instead of load-more
+    if (isGalleryMode(containerId)) {
+      _galleryPage[containerId] = 0;
+      renderGalleryPage(containerId);
+      createFloatingBar();
+      return;
+    }
+
     var products = getFilteredProducts();
     var total = products.length;
     var initial = Math.min(total, getPageSize());
@@ -815,7 +933,10 @@
       renderGrid("product-list", renderMobile, 100);
     } else if (document.getElementById("product-grid")) {
       var grid = document.getElementById("product-grid");
-      if (grid && grid.classList.contains("md:grid-cols-2")) {
+      // Gallery mode: container already initializes pagination in renderGrid
+      if (grid.getAttribute && grid.getAttribute("data-gallery") === "true") {
+        renderGrid("product-grid", null, 0);
+      } else if (grid && grid.classList.contains("md:grid-cols-2")) {
         renderGrid("product-grid", renderPC, 100);
       } else {
         renderGrid("product-grid", renderTablet, 100);
@@ -1144,6 +1265,7 @@
       el._categoryTabsInit = false;
     });
     _shownCount = {};
+    _galleryPage = {};
     _activeTier = "all";
     var loadMore = document.querySelector('[data-i18n="products_load_more"]');
     if (loadMore) loadMore._bound = false;

@@ -99,9 +99,35 @@
       });
   }
 
+  /**
+   * Resolve a product image path by category and sequence.
+   * e.g. ImageAssets.resolveProductImage("coffee", "001") → "/assets/images/products/coffee/001.webp"
+   */
+  function resolveProductImage(category, seq) {
+    return "/assets/images/products/" + category + "/" + seq + ".webp";
+  }
+
+  /**
+   * Resolve a product image using product ID from product-data-table.
+   * e.g. ImageAssets.resolveByProductId("coffee-001") → "/assets/images/products/coffee/001.webp"
+   */
+  function resolveByProductId(productId) {
+    if (!productId) return "";
+    var parts = productId.split("-");
+    if (parts.length < 2) return "";
+    var category = parts[0];
+    // Only known product categories
+    var VALID_CATEGORIES = {"coffee":1,"tea":1,"beauty":1,"weight":1,"gut":1};
+    if (!VALID_CATEGORIES[category]) return "";
+    var seq = parts[parts.length - 1];
+    return "/assets/images/products/" + category + "/" + seq + ".webp";
+  }
+
   window.ImageAssets = {
     IMAGE_ASSETS: IMAGE_ASSETS,
     resolveImage: resolveImage,
     loadFromManifest: loadFromManifest,
+    resolveProductImage: resolveProductImage,
+    resolveByProductId: resolveByProductId,
   };
 })(window);
