@@ -987,3 +987,98 @@ button.bg-primary[class*="hover:"]:hover {
 [id] {
   scroll-margin-top: 80px;
 }
+
+/* ════════════════════════════════════════════════════════════
+   Trust Bar — 固定在页面顶部的认证栏
+   ════════════════════════════════════════════════════════════ */
+
+.trust-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 45;
+  height: 36px;
+  background: #2E7D32;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 11px;
+  line-height: 36px;
+}
+
+.trust-bar__inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.trust-bar__track {
+  display: inline-block;
+  animation: trustBarScroll 18s linear infinite;
+}
+
+.trust-bar__item {
+  display: inline-block;
+  padding: 0 16px;
+}
+
+.trust-bar__dot {
+  color: rgba(255,255,255,0.45);
+  margin-right: 4px;
+}
+
+.trust-bar:hover .trust-bar__track {
+  animation-play-state: paused;
+}
+
+@keyframes trustBarScroll {
+  0% { transform: translateX(100vw); }
+  100% { transform: translateX(-100%); }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .trust-bar {
+    height: 40px;
+    font-size: 12px;
+    line-height: 40px;
+  }
+  .trust-bar__item {
+    padding: 0 20px;
+  }
+  .trust-bar__dot {
+    color: rgba(255,255,255,0.35);
+  }
+}
+
+@media (min-width: 1024px) {
+  .trust-bar {
+    font-size: 13px;
+  }
+  .trust-bar__inner {
+    text-align: center;
+  }
+  .trust-bar__track {
+    animation: none;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .trust-bar__item {
+    padding: 0 24px;
+  }
+  .trust-bar__dot {
+    color: rgba(255,255,255,0.35);
+  }
+}
+
+/* padding-top 补偿 — 避免 trust-bar 固定定位导致的内容覆盖 */
+main#spa-content, #skeleton-overlay {
+  padding-top: calc(var(--nav-height, 109px) + 36px) !important;
+}
+
+@media (min-width: 768px) {
+  main#spa-content, #skeleton-overlay {
+    padding-top: calc(var(--nav-height, 109px) + 40px) !important;
+  }
+}

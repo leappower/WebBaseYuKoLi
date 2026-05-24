@@ -7,6 +7,7 @@
  *   Tablet (768px—1023px): scrolling ticker (same as mobile)
  *   Mobile (<768px): scrolling ticker, single-pass (no content duplication)
  *
+ * CSS 已迁移至 performance-optimizations.css (SSG 内联，消除 CLS)
  * z-index: 950 (below header/slide-menu, above other content)
  *
  * ES5 compatible. No external dependencies.
@@ -16,7 +17,6 @@
 (function () {
   "use strict";
 
-  // ── Config ────────────────────────────────────────────────────
   var ITEMS = [
     "FDA Registered &amp; HACCP Certified",
     "4 Owned Factories",
@@ -25,10 +25,6 @@
     "Global Shipping to 30+ Countries",
   ];
 
-  var BG_COLOR = "var(--color-primary, #2E7D32)";
-  var Z_TRUST_BAR = 950; // below slide-menu (2010) and header (2000), above content
-
-  // ── Build HTML ────────────────────────────────────────────────
   function buildHTML() {
     var itemsHtml = "";
     for (var i = 0; i < ITEMS.length; i++) {
@@ -50,7 +46,6 @@
     );
   }
 
-  // ── Inject ────────────────────────────────────────────────────
   function inject() {
     if (document.getElementById("trust-bar")) return;
 
@@ -58,7 +53,6 @@
     bar.innerHTML = buildHTML();
     var trustEl = bar.firstElementChild;
 
-    // 等待 navigator header 渲染完成后注入
     function doInject() {
       var header = document.getElementById("main-header") || document.getElementById("mobile-header");
       if (header) {
@@ -70,10 +64,8 @@
 
     var header = document.getElementById("main-header") || document.getElementById("mobile-header");
     if (header && header.children.length > 0) {
-      // header 已有内容（navigator 已渲染完成）
       doInject();
     } else {
-      // 等待 navigator 渲染完成
       var checkTimer = setInterval(function () {
         var h = document.getElementById("main-header") || document.getElementById("mobile-header");
         if (h && h.children.length > 0) {
@@ -81,79 +73,10 @@
           doInject();
         }
       }, 50);
-      // 5 秒超时 fallback
       setTimeout(function () { clearInterval(checkTimer); doInject(); }, 5000);
     }
-
-    var width = window.innerWidth;
-    var barHeight = width >= 768 ? 40 : 36;
-
-    // ── CSS (mobile-first: ticker, tablet: same ticker bigger, desktop: static evenly-spread) ──
-    var css =
-      ".trust-bar {" +
-        "  position: fixed; top: 0; left: 0; right: 0; z-index: " + Z_TRUST_BAR + ";" +
-        "  height: 36px;" +
-        "  background: " + BG_COLOR + ";" +
-        "  color: #fff; overflow: hidden; white-space: nowrap;" +
-        "  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" +
-        "  font-size: 11px; line-height: 36px;" +
-      "}" +
-      ".trust-bar__inner { width: 100%; height: 100%; overflow: hidden; }" +
-
-      // Mobile + Tablet: ticker (single-pass, no duplication)
-      ".trust-bar__track {" +
-        "  display: inline-block;" +
-        "  animation: trustBarScroll 18s linear infinite;" +
-      "}" +
-      ".trust-bar__item { display: inline-block; padding: 0 16px; }" +
-      ".trust-bar__dot { color: rgba(255,255,255,0.45); margin-right: 4px; }" +
-      "/* Pause on hover (mobile/tablet) */" +
-      ".trust-bar:hover .trust-bar__track { animation-play-state: paused; }" +
-      "@keyframes trustBarScroll {" +
-        "  0%   { transform: translateX(100vw); }" +
-        "  100% { transform: translateX(-100%); }" +
-      "}" +
-
-      // Tablet: larger text + spacing
-      "@media (min-width: 768px) and (max-width: 1023px) {" +
-        ".trust-bar {" +
-        "  height: 40px; font-size: 12px; line-height: 40px;" +
-        "}" +
-        ".trust-bar__item { padding: 0 20px; }" +
-        ".trust-bar__dot { color: rgba(255,255,255,0.35); }" +
-      "}" +
-
-      // Desktop: static, evenly spread across full width
-      "@media (min-width: 1024px) {" +
-        ".trust-bar {" +
-        "  font-size: 13px;" +
-        "}" +
-        ".trust-bar__inner { text-align: center; }" +
-        ".trust-bar__track {" +
-        "  animation: none;" +
-        "  display: flex; justify-content: space-evenly;" +
-        "}" +
-        ".trust-bar__item { padding: 0 24px; }" +
-        ".trust-bar__dot { color: rgba(255,255,255,0.35); }" +
-      "}";
-
-    var style = document.createElement("style");
-    style.id = "trust-bar-style";
-    style.textContent = css;
-    document.head.appendChild(style);
-
-    // Push navigator down by trust bar height
-    // Also account for trust-bar height in spa-content padding so content
-    // isn't hidden behind the pushed-down header.
-    var navStyle = document.createElement("style");
-    navStyle.id = "trust-bar-nav-fix";
-    navStyle.textContent =
-      ":root { --trust-bar-height: " + barHeight + "px; }" +
-      "main#spa-content, #skeleton-overlay { padding-top: calc(var(--nav-height, 109px) + " + barHeight + "px) !important; }";
-    document.head.appendChild(navStyle);
   }
 
-  // ── Bootstrap ─────────────────────────────────────────────────
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", inject);
   } else {
