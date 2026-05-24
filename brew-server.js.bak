@@ -73,7 +73,7 @@ app.use(function(req, res, next) {
 // ─────────────────────────────────────────────────────────────
 app.get(/^\/([a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]+)*)\/$/, function(req, res) {
   var suffix = getSuffix(req);
-  var fp = path.join(DIST, 'pages', req.params[0], suffix);
+  var fp = path.join(DIST, 'pages', req.params[0], 'index-' + suffix);
   if (!fs.existsSync(fp)) fp = path.join(DIST, 'pages', req.params[0], 'index-pc.html');
   if (!fs.existsSync(fp)) fp = path.join(DIST, 'pages', req.params[0], 'index.html');
   serveFile(fp, res);
@@ -88,7 +88,7 @@ app.get(/^\/([a-z][a-z0-9-]+)\/([a-z][a-z0-9-]+)\/$/, function(req, res) {
   var suffix = getSuffix(req);
   var base = path.join(DIST, 'pages', req.params[0]);
   // Check if this is a directory-based page first
-  var dirPage = path.join(base, req.params[1], suffix);
+  var dirPage = path.join(base, req.params[1], 'index-' + suffix);
   if (fs.existsSync(dirPage)) {
     // Directory-based — Route 1 already handles this, shouldn't reach here
     serveFile(dirPage, res);
