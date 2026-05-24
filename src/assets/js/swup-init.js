@@ -390,6 +390,11 @@
         } else {
           // SSG 模式: 页面上已有内容, 渐隐骨架
           hideSkeleton();
+          // 运行页面级 JS 初始化（如 product-grid, home-core-products 等）
+          // 这确保 SSG 页面首次加载时渲染动态内容
+          setTimeout(function () {
+            runPageInitByRoute();
+          }, 0);
         }
       });
     } catch (e) {

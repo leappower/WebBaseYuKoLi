@@ -1271,6 +1271,7 @@
 
   // Public API
   window.ProductGrid = {
+    init: autoRender,
     renderPC: function (max) {
       renderGrid("product-grid", renderPC, max);
     },
