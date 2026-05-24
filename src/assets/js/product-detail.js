@@ -82,7 +82,7 @@
               return i.isPrimary;
             }) || rp.images[0]
           ).filePath
-        : "/assets/images/products/" + modelToSnake(rp.model) + "_1.webp";
+        : "/assets/images/products/" + (rp.category || "default") + "/" + (rp.id ? rp.id.split("-").pop() : "001") + ".webp";
     var gradients = [
       "from-primary/10 to-blue-100 dark:from-primary/20 dark:to-blue-900/30",
       "from-emerald-100 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/20",
@@ -303,7 +303,10 @@
     })();
 
     // Image: CMS upload > static
-    var imgSrc = "/assets/images/products/" + modelToSnake(product.model) + "_1.webp";
+    var imgSrc = product._categoryUrl || "/assets/images/products/" + (product.category || "default") + "/" + (product.id ? product.id.split("-").pop() : "001") + ".webp";
+    if (!imgSrc || imgSrc.indexOf("undefined") !== -1) {
+      imgSrc = "/assets/images/products/default.webp";
+    }
     if (product.images && product.images.length > 0) {
       var pi =
         product.images.find(function (i) {
