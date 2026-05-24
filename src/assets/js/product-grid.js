@@ -1257,18 +1257,10 @@
     initTierFilter();
 
     // Auto-select category from URL (e.g. /products/stewing/)
-    var categoryFromUrl = "";
+    // Use raw slug (coffee, tea, ...) to match product _category field.
+    // Do NOT map through i18n key (nav_products_coffee) — that breaks filtering.
     var match = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
-    if (match) {
-      var slug = match[1];
-      var cats = (window.SITE_CONFIG || window._cfg || {}).categories || {};
-      var SLUG_MAP = (cats.products || []).reduce(function (m, c) {
-        if (c.slug && c.key) m[c.slug] = c.key;
-        return m;
-      }, {});
-      categoryFromUrl = SLUG_MAP[slug] || slug;
-    }
-    _activeCategory = categoryFromUrl || "all";
+    _activeCategory = (match && match[1]) || "all";
 
     autoRender();
   });
