@@ -539,22 +539,11 @@
       // 显示骨架屏
       this.showSkeleton();
 
-      // SSG 直链访问: spa-content 已有内容（服务器返回的 SSG HTML）
-      // 跳过 fetch，只加载 page-specific scripts
-      var existingContent = document.getElementById("spa-content");
-      if (existingContent && existingContent.innerHTML.trim()) {
-        var scriptsPromise = _self.loadPageScripts(pagePath);
-        _self.hideSkeleton();
-        Promise.resolve(scriptsPromise).then(function () {
-          window.dispatchEvent(new CustomEvent("spa:load", { detail: { path: routePath } }));
-        });
-        // Load page scripts and still handle popstate properly
-        _self._currentPath = routePath;
-        _self._navVersion = navVersion;
-        return;
-      }
-
-      // 加载页面（SPA 导航时从服务器获取动态内容）
+      // 加载页面
+      // 无论是 SSG 直链还是 SPA 导航，统一走 fetch 流程
+      // 不走 SSG 直链优化（跳过 fetch 会导致 page scripts 加载时序问题）
+      // 即使 SSG 内容已存在，fetch 返回的内容和现有内容相同
+      // renderContent 会检测相同内容并跳过 DOM 替换
       fetch(devicePath, { cache: 'no-store' })
         .then(function (response) {
           if (!response.ok) throw new Error("HTTP " + response.status);
