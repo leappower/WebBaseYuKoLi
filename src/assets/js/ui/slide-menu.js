@@ -129,7 +129,7 @@
       "}",
       "html.dark .mobile-menu-l1-icon { background: rgba(46,125,50,.18); }",
       ".mobile-menu-l1-icon .material-symbols-outlined {",
-      "  font-size: 18px; color: ' + _primary + ';",
+      "  font-size: 18px; color: PRIMARY_COLOR;",
       "}",
       ".mobile-menu-l1-label { flex: 1; min-width: 0; }",
       ".mobile-menu-l1-arrow {",
@@ -175,10 +175,10 @@
       ".mobile-menu-l2-item:active { background: rgba(46,125,50,.06); }",
       "html.dark .mobile-menu-l2-item:active { background: rgba(46,125,50,.10); }",
       ".mobile-menu-l2-viewall .mobile-menu-l2-icon {",
-      "  color: var(--color-primary, ' + _primary + ');",
+      "  color: var(--color-primary, PRIMARY_COLOR);",
       "}",
       ".mobile-menu-l2-viewall:active .mobile-menu-l2-label {",
-      "  color: var(--color-primary, ' + _primary + ');",
+      "  color: var(--color-primary, PRIMARY_COLOR);",
       "}",
 
       /* 二级菜单项图标 */
@@ -189,7 +189,7 @@
       "}",
       "html.dark .mobile-menu-l2-icon { background: rgba(46,125,50,.14); }",
       ".mobile-menu-l2-icon .material-symbols-outlined {",
-      "  font-size: 14px; color: ' + _primary + ';",
+      "  font-size: 14px; color: PRIMARY_COLOR;",
       "}",
 
       /* 二级菜单项标签 */
@@ -205,7 +205,7 @@
       "}",
       ".mobile-menu-l2-item.is-active .mobile-menu-l2-label {",
       "  text-decoration: underline; text-decoration-style: solid;",
-      "  text-decoration-color: var(--color-primary, ' + _primary + ');",
+      "  text-decoration-color: var(--color-primary, PRIMARY_COLOR);",
       "  text-decoration-thickness: 2px;",
       "}",
 
@@ -214,7 +214,7 @@
       "  display: inline-flex; align-items: center; padding: 2px 7px;",
       "  font-size: 10px; font-weight: 700; letter-spacing: .04em;",
       "  text-transform: uppercase;",
-      "  background: ' + _primary + '; color: #fff; border-radius: 20px;",
+      "  background: PRIMARY_COLOR; color: #fff; border-radius: 20px;",
       "  flex-shrink: 0; line-height: 1.4;",
       "}",
 
@@ -231,7 +231,7 @@
 
       /* 当前激活项高亮 */
       ".mobile-menu-l2-item.is-active {",
-      "  color: var(--color-primary, ' + _primary + '); font-weight: 600;",
+      "  color: var(--color-primary, PRIMARY_COLOR); font-weight: 600;",
       "}",
       ".mobile-menu-l2-item.is-active .mobile-menu-l2-icon {",
       "  background: rgba(46,125,50,.20);",
@@ -267,21 +267,21 @@
       "  transition: all .15s ease;",
       "}",
       ".mobile-menu-cta-btn.primary {",
-      "  background: ' + _primary + '; color: #fff;",
+      "  background: PRIMARY_COLOR; color: #fff;",
       "}",
       ".mobile-menu-cta-btn.primary:hover,",
       ".mobile-menu-cta-btn.primary:active {",
-      "  background: ' + _primaryHover + ';",
+      "  background: PRIMARY_HOVER_COLOR;",
       "}",
       ".mobile-menu-cta-btn.secondary {",
-      "  background: rgba(46,125,50,.10); color: ' + _primary + ';",
+      "  background: rgba(46,125,50,.10); color: PRIMARY_COLOR;",
       "}",
       "html.dark .mobile-menu-cta-btn.secondary {",
       "  background: rgba(46,125,50,.18); color: #4CAF50;",
       "}",
       ".mobile-menu-cta-btn.secondary:hover,",
       ".mobile-menu-cta-btn.secondary:active {",
-      "  background: rgba(46,125,50,.20); color: ' + _primaryHover + ';",
+      "  background: rgba(46,125,50,.20); color: PRIMARY_HOVER_COLOR;",
       "}",
       "html.dark .mobile-menu-cta-btn.secondary:hover,",
       "html.dark .mobile-menu-cta-btn.secondary:active {",
@@ -419,7 +419,9 @@
       "  color: rgba(235,235,245,.1);",
       "}",
       "html.dark .mobile-search-empty p { color: rgba(235,235,245,.4); }",
-    ].join("\n");
+    ].join("\n")
+      .replace(/PRIMARY_COLOR/g, _primary)
+      .replace(/PRIMARY_HOVER_COLOR/g, _primaryHover);
 
     document.head.appendChild(style);
   }
