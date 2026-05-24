@@ -992,20 +992,24 @@ button.bg-primary[class*="hover:"]:hover {
    Trust Bar — 固定在页面顶部的认证栏
    ════════════════════════════════════════════════════════════ */
 
+:root {
+  --trust-bar-height: 36px;
+}
+
 .trust-bar {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
-  z-index: 45;
-  height: 36px;
+  width: 100vw;
+  z-index: 55;
+  height: var(--trust-bar-height);
   background: #2E7D32;
   color: #fff;
   overflow: hidden;
   white-space: nowrap;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 11px;
-  line-height: 36px;
+  line-height: var(--trust-bar-height);
 }
 
 .trust-bar__inner {
@@ -1039,6 +1043,7 @@ button.bg-primary[class*="hover:"]:hover {
 }
 
 @media (min-width: 768px) and (max-width: 1023px) {
+  :root { --trust-bar-height: 40px; }
   .trust-bar {
     height: 40px;
     font-size: 12px;
