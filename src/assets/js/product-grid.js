@@ -482,44 +482,11 @@
   // ─── Compare button HTML builder ───────────────────────────────
 
   function buildCompareBtnHTML(model) {
-    var isSelected = isProductCompared(model);
-    var activeClass = isSelected
-      ? "bg-primary text-white border-primary"
-      : "bg-slate-100 dark:bg-slate-700 text-slate-500 border-slate-200 dark:border-slate-600";
-    return (
-      '<button class="compare-btn ' +
-      activeClass +
-      ' flex items-center justify-center w-9 h-9 rounded-lg border text-sm font-bold flex-shrink-0" data-model="' +
-      model +
-      '" onclick="event.preventDefault();event.stopPropagation();window.ProductGrid.toggleCompare(\'' +
-      model.replace(/'/g, "\\'") +
-      "')\">" +
-      '<span class="compare-icon material-symbols-outlined text-lg">' +
-      (isSelected ? "check" : "compare_arrows") +
-      "</span>" +
-      "</button>"
-    );
+    return "";
   }
 
   function buildMobileCompareBtnHTML(model) {
-    var isSelected = isProductCompared(model);
-    var bgClass = isSelected ? "bg-primary text-white" : "bg-white/90 dark:bg-slate-800/90 text-primary";
-    var borderClass = isSelected ? "border-primary" : "border-slate-300 dark:border-slate-500";
-    return (
-      '<button class="compare-btn compare-btn-mobile ' +
-      bgClass +
-      " w-8 h-8 rounded-lg border-2 " +
-      borderClass +
-      ' flex items-center justify-center shadow-md backdrop-blur-sm" data-model="' +
-      model +
-      '" onclick="event.preventDefault();event.stopPropagation();window.ProductGrid.toggleCompare(\'' +
-      model.replace(/'/g, "\\'") +
-      "')\">" +
-      '<span class="compare-icon material-symbols-outlined text-[18px]">' +
-      (isSelected ? "check" : "compare_arrows") +
-      "</span>" +
-      "</button>"
-    );
+    return "";
   }
 
   // ─── Card renderers ────────────────────────────────────────────
