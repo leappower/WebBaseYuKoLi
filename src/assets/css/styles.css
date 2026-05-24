@@ -1804,3 +1804,200 @@ function endAnimation(element) {
   background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
   background-size: 200% 100%;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   iOS Search Bar (migrated from navigator.js injectSearchStyles)
+   ═══════════════════════════════════════════════════════════════════ */
+.ios-search-wrapper { display: flex; align-items: center; min-width: 0; }
+
+.ios-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 200px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: rgba(120,120,128,0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(120,120,128,0.18);
+  transition: width 320ms cubic-bezier(0.4, 0, 0.2, 1),
+              max-width 320ms cubic-bezier(0.4, 0, 0.2, 1),
+              flex-basis 320ms cubic-bezier(0.4, 0, 0.2, 1),
+              background 200ms ease,
+              border-color 200ms ease,
+              box-shadow 200ms ease;
+  overflow: hidden;
+}
+
+@media (max-width: 767px) {
+  .ios-search-bar {
+    flex: 1 1 0;
+    max-width: 100%;
+    width: auto;
+    padding: 5px 12px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
+  .ios-search-bar {
+    flex: 0 1 55%;
+    max-width: 380px;
+  }
+}
+
+.ios-search-bar.is-focused {
+  width: 280px;
+  background: rgba(120,120,128,0.08);
+  border-color: rgba(236,91,19,0.4);
+  box-shadow: 0 0 0 3px rgba(236,91,19,0.12);
+}
+
+@media (max-width: 767px) {
+  .ios-search-bar.is-focused {
+    flex: 0 0 100%;
+    max-width: 100%;
+    width: auto;
+  }
+}
+
+html.dark .ios-search-bar {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.12);
+}
+
+html.dark .ios-search-bar.is-focused {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(236,91,19,0.5);
+  box-shadow: 0 0 0 3px rgba(236,91,19,0.15);
+}
+
+.ios-search-icon {
+  font-size: 17px !important;
+  line-height: 1;
+  flex-shrink: 0;
+  color: rgba(60,60,67,0.6);
+  transition: color 200ms ease;
+}
+
+html.dark .ios-search-icon { color: rgba(235,235,245,0.6); }
+
+.ios-search-bar.is-focused .ios-search-icon { color: var(--color-primary, #2E7D32); }
+
+.ios-search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: inherit;
+  line-height: 1.4;
+  -webkit-appearance: none;
+}
+
+.ios-search-input::-webkit-search-cancel-button { display: none; }
+.ios-search-input::placeholder { color: rgba(60,60,67,0.45); }
+html.dark .ios-search-input::placeholder { color: rgba(235,235,245,0.4); }
+
+.ios-search-clear {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(120,120,128,0.28);
+  border: none;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 150ms ease, background 150ms ease;
+}
+
+.ios-search-clear .material-symbols-outlined {
+  font-size: 14px !important;
+  color: rgba(60,60,67,0.55);
+  line-height: 1;
+}
+
+html.dark .ios-search-clear { background: rgba(255,255,255,0.20); }
+html.dark .ios-search-clear .material-symbols-outlined {
+  color: rgba(235,235,245,0.55);
+}
+
+.ios-search-clear:hover { opacity: 0.75; }
+.ios-search-clear.is-visible { display: flex; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Floating Actions (migrated from floating-actions.js injectStyles)
+   ═══════════════════════════════════════════════════════════════════ */
+#floating-actions-container {
+  position: fixed;
+  right: 1rem;
+  bottom: 5rem;
+  z-index: var(--z-fab, 1100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+@media (max-width: 767px) {
+  #floating-actions-container { right: 1.25rem; bottom: 7.5rem; }
+}
+
+#floating-actions-container .fab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.25);
+  transition: transform .2s ease, box-shadow .2s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+#floating-actions-container .fab-btn:hover { transform: scale(1.15); }
+#floating-actions-container .fab-btn:active { transform: scale(0.93); }
+
+#fab-whatsapp {
+  background: #25D366;
+  color: #fff;
+}
+
+#fab-backtotop {
+  background: #fff;
+  color: #1e293b;
+  box-shadow: 0 4px 20px rgba(0,0,0,.18);
+  border: none;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0) translateY(8px);
+  transition: opacity .3s ease, transform .3s ease, box-shadow .2s ease;
+}
+
+#fab-backtotop.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1) translateY(0);
+}
+
+#fab-backtotop:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,.22);
+}
+
+/* Pulse animation — gentle, single pulse */
+@keyframes fab-pulse {
+  0%   { transform: scale(1);    box-shadow: 0 4px 20px rgba(0,0,0,.25), 0 0 0 0 rgba(37,211,102,.6); }
+  40%  { transform: scale(1.12); box-shadow: 0 6px 24px rgba(0,0,0,.28), 0 0 0 10px rgba(37,211,102,.2); }
+  100% { transform: scale(1);    box-shadow: 0 4px 20px rgba(0,0,0,.25), 0 0 0 16px rgba(37,211,102,0); }
+}
+
+.fab-pulsing {
+  animation: fab-pulse 1.2s cubic-bezier(.36,.07,.19,.97) 1 !important;
+}
