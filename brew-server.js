@@ -43,12 +43,10 @@ app.get(/^\/([a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]+)*)\/$/, function(req, res) {
   serveFile(fp, res, req);
 });
 
-// Route 2: index-{device}.html 设备特定文件路由
-// /manufacturing/index-pc.html → dist/pages/manufacturing/index-pc.html
-// 解决 SPA/SWUP 生成的 index-{device}.html 直接访问问题
+// Route 2: index-{device}.html → 301 重定向到干净目录 URL
+// /products/tea/index-pc.html → 301 /products/tea/
 app.get(/^\/([a-z][a-z0-9-]*(?:\/[a-z][a-z0-9-]+)*)\/index-(pc|tablet|mobile)\.html$/, function(req, res) {
-  var fp = path.join(DIST, 'pages', req.params[0], 'index-' + req.params[1] + '.html');
-  serveFile(fp, res, req);
+  res.redirect(301, '/' + req.params[0] + '/');
 });
 
 // Route 3: flat-file 模式 — /news/detail/ → dist/pages/news/detail-pc.html
