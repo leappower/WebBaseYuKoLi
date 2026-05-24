@@ -183,23 +183,15 @@
   function fetchProductData() {
     if (_dataFetched) return Promise.resolve(window[STORE_KEY] || []);
     _dataFetched = true;
-    return fetch("/api/public/products-data", { cache: "no-store" })
-      .then(function (r) {
-        if (!r.ok) throw new Error("API " + r.status);
-        return r.json();
-      })
-      .then(function (data) {
-        if (Array.isArray(data) && data.length > 0) {
-          window[STORE_KEY] = data;
-          try {
-            localStorage.setItem(DATA_KEY, JSON.stringify(data));
-          } catch (e) {}
-        }
-        return data || [];
-      })
-      .catch(function () {
-        return window[STORE_KEY] || [];
-      });
+    // 纯本地加载 — PRODUCT_DATA_TABLE 已内联
+    return new Promise(function (resolve) {
+      if (Array.isArray(window.PRODUCT_DATA_TABLE) && window.PRODUCT_DATA_TABLE.length > 0) {
+        window[STORE_KEY] = window.PRODUCT_DATA_TABLE;
+        resolve(window.PRODUCT_DATA_TABLE);
+      } else {
+        resolve([]);
+      }
+    });
   }
 
   // ─── Selected items management ───────────────────────────────
