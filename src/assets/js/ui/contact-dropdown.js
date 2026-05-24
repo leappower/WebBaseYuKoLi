@@ -42,20 +42,7 @@
   /* ───────────────────────── CSS ───────────────────────── */
 
   function injectStyles() {
-    // Shared base styles
-    if (window.DropdownBaseStyles) window.DropdownBaseStyles.inject();
-    // WhatsApp green accent (unique to contact dropdown)
-    var style = document.createElement("style");
-    style.id = "cnt-dropdown-styles";
-    style.textContent = [
-      ".cnt-dropdown-item.is-whatsapp .cnt-dropdown-icon { background:rgba(37,211,102,.12); }",
-      "html.dark .cnt-dropdown-item.is-whatsapp .cnt-dropdown-icon { background:rgba(37,211,102,.20); }",
-      ".cnt-dropdown-item.is-whatsapp .cnt-dropdown-icon .material-symbols-outlined { color:#25d366; }",
-      ".cnt-popup-item.is-whatsapp .cnt-dropdown-icon { background:rgba(37,211,102,.12); }",
-      "html.dark .cnt-popup-item.is-whatsapp .cnt-dropdown-icon { background:rgba(37,211,102,.20); }",
-      ".cnt-popup-item.is-whatsapp .cnt-dropdown-icon .material-symbols-outlined { color:#25d366; }",
-    ].join("\n");
-    document.head.appendChild(style);
+    // CSS moved to styles.css
   }
 
   /* ───────────────────────── BUILDERS ───────────────────────── */

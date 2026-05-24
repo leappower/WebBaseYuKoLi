@@ -35,21 +35,7 @@
   /* ───────────────────────── CSS ───────────────────────── */
 
   function injectStyles() {
-    if (window.DropdownBaseStyles) window.DropdownBaseStyles.inject();
-
-    var style = document.createElement("style");
-    style.id = "sup-dropdown-styles-v1";
-    style.setAttribute("data-ver", "2026-03-22-v1");
-    style.textContent = [
-      ".sup-dropdown-card { min-width: 320px; max-width: 420px; }",
-      ".sup-dropdown-emoji {",
-      "  margin-left: auto; font-size: 13px; line-height: 1; opacity: .85; flex-shrink: 0;",
-      "}",
-      ".sup-popup-emoji {",
-      "  margin-left: auto; font-size: 15px; opacity: .85; flex-shrink: 0;",
-      "}",
-    ].join("\n");
-    document.head.appendChild(style);
+    // CSS moved to styles.css
   }
 
   /* ───────────────────────── RENDER ───────────────────────── */

@@ -662,28 +662,7 @@
    * 注入 Logo 链接的基础样式（仅注入一次）
    */
   function injectLogoStyles() {
-    var style = document.createElement("style");
-    style.id = "nav-logo-styles";
-    style.textContent = [
-      "@media (min-width: 1024px) {",
-      "  .nav-logo-link {",
-      "    display: flex;",
-      "    align-items: center;",
-      "    border-radius: 8px;",
-      "    padding: 4px;",
-      "    transition: background .15s ease, transform .15s cubic-bezier(.32,.72,0,1), opacity .15s ease;",
-      "    -webkit-tap-highlight-color: transparent;",
-      "  }",
-      "  .nav-logo-link:active {",
-      "    background: rgba(236,91,19,.12);",
-      "    transform: scale(.92);",
-      "  }",
-      "  html.dark .nav-logo-link:active {",
-      "    background: rgba(236,91,19,.18);",
-      "  }",
-      "}",
-    ].join("\n");
-    document.head.appendChild(style);
+    // CSS moved to styles.css
   }
 
   /**

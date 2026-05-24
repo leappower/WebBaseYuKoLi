@@ -194,69 +194,7 @@
 
   /* ── Styles (minimal — most visual via CSS-injected classes) ─ */
   function injectStyles() {
-    if (document.getElementById("btab-styles")) return;
-
-    var css = [
-      /* Bar */
-      ".btab-bar {",
-        "position: fixed; bottom: 0; left: 0; right: 0; z-index: var(--z-footer, 9000);",,
-        "display: flex; align-items: stretch;",
-        "height: " + BAR_HEIGHT + "px;",
-        "background: #fff;",
-        "border-top: 1px solid #E7E1D6;",
-        "box-shadow: 0 -2px 10px rgba(0,0,0,.06);",
-      "}",
-      /* Item */
-      ".btab-item {",
-        "flex: 1; display: flex; flex-direction: column;",
-        "align-items: center; justify-content: center;",
-        "border: none; background: transparent; cursor: pointer;",
-        "color: #6B7280; font-size: 10px;",
-        "padding: 6px 0; transition: color .2s;",
-        "-webkit-tap-highlight-color: transparent;",
-        "position: relative;",
-      "}",
-      ".btab-item .material-symbols-outlined {",
-        "font-size: 26px; margin-bottom: 2px;",
-      "}",
-      ".btab-label { line-height: 1.2; }",
-      /* CTA — centered raised green pill */
-      ".btab-item--cta {",
-        "flex: 1.4;",
-        "background: " + PRIMARY + ";",
-        "color: #fff;",
-        "border-radius: 28px 28px 0 0;",
-        "margin-top: -8px; padding-top: 14px;",
-        "box-shadow: 0 -2px 14px " + PRIMARY + "40;",
-      "}",
-      ".btab-item--cta .material-symbols-outlined {",
-        "font-size: 28px;",
-      "}",
-      /* External / WhatsApp */
-      ".btab-item--wa { color: " + WA_COLOR + "; }",
-      /* Active */
-      ".btab-item--active { color: " + PRIMARY + " !important; }",
-      ".btab-item--active .material-symbols-outlined { font-variation-settings: 'FILL' 1; }",
-      ".btab-item:active { opacity: .7; }",
-      /* Hide on PC */
-      "@media (min-width: 1024px) { .btab-bar { display: none !important; } }",
-      /* Push body content above bar */
-      "@media (max-width: 1023px) { body { padding-bottom: " + BAR_HEIGHT + "px; } }",
-      /* Footer spacing compensation */
-      "@media (max-width: 1023px) { footer#footer { padding-bottom: " + (BAR_HEIGHT + 10) + "px; } }",
-    ].join("\n");
-
-    var style = document.createElement("style");
-    style.id   = "btab-styles";
-    style.type = "text/css";
-    if (style.styleSheet) {
-      /* @audit-safe: cssText from constants */
-      style.styleSheet.cssText = css;
-    } else {
-      /* @audit-safe: createTextNode with constant string */
-      style.appendChild(document.createTextNode(css));
-    }
-    document.head.appendChild(style);
+  // CSS moved to styles.css
   }
 
   /* ── Inject into DOM ───────────────────────────────────────── */

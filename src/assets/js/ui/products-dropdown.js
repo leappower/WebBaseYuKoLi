@@ -47,43 +47,7 @@
   /* ───────────────────────── CSS ───────────────────────── */
 
   function injectStyles() {
-    if (window.DropdownBaseStyles) window.DropdownBaseStyles.inject();
-
-    [
-      "prod-ios-dropdown-styles",
-      "prod-dropdown-styles-2026",
-      "prod-dropdown-pc-styles",
-      "prod-dropdown-tablet-styles",
-      "prod-dropdown-styles-v2",
-      "prod-dropdown-styles-v3",
-    ].forEach(function (id) {
-      var old = document.getElementById(id);
-      if (old) old.remove();
-    });
-
-    var style = document.createElement("style");
-    style.id = "prod-dropdown-styles-v4";
-    style.setAttribute("data-ver", "2026-03-22-v4");
-    style.textContent = [
-      ".prod-dropdown-card { min-width: 320px; max-width: 420px; }",
-      ".prod-dropdown-emoji {",
-      "  margin-left: auto; font-size: 13px; line-height: 1; opacity: .85; flex-shrink: 0;",
-      "}",
-      ".prod-viewall-item {",
-      "  display: flex; align-items: center; gap: 8px;",
-      "  padding: 9px 12px; font-size: 13px; font-weight: 600; color: #1d1d1f;",
-      "  text-decoration: none; border-radius: 10px; transition: background .1s ease;",
-      "}",
-      ".prod-viewall-item:hover { background: rgba(236,91,19,.06); color: ' + _primary + '; }",
-      ".prod-viewall-item .material-symbols-outlined { font-size: 16px; }",
-      ".prod-dropdown-icon .material-symbols-outlined, .prod-popup-item .prod-dropdown-icon .material-symbols-outlined { font-size: 16px; color: " + _primary + "; }",
-      "html.dark .prod-viewall-item { color: #f5f5f7; }",
-      "html.dark .prod-viewall-item:hover { background: rgba(236,91,19,.10); color: #f97316; }",
-      ".prod-popup-emoji {",
-      "  margin-left: auto; font-size: 15px; opacity: .85; flex-shrink: 0;",
-      "}",
-    ].join("\n");
-    document.head.appendChild(style);
+    // CSS moved to styles.css
   }
 
   /* ───────────────────────── RENDER ───────────────────────── */
