@@ -539,7 +539,22 @@
       // 显示骨架屏
       this.showSkeleton();
 
-      // 加载页面（不使用内存缓存，始终获取最新内容）
+      // SSG 直链访问: spa-content 已有内容（服务器返回的 SSG HTML）
+      // 跳过 fetch，只加载 page-specific scripts
+      var existingContent = document.getElementById("spa-content");
+      if (existingContent && existingContent.innerHTML.trim()) {
+        var scriptsPromise = _self.loadPageScripts(pagePath);
+        _self.hideSkeleton();
+        Promise.resolve(scriptsPromise).then(function () {
+          window.dispatchEvent(new CustomEvent("spa:load", { detail: { path: routePath } }));
+        });
+        // Load page scripts and still handle popstate properly
+        _self._currentPath = routePath;
+        _self._navVersion = navVersion;
+        return;
+      }
+
+      // 加载页面（SPA 导航时从服务器获取动态内容）
       fetch(devicePath, { cache: 'no-store' })
         .then(function (response) {
           if (!response.ok) throw new Error("HTTP " + response.status);
@@ -755,13 +770,11 @@
       } else if (currentPath === "/" || currentPath === "//") {
         this.replace("/home/");
       } else if (currentPath.match(/^\/products\/[^/]+\/$/)) {
-        var container = document.getElementById("spa-content");
-        if (!container || !container.innerHTML.trim()) {
-          this.log("Dynamic route on init (empty container):", currentPath);
-          this.loadRoute(currentPath, initVersion);
-        } else {
-          this.log("Dynamic route on init (content exists, skip loadRoute):", currentPath);
-        }
+        // Always load scripts (product-grid.js, cross-sell.js) even when
+        // SSG content is already in place.  loadRoute handles this — if
+        // html is empty (SPA nav) it fetches, if content exists it still
+        // loads page-specific scripts.
+        this.loadRoute(currentPath, initVersion);
       } else {
         var container = document.getElementById("spa-content");
         if (!container || !container.innerHTML.trim()) {
