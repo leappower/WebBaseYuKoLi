@@ -325,6 +325,7 @@
   }
 
   function createFloatingBar() {
+    return;
     if (document.getElementById(floatingBarId)) return;
     injectFloatingBarStyles();
 
@@ -547,7 +548,7 @@
       badge =
         '<span class="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full">' + esc(p.badge) + "</span>";
     }
-    var link = "/products/" + encodeURIComponent(model) + "/";
+    var link = "/products/detail/" + encodeURIComponent(model) + "/";
     var isSelected = isProductCompared(p.model);
     var selectedClass = isSelected ? " compare-selected" : "";
     return (
@@ -615,7 +616,7 @@
       badge =
         '<span class="px-2 py-0.5 bg-primary text-white text-[10px] font-bold rounded">' + esc(p.badge) + "</span>";
     }
-    var link = "/products/" + encodeURIComponent(model) + "/";
+    var link = "/products/detail/" + encodeURIComponent(model) + "/";
     var isSelected = isProductCompared(p.model);
     var selectedClass = isSelected ? " compare-selected" : "";
     return (
@@ -674,7 +675,7 @@
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || "");
     var img = esc(p._imageUrl);
-    var link = "/products/" + encodeURIComponent(model) + "/";
+    var link = "/products/detail/" + encodeURIComponent(model) + "/";
     var isSelected = isProductCompared(p.model);
     var selectedClass = isSelected ? " compare-selected" : "";
     return (

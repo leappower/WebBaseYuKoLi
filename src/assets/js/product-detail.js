@@ -46,6 +46,13 @@
 
   function getAllProducts() {
     var table = window.PRODUCT_DATA_TABLE || [];
+    if (!table.length) return [];
+    // Support both flat format (product-data-table.js V2)
+    // and grouped format ({category, products: [...]}).
+    if (table[0].model !== undefined) {
+      // Flat format — each entry is a product
+      return table;
+    }
     var flat = [];
     for (var i = 0; i < table.length; i++) {
       var ps = table[i].products || [];
