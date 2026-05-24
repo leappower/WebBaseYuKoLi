@@ -379,20 +379,5 @@
     PAGES: PAGES,
   };
 
-  /* [DIAG] DOM state checker — fires after all scripts loaded */
-  setTimeout(function () {
-    var h = document.getElementById("main-header");
-    var s = document.querySelector(".ios-search-bar");
-    var f = document.getElementById("floating-actions");
-    var t = document.getElementById("trust-bar");
-    console.log("[DIAG] page-init.js post-load: header=" + !!h + " search=" + !!s + " floating=" + !!f + " trust=" + !!t);
-    if (s) {
-      var cs = window.getComputedStyle(s);
-      console.log("[DIAG] search-bar: display=" + cs.display + " visibility=" + cs.visibility + " width=" + s.offsetWidth + " height=" + s.offsetHeight + " offsetParent=" + (s.offsetParent ? s.offsetParent.tagName : "null"));
-    }
-    if (t) {
-      var ct = window.getComputedStyle(t);
-      console.log("[DIAG] trust-bar: display=" + ct.display + " visibility=" + ct.visibility + " height=" + t.offsetHeight);
-    }
-  }, 500);
+
 })(window);

@@ -430,10 +430,8 @@
     // Support unified search bar input (.ios-search-input)
     var input = document.querySelector(".ios-search-bar .ios-search-input");
     if (!input) {
-      console.log("[search-engine] init: no .ios-search-input found — skipping (search bar not in DOM)");
       return;
     }
-    console.log("[search-engine] init: binding to search input");
 
     // Input event
     input.addEventListener("input", function () {
@@ -503,7 +501,6 @@
    * Re-initialize (e.g. after SPA navigation re-renders the header).
    */
   function reinit() {
-    console.log("[search-engine] reinit called");
     panel = null;
     isOpen = false;
     currentQuery = "";

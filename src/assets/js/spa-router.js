@@ -690,22 +690,6 @@
         // 在下一个微任务中触发，确保 spa:load 监听器先执行
         Promise.resolve().then(function () {
           document.dispatchEvent(new Event("spa:ready"));
-          // [DIAG] — spa:ready 后 300ms 检查 DOM 状态
-          setTimeout(function () {
-            var h = document.getElementById("main-header");
-            var s = document.querySelector(".ios-search-bar");
-            var f = document.getElementById("floating-actions");
-            var t = document.getElementById("trust-bar");
-            console.log("[spa:ready POST] header=" + !!h + " search=" + !!s + " floating=" + !!f + " trust=" + !!t);
-            if (s) {
-              var cs = window.getComputedStyle(s);
-              console.log("[spa:ready] search-bar display=" + cs.display + " visibility=" + cs.visibility + " width=" + s.offsetWidth);
-            }
-            if (t) {
-              var ct = window.getComputedStyle(t);
-              console.log("[spa:ready] trust-bar display=" + ct.display + " visibility=" + ct.visibility);
-            }
-          }, 300);
         });
         _self2.log("Content rendered for:", pagePath);
       });

@@ -1232,11 +1232,9 @@
    * Can be called multiple times safely (idempotent by nature).
    */
   function mountNavigator() {
-    console.log("[navigator] mountNavigator called");
     /* Close all open dropdowns before remounting */
     closeOtherDropdowns(null);
     var placeholders = document.querySelectorAll('[data-component="navigator"]');
-    console.log("[navigator] placeholders found: " + placeholders.length);
 
     for (var i = 0; i < placeholders.length; i++) {
       var placeholder = placeholders[i];
@@ -1246,13 +1244,11 @@
       /* 如果 placeholder 内已有 <header>，直接提取替换 */
       var existingHeader = placeholder.querySelector("header");
       if (existingHeader) {
-        console.log("[navigator] placeholder already has <header>, extracting");
         placeholder.parentNode.replaceChild(existingHeader, placeholder);
         continue;
       }
 
       /* 否则根据配置构建新 header */
-      console.log("[navigator] building new header");
       var config = extractConfigFromPlaceholder(placeholder);
       currentVariant = config.variant;
 
