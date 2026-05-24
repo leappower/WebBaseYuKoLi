@@ -2007,6 +2007,26 @@ html.dark .ios-search-clear .material-symbols-outlined {
 [class*="h-\[400px\]"] { height: 400px !important; }
 [class*="h-\[600px\]"] { height: 600px !important; }
 
+/* ─── Tailwind JIT arbitrary value fallbacks ── */
+.z-\[60\] { z-index: 60; }
+.max-h-\[50vh\] { max-height: 50vh; }
+.max-h-\[70vh\] { max-height: 70vh; }
+.aspect-\[4\/3\] { aspect-ratio: 4/3; }
+.aspect-\[5\/3\] { aspect-ratio: 5/3; }
+.aspect-\[16\/10\] { aspect-ratio: 16/10; }
+.rounded-\[2\.5rem\] { border-radius: 2.5rem; }
+.min-h-\[220px\] { min-height: 220px; }
+.leading-\[1\.1\] { line-height: 1.1; }
+.tracking-\[0\.2em\] { letter-spacing: 0.2em; }
+.w-\[calc\(100\%-2rem\)\] { width: calc(100% - 2rem); }
+.w-\[calc\(100\%-3rem\)\] { width: calc(100% - 3rem); }
+.z-\[var\(--z-fab\)\] { z-index: var(--z-fab); }
+.z-\[var\(--z-footer\)\] { z-index: var(--z-footer); }
+.z-\[var\(--z-header\)\] { z-index: var(--z-header); }
+.z-\[var\(--z-language-dropdown\)\] { z-index: var(--z-language-dropdown); }
+.hover\:scale-\[1\.02\]:hover { transform: scale(1.02); }
+.hover\:translate-y-\[-2px\]:hover { transform: translateY(-2px); }
+
 /* ─── Mobile Menu & Search (ex-injected from slide-menu.js) ── */
 
 /* ---------- 遮罩层 ---------- */
@@ -2552,3 +2572,18 @@ html.dark .cs-popup-panel .cs-group-label { color: #94a3b8; border-top-color: rg
 @media (min-width: 1024px) { .btab-bar { display: none !important; } }
 @media (max-width: 1023px) { body { padding-bottom: 68px; } }
 @media (max-width: 1023px) { footer#footer { padding-bottom: 78px; } }
+
+/* ─── Tailwind color arbitrary values (not auto-generated) ── */
+.bg-\[\#06C755\] { background-color: #06C755; }
+.bg-\[\#06C755\]\/10 { background-color: rgba(6,199,85,.1); }
+.bg-\[\#06C755\]\/5 { background-color: rgba(6,199,85,.05); }
+.bg-\[\#07C160\] { background-color: #07C160; }
+.bg-\[\#07C160\]\/5 { background-color: rgba(7,193,96,.05); }
+.bg-\[\#0CB936\] { background-color: #0CB936; }
+.bg-\[\#25D366\] { background-color: #25D366; }
+.bg-\[\#2E7D32\] { background-color: #2E7D32; }
+.border-\[\#06C755\]\/20 { border-color: rgba(6,199,85,.2); }
+.border-\[\#07C160\]\/20 { border-color: rgba(7,193,96,.2); }
+.hover\:bg-\[\#07C160\]\/10:hover { background-color: rgba(7,193,96,.1); }
+.hover\:border-\[\#07C160\]\/40:hover { border-color: rgba(7,193,96,.4); }
+.text-\[\#25d366\] { color: #25d366; }
