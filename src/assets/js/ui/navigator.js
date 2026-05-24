@@ -286,7 +286,7 @@
       'class="fixed top-0 left-0 right-0 z-[var(--z-header)] ' +
       "border-b border-slate-200 dark:border-slate-800 " +
       'bg-background-light/90 dark:bg-background-dark/90 transition-transform duration-300">' +
-      '<div class="px-4 py-3 flex items-center gap-3">' +
+      '<div class="px-4 py-3 flex items-center gap-3" style="padding-top:calc(var(--trust-bar-height,0px) + 0.75rem)">' +
       /* 左侧：汉堡菜单 + Logo */
       '<div class="flex items-center gap-1 flex-shrink-0">' +
       '<a id="mobile-menu-toggle" href="javascript:void(0)" ' +
@@ -615,7 +615,7 @@
       "border-b border-slate-200 dark:border-slate-800 " +
       'bg-background-light/90 dark:bg-background-dark/90">' +
       '<div class="max-w-[1920px] mx-auto px-3 md:px-5 lg:px-5 xl:px-10 ' +
-      'py-4 flex items-center justify-between" style="min-height:108px">' +
+      'py-4 flex items-center justify-between" style="min-height:108px;padding-top:calc(var(--trust-bar-height,0px) + 1rem)">' +
       /* 左侧：Logo + 导航 */
       '<div class="flex items-center gap-4 lg:gap-8">' +
       '<a class="nav-logo-link hidden lg:block" href="' +

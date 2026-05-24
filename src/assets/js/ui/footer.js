@@ -227,47 +227,10 @@
   };
 
   /* ─── Trust Bar (认证徽章) ─── */
-  function injectTrustBar() {
-    var container = document.getElementById('spa-content') || document.body;
-    // Avoid duplicate injection
-    if (document.getElementById('trust-bar')) return;
-
-    var badges = [
-      { icon: 'verified', text: 'ISO 9001' },
-      { icon: 'verified', text: 'GMP Certified' },
-      { icon: 'verified', text: 'Halal Certified' },
-      { icon: 'verified', text: 'FDA Registered' }
-    ];
-
-    var itemsHtml = badges.map(function (b) {
-      return '<div class="flex items-center gap-2 px-4 py-2">' +
-        '<span class="material-symbols-outlined" style="font-size:20px">' + b.icon + '</span>' +
-        '<span class="text-sm font-semibold">' + b.text + '</span>' +
-        '</div>';
-    }).join('');
-
-    var wrapper = document.createElement('div');
-    wrapper.id = 'trust-bar';
-    /* @audit-safe: constant-data-driven-html */
-    wrapper.innerHTML =
-      '<div class="trust-bar w-full" style="background:#2E7D32">' +
-      '<div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 py-3 px-4 max-w-5xl mx-auto">' +
-      itemsHtml +
-      '</div></div>';
-
-    // Insert before footer if present, otherwise append to container
-    var footer = document.querySelector('footer');
-    if (footer && footer.parentNode) {
-      footer.parentNode.insertBefore(wrapper, footer);
-    } else {
-      container.appendChild(wrapper);
-    }
-  }
-
-  /* ─── Init ─── */
+  // trust-bar 已迁移到 trust-bar.js (注入到 header 开头)
+  // footer.js 不再注入 trust-bar，避免重复
   function init() {
     mount();
-    injectTrustBar();
   }
 
   if (document.readyState === "loading") {

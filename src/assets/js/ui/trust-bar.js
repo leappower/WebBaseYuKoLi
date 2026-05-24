@@ -56,7 +56,34 @@
 
     var bar = document.createElement("div");
     bar.innerHTML = buildHTML();
-    document.body.insertBefore(bar.firstElementChild, document.body.firstChild);
+    var trustEl = bar.firstElementChild;
+
+    // 等待 navigator header 渲染完成后注入
+    function doInject() {
+      var header = document.getElementById("main-header") || document.getElementById("mobile-header");
+      if (header) {
+        header.insertBefore(trustEl, header.firstChild);
+      } else {
+        document.body.insertBefore(trustEl, document.body.firstChild);
+      }
+    }
+
+    var header = document.getElementById("main-header") || document.getElementById("mobile-header");
+    if (header && header.children.length > 0) {
+      // header 已有内容（navigator 已渲染完成）
+      doInject();
+    } else {
+      // 等待 navigator 渲染完成
+      var checkTimer = setInterval(function () {
+        var h = document.getElementById("main-header") || document.getElementById("mobile-header");
+        if (h && h.children.length > 0) {
+          clearInterval(checkTimer);
+          doInject();
+        }
+      }, 50);
+      // 5 秒超时 fallback
+      setTimeout(function () { clearInterval(checkTimer); doInject(); }, 5000);
+    }
 
     var width = window.innerWidth;
     var barHeight = width >= 768 ? 40 : 36;
@@ -121,8 +148,6 @@
     var navStyle = document.createElement("style");
     navStyle.id = "trust-bar-nav-fix";
     navStyle.textContent =
-      "#main-header, #mobile-header { top: " + barHeight + "px !important; }" +
-      ".section-passthrough, .hero-overlap { margin-top: " + barHeight + "px; }" +
       ":root { --trust-bar-height: " + barHeight + "px; }" +
       "main#spa-content, #skeleton-overlay { padding-top: calc(var(--nav-height, 109px) + " + barHeight + "px) !important; }";
     document.head.appendChild(navStyle);
