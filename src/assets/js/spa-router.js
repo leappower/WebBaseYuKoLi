@@ -686,6 +686,11 @@
           }
         }
         document.dispatchEvent(new Event("spa:load"));
+        // spa:ready — 在所有 spa:load 处理完成后触发，供 search-engine.js 等模块
+        // 在下一个微任务中触发，确保 spa:load 监听器先执行
+        Promise.resolve().then(function () {
+          document.dispatchEvent(new Event("spa:ready"));
+        });
         _self2.log("Content rendered for:", pagePath);
       });
     },
