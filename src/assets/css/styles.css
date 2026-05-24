@@ -1288,3 +1288,519 @@ html.dark .ios-search-view-all:hover { background: rgba(236,91,19,0.10); }
   background: rgba(120,120,128,0.2);
   border-radius: 2px;
 }
+
+/* ── z-index-system.css merged ── */
+/**
+ * Z-Index 标准规范
+ * 统一管理项目的z-index层级,避免冲突和混乱
+ */
+
+:root {
+  /* 基础层级 */
+  --z-base: 0;
+
+  /* 页面内容层级 */
+  --z-content: 1;
+
+  /* 固定元素层级 */
+  --z-header: 2000; /* 页面顶部导航 (above all page content) */
+  --z-footer: 9000; /* 移动端底部 Tab 导航 */
+  --z-back-to-top: 20; /* 返回顶部按钮 */
+
+  /* Hero 视频层级 */
+  --z-hero-poster: 1; /* 视频封面图 */
+  --z-hero-player: 2; /* 视频播放器 */
+  --z-hero-overlay: 3; /* 静音按钮容器 */
+  --z-hero-fallback: 5; /* 降级播放按钮 */
+  --z-hero-info: 15; /* 底部信息卡片 */
+
+  /* 浮动元素层级 */
+  --z-fab: 50; /* 浮动操作按钮 (WhatsApp, LINE等) */
+  --z-bottom-nav: 50; /* 移动端底部导航栏 */
+
+  /* 筛选面板层级 */
+  --z-filter-overlay: 55; /* 产品筛选遮罩 */
+  --z-filter-sheet: 60; /* 产品筛选面板 */
+
+  /* 交互元素层级 */
+  --z-dropdown: 200; /* 下拉菜单 */
+  --z-language-dropdown: 2500; /* 语言选择下拉框 (above header) */
+  --z-popover: 210; /* 气泡提示 */
+  --z-sticky: 100; /* 粘性元素 */
+
+  /* 覆盖层层级 */
+  --z-modal-backdrop: 300; /* 模态框背景 */
+  --z-modal: 310; /* 模态框内容 */
+  --z-drawer: 10000; /* 抽屉式菜单 (above footer) */
+  --z-dialog: 330; /* 对话框 */
+
+  /* 通知层级 (above header) */
+  --z-toast: 11000; /* 消息提示 (above drawer) */
+  --z-notification: 11100; /* 通知提醒 */
+  --z-alert: 11200; /* 警告提示 */
+
+  /* 最高层级 */
+  --z-tooltip: 12000; /* 工具提示 */
+  --z-loading: 13000; /* 加载遮罩 */
+  --z-overlay: 14000; /* 遮罩层 (最高) */
+}
+
+/* Tailwind CSS 映射类
+ * 在项目中使用时,请优先使用 CSS 变量:
+ *   z-[var(--z-header)]  代替  z-10
+ *   z-[var(--z-fab)]     代替  z-50
+ *   z-[var(--z-dropdown)] 代替  z-200
+ */
+
+/* 兼容旧代码的过渡类 */
+.z-header {
+  z-index: var(--z-header);
+}
+.z-fab {
+  z-index: var(--z-fab);
+}
+.z-dropdown {
+  z-index: var(--z-dropdown);
+}
+.z-language-dropdown {
+  z-index: var(--z-language-dropdown);
+}
+.z-modal {
+  z-index: var(--z-modal);
+}
+.z-toast {
+  z-index: var(--z-toast);
+}
+.z-tooltip {
+  z-index: var(--z-tooltip);
+}
+
+/* ── performance-optimizations.css merged ── */
+/**
+ * CSS动画性能优化
+ * 
+ * ⚠️  已优化: 移除全局 will-change,改为按需使用
+ * 
+ * 注意事项:
+ * 1. will-change 只在动画执行期间添加
+ * 2. 动画结束后必须移除,释放内存
+ * 3. 优先使用 transform 和 opacity (GPU 加速)
+ * 4. 避免对大量元素使用 will-change
+ */
+
+/* ═══════════════════════════════════════════════════════════
+   Hover Effects - 高频交互动画
+   ═══════════════════════════════════════════════════════════ */
+
+/* 颜色变化 (hover:bg, hover:text) */
+.hover-bg-color-transition {
+  will-change: background-color;
+}
+
+.hover-text-color-transition {
+  will-change: color;
+}
+
+/* 尺寸变化 (hover:scale) */
+.hover-scale-transition {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Transition Animations - 页面元素过渡动画
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   Component-Specific Optimizations
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══════════════════════════════════════════════════════════
+   Keyframe Animations - 持续动画
+   ═══════════════════════════════════════════════════════════ */
+
+/* 脉冲动画 */
+.animate-pulse {
+  will-change: opacity;
+}
+
+/* 旋转动画 */
+.animate-spin {
+  will-change: transform;
+}
+
+/* 弹跳动画 */
+.animate-bounce {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Component-Specific Optimizations
+   ═══════════════════════════════════════════════════════════ */
+
+/* 下拉菜单 - 打开/关闭动画 */
+.dropdown-menu {
+  will-change: opacity, transform;
+}
+
+/* 模态框 - 显示/隐藏动画 */
+.modal-overlay {
+  will-change: opacity;
+}
+
+.modal-content {
+  will-change: transform, opacity;
+}
+
+/* Toast 通知 - 进出动画 */
+.toast-notification {
+  will-change: transform, opacity;
+}
+
+/* FAB 按钮 - 悬停和点击 */
+.fab-button {
+  will-change: transform;
+}
+
+.fab-button:active {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Performance Tips (作为注释保留,供开发者参考)
+   ═══════════════════════════════════════════════════════════ */
+
+/*
+优化建议:
+1. 优先使用 transform 和 opacity 进行动画 (GPU加速)
+2. 避免对 width, height, top, left 进行动画 (触发重排)
+3. 对于大量动画,考虑使用 CSS transform: translateZ(0) 强制GPU加速
+4. 使用 requestAnimationFrame 进行动画而非 setInterval
+5. 在动画结束后移除 will-change 属性以释放内存
+*/
+
+/* ═════════════════════════════════════════════════════════
+   💡 GPU 加速优化
+   ═════════════════════════════════════════════════════════
+
+强制 GPU 加速 (慎用,仅用于关键动画):
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Trust Bar CSS 已迁移至 styles.css */
+
+📝 示例: 动态添加 will-change 的 JavaScript 函数
+/*
+function startAnimation(element) {
+  element.style.willChange = 'transform, opacity';
+}
+
+function endAnimation(element) {
+  element.style.willChange = 'auto';
+}
+*/
+
+/* ── skeleton.css merged ── */
+/* [navigator] custom elements must be block-level */
+
+/* Prevent layout shift: <navigator> custom elements must be block-level */
+[data-component="navigator"] {
+  display: block;
+}
+
+/**
+ * skeleton.css — 骨架屏样式（三屏适配）
+ *
+ * JS 根据设备宽度动态生成不同骨架结构：
+ *   Mobile  (＜768px):  badge + h2 + 1 desc + 1 CTA     + 1 card
+ *   Tablet  (768-1279): badge + h1 + 2 desc + 2 CTAs     + 2 cards
+ *   PC      (≥1280px):  badge + h1 + 2 desc + 2 CTAs     + 3 cards
+ *
+ * 间距与实际页面对齐（使用 --container-px 变量）：
+ *   Mobile:  --container-px 12px, py-8 hero, gap-6
+ *   Tablet:  --container-px 20px, py-10 hero, gap-8
+ *   PC:      --container-px 40px, --nav-height CSS variable for navigator, py-10 hero
+ */
+
+/* ───────── 骨架层：文档流中 header 和 footer 之间，独立于 #spa-content ───────── */
+#skeleton-overlay {
+  padding-top: var(--nav-height, 65px);
+}
+@media (min-width: 1024px) {
+  #skeleton-overlay {
+    padding-top: var(--nav-height, 109px);
+  }
+}
+#skeleton-overlay {
+  opacity: 1;
+  transition: opacity 350ms ease-out;
+  pointer-events: auto;
+}
+#skeleton-overlay[hidden] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ───────── 容器 ───────── */
+.skeleton-container {
+  width: 100%;
+  margin: 0 auto;
+  min-height: 50vh;
+  padding: 2rem var(--container-px, 0.75rem); /* mobile: aligned with section-content */
+  animation: sk-fadeIn 0.15s ease-out;
+}
+
+@media (min-width: 768px) {
+  .skeleton-container {
+    padding: 2.5rem var(--container-px, 1.25rem);
+  } /* tablet: aligned */
+}
+@media (min-width: 1024px) {
+  .skeleton-container {
+    padding: 2.5rem var(--container-px, 1.25rem);
+  } /* lg: aligned */
+}
+@media (min-width: 1280px) {
+  /* PC: main#spa-content already has padding-top from --nav-height CSS variable;
+   skeleton-container just needs content padding */
+  .skeleton-container {
+    padding: 2.5rem var(--container-px, 2.5rem);
+  }
+}
+
+/* ───────── Hero 区域（居中，与实际 hero 一致）───────── */
+.sk-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* Badge（药丸标签） */
+.sk-badge {
+  width: 100px;
+  height: 22px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+
+/* 标题行 */
+.sk-hero .sk-line {
+  width: 65%;
+  height: 32px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Mobile h2 稍小 */
+.sk-hero .sk-line--h2 {
+  height: 26px;
+}
+
+/* 描述行 */
+.sk-line--desc {
+  width: 80%;
+  height: 18px;
+  margin-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sk-line--short {
+  width: 45%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CTA 按钮组 */
+.sk-cta-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  justify-content: center;
+  width: 100%;
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.sk-cta {
+  flex: 1 1 0;
+  max-width: 160px;
+  height: 44px;
+  border-radius: 12px;
+}
+
+.sk-cta--outline {
+  flex: 1 1 0;
+  max-width: 140px;
+  height: 44px;
+}
+
+/* ───────── 内容网格 ───────── */
+.sk-grid {
+  display: grid;
+  gap: 16px;
+  margin-top: 2rem;
+}
+
+.sk-card {
+  height: 220px;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+
+/* 通用线条 */
+.sk-line {
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+
+/* ───────── 响应式：Mobile ───────── */
+@media (max-width: 767px) {
+  .sk-hero {
+    margin-bottom: 1rem;
+  }
+  .sk-badge {
+    width: 80px;
+    height: 18px;
+  }
+  .sk-hero .sk-line {
+    width: 80%;
+    height: 26px;
+  }
+  .sk-line--desc {
+    height: 14px;
+  }
+  .sk-cta {
+    width: 100%;
+    max-width: none;
+    height: 40px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sk-cta--outline {
+    width: 100%;
+    max-width: none;
+    height: 40px;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .sk-cta-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+    gap: 10px;
+  }
+  .sk-grid {
+    gap: 12px;
+  }
+  .sk-card {
+    height: 180px;
+    border-radius: 12px;
+  }
+}
+
+/* ───────── 响应式：Tablet ───────── */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .sk-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sk-card {
+    height: 220px;
+  }
+}
+
+/* ───────── 响应式：PC ───────── */
+@media (min-width: 1280px) {
+  .sk-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .sk-card {
+    height: 240px;
+  }
+}
+
+/* ───────── Animations ───────── */
+@keyframes sk-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes sk-fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ───────── Dark Mode ───────── */
+/* ───────── Product grid skeleton cards ───────── */
+.sk-product-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+}
+.dark .sk-product-card {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+.sk-product-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-product-img {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-product-text {
+  height: 16px;
+  width: 60%;
+  margin: 12px auto 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-product-text {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+.dark .sk-badge,
+.dark .sk-line,
+.dark .sk-cta,
+.dark .sk-card {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
