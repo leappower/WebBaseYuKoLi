@@ -519,7 +519,7 @@
     var isSelected = isProductCompared(p.model);
     var selectedClass = isSelected ? " compare-selected" : "";
     return (
-      '<article class="product-card group bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
+      '<article class="product-card group flex flex-col bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
       selectedClass +
       '" data-accent="' + accent +
       '" data-category="' +
@@ -541,7 +541,7 @@
       "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       (badge ? '<div class="absolute top-4 left-4 flex gap-2">' + badge + "</div>" : "") +
       "</div>" +
-      '<div class="p-6">' +
+      '<div class="p-6 flex-1 flex flex-col">' +
       '<div class="flex items-center gap-2 mb-3"><span class="material-symbols-outlined text-primary text-sm">local_cafe</span><span class="text-xs font-bold text-primary uppercase tracking-wider"' +
       subCatDataI18n +
       ">" +
@@ -555,7 +555,7 @@
       "</p>" +
       (specHTML ? '<div class="flex flex-wrap gap-2 mb-4">' + specHTML + "</div>" : "") +
       '<div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700">' +
-      '<div><span class="text-xs text-slate-400">\u8D77\u8BA2\u4EF7</span><p class="text-lg font-black text-primary">\u8BE2\u4EF7</p></div>' +
+      '<div class="mt-auto pt-4 border-t border-slate-100 dark:border-slate-700"><span class="text-xs text-slate-400">\u8D77\u8BA2\u4EF7</span><p class="text-lg font-black text-primary">\u8BE2\u4EF7</p></div>' +
       '<div class="flex items-center gap-2">' +
       '<a href="' +
       link +
@@ -587,7 +587,7 @@
     var isSelected = isProductCompared(p.model);
     var selectedClass = isSelected ? " compare-selected" : "";
     return (
-      '<article class="product-card-tablet bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
+      '<article class="product-card-tablet flex flex-col bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
       selectedClass +
       '" data-accent="' + accent +
       '" data-category="' +
@@ -609,19 +609,19 @@
       "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       (badge ? '<div class="absolute top-3 left-3 flex gap-1.5">' + badge + "</div>" : "") +
       "</div>" +
-      '<div class="p-4">' +
+      '<div class="p-4 flex-1 flex flex-col">' +
       '<div class="flex items-center gap-1.5 mb-2"><span class="material-symbols-outlined text-primary text-sm">local_cafe</span><span class="text-xs font-bold text-primary uppercase tracking-wider"' +
       subCatDataI18n +
       ">" +
       subCat +
       "</span></div>" +
-      '<h3 class="text-base font-bold mb-1 text-slate-900 dark:text-white">' +
+      '<h3 class="text-base font-bold mb-1 text-slate-900 dark:text-white line-clamp-2">' +
       name +
       "</h3>" +
-      '<p class="text-xs text-slate-500 dark:text-slate-400 mb-3 line-clamp-2">' +
+      '<p class="flex-1 text-xs text-slate-500 dark:text-slate-400 mb-0 line-clamp-2">' +
       desc +
       "</p>" +
-      '<div class="flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">' +
+      '<div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">' +
       '<span class="text-base font-black text-primary">询价</span>' +
       '<div class="flex items-center gap-2">' +
       '<a href="' +
@@ -672,13 +672,13 @@
       "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       "</div>" +
       '<div class="flex-1 min-w-0">' +
-      '<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1 truncate">' +
+      '<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1 line-clamp-2">' +
       name +
       "</h3>" +
-      '<p class="text-xs text-slate-500 dark:text-slate-400 mb-2 line-clamp-2">' +
+      '<p class="flex-1 text-xs text-slate-500 dark:text-slate-400 mb-0 line-clamp-2">' +
       desc +
       "</p>" +
-      '<div class="flex items-center justify-between">' +
+      '<div class="mt-auto flex items-center justify-between">' +
       '<span class="text-sm font-black text-primary">询价</span>' +
       '<span class="material-symbols-outlined text-slate-400 text-sm">arrow_forward</span>' +
       "</div>" +
