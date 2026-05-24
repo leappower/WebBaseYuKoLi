@@ -358,60 +358,27 @@
     }
   });
 
-  // ─── Data loader (fetch from API if not already loaded) ───────
+  // ─── Data loader (local only, no API dependency) ───────
+  // PRODUCT_DATA_TABLE is now loaded inline via product-data-table.js
+  // No fetch() to /api/public/products-data needed.
   var _dataLoaded = false;
-  var _fetchPromise = null;
-  var _dataCallbacks = [];
 
   function loadFromAPI(callback) {
     if (_dataLoaded) {
-      callback();
+      if (callback) callback();
       return;
     }
-    if (callback) _dataCallbacks.push(callback);
-    // Deduplicate: use a single canonical promise
-    if (!_fetchPromise) {
-      _fetchPromise = fetch("/api/public/products-data", { cache: "no-store" })
-        .then(function (r) {
-          if (!r.ok) throw new Error("HTTP " + r.status);
-          return r.json();
-        })
-        .then(function (data) {
-          window[STORE_KEY] = data;
-          try {
-            localStorage.setItem("pdt_v2", JSON.stringify(data));
-          } catch (e) {}
-          _dataLoaded = true;
-          _dataCallbacks.forEach(function (cb) {
-            cb();
-          });
-          _dataCallbacks = [];
-          _fetchPromise = null;
-          window.dispatchEvent(new Event("product-data-ready"));
-        })
-        .catch(function (err) {
-          console.error("[ProductGrid] Failed to load product data:", err);
-          // Fallback: restore from localStorage
-          var restored = false;
-          try {
-            var cached = JSON.parse(localStorage.getItem("pdt_v2"));
-            if (Array.isArray(cached) && cached.length > 0) {
-              window[STORE_KEY] = cached;
-              restored = true;
-            }
-          } catch (e) {}
-          // Fallback: use whatever static data is in window[STORE_KEY]
-          if (!restored && !Array.isArray(window[STORE_KEY])) {
-            window[STORE_KEY] = [];
-          }
-          _dataLoaded = true;
-          _dataCallbacks.forEach(function (cb) {
-            cb();
-          });
-          _dataCallbacks = [];
-          _fetchPromise = null;
-          window.dispatchEvent(new Event("product-data-ready"));
-        });
+    // Static data is already in window.PRODUCT_DATA_TABLE (loaded via script tag)
+    if (Array.isArray(window.PRODUCT_DATA_TABLE) && window.PRODUCT_DATA_TABLE.length > 0) {
+      window[STORE_KEY] = window.PRODUCT_DATA_TABLE;
+      _dataLoaded = true;
+      window.dispatchEvent(new Event("product-data-ready"));
+      if (callback) callback();
+    } else {
+      console.warn("[ProductGrid] PRODUCT_DATA_TABLE not available; using empty array");
+      window[STORE_KEY] = [];
+      _dataLoaded = true;
+      if (callback) callback();
     }
   }
 
