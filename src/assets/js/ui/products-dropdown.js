@@ -63,7 +63,7 @@
       '<span class="prod-dropdown-icon">' +
       '<span class="material-symbols-outlined">grid_view</span>' +
       "</span>" +
-      '<span class="prod-dropdown-label" data-i18n="nav_mega_view_all">View All Products</span>' +
+      '<span class="prod-dropdown-label" data-i18n="nav_mega_products_center">Products Center</span>' +
       '<span class="material-symbols-outlined prod-dropdown-chevron">chevron_right</span>' +
       "</a>";
 
@@ -73,10 +73,22 @@
       return html;
     }).join("\n");
 
+    // 产品中心入口（顶部）
+    var centerEntry =
+      '<a href="/products/" class="prod-dropdown-item prod-viewall-item">' +
+      '<span class="prod-dropdown-icon">' +
+      '<span class="material-symbols-outlined">store</span>' +
+      "</span>" +
+      '<span class="prod-dropdown-label" data-i18n="nav_mega_products_center">Products Center</span>' +
+      '<span class="material-symbols-outlined prod-dropdown-chevron">chevron_right</span>' +
+      "</a>";
+
     return (
       '<div class="prod-dropdown-wrap' +
       (isTouch() ? " touch-device" : "") +
       '">' +
+      centerEntry +
+      '<div class="prod-dropdown-separator" style="margin: 4px 0;"></div>' +
       '<a class="' +
       esc(cfg.activeClass || "") +
       ' prod-dropdown-trigger"' +
@@ -132,12 +144,21 @@
   /* ───────────────────────── POPUP CONTENT ───────────────────────── */
 
   function buildPopupContent(items, parentHref) {
+    var centerEntry =
+      '<a href="/products/" class="prod-popup-item prod-viewall-item">' +
+      '<span class="prod-dropdown-icon">' +
+      '<span class="material-symbols-outlined">store</span>' +
+      "</span>" +
+      '<span class="prod-popup-label" data-i18n="nav_mega_products_center">Products Center</span>' +
+      '<span class="material-symbols-outlined prod-popup-chevron">chevron_right</span>' +
+      "</a>";
+
     var viewAllHtml =
-      '<a href="/products/all/" class="prod-popup-item prod-viewall-item">' +
+      '<a href="/products/" class="prod-popup-item prod-viewall-item">' +
       '<span class="prod-dropdown-icon">' +
       '<span class="material-symbols-outlined">grid_view</span>' +
       "</span>" +
-      '<span class="prod-popup-label" data-i18n="nav_mega_view_all">View All Products</span>' +
+      '<span class="prod-popup-label" data-i18n="nav_mega_products_center">Products Center</span>' +
       '<span class="material-symbols-outlined prod-popup-chevron">chevron_right</span>' +
       "</a>";
 
@@ -165,7 +186,7 @@
       })
       .join("\n");
 
-    return list + viewAllHtml;
+    return centerEntry + '<div class="prod-dropdown-separator" style="margin:4px 0;display:none;"></div>' + list + viewAllHtml;
   }
 
   /* ───────────────────────── PUBLIC API ───────────────────────── */

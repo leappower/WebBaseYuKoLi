@@ -4,7 +4,7 @@
 <html class="light" lang="zh-CN">
   <head>
   <script src="/site.config.js"></script>
-  <script src="/assets/js/utils/dom-utils.js?v=202605241842"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=202605241854"></script>
     <!-- ═══ Responsive Redirect (injected by patch-responsive-redirect.py) ═══ -->
     <link rel="canonical" href="%DOMAIN%/products/" />
   <link rel="alternate" hreflang="zh-CN" href="%DOMAIN%/products/" />
@@ -54,13 +54,13 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="products_page_title">产品中心 | Yukoli 冲调食品</title>
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
-    <link rel="preload" href="/assets/css/styles.css?v=202605241842" as="style" />
-    <link rel="preload" href="/assets/css/tailwind.css?v=202605241842" as="style" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605241854" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605241854" as="style" />
     <link rel="preload" href="/assets/fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/assets/css/styles.css?v=202605241842" />
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605241842" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=202605241854" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605241854" />
     <style>
       body {
         font-family: 'Public Sans', sans-serif;
@@ -120,14 +120,14 @@
         <div class="section-content">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
 
-            <!-- 功能冲饮系列 -->
+            <!-- 咖啡系列 -->
             <a href="/products/coffee/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-40 bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 0, 'wght' 200">local_fire_department</span>
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/coffee/001.webp" alt="Coffee Series" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
               </div>
               <div class="p-5">
-                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_coffee">智能冲调机</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_coffee_desc">107+ 款型号覆盖入门到智能全线，一人操控 6 口灶，出餐效率提升 5 倍。</p>
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_coffee">咖啡系列</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_coffee_desc">精选全球优质咖啡豆，呈现醇厚馥郁的咖啡体验。</p>
                 <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
                   <span data-i18n="app_card_cta">查看系列</span>
                   <span class="material-symbols-outlined text-base">arrow_forward</span>
@@ -136,13 +136,73 @@
             </a>
 
             <!-- 茶饮系列 -->
-            <a href="/products/cutting/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-40 bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 0, 'wght' 200">content_cut</span>
+            <a href="/products/tea/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/tea/001.webp" alt="Tea Series" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
               </div>
               <div class="p-5">
-                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_ingredient">茶饮冲调机</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_ingredient_desc">切丝切片切丁规格统一，替代 3-5 个切菜工，备料效率提升 6 倍。</p>
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_tea">茶饮系列</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_tea_desc">东方茶韵与现代工艺的完美融合，品味健康茶饮新风尚。</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+                  <span data-i18n="app_card_cta">查看系列</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </span>
+              </div>
+            </a>
+
+            <!-- 肠道健康 -->
+            <a href="/products/gut/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/gut/001.webp" alt="Gut Health" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_gut">肠道健康</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_gut_desc">益生菌与膳食纤维科学配比，呵护肠道微生态平衡。</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+                  <span data-i18n="app_card_cta">查看系列</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </span>
+              </div>
+            </a>
+
+            <!-- 胶原养颜 -->
+            <a href="/products/beauty/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/beauty/001.webp" alt="Beauty Collagen" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_beauty">胶原养颜</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_beauty_desc">小分子胶原蛋白肽，由内而外绽放肌肤光彩。</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+                  <span data-i18n="app_card_cta">查看系列</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </span>
+              </div>
+            </a>
+
+            <!-- 体重管理 -->
+            <a href="/products/weight/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/weight/001.webp" alt="Weight Management" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_weight">体重管理</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_weight_desc">科学控卡代餐方案，轻松管理体型与健康。</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
+                  <span data-i18n="app_card_cta">查看系列</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </span>
+              </div>
+            </a>
+
+            <!-- 功能冲饮 -->
+            <a href="/products/lifestyle/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/lifestyle/001.webp" alt="Functional Drinks" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+              </div>
+              <div class="p-5">
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_lifestyle">功能冲饮</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_lifestyle_desc">天然植物萃取，每日一杯活力满满。</p>
                 <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
                   <span data-i18n="app_card_cta">查看系列</span>
                   <span class="material-symbols-outlined text-base">arrow_forward</span>
@@ -151,13 +211,13 @@
             </a>
 
             <!-- 代餐系列 -->
-            <a href="/products/frying/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-40 bg-gradient-to-br from-amber-400 to-yellow-500 flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 0, 'wght' 200">local_cafe</span>
+            <a href="/products/meal/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/meal/001.webp" alt="Meal Replacement" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
               </div>
               <div class="p-5">
-                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_blending">代餐蛋白机</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_blending_desc">精准控温 ±1°C，自动过滤换油，炸物品质批次稳定。</p>
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_meal">代餐系列</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_meal_desc">营养均衡的代餐选择，便捷饱腹不失美味。</p>
                 <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
                   <span data-i18n="app_card_cta">查看系列</span>
                   <span class="material-symbols-outlined text-base">arrow_forward</span>
@@ -165,44 +225,14 @@
               </div>
             </a>
 
-            <!-- 胶原系列 -->
-            <a href="/products/steaming/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-40 bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 0, 'wght' 200">cloud</span>
+            <!-- 经典冲饮 -->
+            <a href="/products/legacy/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="h-40 bg-gradient-to-br relative overflow-hidden">
+                <img loading="lazy" src="/assets/images/products/legacy/001.webp" alt="Classic Drinks" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
               </div>
               <div class="p-5">
-                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_processing">茶饮冲调</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_processing_desc">大容量多层蒸制，自动控温不滴水，早餐高峰 500 份准时出笼。</p>
-                <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
-                  <span data-i18n="app_card_cta">查看系列</span>
-                  <span class="material-symbols-outlined text-base">arrow_forward</span>
-                </span>
-              </div>
-            </a>
-
-            <!-- 功能系列 -->
-            <a href="/products/stewing/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-40 bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 0, 'wght' 200">soup_kitchen</span>
-              </div>
-              <div class="p-5">
-                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_brewing">代餐蛋白</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_brewing_desc">精准控温慢炖，自动保温，汤底味道批次间零偏差。</p>
-                <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
-                  <span data-i18n="app_card_cta">查看系列</span>
-                  <span class="material-symbols-outlined text-base">arrow_forward</span>
-                </span>
-              </div>
-            </a>
-
-            <!-- 辅助设备 -->
-            <a href="/products/other/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
-              <div class="h-40 bg-gradient-to-br from-slate-400 to-gray-500 flex items-center justify-center">
-                <span class="material-symbols-outlined text-white text-6xl" style="font-variation-settings: 'FILL' 0, 'wght' 200">settings</span>
-              </div>
-              <div class="p-5">
-                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_other">包装与配件</h3>
-                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_other_desc">定制包装设计、瓶贴标签、物流纸箱，一站式品牌包装方案。</p>
+                <h3 class="text-lg font-bold mb-2" data-i18n="nav_products_legacy">经典冲饮</h3>
+                <p class="text-slate-600 dark:text-slate-400 leading-relaxed mb-3 text-sm" data-i18n="prod_card_legacy_desc">经久不衰的经典冲饮品，陪伴每一个温暖时刻。</p>
                 <span class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all">
                   <span data-i18n="app_card_cta">查看系列</span>
                   <span class="material-symbols-outlined text-base">arrow_forward</span>
@@ -214,16 +244,7 @@
         </div>
       </section>
 
-      <!-- View All Products -->
-      <section class="fullwidth-bg py-6 bg-slate-50 dark:bg-slate-900/50">
-        <div class="section-content text-center">
-          <a href="/products/all/" class="inline-flex items-center gap-3 px-6 py-3 bg-primary text-white rounded-xl font-bold text-base hover:shadow-xl hover:shadow-primary/20 transition-all">
-            <span class="material-symbols-outlined">grid_view</span>
-            <span data-i18n="products_view_all_btn">查看全部 150+ 款产品</span>
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-        </div>
-      </section>
+
 
       <!-- CTA -->
       <section class="fullwidth-bg py-12 bg-primary relative overflow-hidden">
@@ -250,32 +271,32 @@
       </section>
     </main>
 
-    <script src="/assets/js/ui/dropdown-styles.js?v=202605241842"></script>
-    <script src="/assets/js/ui/dropdown-base.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/products-dropdown.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/support-dropdown.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/about-dropdown.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605241842"></script>
-<script defer src="/assets/js/ui/slide-menu.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/search-engine.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605241842"></script>
-    <script defer src="/assets/js/lang-registry.js?v=202605241842"></script>
-    <script defer src="/assets/js/translations.js?v=202605241842"></script><script defer src="/assets/js/translations-dropdown-template.js?v=202605241842"></script>
-    <script defer src="/assets/js/contacts.js?v=202605241842"></script>
+    <script src="/assets/js/ui/dropdown-styles.js?v=202605241854"></script>
+    <script src="/assets/js/ui/dropdown-base.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/products-dropdown.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/support-dropdown.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/about-dropdown.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/navigator.js?v=202605241854"></script>
+<script defer src="/assets/js/ui/slide-menu.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/search-engine.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/footer.js?v=202605241854"></script>
+    <script defer src="/assets/js/lang-registry.js?v=202605241854"></script>
+    <script defer src="/assets/js/translations.js?v=202605241854"></script><script defer src="/assets/js/translations-dropdown-template.js?v=202605241854"></script>
+    <script defer src="/assets/js/contacts.js?v=202605241854"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-<script defer src="/assets/js/vendor/swup.umd.js?v=202605241842"></script>
-<script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605241842"></script>
-<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605241842"></script>
-<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605241842"></script>
-<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605241842"></script>
-<script defer src="/assets/js/swup-init.js?v=202605241842"></script>
-<script defer src="/assets/js/page-init.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/helpers.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/page-effects.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/form-interactions.js?v=202605241842"></script>
-    <script defer src="/assets/js/page-interactions.js?v=202605241842"></script>
+<script defer src="/assets/js/vendor/swup.umd.js?v=202605241854"></script>
+<script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605241854"></script>
+<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605241854"></script>
+<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605241854"></script>
+<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605241854"></script>
+<script defer src="/assets/js/swup-init.js?v=202605241854"></script>
+<script defer src="/assets/js/page-init.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/helpers.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/page-effects.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/form-interactions.js?v=202605241854"></script>
+    <script defer src="/assets/js/page-interactions.js?v=202605241854"></script>
 
     <style>
       @keyframes fadeIn {
@@ -291,9 +312,9 @@
       }
     </style>
 
-    <script src="/assets/js/utils/device-utils.js?v=202605241842"></script>
-        <script defer src="/assets/js/ui/floating-actions.js?v=202605241842"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605241842"></script>
-  <script defer src="/assets/js/ui/bottom-tab.js?v=202605241842"></script>
+    <script src="/assets/js/utils/device-utils.js?v=202605241854"></script>
+        <script defer src="/assets/js/ui/floating-actions.js?v=202605241854"></script>
+    <script defer src="/assets/js/ui/trust-bar.js?v=202605241854"></script>
+  <script defer src="/assets/js/ui/bottom-tab.js?v=202605241854"></script>
 </body>
 </html>

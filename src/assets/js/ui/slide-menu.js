@@ -339,11 +339,11 @@
       // products 分类末尾追加「查看全部产品」链接
       if (item.id === "products") {
         subMenuHtml +=
-          '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/all/">' +
+          '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/">' +
           '<span class="mobile-menu-l2-icon">' +
           '<span class="material-symbols-outlined">grid_view</span>' +
           "</span>" +
-          '<span class="mobile-menu-l2-label" data-i18n="nav_mega_view_all">View All Products</span>' +
+          '<span class="mobile-menu-l2-label" data-i18n="nav_mega_products_center">Products Center</span>' +
           "</a>";
       }
 
