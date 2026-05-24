@@ -932,6 +932,9 @@
   function doRender() {
     var cats = getCategories();
     var prods = getAllProducts();
+    // Reset loadMore binding so it picks up the current filtered products
+    var _loadMoreBtn = document.querySelector('[data-i18n="products_load_more"]');
+    if (_loadMoreBtn) _loadMoreBtn._bound = false;
     if (!cats.length) {
       console.warn("[ProductGrid] doRender: no categories, showing empty state");
       var target = document.getElementById("product-list") || document.getElementById("product-grid");
