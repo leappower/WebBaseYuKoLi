@@ -114,7 +114,7 @@ const ROUTES = [
   { slug: 'products/steaming', navId: 'products' },
   { slug: 'products/other',    navId: 'products' },
   { slug: 'thank-you',    navId: 'thank-you' },
-  { slug: 'landing',      navId: 'landing' },
+  // { slug: 'landing',      navId: 'landing' },  // removed in i18n cleanup
   // Application sub-pages
   { slug: 'applications/chain-restaurant', navId: 'applications' },
   { slug: 'applications/food-factory',  navId: 'applications' },
@@ -207,7 +207,7 @@ function patchHtmlPaths(html) {
  * regardless of whether the source HTML already includes it (idempotent check).
  *
  * The script is injected with `defer` to match the pattern used in pages that
- * already include it statically (e.g. home, landing, 404).
+ * already include it statically (e.g. home, 404).
  */
 function injectLangRegistry(html) {
   // Already has lang-registry.js — skip (idempotent)

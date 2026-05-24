@@ -28,7 +28,7 @@
     products: _routes.products || "/products/",
     quote: _routes.quote || "/quote/",
     thankYou: _routes.thankYou || "/thank-you/",
-    landing: _routes.landing || "/landing/",
+    // landing: _routes.landing || "/landing/",  // removed
     support: _routes.support || "/support/",
     cases: _routes.cases || "/cases/",
     roiCalculator: _routes.roiCalculator || "/contact/",

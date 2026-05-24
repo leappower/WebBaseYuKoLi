@@ -872,10 +872,9 @@
       if (/\/deploy-/.test(path)) {
       }
 
-      // Support / landing 需要 custom-select.js
+      // Support 页面需要 custom-select.js
       if (
-        path.indexOf("/support/") !== -1 ||
-        path.indexOf("/landing/") !== -1
+        path.indexOf("/support/") !== -1
       ) {
         if (!window.CustomSelect) {
           scripts.push({ src: "/assets/js/ui/dropdown-styles.js", id: "spa-dropdown-styles" });

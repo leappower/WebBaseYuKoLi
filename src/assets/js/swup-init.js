@@ -166,7 +166,7 @@
         "/home": "home", "/products": "products", "/solutions": "solutions",
         "/manufacturing": "manufacturing", "/compliance": "compliance",
         "/contact": "contact", "/cases": "cases", "/about": "about",
-        "/news": "news", "/quote": "quote", "/landing": "landing",
+        "/news": "news", "/quote": "quote",
         "/support": "support", "/profit-calculator": "profit-calculator",
         "/resources": "resources",
       };

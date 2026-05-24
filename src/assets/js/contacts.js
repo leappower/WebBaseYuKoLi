@@ -46,7 +46,7 @@
       "/products/detail/": "产品详情",
       "/quote/": "在线询价",
       "/contact/": "联系我们",
-      "/landing/": "着陆页",
+      // "/landing/": "着陆页",  // removed
       "/home/": "首页",
       "/about/": "关于我们",
       "/news/": "新闻资讯",

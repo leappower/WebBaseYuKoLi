@@ -199,7 +199,7 @@
         cases: "/cases/",
         roiCalculator: "/profit-calculator/",
         about: "/about/",
-        landing: "/landing/",
+        // landing: "/landing/",  // removed in i18n cleanup
         contact: "/contact/",
       },
       exceptions: {
