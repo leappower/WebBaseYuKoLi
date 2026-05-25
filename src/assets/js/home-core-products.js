@@ -228,7 +228,7 @@
     loadCoreProducts(function (products) {
       if (!products || !products.length) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-4">暂无核心产品</div>';
+        container.innerHTML = '<div class="text-center text-slate-400 py-4"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
         return;
       }
 

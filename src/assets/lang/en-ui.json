@@ -5045,4 +5045,8 @@
   "seo_get_free_samples_and_experience_the_quality_dif...": "Get free samples and experience the quality difference of YuKoLi Technology",
   "cases_page_description": "Case studies covering Southeast Asia's health food OEM/ODM, view real ROI data.",
   "cases_page_description_short": "Case studies covering Southeast Asia's health food OEM/ODM, view ROI data.",
-  "cases_page_meta_description": "YuKoLi health food OEM/ODM case studies — covering global brands including brand owners, chain brands, cross-border e-commerce, and wellness brands."
+  "cases_page_meta_description": "YuKoLi health food OEM/ODM case studies — covering global brands including brand owners, chain brands, cross-border e-commerce, and wellness brands.",
+  "cases_no_results": "No matching cases found. Try adjusting your filters.",
+  "case_count": "cases",
+  "cases_filter_toggle": "Filter Cases"
+}
