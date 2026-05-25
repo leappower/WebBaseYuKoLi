@@ -5047,5 +5047,18 @@
   "cases_page_meta_description": "YuKoLi健康食品OEM/ODM案例研究 — 覆盖全球品牌，包括品牌方、连锁品牌、跨境电商和大健康品牌",
   "cases_no_results": "没有找到匹配的案例，试试调整筛选条件。",
   "case_count": "个案例",
-  "cases_filter_toggle": "筛选案例"
+  "cases_filter_toggle": "筛选案例",
+  "error_404_title": "404 — 页面未找到",
+  "error_404_code": "错误 404",
+  "error_404_heading": "页面未",
+  "error_404_found": "找到",
+  "error_404_desc": "您查找的页面不存在或已移走。让我们帮您回到正确的位置。",
+  "error_404_home": "返回首页",
+  "error_404_solutions": "浏览解决方案",
+  "error_404_quick_links": "快速链接",
+  "error_404_cases": "案例研究",
+  "error_404_support": "支持",
+  "error_404_calculator": "ROI 计算器",
+  "error_404_quote": "获取报价",
+  "error_404_esg": "ESG"
 }
