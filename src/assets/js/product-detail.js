@@ -259,12 +259,21 @@
       var catKey = product.category || "";
       var slugMap = (window.Breadcrumb && window.Breadcrumb.CATEGORY_KEY_TO_SLUG) || {};
       var slugMapRev = (window.Breadcrumb && window.Breadcrumb.SLUG_TO_CATEGORY_KEY) || {};
-      var slug = slugMap[catKey] || "";
+      // product.category is a slug ("tea"), but CATEGORY_KEY_TO_SLUG uses i18n keys ("nav_products_tea")
+      // Try direct lookup first, then try slug as fallback
+      var slug = slugMap[catKey] || slugMap["nav_products_" + catKey] || catKey || "";
       var catLabel = slug
         ? ((window.Breadcrumb && window.Breadcrumb.PRODUCT_SLUGS && window.Breadcrumb.PRODUCT_SLUGS[slug]) || {}).label
         : "";
       // Track referrer for back navigation
       if (slug) { try { sessionStorage.setItem("pdp_referrer", "/products/" + slug + "/"); } catch(e) {} }
+      
+      // Set pdp-category-link href dynamically
+      var categoryLink = document.getElementById("pdp-category-link");
+      if (categoryLink && slug) {
+        categoryLink.href = "/products/" + slug + "/";
+        categoryLink.setAttribute("data-category", slug);
+      }
       var model = product.model || "";
       // PC/Tablet breadcrumb
       var html =
@@ -300,6 +309,13 @@
       /* @audit-safe: config-driven-render */
       /* @audit-safe: config-driven-render */
       bcEl.innerHTML = html;
+      
+      // Show product category navigation if breadcrumb exists
+      var categoryNav = document.getElementById("product-category-nav");
+      if (categoryNav && slug) {
+        categoryNav.classList.remove("hidden");
+        categoryNav.style.display = "block";
+      }
     })();
 
     // Image: CMS upload > static
@@ -599,16 +615,25 @@
     if (!product) return "";
     var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
     if (lang === "zh-CN" || lang === "zh") return product[field] || "";
-    // Check translations cache (loaded via API)
+    
+    // Priority: API translations > local translations > fallback to Chinese
     var tKey = product.model || product.id;
     var translations = window._productTranslations || {};
     var t = translations[tKey] || translations[product._productId];
-    if (t && t[field]) return t[field];
+    
+    // Check local translations file (API fallback)
+    if (!t && window.PRODUCT_DATA_TRANSLATIONS) {
+      t = window.PRODUCT_DATA_TRANSLATIONS[tKey];
+    }
+    
+    if (t && t[field + 'En']) return t[field + 'En']; // fieldEn format (nameEn, descriptionEn)
+    if (t && t['nameEn' + field]) return t['nameEn' + field]; // alt format (nameEnDescription)
     return product[field] || "";
   };
 
   // Load translations for a language (called when user switches language)
   window.loadProductTranslations = function (lang, callback) {
+    // Always initialize empty object for Chinese
     if (lang === "zh-CN" || lang === "zh") {
       window._productTranslations = {};
       if (callback) callback();
