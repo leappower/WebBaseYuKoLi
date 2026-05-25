@@ -185,6 +185,44 @@
         es: "Español", pt: "Português", it: "Italiano", nl: "Nederlands",
         pl: "Polski", uk: "Українська", he: "עברית",
       },
+      // Build languages array from supportedLangs + langLabels
+      // Consumed by lang-registry.js → LANG_REGISTRY.LANGUAGES
+      languages: (function () {
+        var codes = [
+          "en","zh-CN","zh-TW","ja","ko","th","vi","id","ms","my",
+          "hi","bn","ar","fa","tr","ru","de","fr","es","pt",
+          "it","nl","pl","uk","he",
+        ];
+        var labels = {
+          en: "English", "zh-CN": "简体中文", "zh-TW": "繁體中文",
+          ja: "日本語", ko: "한국어", th: "ไทย", vi: "Tiếng Việt",
+          id: "Bahasa Indonesia", ms: "Bahasa Melayu", my: "မြန်မာ",
+          hi: "हिन्दी", bn: "বাংলা", ar: "العربية", fa: "فارسی",
+          tr: "Türkçe", ru: "Русский", de: "Deutsch", fr: "Français",
+          es: "Español", pt: "Português", it: "Italiano", nl: "Nederlands",
+          pl: "Polski", uk: "Українська", he: "עברית",
+        };
+        var uiGroupMap = {
+          "zh-CN": "common", "en": "common",
+          "zh-TW": "east_asia", "ja": "east_asia", "ko": "east_asia",
+          "th": "southeast_asia", "vi": "southeast_asia", "id": "southeast_asia",
+          "ms": "southeast_asia", "my": "southeast_asia",
+          "ar": "middle_east", "fa": "middle_east", "hi": "other", "bn": "other",
+          "tr": "european", "ru": "european", "de": "european",
+          "fr": "european", "es": "european", "pt": "european",
+          "it": "european", "nl": "european", "pl": "european", "uk": "european",
+          "he": "other",
+        };
+        return codes.map(function (code, idx) {
+          return {
+            code: code,
+            nativeName: labels[code] || code,
+            sortOrder: idx,
+            uiGroup: uiGroupMap[code] || "other",
+            hasTranslation: code === "en" || code === "zh-CN",
+          };
+        });
+      })(),
     },
 
     // ═══════════════════════════════════════════════════════════

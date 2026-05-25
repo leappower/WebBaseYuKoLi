@@ -192,3 +192,4 @@ var PRODUCT_DATA_TABLE = [
 var PRODUCT_DATA_VERSION = "20260524-v2";
 window.PRODUCT_DATA_TABLE = PRODUCT_DATA_TABLE;
 window.PRODUCT_DATA_VERSION = PRODUCT_DATA_VERSION;
+window.dispatchEvent(new Event("product-data-ready"));

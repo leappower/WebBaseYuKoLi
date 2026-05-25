@@ -300,12 +300,29 @@ function detectDeviceType(filename) {
  */
 function generateRouteIndex(route) {
   const srcDir = path.join(SRC_PAGES_DIR, route.slug);
-  const srcEntryFile = path.join(srcDir, 'index.html');
+  
+  // 查找响应式文件，优先使用 index-pc.html 作为主入口
+  const possibleFiles = [
+    path.join(srcDir, 'index-pc.html'),
+    path.join(srcDir, 'index.html'),
+    path.join(srcDir, 'index-mobile.html'),
+    path.join(srcDir, 'index-tablet.html')
+  ];
+  
+  let srcEntryFile = null;
+  for (const file of possibleFiles) {
+    if (fs.existsSync(file)) {
+      srcEntryFile = file;
+      break;
+    }
+  }
 
-  if (!fs.existsSync(srcEntryFile)) {
-    log('WARN: No index.html found for route: ' + route.slug);
+  if (!srcEntryFile) {
+    log('WARN: No index*.html found for route: ' + route.slug);
     return false;
   }
+  
+  log('Using entry file: ' + path.basename(srcEntryFile));
 
   // Read the source entry file
   let html = fs.readFileSync(srcEntryFile, 'utf-8');
@@ -676,6 +693,42 @@ function main() {
   }
   copyJsRecursive(_srcJsDir, _distJsDir);
   if (_jsCopied > 0) log('  ✓ Copied ' + _jsCopied + ' JS files to assets/js/');
+
+  // Step 5.6: Copy images from src/assets/images to dist/assets/images
+  log('\nStep 5.6: Copying image files...');
+  const srcImagesDir = path.resolve(__dirname, '..', 'src', 'assets', 'images');
+  const distImagesDir = path.join(DIST_DIR, 'assets', 'images');
+  if (fs.existsSync(srcImagesDir)) {
+    if (!fs.existsSync(distImagesDir)) {
+      fs.mkdirSync(distImagesDir, { recursive: true });
+    }
+    // Copy images recursively
+    function copyImagesRecursive(srcDir, dstDir) {
+      if (!fs.existsSync(srcDir)) return;
+      if (!fs.existsSync(dstDir)) fs.mkdirSync(dstDir, { recursive: true });
+      const entries = fs.readdirSync(srcDir);
+      let copiedCount = 0;
+      for (const entry of entries) {
+        const srcPath = path.join(srcDir, entry);
+        const dstPath = path.join(dstDir, entry);
+        if (fs.statSync(srcPath).isDirectory()) {
+          copyImagesRecursive(srcPath, dstPath);
+        } else if (entry.match(/\.(jpg|jpeg|png|webp|svg|gif)$/i)) {
+          fs.copyFileSync(srcPath, dstPath);
+          copiedCount++;
+        }
+      }
+      return copiedCount;
+    }
+    const imagesCopied = copyImagesRecursive(srcImagesDir, distImagesDir);
+    if (imagesCopied > 0) {
+      log('  ✓ Copied ' + imagesCopied + ' image files to assets/images/');
+    } else {
+      log('  ⚠ No image files found in src/assets/images/');
+    }
+  } else {
+    log('  ⚠ Image directory not found: ' + srcImagesDir);
+  }
 
   // Step 6: Patch CSS files for basePath (font URLs in local-fonts.css)
   if (BASE_PATH) {

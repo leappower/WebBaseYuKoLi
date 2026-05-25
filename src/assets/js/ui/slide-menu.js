@@ -334,17 +334,26 @@
         })
         .join("\n");
 
-      subMenuHtml = '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' + childItemsHtml;
-
-      // products 分类末尾追加「查看全部产品」链接
       if (item.id === "products") {
-        subMenuHtml +=
+        subMenuHtml =
+          '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' +
           '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/">' +
           '<span class="mobile-menu-l2-icon">' +
+          '<span class="material-symbols-outlined">store</span>' +
+          '</span>' +
+          '<span class="mobile-menu-l2-label" data-i18n="nav_products_center">Products Center</span>' +
+          '</a>' +
+          '<div class="mobile-menu-l2-separator"></div>' +
+          childItemsHtml +
+          '<div class="mobile-menu-l2-separator"></div>' +
+          '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/all/">' +
+          '<span class="mobile-menu-l2-icon">' +
           '<span class="material-symbols-outlined">grid_view</span>' +
-          "</span>" +
-          '<span class="mobile-menu-l2-label" data-i18n="nav_mega_products_center">Products Center</span>' +
-          "</a>";
+          '</span>' +
+          '<span class="mobile-menu-l2-label" data-i18n="nav_products_all">View All Products</span>' +
+          '</a>';
+      } else {
+        subMenuHtml = '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' + childItemsHtml;
       }
 
       subMenuHtml += "</div>";

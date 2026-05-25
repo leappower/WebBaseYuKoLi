@@ -881,6 +881,13 @@
   var _renderPending = false;
 
   function autoRender() {
+    // Re-sync _activeCategory from current URL (needed for SPA navigation)
+    var pathMatch = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
+    if (pathMatch && pathMatch[1]) {
+      _activeCategory = pathMatch[1];
+    } else if (window.location.pathname.indexOf('/products/') === -1) {
+      _activeCategory = 'all';
+    }
     if (_renderPending) return;
     var data = window[STORE_KEY];
     var hasData = Array.isArray(data) && data.length > 0;
@@ -889,10 +896,27 @@
       doRender();
     } else {
       _renderPending = true;
+      // Try loading data (sync check + API fallback)
       loadFromAPI(function () {
         _renderPending = false;
         doRender();
       });
+      // SPA race: product-data-table.js may load AFTER this call.
+      // Register a one-shot listener for the data-ready event.
+      // If data arrives later, re-render with correct category.
+      var _onDataReady = function () {
+        global.removeEventListener('product-data-ready', _onDataReady);
+        _renderPending = false;
+        doRender();
+      };
+      global.addEventListener('product-data-ready', _onDataReady);
+      // Safety: if data already loaded between loadFromAPI and here, render now
+      if (Array.isArray(global.PRODUCT_DATA_TABLE) && global.PRODUCT_DATA_TABLE.length > 0) {
+        global.removeEventListener('product-data-ready', _onDataReady);
+        window[STORE_KEY] = global.PRODUCT_DATA_TABLE;
+        _renderPending = false;
+        doRender();
+      }
     }
   }
 
