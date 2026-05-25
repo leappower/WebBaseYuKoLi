@@ -22,10 +22,10 @@
       legalName: "Foshan YuKoLi Technology Co., Ltd.",
       legalNameCN: "佛山市跃迁力科技有限公司",
       slogan: { en: "Health Food OEM/ODM Solutions", "zh-CN": "健康冲调食品 OEM/ODM 专家" },
-      logo: "/assets/images/logo_html.webp",
-      logoDark: "/assets/images/logo_html_2.webp",
-      logoFooter: "/assets/images/logo_footer.webp",
-      logoHeader: "/assets/images/logo_header.webp",
+      logo: "/assets/images/logo-main.webp",
+      logoDark: "/assets/images/logo-main-dark.webp",
+      logoFooter: "/assets/images/logo-footer.webp",
+      logoHeader: "/assets/images/logo-header.webp",
       domain: "brew.yukoli.com",
       url: "https://brew.yukoli.com",
     },
@@ -36,7 +36,7 @@
     seo: {
       title: "<span data-i18n=\"seo_yukoli\">YuKoLi</span> 优科力 | <span data-i18n=\"seo_健康冲调食品_OEM_ODM专家\">健康冲调食品 OEM/ODM 专家</span>",
       description: "YuKoLi 优科力科技 — 20年专注健康冲调食品 OEM/ODM，7大产品线（咖啡、茶饮、代餐、胶原、体重管理、肠道健康、功能冲饮），4座自有工厂，出口30+国家。提供配方研发、生产制造、品牌定制一站式服务。",
-      ogImage: "/assets/images/logo_header.webp",
+      ogImage: "/assets/images/logo-header.webp",
     },
 
     // ═══════════════════════════════════════════════════════════
@@ -313,18 +313,18 @@
     // ═══════════════════════════════════════════════════════════
     images: {
       prefix: "images",
-      heroBg: "images/workshop_bgm.webp",
-      heroMain: "images/hero_main.webp",
-      factoryPoster: "images/factory_video_poster.webp",
+      heroBg: "images/workshop-bg.webp",
+      heroMain: "images/hero-main.webp",
+      factoryPoster: "images/factory-video-poster.webp",
       gallery: [
-        "images/factory_gallery_1.webp",
-        "images/factory_gallery_2.webp",
-        "images/factory_gallery_3.webp",
-        "images/factory_gallery_4.webp",
+        "images/factory-gallery-1.webp",
+        "images/factory-gallery-2.webp",
+        "images/factory-gallery-3.webp",
+        "images/factory-gallery-4.webp",
       ],
       certs: [
-        "images/cert_1.webp", "images/cert_2.webp", "images/cert_3.webp",
-        "images/cert_4.webp", "images/cert_5.webp", "images/cert_6.webp",
+        "images/cert-1.webp", "images/cert-2.webp", "images/cert-3.webp",
+        "images/cert-4.webp", "images/cert-5.webp", "images/cert-6.webp",
       ],
     },
 

@@ -22,7 +22,7 @@
       nameZh: "优科力",
       nameFull: "Foshan YuKoLi Technology Co., Ltd.",
       slogan: { en: "Your OEM/ODM Partner for Health Food Manufacturing", "zh-CN": "您的健康食品 OEM/ODM 合作伙伴" },
-      logo: "/assets/images/logo_footer.webp",
+      logo: "/assets/images/logo-footer.webp",
       domain: "yukoli.com",
     },
 
@@ -272,7 +272,7 @@
     // Images（图片路径）
     // ═══════════════════════════════════════════════════════════
     images: {
-      logo: "/assets/images/logo_footer.webp",
+      logo: "/assets/images/logo-footer.webp",
       favicon: "/assets/favicon.ico",
       ogImage: "/assets/images/og-image.jpg",
     },

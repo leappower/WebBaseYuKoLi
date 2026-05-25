@@ -631,6 +631,18 @@ for f in $(grep -roh 'src="[^"]*\.js' dist/ | sed 's/src="//'); do [ ! -f "dist/
 
 ### 6.1 命名 🔴
 
+遵循 [Google Developer Documentation Style Guide — Filenames](https://developers.google.com/style/filenames)。
+
+**核心原则：**
+
+1. **全小写** — 跨平台兼容，查找更高效
+2. **连字符分隔** — `-` 而非 `_`（搜索引擎将 `-` 视为空格，`_` 不会）
+3. **仅 ASCII 字符** — 禁止中文、特殊符号、重音字符
+4. **语义化** — 描述文件内容，不使用随机 ID 或时间戳
+5. **禁止泛型名** — 如 `document1.html`、`image1.png`
+
+**例外：** 如果目录内已有既定的 `_` 风格，且难以全局修改，可保持一致性使用 `_`。
+
 | 类型 | 格式 | 示例 |
 |------|------|------|
 | JS | `kebab-case.js` | `profit-calculator.js` |
@@ -638,6 +650,28 @@ for f in $(grep -roh 'src="[^"]*\.js' dist/ | sed 's/src="//'); do [ ! -f "dist/
 | HTML | `index-{device}.html` | `index-pc.html`, `index-mobile.html` |
 | 配置 | `kebab-case.config.js` | `site.config.js` |
 | 文档 | `UPPER-CASE.md` | `DEV-STANDARDS.md` |
+| 图片（通用） | `{module}-{描述}.{ext}` | `about-hero.webp`, `dishwasher-front.webp` |
+| 图片（产品系列） | `{系列}-{序号}.{ext}` | `coffee-001.webp`, `gut-012.webp` |
+| 图片（产品 SKU） | `{product-model}.{ext}` | `esl-gb80.webp`, `esl-gq90.webp` |
+| 图片（场景/分类） | `{模块}-{场景}-{描述}.{ext}` | `canteen-pain-1.webp`, `factory-gallery-1.webp` |
+| 视频 | `{模块}-{描述}.{ext}` | `product-showcase.mp4` |
+| SVG | `{模块}-{描述}.svg` | `world-map.svg` |
+| Favicon/OG | `{用途}.{ext}` | `og-home.webp`, `favicon.webp` |
+
+**产品图片路径约定：**
+```
+/assets/images/products/{category}/{seq}.webp
+# 例：/assets/images/products/coffee/001.webp
+```
+
+**违规示例：**
+
+| ❌ 违规 | 问题 | ✅ 修正 |
+|--------|------|--------|
+| `canteen-推荐.webp` | 含中文 | `canteen-recommended.webp` |
+| `factory_gallery_1.webp` | 用下划线 | `factory-gallery-1.webp` |
+| `1776770021777-859b3w.webp` | 随机 ID 无语义 | `product-001.webp` |
+| `b1rac_1.webp` | 无意义编码 | 移入子目录命名 |
 
 ### 6.2 模块结构 🔴
 
