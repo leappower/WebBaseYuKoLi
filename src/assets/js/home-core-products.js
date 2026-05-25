@@ -90,7 +90,7 @@
       var container = document.querySelector('[id^="home-core-products"]');
       if (container) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-8">暂无核心产品</div>';
+        container.innerHTML = '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
       }
       setTimeout(function () { callback([], "local"); }, 0);
     }
@@ -123,7 +123,7 @@
     loadCoreProducts(function (products) {
       if (!products || !products.length) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-8">暂无核心产品</div>';
+        container.innerHTML = '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
         return;
       }
 
@@ -178,7 +178,7 @@
     loadCoreProducts(function (products) {
       if (!products || !products.length) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-8">暂无核心产品</div>';
+        container.innerHTML = '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
         return;
       }
 

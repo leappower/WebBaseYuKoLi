@@ -4768,6 +4768,8 @@
   "contact_china_address_label": "中文地址",
   "contact_english_address_label": "English Address",
   "about_hero_btn_story": "了解我们的故事",
+  "products_load_error": "产品加载失败，请刷新页面重试",
+  "products_load_retry": "重试加载产品",
   "about_products_title": "7大产品线，全品类覆盖",
   "about_products_desc": "从咖啡冲调到功能冲饮，满足不同品牌和市场的多样化需求",
   "about_pl_coffee": "咖啡冲调",

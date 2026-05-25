@@ -1232,9 +1232,9 @@
       console.warn("[ProductGrid] Skeleton still present after 5s — clearing");
       var errorMsg =
         typeof window.t === "function"
-          ? window.t("products_load_error", "产品加载失败，请刷新页面重试")
+          ? window.t("products_load_error")
           : "产品加载失败，请刷新页面重试";
-      var retryText = typeof window.t === "function" ? window.t("products_load_retry", "重新加载") : "重新加载";
+      var retryText = typeof window.t === "function" ? window.t("products_load_retry") : "重新加载";
       /* @audit-safe: internal-data */
       /* @audit-safe: internal-data */
       grid.innerHTML =
@@ -1249,9 +1249,9 @@
       console.warn("[ProductGrid] Skeleton still present in list after 5s — clearing");
       var errorMsg =
         typeof window.t === "function"
-          ? window.t("products_load_error", "产品加载失败，请刷新页面重试")
+          ? window.t("products_load_error")
           : "产品加载失败，请刷新页面重试";
-      var retryText = typeof window.t === "function" ? window.t("products_load_retry", "重新加载") : "重新加载";
+      var retryText = typeof window.t === "function" ? window.t("products_load_retry") : "重新加载";
       /* @audit-safe: internal-data */
       /* @audit-safe: internal-data */
       list.innerHTML =

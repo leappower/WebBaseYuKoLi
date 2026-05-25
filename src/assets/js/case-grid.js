@@ -244,7 +244,7 @@
 
     // Update count
     var countEl = document.getElementById('case-count')
-    if (countEl) countEl.textContent = cases.length + ' 个案例'
+    if (countEl) countEl.textContent = cases.length + ' 个 个案例'
   }
 
   /* ── Filter UI Builders ─────────────────────────── */
@@ -346,7 +346,7 @@
       }
       html += '</select>'
     }
-    html += '<span id="case-count" class="flex-shrink-0 text-xs font-bold text-primary whitespace-nowrap">8 个案例</span>'
+    html += '<span id="case-count" class="flex-shrink-0 text-xs font-bold text-primary whitespace-nowrap">8 个 个案例</span>'
     html += '</div>'
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */

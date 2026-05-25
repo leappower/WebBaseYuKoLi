@@ -1,0 +1,9 @@
+src/pages/products/beauty/index-tablet.html
+src/pages/products/meal/index-tablet.html
+src/pages/products/weight/index-tablet.html
+src/pages/products/gut/index-tablet.html
+src/pages/products/lifestyle/index-tablet.html
+src/pages/products/legacy/index-tablet.html
+src/pages/products/detail/index-tablet.html
+src/pages/products/coffee/index-tablet.html
+src/pages/products/tea/index-tablet.html

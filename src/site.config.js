@@ -1,14 +1,14 @@
 /*!
- * BrewYuKoLi — 站点配置枢纽（生产版本）
+ * site_config_site_name — 站点配置枢纽（生产版本）
  * 所有模块通过 window.SITE_CONFIG 读取
  *
- * 最后更新：2026-05-17 (Nav Alignment Phase 1)
+ * site_config_last_updated — 最后更新：2026-05-17 (Nav Alignment Phase 1)
  * 变更：
  *   - 更新 navMode desktop 为 mega-menu
  *   - 更新 footer.mobileItems 符合统一底部栏规范
- *   - 添加 contact.whatsappNumber，统一 WhatsApp 号码
- *   - 添加 nav.secondaryItems（About/News/FAQ）
- *   - 添加 brand 配置，品牌色统一 #2E7D32
+ *   - site_config_update_contact_whatsapp: 添加 contact.whatsappNumber，统一 WhatsApp 号码
+ *   - site_config_update_nav_secondary: 添加 nav.secondaryItems（About/News/FAQ）
+ *   - site_config_update_brand: 添加 brand 配置，品牌色统一 #2E7D32
  */
 (function () {
   "use strict";

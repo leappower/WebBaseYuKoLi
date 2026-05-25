@@ -1,9 +1,0 @@
-src/pages/home/index-pc.html
-src/pages/about/index-pc.html
-src/pages/applications/index-pc.html
-src/pages/cases/index-pc.html
-src/pages/compliance/index-pc.html
-src/pages/contact/index-pc.html
-src/pages/manufacturing/index-pc.html
-src/pages/products/index-pc.html
-src/pages/products/all/index-pc.html

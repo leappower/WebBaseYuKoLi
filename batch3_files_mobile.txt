@@ -1,0 +1,9 @@
+src/pages/products/beauty/index-mobile.html
+src/pages/products/meal/index-mobile.html
+src/pages/products/weight/index-mobile.html
+src/pages/products/gut/index-mobile.html
+src/pages/products/lifestyle/index-mobile.html
+src/pages/products/legacy/index-mobile.html
+src/pages/products/detail/index-mobile.html
+src/pages/products/coffee/index-mobile.html
+src/pages/products/tea/index-mobile.html

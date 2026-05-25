@@ -1,0 +1,9 @@
+src/pages/products/beauty/index-pc.html
+src/pages/products/meal/index-pc.html
+src/pages/products/weight/index-pc.html
+src/pages/products/gut/index-pc.html
+src/pages/products/lifestyle/index-pc.html
+src/pages/products/legacy/index-pc.html
+src/pages/products/detail/index-pc.html
+src/pages/products/coffee/index-pc.html
+src/pages/products/tea/index-pc.html
