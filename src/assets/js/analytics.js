@@ -1,5 +1,5 @@
 /*!
- * BrewYuKoLi — GA4 Analytics Integration
+ * analytics_integrations_name — BrewYuKoLi — GA4 Analytics Integration
  * IIFE, ES5-compatible
  * Reads config from window.SITE_CONFIG.analytics
  */

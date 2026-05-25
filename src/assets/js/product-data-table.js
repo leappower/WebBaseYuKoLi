@@ -1,5 +1,5 @@
 /**
- * product-data-table.js — BrewYuKoLi 产品目录（8 分类版）
+ * i18n_module_name_product_data_table — product-data-table.js — BrewYuKoLi 产品目录（8 分类版）
  *
  * 数据来源: catalog V4 + 画册 V4（172 SKU）
  * 最后更新: 2026-05-24

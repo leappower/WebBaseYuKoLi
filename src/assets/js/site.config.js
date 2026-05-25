@@ -34,7 +34,7 @@
     // SEO
     // ═══════════════════════════════════════════════════════════
     seo: {
-      title: "YuKoLi 优科力 | 健康冲调食品 OEM/ODM 专家",
+      title: "<span data-i18n=\"seo_yukoli\">YuKoLi</span> 优科力 | <span data-i18n=\"seo_健康冲调食品_OEM_ODM专家\">健康冲调食品 OEM/ODM 专家</span>",
       description: "YuKoLi 优科力科技 — 20年专注健康冲调食品 OEM/ODM，7大产品线（咖啡、茶饮、代餐、胶原、体重管理、肠道健康、功能冲饮），4座自有工厂，出口30+国家。提供配方研发、生产制造、品牌定制一站式服务。",
       ogImage: "/assets/images/logo_header.webp",
     },

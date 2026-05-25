@@ -130,7 +130,7 @@
           img.src = src.replace(/\.webp$/i, ".png");
         } else {
           img.src =
-            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f1f5f9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2394a3b8' font-size='14'%3E暂无图片%3C/text%3E%3C/svg%3E";
+            "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%23f1f5f9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%2394a3b8' font-size='14'%3E" + (window.t ? window.t('no_image', '暂无图片') : '暂无图片') + "%3C/text%3E%3C/svg%3E";
         }
       },
       { once: true }

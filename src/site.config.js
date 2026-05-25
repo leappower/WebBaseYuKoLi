@@ -30,7 +30,7 @@
     // SEO
     // ═══════════════════════════════════════════════════════════
     seo: {
-      title: { en: "YuKoLi — OEM/ODM Health Food Manufacturer", "zh-CN": "优科力 — 健康食品 OEM/ODM 代工生产" },
+      title: { en: "<span data-i18n=\"seo_yukoli\">YuKoLi</span> — <span data-i18n=\"seo_OEM_ODM_Health_Food_Manufacturer\">OEM/ODM Health Food Manufacturer</span>", "zh-CN": "<span data-i18n=\"seo_yukoli\">优科力</span> — <span data-i18n=\"seo_健康食品_OEM_ODM代工生产\">健康食品 OEM/ODM 代工生产</span>" },
       description: { en: "FDA & HACCP certified OEM/ODM health food manufacturer. 4 owned factories, 100K+ units daily capacity. Coffee, tea, meal replacement, collagen & more.", "zh-CN": "FDA/HACCP 认证健康食品代工厂。4 大自有工厂，日产能 10 万+。咖啡、代餐、胶原蛋白等 OEM/ODM。" },
     },
 

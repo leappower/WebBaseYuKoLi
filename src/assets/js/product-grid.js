@@ -932,7 +932,7 @@
       if (target) {
         target.innerHTML = '<div class="col-span-full text-center py-16 text-gray-400">' +
           '<span class="material-symbols-outlined text-5xl mb-3 block">inventory_2</span>' +
-          '<p>No products available yet.</p></div>';
+          '<p><span data-i18n="no_products_available">No products available yet.</span></p></div>';
       }
       var overlay = document.getElementById("skeleton-overlay");
       if (overlay) overlay.setAttribute("hidden", "");
