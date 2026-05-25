@@ -1,0 +1,9 @@
+src/pages/home/index-tablet.html
+src/pages/about/index-tablet.html
+src/pages/applications/index-tablet.html
+src/pages/cases/index-tablet.html
+src/pages/compliance/index-tablet.html
+src/pages/contact/index-tablet.html
+src/pages/manufacturing/index-tablet.html
+src/pages/products/index-tablet.html
+src/pages/products/all/index-tablet.html

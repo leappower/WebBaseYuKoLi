@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 — Page Not Found | Yukoli</title>
+  <title data-i18n="error_404_title">404 — Page Not Found</title>
   <link rel="canonical" href="%DOMAIN%/"/>
   <meta name="robots" content="noindex">
 
@@ -48,7 +48,7 @@
     data-cta-href="/contact/"
   ></navigator>
 
-  <!-- 404 content -->
+  <!-- error_404_content -->
   <main class="flex-1 flex items-center justify-center px-6 py-24">
     <div class="max-w-2xl mx-auto text-center space-y-10">
 
@@ -66,39 +66,37 @@
       <!-- Text -->
       <div class="space-y-4">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest">
-          <span>Error 404</span>
+          <span data-i18n="error_404_code">Error 404</span>
         </div>
         <h1 class="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white">
-          Page Not <span class="text-primary">Found</span>
+          <span data-i18n="error_404_heading">Page Not</span> <span class="text-primary"><span data-i18n="error_404_found">Found</span></span>
         </h1>
         <p class="text-lg text-slate-500 dark:text-slate-400 max-w-md mx-auto leading-relaxed" data-i18n="error_404_desc">
-          The page you're looking for doesn't exist or has been moved. Let's get you back on track.
-        </p>
       </div>
 
-      <!-- Navigation options -->
+      <!-- error_404_navigation -->
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a href="/home/"
            class="bg-primary text-white px-8 py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20 transition-all">
           <span class="material-symbols-outlined text-lg">home</span>
-          Go to Homepage
+          <span data-i18n="error_404_home">Go to Homepage</span>
         </a>
         <a href="/applications/"
            class="border-2 border-slate-200 dark:border-slate-700 px-8 py-4 rounded-xl font-bold text-base flex items-center justify-center gap-2 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all">
           <span class="material-symbols-outlined text-lg">inventory_2</span>
-          Browse Solutions
+          <span data-i18n="error_404_solutions">Browse Solutions</span>
         </a>
       </div>
 
       <!-- Quick links -->
       <div class="pt-4 border-t border-slate-200 dark:border-slate-800">
-        <p class="text-sm text-slate-400 mb-4 font-semibold uppercase tracking-widest">Quick Links</p>
+        <p class="text-sm text-slate-400 mb-4 font-semibold uppercase tracking-widest" data-i18n="error_404_quick_links">Quick Links</p>
         <div class="flex flex-wrap gap-3 justify-center">
-          <a href="/applications/cases/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium">Case Studies</a>
+          <a href="/applications/cases/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium" data-i18n="error_404_cases">Case Studies</a>
           <span class="text-slate-300 dark:text-slate-700">·</span>
-          <a href="/support/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium">Support</a>
+          <a href="/support/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium" data-i18n="error_404_support">Support</a>
           <span class="text-slate-300 dark:text-slate-700">·</span>
-          <a href="/profit-calculator/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium">ROI Calculator</a>
+          <a href="/profit-calculator/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium" data-i18n="error_404_calculator">ROI Calculator</a>
           <span class="text-slate-300 dark:text-slate-700">·</span>
           <a href="/quote/" class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors font-medium">Get a Quote</a>
           <span class="text-slate-300 dark:text-slate-700">·</span>

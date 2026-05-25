@@ -1,0 +1,9 @@
+src/pages/home/index-mobile.html
+src/pages/about/index-mobile.html
+src/pages/applications/index-mobile.html
+src/pages/cases/index-mobile.html
+src/pages/compliance/index-mobile.html
+src/pages/contact/index-mobile.html
+src/pages/manufacturing/index-mobile.html
+src/pages/products/index-mobile.html
+src/pages/products/all/index-mobile.html
