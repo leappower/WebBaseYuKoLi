@@ -5060,5 +5060,6 @@
   "error_404_support": "支持",
   "error_404_calculator": "ROI 计算器",
   "error_404_quote": "获取报价",
-  "error_404_esg": "ESG"
+  "error_404_esg": "ESG",
+  "noscript_message": "请启用 JavaScript 或点击此处访问我们的网站。"
 }
