@@ -412,19 +412,7 @@
       })
       .join("\n");
 
-    var ctaBarHtml =
-      '<div class="mobile-menu-cta-bar">' +
-      '<a class="mobile-menu-cta-btn secondary" href="/contact/" data-nav="/contact/">' +
-      '<span class="material-symbols-outlined">mail</span>' +
-      '<span data-i18n="btn_contact_us">Contact Us</span>' +
-      "</a>" +
-      '<a class="mobile-menu-cta-btn primary" href="/contact/" data-nav="/contact/">' +
-      '<span class="material-symbols-outlined">request_quote</span>' +
-      '<span data-i18n="nav_get_quote">Get Quote</span>' +
-      "</a>" +
-      "</div>";
-
-    return headerHtml + menuItemsHtml + ctaBarHtml;
+    return headerHtml + '<div class="mobile-menu-scroll">' + menuItemsHtml + "</div>"; /**ctaBarHtml removed — rendered as separate body child in openMenu()*/
   }
 
   /* ================================================================
@@ -436,6 +424,27 @@
 
   /** @type {HTMLElement|null} 菜单面板 DOM 引用 */
   var panelEl = null;
+
+  /** @type {HTMLElement|null} CTA 栏 DOM 引用 */
+  var ctaBarEl = null;
+
+  /**
+   * 生成 CTA 栏 HTML
+   */
+  function renderCtaBar() {
+    return (
+      '<div class="mobile-menu-cta-bar" id="mobile-menu-cta-bar">' +
+      '<a class="mobile-menu-cta-btn secondary" href="/contact/" data-nav="/contact/">' +
+      '<span class="material-symbols-outlined">mail</span>' +
+      '<span data-i18n="btn_contact_us">Contact Us</span>' +
+      "</a>" +
+      '<a class="mobile-menu-cta-btn primary" href="/contact/" data-nav="/contact/">' +
+      '<span class="material-symbols-outlined">request_quote</span>' +
+      '<span data-i18n="nav_get_quote">Get Quote</span>' +
+      "</a>" +
+      "</div>"
+    );
+  }
 
   /**
    * 打开移动端滑出菜单
@@ -472,9 +481,26 @@
       });
     }
 
+    // 创建 CTA 栏（独立于面板，避免 position:fixed 在 overflow:auto 容器内失效）
+    ctaBarEl = document.createElement("div");
+    ctaBarEl.innerHTML = renderCtaBar();
+    var ctaBarChild = ctaBarEl.firstElementChild;
+
+    // 为 CTA 栏应用翻译
+    if (window.translationManager && ctaBarChild) {
+      ctaBarChild.querySelectorAll("[data-i18n]").forEach(function (el) {
+        var key = el.getAttribute("data-i18n");
+        var translated = window.translationManager.translate(key);
+        if (translated && translated !== key) {
+          el.textContent = translated;
+        }
+      });
+    }
+
     // 插入 DOM 并锁定滚动
     document.body.appendChild(overlayEl);
     document.body.appendChild(panelEl);
+    if (ctaBarChild) document.body.appendChild(ctaBarChild);
     document.body.style.overflow = "hidden";
 
     // 触发入场动画（下一帧添加 is-open class）
@@ -507,8 +533,14 @@
       if (panelEl && panelEl.parentNode) {
         panelEl.parentNode.removeChild(panelEl);
       }
+      // 清理独立 CTA 栏
+      var ctaBar = document.getElementById("mobile-menu-cta-bar");
+      if (ctaBar && ctaBar.parentNode) {
+        ctaBar.parentNode.removeChild(ctaBar);
+      }
       overlayEl = null;
       panelEl = null;
+      ctaBarEl = null;
       document.body.style.overflow = "";
     }, 350);
   }
@@ -629,9 +661,9 @@
     }
 
     // 底部 CTA 按钮
-    var ctaButtons = panelEl.querySelectorAll(".mobile-menu-cta-btn[data-nav]");
+    var ctaButtons = document.querySelectorAll(".mobile-menu-cta-btn[data-nav]");
     for (var n = 0; n < ctaButtons.length; n++) {
-      ctaButtons[n].addEventListener("click", function (evt) {
+      ctaButtons[n].addEventListener("click", function (_evt) {
         closeMenu();
         // Navigate 由全局 click handler (spa-router.js) 统一处理
       });

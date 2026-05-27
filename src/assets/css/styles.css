@@ -2230,8 +2230,8 @@ html.dark .ios-search-clear .material-symbols-outlined {
   z-index: calc(var(--z-drawer, 10000) + 10);
   transform: translateX(-100%);
   transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
 }
 .mobile-menu-panel.is-open {
@@ -2475,6 +2475,13 @@ html.dark .mobile-menu-l2-item.is-active {
 }
 html.dark .mobile-menu-l2-item.is-active .mobile-menu-l2-icon {
   background: rgba(46, 125, 50, 0.25);
+}
+
+/* ---------- 菜单可滚动区域 ---------- */
+.mobile-menu-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ---------- 底部 CTA 栏 ---------- */
