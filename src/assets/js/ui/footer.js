@@ -14,8 +14,10 @@
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _features = _cfg.features || {};
 
-  /* ── Guard: bottom nav delegated to bottom-tab.js ── */
-  if (_features.unifiedBottomNav) return;
+  /* ── Guard: unifiedBottomNav 开启时，bottom tab bar 由 bottom-tab.js 接管 ── */
+  /* PC (>=1024px) 需要 PC footer，不受影响 */
+  /* <1024px: 只渲染 compact footer（不含 bottom bar），bottom bar 由 bottom-tab.js 负责 */
+  var _unifiedBottomNav = _features.unifiedBottomNav;
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -269,10 +271,15 @@
       var resolvedVariant = w >= 768 ? "tablet" : "mobile";
 
       footer.style.display = "";
-      footer.innerHTML = buildMobileFooterHtml() + buildBarHtml(resolvedVariant, activeId);
+      // unifiedBottomNav: bottom-tab.js 接管底栏，footer.js 只渲染紧凑 footer
+      if (_unifiedBottomNav) {
+        footer.innerHTML = buildMobileFooterHtml();
+      } else {
+        footer.innerHTML = buildMobileFooterHtml() + buildBarHtml(resolvedVariant, activeId);
+      }
     }
 
-    // Fade-in animation
+    // Fade-in animation (unifiedBottomNav 模式没有 .fixed.bottom-0 bar)
     var bar = document.querySelector(".fixed.bottom-0");
     if (bar) {
       bar.style.opacity = "0";
