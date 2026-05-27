@@ -28,20 +28,19 @@
   function buildHTML() {
     var itemsHtml = "";
     for (var i = 0; i < ITEMS.length; i++) {
-      itemsHtml +=
-        '<span class="trust-bar__item">' +
-          '<span class="trust-bar__dot">●</span>' +
-          ITEMS[i] +
-        "</span>";
+      itemsHtml += '<span class="trust-bar__item">' + '<span class="trust-bar__dot">●</span>' + ITEMS[i] + "</span>";
     }
+
+    // Duplicate content for seamless infinite scroll
+    var trackHtml = itemsHtml + itemsHtml;
 
     return (
       '<div id="trust-bar" class="trust-bar" role="banner" aria-label="Trust indicators">' +
-        '<div class="trust-bar__inner">' +
-          '<div class="trust-bar__track">' +
-            itemsHtml +
-          "</div>" +
-        "</div>" +
+      '<div class="trust-bar__inner">' +
+      '<div class="trust-bar__track">' +
+      trackHtml +
+      "</div>" +
+      "</div>" +
       "</div>"
     );
   }
@@ -73,7 +72,10 @@
           doInject();
         }
       }, 50);
-      setTimeout(function () { clearInterval(checkTimer); doInject(); }, 5000);
+      setTimeout(function () {
+        clearInterval(checkTimer);
+        doInject();
+      }, 5000);
     }
   }
 

@@ -1044,7 +1044,9 @@ button.bg-primary[class*="hover:"]:hover {
 
 .trust-bar__track {
   display: inline-block;
-  animation: trustBarScroll 18s linear infinite;
+  /* JS duplicates content for seamless loop */
+  animation: trustBarScroll 20s linear infinite;
+  will-change: transform;
 }
 
 .trust-bar__item {
@@ -1063,10 +1065,10 @@ button.bg-primary[class*="hover:"]:hover {
 
 @keyframes trustBarScroll {
   0% {
-    transform: translateX(100vw);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
@@ -2936,6 +2938,21 @@ html.dark .toast-item.info {
 }
 .page-fade-out {
   animation: pageFadeOut 0.2s ease forwards;
+}
+
+/* ─── Swup page transitions ── */
+/* swup 4.9 default animationSelector: [class*="transition-"] */
+html.is-changing .transition-main {
+  transition: opacity 0.2s ease;
+}
+html.is-animating .transition-main {
+  opacity: 0;
+}
+html.is-rendering .transition-main {
+  opacity: 1;
+}
+html.is-leaving .transition-main {
+  opacity: 0;
 }
 
 /* ─── Nav Dropdown (nav-dropdown.js) ── */

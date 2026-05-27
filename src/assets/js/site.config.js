@@ -90,15 +90,15 @@
         {
           id: "products", label: { en: "Products", "zh-CN": "产品中心" }, i18nKey: "nav_products",
           children: [
-            { id: "all", label: { en: "All Products", "zh-CN": "全部产品" }, icon: "grid_view", slug: "all" },
-            { id: "coffee", label: { en: "Coffee", "zh-CN": "咖啡系列" }, icon: "coffee", slug: "coffee", i18nKey: "nav_products_coffee" },
-            { id: "tea", label: { en: "Tea & Milk Tea", "zh-CN": "茶饮奶茶系列" }, icon: "local_cafe", slug: "tea", i18nKey: "nav_products_tea" },
-            { id: "meal", label: { en: "Meal Replacement", "zh-CN": "代餐系列" }, icon: "restaurant", slug: "meal", i18nKey: "nav_products_meal" },
-            { id: "beauty", label: { en: "Beauty & Collagen", "zh-CN": "美容胶原系列" }, icon: "spa", slug: "beauty", i18nKey: "nav_products_beauty" },
-            { id: "weight", label: { en: "Weight Management", "zh-CN": "体重管理" }, icon: "monitor_weight", slug: "weight", i18nKey: "nav_products_weight" },
-            { id: "gut", label: { en: "Gut Health", "zh-CN": "肠道健康" }, icon: "biotech", slug: "gut", i18nKey: "nav_products_gut" },
-            { id: "lifestyle", label: { en: "Lifestyle Functional", "zh-CN": "功能冲饮" }, icon: "energy_savings_leaf", slug: "lifestyle", i18nKey: "nav_products_lifestyle" },
-            { id: "legacy", label: { en: "Legacy Classics", "zh-CN": "经典冲饮" }, icon: "auto_stories", slug: "legacy", i18nKey: "nav_products_legacy" },
+            { id: "all", label: { en: "All Products", "zh-CN": "全部产品" }, icon: "grid_view", slug: "all", href: "/products/all/" },
+            { id: "coffee", label: { en: "Coffee", "zh-CN": "咖啡系列" }, icon: "coffee", slug: "coffee", i18nKey: "nav_products_coffee", href: "/products/coffee/" },
+            { id: "tea", label: { en: "Tea & Milk Tea", "zh-CN": "茶饮奶茶系列" }, icon: "local_cafe", slug: "tea", i18nKey: "nav_products_tea", href: "/products/tea/" },
+            { id: "meal", label: { en: "Meal Replacement", "zh-CN": "代餐系列" }, icon: "restaurant", slug: "meal", i18nKey: "nav_products_meal", href: "/products/meal/" },
+            { id: "beauty", label: { en: "Beauty & Collagen", "zh-CN": "美容胶原系列" }, icon: "spa", slug: "beauty", i18nKey: "nav_products_beauty", href: "/products/beauty/" },
+            { id: "weight", label: { en: "Weight Management", "zh-CN": "体重管理" }, icon: "monitor_weight", slug: "weight", i18nKey: "nav_products_weight", href: "/products/weight/" },
+            { id: "gut", label: { en: "Gut Health", "zh-CN": "肠道健康" }, icon: "biotech", slug: "gut", i18nKey: "nav_products_gut", href: "/products/gut/" },
+            { id: "lifestyle", label: { en: "Lifestyle Functional", "zh-CN": "功能冲饮" }, icon: "energy_savings_leaf", slug: "lifestyle", i18nKey: "nav_products_lifestyle", href: "/products/lifestyle/" },
+            { id: "legacy", label: { en: "Legacy Classics", "zh-CN": "经典冲饮" }, icon: "auto_stories", slug: "legacy", i18nKey: "nav_products_legacy", href: "/products/legacy/" },
           ],
         },
         {
@@ -145,7 +145,7 @@
     footer: {
       mobileItems: [
         { id: "products", label: { en: "Products", "zh-CN": "产品" }, icon: "inventory_2", href: "/products/" },
-        { id: "solutions", label: { en: "Solutions", "zh-CN": "方案" }, icon: "design_services", href: "/solutions/oem/" },
+        { id: "solutions", label: { en: "Solutions", "zh-CN": "方案" }, icon: "design_services", href: "/solutions/" },
         { id: "inquiry", label: { en: "Inquiry", "zh-CN": "询盘" }, icon: "request_quote", href: "/contact/" },
         { id: "whatsapp", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, icon: "chat", href: "https://wa.me/8613924828214" },
       ],

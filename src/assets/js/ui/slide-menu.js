@@ -344,14 +344,18 @@
           '<span class="mobile-menu-l2-label" data-i18n="nav_products_center">Products Center</span>' +
           '</a>' +
           '<div class="mobile-menu-l2-separator"></div>' +
-          childItemsHtml +
-          '<div class="mobile-menu-l2-separator"></div>' +
-          '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/all/">' +
+          childItemsHtml;
+      } else if (item.id === "solutions") {
+        subMenuHtml =
+          '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' +
+          '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/solutions/">' +
           '<span class="mobile-menu-l2-icon">' +
-          '<span class="material-symbols-outlined">grid_view</span>' +
+          '<span class="material-symbols-outlined">design_services</span>' +
           '</span>' +
-          '<span class="mobile-menu-l2-label" data-i18n="nav_products_all">View All Products</span>' +
-          '</a>';
+          '<span class="mobile-menu-l2-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
+          '</a>' +
+          '<div class="mobile-menu-l2-separator"></div>' +
+          childItemsHtml;
       } else {
         subMenuHtml = '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' + childItemsHtml;
       }

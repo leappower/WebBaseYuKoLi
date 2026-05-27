@@ -85,22 +85,41 @@
     );
   }
 
+  // ── 构建分类总览入口 HTML ──────────────────────────────────
+  function buildCenterEntry(navId) {
+    var centerMap = {
+      solutions: { href: "/solutions/", icon: "design_services", i18nKey: "nav_solutions_center", label: "Solutions Center" },
+    };
+    var entry = centerMap[navId];
+    if (!entry) return "";
+    return (
+      '<a href="' + esc(entry.href) + '" class="nav-dropdown-item nav-dropdown-center">' +
+        '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(entry.icon) + '</span></span>' +
+        '<span class="nav-dropdown-label" data-i18n="' + esc(entry.i18nKey) + '">' + esc(entry.label) + '</span>' +
+        '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
+      '</a>'
+    );
+  }
+
   // ── 主渲染函数 ──────────────────────────────────────────────
   function renderDropdown(cfg) {
     var navItem = cfg.navItem || {};
     var navId = navItem.id || "";
     var children = getChildren(navId);
 
-    // 无子项：渲染为普通链接
+    // 无子项：渲染为普通链接（可点击跳转）
     if (children.length === 0) {
       var href = cfg.href || ("/" + navId + "/");
-      var label = resolveLabel(cfg.label) || navId;
-      return '<a class="' + (cfg.activeClass || "") + '" href="' + esc(href) + '">' + esc(label) + "</a>";
+      var lbl = resolveLabel(cfg.label) || navId;
+      return '<a class="' + (cfg.activeClass || "") + '" href="' + esc(href) + '">' + esc(lbl) + "</a>";
     }
 
-    var href = cfg.href || ("/" + navId + "/");
+    // 有子项：trigger 只负责 hover/click 展开 dropdown，不跳转
     var labelKey = cfg.labelKey || ("nav_" + navId);
     var label = resolveLabel(cfg.label) || navId;
+
+    var centerEntry = buildCenterEntry(navId);
+    var centerSep = centerEntry ? '<div class="nav-dropdown-separator"></div>' : "";
 
     var itemsHtml = children.map(function (child, idx) {
       return buildDropdownItem(child, idx < children.length - 1);
@@ -108,11 +127,12 @@
 
     return (
       '<div class="' + WRAP_CLASS + (isTouch() ? " touch-device" : "") + '">' +
-        '<a class="' + esc(cfg.activeClass || "") + ' ' + TRIGGER_CLASS + '" href="' + esc(href) + '" data-nav-trigger-label="' + esc(labelKey) + '">' +
+        '<a class="' + esc(cfg.activeClass || "") + ' ' + TRIGGER_CLASS + '" href="#" data-nav-trigger-label="' + esc(labelKey) + '">' +
           '<span data-i18n="' + esc(labelKey) + '">' + esc(label) + '</span>' +
           '<span class="material-symbols-outlined nav-dropdown-arrow">expand_more</span>' +
         '</a>' +
         '<div class="' + PANEL_CLASS + '"><div class="nav-dropdown-card">' +
+          centerEntry + centerSep +
           itemsHtml +
         '</div></div>' +
       '</div>'
@@ -164,7 +184,8 @@
     var panel = document.createElement("div");
     panel.className = POPUP_PANEL_CLASS;
 
-    var itemsHtml = children.map(function (child) {
+    // 构建子项 HTML
+    var childItems = children.map(function (child) {
       var childHref = child.href || ("/" + (child.slug || child.id) + "/");
       var childLabel = resolveLabel(child.label) || child.id;
       var childKey = child.i18nKey || ("nav_" + child.id);
@@ -183,8 +204,21 @@
       );
     }).join("\n");
 
+    // 给有 center entry 的 nav 加顶部总览入口
+    var centerEntryHtml = buildCenterEntry(navId);
+    var popupHtml;
+    if (centerEntryHtml) {
+      var centerPopupItem = centerEntryHtml
+        .replace('nav-dropdown-item', 'nav-dropdown-popup-item')
+        .replace('nav-dropdown-chevron', 'nav-dropdown-popup-chevron')
+        .replace('href="/solutions/"', 'href="/solutions/"');
+      popupHtml = centerPopupItem + '<div class="nav-dropdown-separator"></div>' + childItems;
+    } else {
+      popupHtml = childItems;
+    }
+
     /* @audit-safe: config-driven-render */
-    panel.innerHTML = '<div class="nav-dropdown-popup-handle"></div>' + itemsHtml;
+    panel.innerHTML = '<div class="nav-dropdown-popup-handle"></div>' + popupHtml;
 
     if (window.translationManager) {
       panel.querySelectorAll("[data-i18n]").forEach(function (el) {

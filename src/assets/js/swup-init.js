@@ -226,48 +226,52 @@
   function routeToFetchUrl(path) {
     var suffix = getDeviceSuffix();
 
+    // 所有 fetch URL 统一加 /pages/ 前缀，以确保:
+    // 1. swup resolveUrl 能反向映射回干净的目录 URL (如 /products/coffee/)
+    // 2. 防止 swup 从 response.url 提取的 /products/coffee/index-mobile.html 污染地址栏
+
     // Aliases / redirects
-    if (path === "/" || path === "/home/") return "/home/" + suffix;
+    if (path === "/" || path === "/home/") return "/pages/home/" + suffix;
 
     // Flat-file pattern (no directory)
-    if (path === "/news/detail/") return "/news/detail-" + suffix.replace("index-", "");
+    if (path === "/news/detail/") return "/pages/news/detail-" + suffix.replace("index-", "");
 
     // Solutions pages (all variants)
     if (path.indexOf("/solutions/") === 0) {
       var solMatch = path.match(/^\/solutions\/(oem|odm|obm|rd|packaging)\/$/);
-      if (solMatch) return "/solutions/" + solMatch[1] + "/" + suffix;
+      if (solMatch) return "/pages/solutions/" + solMatch[1] + "/" + suffix;
     }
 
     // Resources pages
     if (path.indexOf("/resources/") === 0) {
       var resMatch = path.match(/^\/resources\/(catalog|videos|whitepapers)\/$/);
-      if (resMatch) return "/resources/" + resMatch[1] + "/" + suffix;
+      if (resMatch) return "/pages/resources/" + resMatch[1] + "/" + suffix;
     }
 
     // Manufacturing & Compliance
-    if (path === "/manufacturing/") return "/manufacturing/" + suffix;
-    if (path === "/compliance/") return "/compliance/" + suffix;
+    if (path === "/manufacturing/") return "/pages/manufacturing/" + suffix;
+    if (path === "/compliance/") return "/pages/compliance/" + suffix;
 
     // 动态产品分类页: /products/<slug>/
     var prodMatch = path.match(/^\/(products\/)?(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
     if (prodMatch) {
       var slug = prodMatch[2];
-      return "/products/" + slug + "/" + suffix;
+      return "/pages/products/" + slug + "/" + suffix;
     }
 
     // 产品详情 PDP: /products/<model>/
     if (/^\/products\/[^/]+\/$/.test(path) &&
         !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)) {
-      return "/products/detail/" + suffix;
+      return "/pages/products/detail/" + suffix;
     }
 
     // 旧路由兼容: /beauty/ → /products/beauty/
     var redirectMatch = path.match(/^\/(coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
-    if (redirectMatch) return "/products/" + redirectMatch[1] + "/" + suffix;
+    if (redirectMatch) return "/pages/products/" + redirectMatch[1] + "/" + suffix;
 
-    // 通用约定: /<path>/ → /<path>/index-{device}.html
+    // 通用约定: /<path>/ → /pages/<path>/index-{device}.html
     var clean = path.replace(/\/+$/, "");
-    return clean + "/" + suffix;
+    return "/pages" + clean + "/" + suffix;
   }
 
   // ═══════════════════════════════════════════════════════════════════
@@ -284,9 +288,9 @@
         animateHistoryBrowsing: false,
         linkSelector: 'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
-          // 将 /pages/<section>/index*.html → /<section>/
-          var m = url.match(/^\/pages\/([^/]+)\/index(?:-[a-z0-9-]+)?\.html$/i);
-          if (m && m[1]) return "/" + m[1] + "/";
+          // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
+          var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
+          if (m && m[1]) return m[1] + "/";
           // flat-file: /pages/news/detail-pc.html → /news/detail/
           var fm = url.match(/^\/pages\/news\/detail(?:-[a-z0-9-]+)?\.html$/i);
           if (fm) return "/news/detail/";
@@ -335,6 +339,36 @@
         var container = document.getElementById("spa-content");
         if (container) {
           container.classList.add("swup-fade-in");
+        }
+
+        // SPA 导航时不重新执行 SSG 页面中的 defer 脚本，
+        // 确保页面级 JS（如 ProductGrid、PRODUCT_DATA_TABLE）已加载
+        var p = global.location.pathname;
+        if (/^\/products\/[a-z]+\/$/.test(p) && !global.ProductGrid) {
+          (function () {
+            if (!global.PRODUCT_DATA_TABLE) {
+              var d = document.createElement("script");
+              d.src = "/assets/js/product-data-table.js?v=" + (global.BUILD_VERSION || "202605271233");
+              d.onload = function () {
+                if (!global.ProductGrid) {
+                  var s = document.createElement("script");
+                  s.src = "/assets/js/product-grid.js?v=" + (global.BUILD_VERSION || "202605271233");
+                  s.onload = function () {
+                    if (global.ProductGrid && global.ProductGrid.init) global.ProductGrid.init();
+                  };
+                  document.body.appendChild(s);
+                }
+              };
+              document.body.appendChild(d);
+            } else {
+              var s = document.createElement("script");
+              s.src = "/assets/js/product-grid.js?v=" + (global.BUILD_VERSION || "202605271233");
+              s.onload = function () {
+                if (global.ProductGrid && global.ProductGrid.init) global.ProductGrid.init();
+              };
+              document.body.appendChild(s);
+            }
+          })();
         }
 
         // 重新运行页面 init 函数

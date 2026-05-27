@@ -358,6 +358,24 @@
     },
 
     // 隐藏骨架屏：overlay 隐藏，内容恢复
+    showNotFound: function () {
+      var container = document.getElementById("spa-content");
+      if (!container) return;
+      container.innerHTML =
+        '<div class="flex flex-col items-center justify-center min-h-[60vh] px-4">' +
+        '<span class="material-symbols-outlined text-8xl text-slate-300 dark:text-slate-600 mb-6">' +
+        'error_outline</span>' +
+        '<h1 class="text-4xl font-black text-slate-800 dark:text-slate-200 mb-2">404</h1>' +
+        '<p class="text-lg text-slate-500 dark:text-slate-400 mb-8" data-i18n="page_not_found">' +
+        'Page not found</p>' +
+        '<a href="/home/" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">' +
+        '<span class="material-symbols-outlined text-sm">home</span>' +
+        '<span data-i18n="back_to_home">Back to Home</span></a>' +
+        '</div>';
+      container.classList.add("transition-main");
+      document.title = "404 - Page Not Found";
+    },
+
     hideSkeleton: function () {
       clearTimeout(this._skeletonDebugTimer);
       var overlay = document.getElementById("skeleton-overlay");
@@ -567,6 +585,7 @@
           if (navVersion && navVersion !== _self._navVersion) return;
           _self.log("Failed to load:", devicePath, error);
           _self.hideSkeleton();
+          _self.showNotFound();
         });
     },
 

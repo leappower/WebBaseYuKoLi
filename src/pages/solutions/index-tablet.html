@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html class="light" lang="zh-CN">
+  <head>
+  <script src="/site.config.js"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=202605271244"></script>
+    <link rel="canonical" href="%DOMAIN%/solutions/" />
+    <link rel="alternate" hreflang="zh-CN" href="%DOMAIN%/solutions/" />
+    <link rel="alternate" hreflang="en" href="%DOMAIN%/solutions/" />
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/solutions/index-mobile.html" />
+    <link rel="alternate" media="only screen and (min-width: 768px) and (max-width: 1279px)" href="/solutions/index-tablet.html" />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/solutions/index-pc.html" />
+    <script>
+      (function () {
+        if (window.__redirectChecked) return; window.__redirectChecked = true;
+        var urlParams = new URLSearchParams(location.search);
+        var cleanUrl = urlParams.get("clean-url");
+        if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
+        if (window.__spaNavigating) return;
+        var currentFile = location.pathname.split("/").pop();
+        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
+        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+          var deviceType = window.DeviceUtils.getDeviceType();
+          var targetFile;
+          if (deviceType === window.DeviceUtils.DeviceType.MOBILE) targetFile = "index-mobile.html";
+          else if (deviceType === window.DeviceUtils.DeviceType.TABLET) targetFile = "index-tablet.html";
+          else targetFile = "index-pc.html";
+          location.href = targetFile; return;
+        }
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta property="og:type" content="website" />
+ <meta property="og:title" content="Solutions - YuKoLi Technology" />
+    <meta property="og:description" content="YuKoLi Technology — OEM/ODM/OBM manufacturing solutions, R&D lab, packaging & labeling services." />
+    <meta property="og:url" content="%DOMAIN%/solutions/" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+ <meta name="description" content="YuKoLi Technology — OEM/ODM/OBM manufacturing solutions, R&D lab, packaging & labeling services." />
+    <title>Solutions - <span data-i18n="seo_yukoli">YuKoLi</span> Technology | OEM/ODM/OBM Manufacturing</title>
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605271244" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605271244" as="style" />
+    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=202605271244" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605271244" />
+    <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
+    <script>if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");</script>
+  </head>
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-clip">
+    <navigator data-component="navigator" data-swup-persist="nav" data-variant="tablet" data-active="solutions" data-search="true" data-cta-text-key="nav_contact_us" data-cta-href="/contact/"></navigator>
+    <main id="spa-content" class="transition-main">
+      <!-- Hero -->
+      <section class="fullwidth-bg hero-banner w-full h-[320px] relative overflow-hidden">
+        <img alt="Solutions" class="w-full h-full object-cover" src="/assets/images/oem/hero/hero-pc.webp" loading="eager" />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+        <div class="absolute inset-0 flex items-center">
+          <div class="section-content w-full">
+            <div class="max-w-2xl">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-3">
+                <span class="material-symbols-outlined text-xs leading-none">design_services</span>
+                <span data-i18n="solutions_hero_badge">Manufacturing Solutions</span>
+              </div>
+              <h1 class="text-4xl lg:text-5xl font-black leading-tight text-white mb-3" data-i18n="solutions_page_title">One-Stop Manufacturing Solutions</h1>
+              <p class="text-base text-white/80 max-w-xl leading-relaxed" data-i18n="solutions_page_desc">From formula development to global delivery.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Solution Cards -->
+      <section class="fullwidth-bg py-16">
+        <div class="section-content">
+          <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <a href="/solutions/oem/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
+              <div class="h-36 bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-5xl text-white/90">precision_manufacturing</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold mb-1" data-i18n="nav_oem">OEM</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed" data-i18n="sol_card_oem_desc">Contract manufacturing with full QA.</p>
+              </div>
+            </a>
+            <a href="/solutions/odm/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
+              <div class="h-36 bg-gradient-to-br from-green-500 to-green-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-5xl text-white/90">design_services</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold mb-1" data-i18n="nav_odm">ODM</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed" data-i18n="sol_card_odm_desc">Customize flavor & packaging.</p>
+              </div>
+            </a>
+            <a href="/solutions/obm/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
+              <div class="h-36 bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-5xl text-white/90">verified</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold mb-1" data-i18n="nav_obm">OBM</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed" data-i18n="sol_card_obm_desc">Full-spectrum brand building.</p>
+              </div>
+            </a>
+            <a href="/solutions/rd/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
+              <div class="h-36 bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-5xl text-white/90">science</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold mb-1" data-i18n="nav_rd">R&D Lab</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed" data-i18n="sol_card_rd_desc">Custom recipe development.</p>
+              </div>
+            </a>
+            <a href="/solutions/packaging/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
+              <div class="h-36 bg-gradient-to-br from-rose-500 to-rose-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-5xl text-white/90">inventory</span>
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold mb-1" data-i18n="nav_packaging">Packaging</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed" data-i18n="sol_card_packaging_desc">Regulatory-compliant labeling.</p>
+              </div>
+            </a>
+            <a href="/contact/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border-2 border-dashed border-primary/30 dark:border-primary/20 hover:border-primary/60 transition-all flex items-center justify-center">
+              <div class="p-6 text-center">
+                <span class="material-symbols-outlined text-4xl text-primary mb-2">support_agent</span>
+                <h3 class="text-base font-bold text-primary" data-i18n="sol_card_cta_title">Need a Custom Solution?</h3>
+                <p class="text-xs text-slate-500 mt-1" data-i18n="nav_contact_us">Contact Us</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="fullwidth-bg py-12 bg-primary relative overflow-hidden">
+        <div class="section-content text-center">
+          <div class="max-w-2xl mx-auto">
+            <h2 class="text-2xl lg:text-3xl font-black tracking-tight text-white mb-3" data-i18n="sol_cta_title">Ready to Start Your Project?</h2>
+            <p class="text-base text-white/80 mb-6" data-i18n="sol_cta_desc">Our technical team is standing by to discuss your requirements.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <a href="/contact/" class="bg-white text-primary px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined">support_agent</span>
+                <span data-i18n="nav_contact_us">Contact Us</span>
+              </a>
+              <a href="/contact/#quote" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-xl font-bold hover:bg-white/10 transition-all flex items-center gap-2 text-sm">
+                <span class="material-symbols-outlined">description</span>
+                <span data-i18n="nav_quote">Get a Quote</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="/assets/js/ui/dropdown-styles.js?v=202605271244"></script>
+    <script src="/assets/js/ui/dropdown-base.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/solutions-dropdown.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/products-dropdown.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/support-dropdown.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/about-dropdown.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/navigator.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/slide-menu.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/search-engine.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/footer.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/floating-actions.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/trust-bar.js?v=202605271244"></script>
+    <script defer src="/assets/js/ui/bottom-tab.js?v=202605271244"></script>    <footer data-component="footer" data-swup-persist="footer"></footer>
+    <script src="/assets/js/utils/device-utils.js?v=202605271244"></script>
+    <script defer src="/assets/js/vendor/swup.umd.js?v=202605271244"></script>
+    <script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605271244"></script>
+    <script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605271244"></script>
+    <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605271244"></script>
+    <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605271244"></script>
+    <script defer src="/assets/js/swup-init.js?v=202605271244"></script>
+    <script defer src="/assets/js/main.js?v=202605271244"></script>
+    <script defer src="/assets/js/image-assets.js?v=202605271244"></script>
+    <script defer src="/assets/js/analytics.js?v=202605271244"></script>
+    <script defer src="/assets/js/contacts.js?v=202605271244"></script>
+    <script defer src="/assets/js/breadcrumb.js?v=202605271244"></script>
+    <script defer src="/assets/js/page-init.js?v=202605271244"></script>
+    <script defer src="/assets/js/page-interactions.js?v=202605271244"></script>
+    <script defer src="/assets/js/lang-registry.js?v=202605271244"></script>
+    <script defer src="/assets/js/translations.js?v=202605271244"></script>
+    <script defer src="/assets/js/theme-init.js?v=202605271244"></script>
+    <script defer src="/assets/js/translations-dropdown-template.js?v=202605271244"></script>
+  </body>
+</html>

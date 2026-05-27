@@ -16,11 +16,11 @@
  *
  *   // 获取设备类型
  *   var deviceType = DeviceUtils.getDeviceType();
- *   console.log(deviceType); // 'mobile' | 'tablet' | 'pc'
+ *   // deviceType: 'mobile' | 'tablet' | 'pc'
  *
  *   // 获取设备特定页面路径
  *   var devicePath = DeviceUtils.getDevicePagePath('/pages/home/index.html');
- *   console.log(devicePath); // '/pages/home/index-mobile.html' (tablet)
+ *   // devicePath: '/pages/home/index-mobile.html' (tablet)
  *
  *   // 判断是否需要重定向
  *   if (DeviceUtils.shouldRedirect('index.html')) {
@@ -193,7 +193,7 @@
    */
   function isDirectoryURL() {
     var pathname = window.location.pathname;
-    return pathname.endsWith("/") || pathname === "" || pathname === window.location.pathname;
+    return pathname.endsWith("/") || pathname === "";
   }
 
   // 设备类型变化检测
