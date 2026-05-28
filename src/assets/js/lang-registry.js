@@ -14,7 +14,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 // Fallback 语言数据（与 site.config.js i18n.languages 保持同步）
 // ─────────────────────────────────────────────────────────────────────────────
-var _FALLBACK_LANGUAGES = [];
+var _FALLBACK_LANGUAGES = [
+  { code: "en", nativeName: "English", englishName: "English", sortOrder: 0, hasTranslation: true }
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Config bridge: 优先读取 SITE_CONFIG，fallback 到内嵌数据

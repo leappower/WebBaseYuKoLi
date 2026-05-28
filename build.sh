@@ -55,7 +55,7 @@ sync_assets() {
 # ─── 1. HTML pages ──────────────────────────────────────────────
 echo "📦 Syncing HTML pages..."
 # Copy site.config.js to dist root
-cp "src/assets/js/site.config.js" "$DIST/site.config.js"
+cp "src/site.config.js" "$DIST/site.config.js"
 find "$SRC/pages" -name '*.html' -print0 | while IFS= read -r -d '' f; do
   rel="${f#$SRC/}"
   mkdir -p "$DIST/$(dirname "$rel")"
@@ -78,6 +78,12 @@ sync_assets "video"        "*"  incremental
 # ─── 3. Fix permissions ────────────────────────────────────────────
 # Ensure dist files are readable (may have been created by root/sudo)
 chmod -R a+rX "$DIST" 2>/dev/null || true
+
+# Replace %DOMAIN% placeholder
+find "$DIST" -name '*.html' -exec sed -i '' 's|%DOMAIN%|https://brew.yukoli.com|g' {} +
+find "$SRC" -name '*.html' -exec sed -i '' 's|%DOMAIN%|https://brew.yukoli.com|g' {} +
+
+echo "🔧 Replaced %DOMAIN% placeholders"
 
 # ─── 4. Version bump ────────────────────────────────────────────
 echo "🔄 Bumping JS version to $VERSION..."

@@ -25,6 +25,14 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
     } catch (_) { /* quota exceeded – silent */ }
+
+    // Send to server (fire-and-forget)
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/submit-lead', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.send(JSON.stringify(lead));
+    } catch (_) {}
   }
 
   function hasSubmitted(email) {

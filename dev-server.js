@@ -82,7 +82,7 @@ function handler(req, res) {
   }
 }
 
-http.createServer(handler).listen(PORT);
+http.createServer(handler).listen(PORT, '0.0.0.0');
 
 var sslOpts;
 try {
@@ -90,11 +90,11 @@ try {
     key: fs.readFileSync(path.join(__dirname, 'localhost-key.pem')),
     cert: fs.readFileSync(path.join(__dirname, 'localhost.pem')),
   };
-  https.createServer(sslOpts, handler).listen(SSL_PORT);
-  console.log('🔒 https://localhost:' + SSL_PORT);
+  https.createServer(sslOpts, handler).listen(SSL_PORT, '0.0.0.0');
+  console.log('🔒 https://0.0.0.0:' + SSL_PORT);
 } catch (e) {
   console.log('⚠ No SSL certs found, HTTPS not started');
 }
 
-console.log('🌐 http://localhost:' + PORT);
+console.log('🌐 http://0.0.0.0:' + PORT);
 console.log('📁 Serving ' + ROOT);
