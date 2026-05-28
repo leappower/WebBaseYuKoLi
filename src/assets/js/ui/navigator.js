@@ -1324,10 +1324,10 @@
       /* 使用 classList 增删样式，不覆盖 className */
       if (isMatch) {
         triggerEl.classList.add("text-primary");
-        triggerEl.classList.remove("hover\\:text-primary", "transition-colors");
+        triggerEl.classList.remove("hover:text-primary", "transition-colors");
       } else {
         triggerEl.classList.remove("text-primary");
-        triggerEl.classList.add("hover\\:text-primary", "transition-colors");
+        triggerEl.classList.add("hover:text-primary", "transition-colors");
       }
     }
 
@@ -1355,10 +1355,10 @@
       }
       if (plainMatch) {
         plainEl.classList.add("text-primary");
-        plainEl.classList.remove("hover\\:text-primary", "transition-colors");
+        plainEl.classList.remove("hover:text-primary", "transition-colors");
       } else {
         plainEl.classList.remove("text-primary");
-        plainEl.classList.add("hover\\:text-primary", "transition-colors");
+        plainEl.classList.add("hover:text-primary", "transition-colors");
       }
     }
 

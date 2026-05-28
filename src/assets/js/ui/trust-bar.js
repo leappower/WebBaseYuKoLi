@@ -17,18 +17,21 @@
 (function () {
   "use strict";
 
-  var ITEMS = [
-    "FDA Registered &amp; HACCP Certified",
-    "4 Owned Factories",
-    "100,000+ Daily Capacity",
-    "Low MOQ: 500 Units",
-    "Global Shipping to 30+ Countries",
+  var ITEM_KEYS = [
+    { key: "trust_fda", label: "FDA Registered &amp; HACCP Certified" },
+    { key: "trust_factories", label: "4 Owned Factories" },
+    { key: "trust_capacity", label: "100,000+ Daily Capacity" },
+    { key: "trust_moq", label: "Low MOQ: 500 Units" },
+    { key: "trust_shipping", label: "Global Shipping to 30+ Countries" },
   ];
 
   function buildHTML() {
     var itemsHtml = "";
-    for (var i = 0; i < ITEMS.length; i++) {
-      itemsHtml += '<span class="trust-bar__item">' + '<span class="trust-bar__dot">●</span>' + ITEMS[i] + "</span>";
+    for (var i = 0; i < ITEM_KEYS.length; i++) {
+      itemsHtml += '<span class="trust-bar__item">' +
+        '<span class="trust-bar__dot">●</span>' +
+        '<span data-i18n="' + ITEM_KEYS[i].key + '">' + ITEM_KEYS[i].label + '</span>' +
+        "</span>";
     }
 
     // Duplicate content for seamless infinite scroll
