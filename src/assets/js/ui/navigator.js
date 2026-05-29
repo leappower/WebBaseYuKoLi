@@ -998,7 +998,7 @@
     _closeLangPanel();
     _langAnchor = anchorBtn;
 
-    if (window.innerWidth <= 720) {
+    if (window.innerWidth <= 767) {
       _openLangMobile(selectEl, anchorBtn);
       return;
     }
@@ -1155,7 +1155,7 @@
 
     var width = window.innerWidth;
     if (width < 768) return "mobile";
-    if (width < 1024) return "tablet";
+    if (width < 1280) return "tablet";
     return "pc";
   }
 
@@ -1210,7 +1210,7 @@
           ".prod-dropdown-trigger, .sol-dropdown-trigger, .abt-dropdown-trigger, .cnt-dropdown-trigger"
         );
         if (!trigger) return;
-        if (window.innerWidth <= 720) return;
+        if (window.innerWidth <= 767) return;
         var wrap = trigger.closest(".prod-dropdown-wrap, .sol-dropdown-wrap, .abt-dropdown-wrap, .cnt-dropdown-wrap");
         if (wrap) {
           closeOtherDropdowns(wrap);
@@ -1549,7 +1549,7 @@
       var newVariant;
       if (window.innerWidth < 768) {
         newVariant = "mobile";
-      } else if (window.innerWidth < 1024) {
+      } else if (window.innerWidth < 1280) {
         newVariant = "tablet";
       } else {
         newVariant = "pc";

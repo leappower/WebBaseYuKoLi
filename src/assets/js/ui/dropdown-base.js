@@ -144,7 +144,7 @@
         if (t[boundFlag]) return;
         t[boundFlag] = true;
         t.addEventListener("click", function (e) {
-          if (window.innerWidth <= 720) return;
+          if (window.innerWidth <= 767) return;
           /* Touch devices: toggle dropdown & prevent navigation.
            * Non-touch devices: let click propagate to SPA router (hover handles dropdown). */
           if (isTouch()) {

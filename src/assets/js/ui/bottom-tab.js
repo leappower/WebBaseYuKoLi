@@ -5,7 +5,7 @@
  * Breakpoints:
  *   Mobile (<768px)  → footer.mobileItems
  *   Tablet (768–1023) → footer.tabletItems (falls back to mobileItems if absent)
- *   PC     (≥1024px) → hidden
+ *   PC     (≥1280px) → hidden
  *
  * Item type support:
  *   "toggle"   → open slide-menu (via window.SlideMenu.toggle)
@@ -20,32 +20,42 @@
  * ES5 compatible.  No JSX, no ES6 features.
  * @audit-safe — all content from config, no user-input injection
  */
-;(function () {
+(function () {
   "use strict";
 
   /* ── Config access (lazy) ──────────────────────────────────── */
   var _cfg, _features, _footer, _colors, _contacts;
 
-  function getCfg() { return _cfg || (_cfg = window.SITE_CONFIG || {}); }
-  function getFeatures() { return _features || (_features = getCfg().features || {}); }
-  function getFooter() { return _footer || (_footer = getCfg().footer || {}); }
-  function getColors() { return _colors || (_colors = (getCfg().theme && getCfg().theme.colors) || {}); }
-  function getContacts() { return _contacts || (_contacts = getCfg().contacts || {}); }
+  function getCfg() {
+    return _cfg || (_cfg = window.SITE_CONFIG || {});
+  }
+  function getFeatures() {
+    return _features || (_features = getCfg().features || {});
+  }
+  function getFooter() {
+    return _footer || (_footer = getCfg().footer || {});
+  }
+  function getColors() {
+    return _colors || (_colors = (getCfg().theme && getCfg().theme.colors) || {});
+  }
+  function getContacts() {
+    return _contacts || (_contacts = getCfg().contacts || {});
+  }
 
   /* ── Feature gate ──────────────────────────────────────────── */
   if (!getFeatures().unifiedBottomNav) return;
 
   /* ── Design tokens ─────────────────────────────────────────── */
-  var PRIMARY   = getColors().primary || "#2E7D32";
+  var PRIMARY = getColors().primary || "#2E7D32";
   var PRIMARY_HOVER = getColors().primaryHover || "#1B5E20";
-  var WA_COLOR  = "#25D366";
+  var WA_COLOR = "#25D366";
   var BAR_HEIGHT = 64;
 
   /* ── Breakpoint helpers ────────────────────────────────────── */
   function getBreakpoint() {
     var w = window.innerWidth;
     if (w < 768) return "mobile";
-    if (w < 1024) return "tablet";
+    if (w < 1280) return "tablet";
     return "pc";
   }
 
@@ -74,7 +84,7 @@
     if (item.id === "menu" || item.id === "hamburger") return "toggle";
     if (item.href && item.href.indexOf("wa.me") >= 0) return "external";
     if (item.id === "whatsapp") return "external";
-    if (item.highlight) return "cta";  // legacy support
+    if (item.highlight) return "cta"; // legacy support
     return "link";
   }
 
@@ -89,12 +99,12 @@
     if (label.en) return label.en;
     if (label["zh-CN"]) return label["zh-CN"];
     var keys = Object.keys(label);
-    return keys.length > 0 ? (label[keys[0]] || "") : "";
+    return keys.length > 0 ? label[keys[0]] || "" : "";
   }
 
   /* ── Icon HTML ─────────────────────────────────────────────── */
   function iconHTML(name) {
-    return '<span class="material-symbols-outlined" aria-hidden="true">' + (name || "circle") + '</span>';
+    return '<span class="material-symbols-outlined" aria-hidden="true">' + (name || "circle") + "</span>";
   }
 
   /**
@@ -132,15 +142,24 @@
       attrs += ' data-btab-id="' + (item.id || "") + '"';
 
       parts.push(
-        '<button class="' + cls + '"' + attrs + ' aria-label="' + label + '">' +
-          icon + '<span class="btab-label">' + label + "</span>" +
-        "</button>"
+        '<button class="' +
+          cls +
+          '"' +
+          attrs +
+          ' aria-label="' +
+          label +
+          '">' +
+          icon +
+          '<span class="btab-label">' +
+          label +
+          "</span>" +
+          "</button>"
       );
     }
 
     return (
       '<nav id="bottom-tab-bar" class="btab-bar" role="navigation" aria-label="Bottom navigation">' +
-        parts.join("") +
+      parts.join("") +
       "</nav>"
     );
   }
@@ -194,7 +213,7 @@
 
   /* ── Styles (minimal — most visual via CSS-injected classes) ─ */
   function injectStyles() {
-  // CSS moved to styles.css
+    // CSS moved to styles.css
   }
 
   /* ── Inject into DOM ───────────────────────────────────────── */

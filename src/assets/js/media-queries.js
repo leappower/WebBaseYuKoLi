@@ -12,21 +12,22 @@
   // ─── matchMedia 缓存 ──────────────────────────────────────────────────────────
   // 将 window.matchMedia 结果缓存为布尔变量，避免在每次渲染 / 事件回调里重复触发
   // 布局计算。通过 'change' 事件保持与实际视口同步。
-  var _mq768 = window.matchMedia("(max-width: 768px)");
+  // 断点统一采用 DeviceUtils 体系：Mobile <768 / Tablet 768-1279 / PC >=1280
+  var _mq767 = window.matchMedia("(max-width: 767px)");
   var _mq640 = window.matchMedia("(max-width: 640px)");
-  var _mq1024 = window.matchMedia("(min-width: 1024px)");
-  var _mq768min = window.matchMedia("(min-width: 768px)");
+  var _mq1280min = window.matchMedia("(min-width: 1280px)");
+  var _mqTabletRange = window.matchMedia("(min-width: 768px) and (max-width: 1279px)");
 
-  /** 视口宽度 ≤ 768px */
-  var mqMobile = _mq768.matches;
+  /** 视口宽度 ≤ 767px（移动端） */
+  var mqMobile = _mq767.matches;
   /** 视口宽度 ≤ 640px（手机竖屏轮播） */
   var mqMobileSmall = _mq640.matches;
-  /** 视口宽度 ≥ 1024px */
-  var mqDesktop = _mq1024.matches;
-  /** 视口宽度 ≥ 768px（平板以上） */
-  var mqTablet = _mq768min.matches;
+  /** 视口宽度 ≥ 1280px（桌面端） */
+  var mqDesktop = _mq1280min.matches;
+  /** 视口宽度 768px–1279px（平板端） */
+  var mqTablet = _mqTabletRange.matches;
 
-  _mq768.addEventListener("change", function (e) {
+  _mq767.addEventListener("change", function (e) {
     mqMobile = e.matches;
     window.MediaQueries.mqMobile = e.matches;
   });
@@ -34,11 +35,11 @@
     mqMobileSmall = e.matches;
     window.MediaQueries.mqMobileSmall = e.matches;
   });
-  _mq1024.addEventListener("change", function (e) {
+  _mq1280min.addEventListener("change", function (e) {
     mqDesktop = e.matches;
     window.MediaQueries.mqDesktop = e.matches;
   });
-  _mq768min.addEventListener("change", function (e) {
+  _mqTabletRange.addEventListener("change", function (e) {
     mqTablet = e.matches;
     window.MediaQueries.mqTablet = e.matches;
   });
@@ -56,7 +57,7 @@
     get mqTablet() {
       return mqTablet;
     },
-    /** 返回当前是否为移动端（≤768px）。等同于 mqMobile，语义更直观。 */
+    /** 返回当前是否为移动端（<768px）。等同于 mqMobile，语义更直观。 */
     isMobile: function () {
       return mqMobile;
     },

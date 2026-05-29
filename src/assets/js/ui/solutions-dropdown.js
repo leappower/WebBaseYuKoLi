@@ -27,7 +27,9 @@
           return items[i].children;
         }
       }
-    } catch (e) { /* silent */ }
+    } catch (e) {
+      /* silent */
+    }
     return [];
   }
 
@@ -50,14 +52,20 @@
 
   // ── 子项渲染 ──────────────────────────────────────────────
   function buildChildHtml(child) {
-    var childHref = child.href || ("/" + (child.slug || child.id) + "/");
+    var childHref = child.href || "/" + (child.slug || child.id) + "/";
     var childLabel = resolveLabel(child.label) || child.id;
     return (
-      '<a href="' + esc(childHref) + '" class="nav-dropdown-item">' +
-        '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(child.icon || "circle") + '</span></span>' +
-        '<span class="nav-dropdown-label">' + esc(childLabel) + '</span>' +
-        '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
-      '</a>'
+      '<a href="' +
+      esc(childHref) +
+      '" class="nav-dropdown-item">' +
+      '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' +
+      esc(child.icon || "circle") +
+      "</span></span>" +
+      '<span class="nav-dropdown-label">' +
+      esc(childLabel) +
+      "</span>" +
+      '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
+      "</a>"
     );
   }
 
@@ -67,28 +75,40 @@
 
     var centerEntry =
       '<a href="/solutions/" class="nav-dropdown-item nav-dropdown-center">' +
-        '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">design_services</span></span>' +
-        '<span class="nav-dropdown-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
-        '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
-      '</a>';
+      '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">design_services</span></span>' +
+      '<span class="nav-dropdown-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
+      '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
+      "</a>";
 
-    var itemsHtml = children.map(function (child, idx) {
-      var sep = idx < children.length - 1 ? '<div class="nav-dropdown-separator"></div>' : "";
-      return buildChildHtml(child) + sep;
-    }).join("\n");
+    var itemsHtml = children
+      .map(function (child, idx) {
+        var sep = idx < children.length - 1 ? '<div class="nav-dropdown-separator"></div>' : "";
+        return buildChildHtml(child) + sep;
+      })
+      .join("\n");
 
     return (
-      '<div class="nav-dropdown-wrap' + (isTouch() ? " touch-device" : "") + '">' +
-        '<a class="' + esc(cfg.activeClass || "") + ' nav-dropdown-trigger" href="#" data-nav-trigger-label="' + esc(cfg.labelKey || "nav_solutions") + '">' +
-          '<span data-i18n="' + esc(cfg.labelKey || "nav_solutions") + '">' + esc(cfg.label || "Solutions") + '</span>' +
-          '<span class="material-symbols-outlined nav-dropdown-arrow">expand_more</span>' +
-        '</a>' +
-        '<div class="nav-dropdown-panel"><div class="nav-dropdown-card">' +
-          centerEntry +
-          '<div class="nav-dropdown-separator"></div>' +
-          itemsHtml +
-        '</div></div>' +
-      '</div>'
+      '<div class="nav-dropdown-wrap' +
+      (isTouch() ? " touch-device" : "") +
+      '">' +
+      '<a class="' +
+      esc(cfg.activeClass || "") +
+      ' nav-dropdown-trigger" href="#" data-nav-trigger-label="' +
+      esc(cfg.labelKey || "nav_solutions") +
+      '">' +
+      '<span data-i18n="' +
+      esc(cfg.labelKey || "nav_solutions") +
+      '">' +
+      esc(cfg.label || "Solutions") +
+      "</span>" +
+      '<span class="material-symbols-outlined nav-dropdown-arrow">expand_more</span>' +
+      "</a>" +
+      '<div class="nav-dropdown-panel"><div class="nav-dropdown-card">' +
+      centerEntry +
+      '<div class="nav-dropdown-separator"></div>' +
+      itemsHtml +
+      "</div></div>" +
+      "</div>"
     );
   }
 
@@ -98,23 +118,31 @@
 
     var centerHtml =
       '<a href="/solutions/" class="nav-dropdown-popup-item nav-dropdown-center">' +
-        '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">design_services</span></span>' +
-        '<span class="nav-dropdown-popup-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
-        '<span class="material-symbols-outlined nav-dropdown-popup-chevron">chevron_right</span>' +
-      '</a>';
+      '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">design_services</span></span>' +
+      '<span class="nav-dropdown-popup-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
+      '<span class="material-symbols-outlined nav-dropdown-popup-chevron">chevron_right</span>' +
+      "</a>";
     centerHtml += '<div class="nav-dropdown-separator"></div>';
 
-    var itemsHtml = children.map(function (child) {
-      var childHref = child.href || ("/" + (child.slug || child.id) + "/");
-      var childLabel = resolveLabel(child.label) || child.id;
-      return (
-        '<a href="' + esc(childHref) + '" class="nav-dropdown-popup-item">' +
-          '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(child.icon || "circle") + '</span></span>' +
-          '<span class="nav-dropdown-popup-label">' + esc(childLabel) + '</span>' +
+    var itemsHtml = children
+      .map(function (child) {
+        var childHref = child.href || "/" + (child.slug || child.id) + "/";
+        var childLabel = resolveLabel(child.label) || child.id;
+        return (
+          '<a href="' +
+          esc(childHref) +
+          '" class="nav-dropdown-popup-item">' +
+          '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' +
+          esc(child.icon || "circle") +
+          "</span></span>" +
+          '<span class="nav-dropdown-popup-label">' +
+          esc(childLabel) +
+          "</span>" +
           '<span class="material-symbols-outlined nav-dropdown-popup-chevron">chevron_right</span>' +
-        '</a>'
-      );
-    }).join("\n");
+          "</a>"
+        );
+      })
+      .join("\n");
 
     return centerHtml + itemsHtml;
   }
@@ -130,7 +158,7 @@
         if (t._solDropdownBound) return;
         t._solDropdownBound = true;
         t.addEventListener("click", function (e) {
-          if (window.innerWidth <= 720) return;
+          if (window.innerWidth <= 767) return;
           if (isTouch()) {
             e.preventDefault();
             e.stopPropagation();

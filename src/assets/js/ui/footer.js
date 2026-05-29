@@ -2,8 +2,8 @@
  * footer.js — Footer component (bottom nav & page footer)
  *
  * Mobile (<768px): 4 items — 首页/产品/解决方案/WhatsApp
- * Tablet (768-1024px): 6 items — 首页/产品/解决方案/制造/关于/WhatsApp
- * PC (>=1024px): Full site footer (4-column) with legal links
+ * Tablet (768-1279px): 6 items — 首页/产品/解决方案/制造/关于/WhatsApp
+ * PC (>=1280px): Full site footer (4-column) with legal links
  *
  * ⚠️ Bottom navigation can be delegated to bottom-tab.js when
  *    SITE_CONFIG.features.unifiedBottomNav === true.
@@ -15,8 +15,8 @@
   var _features = _cfg.features || {};
 
   /* ── Guard: unifiedBottomNav 开启时，bottom tab bar 由 bottom-tab.js 接管 ── */
-  /* PC (>=1024px) 需要 PC footer，不受影响 */
-  /* <1024px: 只渲染 compact footer（不含 bottom bar），bottom bar 由 bottom-tab.js 负责 */
+  /* PC (>=1280px) 需要 PC footer，不受影响 */
+  /* <1280px: 只渲染 compact footer（不含 bottom bar），bottom bar 由 bottom-tab.js 负责 */
   var _unifiedBottomNav = _features.unifiedBottomNav;
 
   var _spaRegs = {};
@@ -43,7 +43,13 @@
     { id: "home", icon: "home", key: "nav_home", href: "/home/", fill: true },
     { id: "products", icon: "local_cafe", key: "nav_products", href: "/products/", fill: false },
     { id: "solutions", icon: "business_center", key: "nav_solutions", href: "/solutions/", fill: false },
-    { id: "manufacturing", icon: "precision_manufacturing", key: "nav_manufacturing", href: "/manufacturing/", fill: false },
+    {
+      id: "manufacturing",
+      icon: "precision_manufacturing",
+      key: "nav_manufacturing",
+      href: "/manufacturing/",
+      fill: false,
+    },
     { id: "about", icon: "info", key: "nav_about", href: "/about/", fill: false },
     { id: "whatsapp", icon: "chat", key: "nav_whatsapp", href: "", fill: false, isWhatsApp: true },
   ];
@@ -67,7 +73,9 @@
         esc(item.key) +
         "</p>"
       : "";
-    var waHref = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613924828214"));
+    var waHref =
+      "https://wa.me/" +
+      ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8613924828214");
 
     if (item.isWhatsApp) {
       return (
@@ -142,7 +150,7 @@
       '<li><a href="/products/weight/" class="hover:text-white transition-colors" data-i18n="nav_products_weight">Weight Management</a></li>' +
       '<li><a href="/products/gut/" class="hover:text-white transition-colors" data-i18n="nav_products_gut">Gut Health</a></li>' +
       '<li><a href="/products/lifestyle/" class="hover:text-white transition-colors" data-i18n="nav_products_lifestyle">Lifestyle</a></li>' +
-      '</ul></div>' +
+      "</ul></div>" +
       /* Solutions */
       '<div class="block text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 text-center" data-i18n="footer_solutions_title">Solutions</h4>' +
@@ -152,7 +160,7 @@
       '<li><a href="/solutions/obm/" class="hover:text-white transition-colors" data-i18n="nav_solutions_obm">OBM</a></li>' +
       '<li><a href="/solutions/rd/" class="hover:text-white transition-colors" data-i18n="nav_solutions_rd">R&amp;D</a></li>' +
       '<li><a href="/solutions/packaging/" class="hover:text-white transition-colors" data-i18n="nav_solutions_packaging">Packaging</a></li>' +
-      '</ul></div>' +
+      "</ul></div>" +
       /* Support (shown on md+) */
       '<div class="hidden md:block">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2" data-i18n="footer_support_title">Support</h4>' +
@@ -161,25 +169,25 @@
       '<li><a href="/resources/catalog/" class="hover:text-white transition-colors" data-i18n="nav_resources">Resources</a></li>' +
       '<li><a href="/contact/" class="hover:text-white transition-colors" data-i18n="nav_contact">Contact</a></li>' +
       '<li><a href="/about/" class="hover:text-white transition-colors" data-i18n="nav_about">About</a></li>' +
-      '</ul></div>' +
+      "</ul></div>" +
       /* Legal (shown on md+) */
       '<div class="hidden md:block">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2" data-i18n="footer_legal_title">Legal</h4>' +
       '<ul class="space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/privacy/" class="hover:text-white transition-colors" data-i18n="footer_legal_privacy_policy">Privacy Policy</a></li>' +
       '<li><a href="/terms/" class="hover:text-white transition-colors" data-i18n="footer_legal_user_agreement">User Agreement</a></li>' +
-      '</ul></div>' +
-      '</div>' +
+      "</ul></div>" +
+      "</div>" +
       /* Legal + Copyright */
       '<div class="border-t border-white/20 pt-3 sm:pt-4 flex flex-col items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs text-slate-400">' +
       '<div class="flex gap-3 sm:gap-4">' +
       '<a href="/privacy/" class="hover:text-white transition-colors" data-i18n="footer_legal_privacy_policy">Privacy Policy</a>' +
       '<a href="/terms/" class="hover:text-white transition-colors" data-i18n="footer_legal_user_agreement">User Agreement</a>' +
-      '</div>' +
+      "</div>" +
       '<p data-i18n="footer_copyright"></p>' +
-      '</div>' +
-      '</div>' +
-      '</div>'
+      "</div>" +
+      "</div>" +
+      "</div>"
     );
   }
 
@@ -260,14 +268,14 @@
       var _variant = footer.getAttribute("data-variant") || "mobile";
       var activeId = footer.getAttribute("data-active") || "";
 
-      // PC (>=1024px) → render full site footer
-      if (w >= 1024) {
+      // PC (>=1280px) → render full site footer
+      if (w >= 1280) {
         footer.style.display = "";
         footer.innerHTML = buildPCFooterHtml();
         continue;
       }
 
-      // Use tablet items for 768-1024, mobile items for <768
+      // Use tablet items for 768-1279, mobile items for <768
       var resolvedVariant = w >= 768 ? "tablet" : "mobile";
 
       footer.style.display = "";

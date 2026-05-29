@@ -12,7 +12,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
   /**
    * Shared style template — uses {{PREFIX}} placeholder.
@@ -133,7 +133,7 @@
     "html.dark .{{PREFIX}}-dropdown-separator { background: rgba(235,235,245,.15); }",
 
     /* ===== Mobile — hide panel ===== */
-    "@media (max-width: 720px) { .{{PREFIX}}-dropdown-panel { display: none !important; } }",
+    "@media (max-width: 767px) { .{{PREFIX}}-dropdown-panel { display: none !important; } }",
 
     /* ===== Popup — iOS bottom sheet ===== */
     ".{{PREFIX}}-popup-overlay {",

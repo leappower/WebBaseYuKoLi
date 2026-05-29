@@ -22,14 +22,18 @@
   // ─── Feature gate ────────────────────────────────────────────────────────
   var _features = (global.SITE_CONFIG || {}).features || {};
   if (_features.smartPopup === false) {
-    global.smartPopup = { showPopup: function() {}, closePopup: function() {}, scheduleAutoShow: function() {} };
+    global.smartPopup = { showPopup: function () {}, closePopup: function () {}, scheduleAutoShow: function () {} };
     return; // skip entire module
   }
 
   function _extend(target) {
     for (var i = 1; i < arguments.length; i++) {
       var src = arguments[i];
-      if (src) { for (var k in src) { if (Object.prototype.hasOwnProperty.call(src, k)) target[k] = src[k]; } }
+      if (src) {
+        for (var k in src) {
+          if (Object.prototype.hasOwnProperty.call(src, k)) target[k] = src[k];
+        }
+      }
     }
     return target;
   }
@@ -37,16 +41,20 @@
   // ─── Fallback 工具函数 ─────────────────────────────────────────────────────
 
   /**
-   * 判断当前是否为移动端视口。
-   * 优先使用 MediaQueries.isMobile()，其次读取 mqMobile 属性，最后默认 false。
+   * 判断当前是否为移动端视口（<768px）。
+   * 优先使用 DeviceUtils.isMobile()，其次降级到 MediaQueries，最后 innerWidth。
    * @returns {boolean}
    */
   function getMqMobile() {
-    return window.MediaQueries
-      ? typeof window.MediaQueries.isMobile === "function"
+    if (typeof DeviceUtils !== "undefined" && DeviceUtils && typeof DeviceUtils.isMobile === "function") {
+      return DeviceUtils.isMobile();
+    }
+    if (window.MediaQueries) {
+      return typeof window.MediaQueries.isMobile === "function"
         ? window.MediaQueries.isMobile()
-        : !!window.MediaQueries.mqMobile
-      : false;
+        : !!window.MediaQueries.mqMobile;
+    }
+    return window.innerWidth < 768;
   }
 
   /**
@@ -107,7 +115,11 @@
    */
   function loadUserState() {
     var saved;
-    try { saved = localStorage.getItem("userState"); } catch(e) { saved = null; }
+    try {
+      saved = localStorage.getItem("userState");
+    } catch (e) {
+      saved = null;
+    }
     if (saved) {
       var parsed;
       try {
@@ -129,7 +141,9 @@
 
   /** 将当前用户状态持久化到 localStorage。 */
   function saveUserState() {
-    try { localStorage.setItem("userState", JSON.stringify(userState)); } catch(e) {}
+    try {
+      localStorage.setItem("userState", JSON.stringify(userState));
+    } catch (e) {}
   }
 
   /** 更新当前会话的滚动深度（取最大值），同时更新历史记录。 */
@@ -268,7 +282,7 @@
       if (document.getElementById("smart-popup-overlay")) return;
 
       // 注入弹窗样式
-            var overlayStyle = document.createElement("style");
+      var overlayStyle = document.createElement("style");
       overlayStyle.textContent = "/* migrated to styles.css */";
       document.head.appendChild(overlayStyle);
 
@@ -382,7 +396,11 @@
     loadSuppressionState: function () {
       var storageKey = this.state.storageKeys.convertedUntil;
       var _suppVal;
-      try { _suppVal = localStorage.getItem(storageKey); } catch(e) { _suppVal = null; }
+      try {
+        _suppVal = localStorage.getItem(storageKey);
+      } catch (e) {
+        _suppVal = null;
+      }
       this.state.suppression.convertedUntil = Number(_suppVal || 0);
     },
 
@@ -793,7 +811,9 @@
     saveConversionSuppression: function () {
       var suppressUntil = Date.now() + 48 * 60 * 60 * 1000; // 48 小时
       this.state.suppression.convertedUntil = suppressUntil;
-      try { localStorage.setItem(this.state.storageKeys.convertedUntil, String(suppressUntil)); } catch(e) {}
+      try {
+        localStorage.setItem(this.state.storageKeys.convertedUntil, String(suppressUntil));
+      } catch (e) {}
     },
 
     /**

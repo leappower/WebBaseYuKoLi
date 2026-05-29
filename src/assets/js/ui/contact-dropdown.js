@@ -7,13 +7,15 @@
 
 (function () {
   var _cfg = window.SITE_CONFIG || window._cfg || {};
-  "use strict";
+  ("use strict");
 
   var base = window.DropdownBase;
   var _spaOn = base ? base._spaOn : _fallbackSpaOn;
-  var isTouch = base ? base.isTouch : function () {
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  };
+  var isTouch = base
+    ? base.isTouch
+    : function () {
+        return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      };
   var esc = base ? base.esc : _fallbackEsc;
 
   var _spaRegs = {};
@@ -34,7 +36,9 @@
     {
       key: "nav_contact_whatsapp",
       icon: "chat",
-      href: "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8613924828214")),
+      href:
+        "https://wa.me/" +
+        ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8613924828214"),
       isWhatsApp: true,
     },
   ];
@@ -112,7 +116,7 @@
     });
     document.querySelectorAll(".cnt-dropdown-trigger").forEach(function (t) {
       t.addEventListener("click", function (e) {
-        if (window.innerWidth <= 720) return;
+        if (window.innerWidth <= 767) return;
         if (isTouch()) {
           e.preventDefault();
           e.stopPropagation();

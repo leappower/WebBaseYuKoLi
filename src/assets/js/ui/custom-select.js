@@ -24,7 +24,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -38,7 +38,7 @@
    *  CONFIG
    * ──────────────────────────────────────────────────────────────── */
 
-  var MOBILE_BREAKPOINT = 720;
+  var MOBILE_BREAKPOINT = 767;
   var STYLE_ID = "custom-select-styles";
   var ATTR = "data-custom-select";
   var OPEN_CLASS = "cs-is-open";

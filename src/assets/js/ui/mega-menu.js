@@ -19,12 +19,16 @@
    * ================================================================ */
 
   var base = global.DropdownBase;
-  var esc = base ? base.esc : function (str) {
-    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  };
-  var isTouch = base ? base.isTouch : function () {
-    return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-  };
+  var esc = base
+    ? base.esc
+    : function (str) {
+        return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      };
+  var isTouch = base
+    ? base.isTouch
+    : function () {
+        return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      };
   var _spaOn = base ? base._spaOn : _fallbackSpaOn;
 
   var _spaRegs = {};
@@ -56,8 +60,11 @@
    * @returns {string}
    */
   function getLang() {
-    try { return localStorage.getItem("userLanguage") || "zh-CN"; }
-    catch (e) { return "zh-CN"; }
+    try {
+      return localStorage.getItem("userLanguage") || "zh-CN";
+    } catch (e) {
+      return "zh-CN";
+    }
   }
 
   /**
@@ -108,7 +115,9 @@
   function getProductLines() {
     var cfg = global.SITE_CONFIG || {};
     var lines = get(cfg, "productLines") || [];
-    return lines.filter(function (l) { return !l.hidden; });
+    return lines.filter(function (l) {
+      return !l.hidden;
+    });
   }
 
   /**
@@ -194,18 +203,24 @@
    * @returns {string}
    */
   function renderProductCard(item, basePath) {
-    var href = item.href || (basePath + "/products/" + (item.slug || item.key || "") + "/");
+    var href = item.href || basePath + "/products/" + (item.slug || item.key || "") + "/";
     var accent = item.accent || "coral";
     var name = resolveLabel(item.name || item.label);
     var desc = item.desc || "";
 
     return (
-      '<a class="mega-menu-card" href="' + esc(href) + '" data-accent="' + esc(accent) + '">' +
-        '<div class="mega-menu-card-icon">' +
-          renderIcon(item.icon, item.emoji) +
-        "</div>" +
-        '<div class="mega-menu-card-title">' + esc(name) + "</div>" +
-        (desc ? '<div class="mega-menu-card-desc">' + esc(desc) + "</div>" : "") +
+      '<a class="mega-menu-card" href="' +
+      esc(href) +
+      '" data-accent="' +
+      esc(accent) +
+      '">' +
+      '<div class="mega-menu-card-icon">' +
+      renderIcon(item.icon, item.emoji) +
+      "</div>" +
+      '<div class="mega-menu-card-title">' +
+      esc(name) +
+      "</div>" +
+      (desc ? '<div class="mega-menu-card-desc">' + esc(desc) + "</div>" : "") +
       "</a>"
     );
   }
@@ -220,14 +235,18 @@
     var cards;
 
     if (lines.length > 0) {
-      cards = lines.map(function (line) {
-        return renderProductCard(line, basePath);
-      }).join("\n");
+      cards = lines
+        .map(function (line) {
+          return renderProductCard(line, basePath);
+        })
+        .join("\n");
     } else {
       var fallback = buildProductCardsFromCategories();
-      cards = fallback.map(function (cat) {
-        return renderProductCard(cat, basePath);
-      }).join("\n");
+      cards = fallback
+        .map(function (cat) {
+          return renderProductCard(cat, basePath);
+        })
+        .join("\n");
     }
 
     return cards;
@@ -243,21 +262,31 @@
    * @returns {string}
    */
   function renderSectionHtml(section) {
-    var itemsHtml = section.items.map(function (item) {
-      return (
-        '<a class="mega-menu-link" href="' + esc(item.href) + '">' +
+    var itemsHtml = section.items
+      .map(function (item) {
+        return (
+          '<a class="mega-menu-link" href="' +
+          esc(item.href) +
+          '">' +
           '<span class="mega-menu-link-icon">' +
-            renderIcon(item.icon, item.emoji) +
+          renderIcon(item.icon, item.emoji) +
           "</span>" +
-          '<span class="mega-menu-link-label">' + esc(item.label) + "</span>" +
-        "</a>"
-      );
-    }).join("\n");
+          '<span class="mega-menu-link-label">' +
+          esc(item.label) +
+          "</span>" +
+          "</a>"
+        );
+      })
+      .join("\n");
 
     return (
       '<div class="mega-menu-section">' +
-        '<div class="mega-menu-section-title">' + esc(section.title) + "</div>" +
-        '<div class="mega-menu-section-list">' + itemsHtml + "</div>" +
+      '<div class="mega-menu-section-title">' +
+      esc(section.title) +
+      "</div>" +
+      '<div class="mega-menu-section-list">' +
+      itemsHtml +
+      "</div>" +
       "</div>"
     );
   }
@@ -300,11 +329,21 @@
     var triggerLabel = esc(opts.label || navItem.label || "");
     var triggerI18n = esc(opts.labelKey || navItem.i18nKey || "");
     var triggerHtml =
-      '<a class="mega-menu-trigger ' + triggerClass + " " + (opts.activeClass || "") + '" ' +
-        'href="' + esc(opts.href || navItem.path || "#") + '" ' +
-        'data-i18n="' + triggerI18n + '">' +
-        '<span>' + triggerLabel + '</span>' +
-        '<span class="material-symbols-outlined mega-menu-arrow">expand_more</span>' +
+      '<a class="mega-menu-trigger ' +
+      triggerClass +
+      " " +
+      (opts.activeClass || "") +
+      '" ' +
+      'href="' +
+      esc(opts.href || navItem.path || "#") +
+      '" ' +
+      'data-i18n="' +
+      triggerI18n +
+      '">' +
+      "<span>" +
+      triggerLabel +
+      "</span>" +
+      '<span class="material-symbols-outlined mega-menu-arrow">expand_more</span>' +
       "</a>";
 
     /* ── 根据导航项 id 决定内容 ── */
@@ -315,36 +354,47 @@
       gridHtml = renderProductCardsHtml();
     } else if (navItem.children && navItem.children.length > 0) {
       var basePathLocal = basePath;
-      gridHtml = navItem.children.map(function (child) {
-        var childHref = child.href || (basePathLocal + "/" + navId + "/" + (child.slug || child.id || "") + "/");
-        return renderProductCard({
-          key: child.id || "",
-          name: resolveLabel(child.label),
-          icon: child.icon || "",
-          emoji: child.emoji || "",
-          accent: child.accent || "coral",
-          desc: child.desc || "",
-          href: childHref,
-        }, basePathLocal);
-      }).join("\n");
+      gridHtml = navItem.children
+        .map(function (child) {
+          var childHref = child.href || basePathLocal + "/" + navId + "/" + (child.slug || child.id || "") + "/";
+          return renderProductCard(
+            {
+              key: child.id || "",
+              name: resolveLabel(child.label),
+              icon: child.icon || "",
+              emoji: child.emoji || "",
+              accent: child.accent || "coral",
+              desc: child.desc || "",
+              href: childHref,
+            },
+            basePathLocal
+          );
+        })
+        .join("\n");
     }
 
     /* 追加导航分类列（非产品菜单项时显示） */
-    var sectionsHtml = (navId === "products") ? renderNavSectionsHtml() : "";
+    var sectionsHtml = navId === "products" ? renderNavSectionsHtml() : "";
 
     if (gridHtml || sectionsHtml) {
       contentHtml =
         '<div class="mega-menu-inner">' +
-          (gridHtml ? '<div class="mega-menu-grid mega-menu-grid--cols-' + cols + '">' + gridHtml + "</div>" : "") +
-          sectionsHtml +
+        (gridHtml ? '<div class="mega-menu-grid mega-menu-grid--cols-' + cols + '">' + gridHtml + "</div>" : "") +
+        sectionsHtml +
         "</div>";
     }
 
     /* ── Wrap ── */
     return (
-      '<div class="mega-menu-wrap' + (isTouch() ? ' touch-device' : '') + '" data-mega-nav="' + esc(navId) + '">' +
-        triggerHtml +
-        '<div class="mega-menu-panel">' + contentHtml + "</div>" +
+      '<div class="mega-menu-wrap' +
+      (isTouch() ? " touch-device" : "") +
+      '" data-mega-nav="' +
+      esc(navId) +
+      '">' +
+      triggerHtml +
+      '<div class="mega-menu-panel">' +
+      contentHtml +
+      "</div>" +
       "</div>"
     );
   }
@@ -385,7 +435,7 @@
       if (t[_triggerBoundFlag]) return;
       t[_triggerBoundFlag] = true;
       t.addEventListener("click", function (e) {
-        if (window.innerWidth <= 720) return;
+        if (window.innerWidth <= 767) return;
         if (isTouch()) {
           e.preventDefault();
           e.stopPropagation();

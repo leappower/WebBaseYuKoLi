@@ -60,44 +60,68 @@
           return items[i].children;
         }
       }
-    } catch (e) { /* silent */ }
+    } catch (e) {
+      /* silent */
+    }
     return [];
   }
 
   // ── 构建子项 HTML ──────────────────────────────────────────
   function buildDropdownItem(child, showSep) {
-    var childHref = child.href || ("/" + (child.slug || child.id) + "/");
+    var childHref = child.href || "/" + (child.slug || child.id) + "/";
     var childLabel = resolveLabel(child.label) || child.id;
-    var childKey = child.i18nKey || ("nav_" + child.id);
+    var childKey = child.i18nKey || "nav_" + child.id;
     var iconHtml = "";
     if (child.icon) {
-      iconHtml = '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(child.icon) + '</span></span>';
+      iconHtml =
+        '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(child.icon) + "</span></span>";
     } else if (child.emoji) {
-      iconHtml = '<span class="nav-dropdown-icon"><span class="nav-dropdown-emoji">' + esc(child.emoji) + '</span></span>';
+      iconHtml =
+        '<span class="nav-dropdown-icon"><span class="nav-dropdown-emoji">' + esc(child.emoji) + "</span></span>";
     }
     var sep = showSep ? '<div class="nav-dropdown-separator"></div>' : "";
     return (
-      '<a href="' + esc(childHref) + '" class="nav-dropdown-item">' +
-        iconHtml +
-        '<span class="nav-dropdown-label" data-i18n="' + esc(childKey) + '">' + esc(childLabel) + '</span>' +
-        '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
-      "</a>" + sep
+      '<a href="' +
+      esc(childHref) +
+      '" class="nav-dropdown-item">' +
+      iconHtml +
+      '<span class="nav-dropdown-label" data-i18n="' +
+      esc(childKey) +
+      '">' +
+      esc(childLabel) +
+      "</span>" +
+      '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
+      "</a>" +
+      sep
     );
   }
 
   // ── 构建分类总览入口 HTML ──────────────────────────────────
   function buildCenterEntry(navId) {
     var centerMap = {
-      solutions: { href: "/solutions/", icon: "design_services", i18nKey: "nav_solutions_center", label: "Solutions Center" },
+      solutions: {
+        href: "/solutions/",
+        icon: "design_services",
+        i18nKey: "nav_solutions_center",
+        label: "Solutions Center",
+      },
     };
     var entry = centerMap[navId];
     if (!entry) return "";
     return (
-      '<a href="' + esc(entry.href) + '" class="nav-dropdown-item nav-dropdown-center">' +
-        '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(entry.icon) + '</span></span>' +
-        '<span class="nav-dropdown-label" data-i18n="' + esc(entry.i18nKey) + '">' + esc(entry.label) + '</span>' +
-        '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
-      '</a>'
+      '<a href="' +
+      esc(entry.href) +
+      '" class="nav-dropdown-item nav-dropdown-center">' +
+      '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' +
+      esc(entry.icon) +
+      "</span></span>" +
+      '<span class="nav-dropdown-label" data-i18n="' +
+      esc(entry.i18nKey) +
+      '">' +
+      esc(entry.label) +
+      "</span>" +
+      '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
+      "</a>"
     );
   }
 
@@ -109,33 +133,51 @@
 
     // 无子项：渲染为普通链接（可点击跳转）
     if (children.length === 0) {
-      var href = cfg.href || ("/" + navId + "/");
+      var href = cfg.href || "/" + navId + "/";
       var lbl = resolveLabel(cfg.label) || navId;
       return '<a class="' + (cfg.activeClass || "") + '" href="' + esc(href) + '">' + esc(lbl) + "</a>";
     }
 
     // 有子项：trigger 只负责 hover/click 展开 dropdown，不跳转
-    var labelKey = cfg.labelKey || ("nav_" + navId);
+    var labelKey = cfg.labelKey || "nav_" + navId;
     var label = resolveLabel(cfg.label) || navId;
 
     var centerEntry = buildCenterEntry(navId);
     var centerSep = centerEntry ? '<div class="nav-dropdown-separator"></div>' : "";
 
-    var itemsHtml = children.map(function (child, idx) {
-      return buildDropdownItem(child, idx < children.length - 1);
-    }).join("\n");
+    var itemsHtml = children
+      .map(function (child, idx) {
+        return buildDropdownItem(child, idx < children.length - 1);
+      })
+      .join("\n");
 
     return (
-      '<div class="' + WRAP_CLASS + (isTouch() ? " touch-device" : "") + '">' +
-        '<a class="' + esc(cfg.activeClass || "") + ' ' + TRIGGER_CLASS + '" href="#" data-nav-trigger-label="' + esc(labelKey) + '">' +
-          '<span data-i18n="' + esc(labelKey) + '">' + esc(label) + '</span>' +
-          '<span class="material-symbols-outlined nav-dropdown-arrow">expand_more</span>' +
-        '</a>' +
-        '<div class="' + PANEL_CLASS + '"><div class="nav-dropdown-card">' +
-          centerEntry + centerSep +
-          itemsHtml +
-        '</div></div>' +
-      '</div>'
+      '<div class="' +
+      WRAP_CLASS +
+      (isTouch() ? " touch-device" : "") +
+      '">' +
+      '<a class="' +
+      esc(cfg.activeClass || "") +
+      " " +
+      TRIGGER_CLASS +
+      '" href="#" data-nav-trigger-label="' +
+      esc(labelKey) +
+      '">' +
+      '<span data-i18n="' +
+      esc(labelKey) +
+      '">' +
+      esc(label) +
+      "</span>" +
+      '<span class="material-symbols-outlined nav-dropdown-arrow">expand_more</span>' +
+      "</a>" +
+      '<div class="' +
+      PANEL_CLASS +
+      '"><div class="nav-dropdown-card">' +
+      centerEntry +
+      centerSep +
+      itemsHtml +
+      "</div></div>" +
+      "</div>"
     );
   }
 
@@ -151,7 +193,7 @@
       if (t[_triggerBoundFlag]) return;
       t[_triggerBoundFlag] = true;
       t.addEventListener("click", function (e) {
-        if (window.innerWidth <= 720) return;
+        if (window.innerWidth <= 767) return;
         if (isTouch()) {
           e.preventDefault();
           e.stopPropagation();
@@ -185,32 +227,45 @@
     panel.className = POPUP_PANEL_CLASS;
 
     // 构建子项 HTML
-    var childItems = children.map(function (child) {
-      var childHref = child.href || ("/" + (child.slug || child.id) + "/");
-      var childLabel = resolveLabel(child.label) || child.id;
-      var childKey = child.i18nKey || ("nav_" + child.id);
-      var iconHtml = "";
-      if (child.icon) {
-        iconHtml = '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' + esc(child.icon) + '</span></span>';
-      } else if (child.emoji) {
-        iconHtml = '<span class="nav-dropdown-emoji">' + esc(child.emoji) + '</span>';
-      }
-      return (
-        '<a href="' + esc(childHref) + '" class="' + POPUP_ITEM_CLASS + '">' +
+    var childItems = children
+      .map(function (child) {
+        var childHref = child.href || "/" + (child.slug || child.id) + "/";
+        var childLabel = resolveLabel(child.label) || child.id;
+        var childKey = child.i18nKey || "nav_" + child.id;
+        var iconHtml = "";
+        if (child.icon) {
+          iconHtml =
+            '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' +
+            esc(child.icon) +
+            "</span></span>";
+        } else if (child.emoji) {
+          iconHtml = '<span class="nav-dropdown-emoji">' + esc(child.emoji) + "</span>";
+        }
+        return (
+          '<a href="' +
+          esc(childHref) +
+          '" class="' +
+          POPUP_ITEM_CLASS +
+          '">' +
           iconHtml +
-          '<span class="nav-dropdown-popup-label" data-i18n="' + esc(childKey) + '">' + esc(childLabel) + '</span>' +
+          '<span class="nav-dropdown-popup-label" data-i18n="' +
+          esc(childKey) +
+          '">' +
+          esc(childLabel) +
+          "</span>" +
           '<span class="material-symbols-outlined nav-dropdown-popup-chevron">chevron_right</span>' +
-        '</a>'
-      );
-    }).join("\n");
+          "</a>"
+        );
+      })
+      .join("\n");
 
     // 给有 center entry 的 nav 加顶部总览入口
     var centerEntryHtml = buildCenterEntry(navId);
     var popupHtml;
     if (centerEntryHtml) {
       var centerPopupItem = centerEntryHtml
-        .replace('nav-dropdown-item', 'nav-dropdown-popup-item')
-        .replace('nav-dropdown-chevron', 'nav-dropdown-popup-chevron')
+        .replace("nav-dropdown-item", "nav-dropdown-popup-item")
+        .replace("nav-dropdown-chevron", "nav-dropdown-popup-chevron")
         .replace('href="/solutions/"', 'href="/solutions/"');
       popupHtml = centerPopupItem + '<div class="nav-dropdown-separator"></div>' + childItems;
     } else {
@@ -232,7 +287,9 @@
     document.body.appendChild(panel);
 
     panel.querySelectorAll("." + POPUP_ITEM_CLASS).forEach(function (item) {
-      item.addEventListener("click", function () { closePopup(); });
+      item.addEventListener("click", function () {
+        closePopup();
+      });
     });
 
     requestAnimationFrame(function () {
@@ -260,18 +317,29 @@
   }
 
   // ── SPA 清理 ────────────────────────────────────────────────
-  _spaOn(document, "spa:load", function () {
-    closePopup();
-    bindAllPopupTriggers();
-  }, "spa:load:navDropdown");
+  _spaOn(
+    document,
+    "spa:load",
+    function () {
+      closePopup();
+      bindAllPopupTriggers();
+    },
+    "spa:load:navDropdown"
+  );
 
   // ── 键盘导航 ────────────────────────────────────────────────
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
       var openWrap = document.querySelector("." + WRAP_CLASS + ".is-open");
-      if (openWrap) { openWrap.classList.remove("is-open"); return; }
+      if (openWrap) {
+        openWrap.classList.remove("is-open");
+        return;
+      }
       var openPanel = document.querySelector("." + POPUP_PANEL_CLASS + ".is-open");
-      if (openPanel) { closePopup(); return; }
+      if (openPanel) {
+        closePopup();
+        return;
+      }
     }
   });
 
