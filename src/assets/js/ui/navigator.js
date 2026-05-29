@@ -1155,6 +1155,11 @@
   function resolveVariant(declaredVariant) {
     if (declaredVariant !== "pc") return declaredVariant;
 
+    // 优先使用 DeviceUtils（与 CSS @media 一致）
+    if (window.DeviceUtils && typeof window.DeviceUtils.getDeviceType === "function") {
+      return window.DeviceUtils.getDeviceType();
+    }
+
     var width = window.innerWidth;
     if (width < 768) return "mobile";
     if (width < 1280) return "tablet";
@@ -1552,12 +1557,17 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () {
       var newVariant;
-      if (window.innerWidth < 768) {
-        newVariant = "mobile";
-      } else if (window.innerWidth < 1280) {
-        newVariant = "tablet";
+      // 优先使用 DeviceUtils（与 CSS @media 一致）
+      if (window.DeviceUtils && typeof window.DeviceUtils.getDeviceType === "function") {
+        newVariant = window.DeviceUtils.getDeviceType();
       } else {
-        newVariant = "pc";
+        if (window.innerWidth < 768) {
+          newVariant = "mobile";
+        } else if (window.innerWidth < 1280) {
+          newVariant = "tablet";
+        } else {
+          newVariant = "pc";
+        }
       }
 
       if (newVariant !== currentVariant) {
