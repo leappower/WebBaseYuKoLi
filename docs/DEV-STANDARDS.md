@@ -906,11 +906,63 @@ grep -rn '#ec5b13' src/assets/js/
 |------|--------|---------|---------|---------|
 | **`edit` (OpenClaw)** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | **首选**。精确文本匹配，无需处理转义 |
 | **VS Code 查找替换** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 手动逐文件确认 |
-| **`sed -i`** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | 仅简单纯 ASCII 替换 |
-| **Python `.replace()`** | ⭐⭐ | ⭐ | ⭐ | **高风险**。引号嵌套、转义字符极易出错 |
-| **`sed` 正则替换** | ⭐⭐ | ⭐ | ⭐⭐ | **极高风险**。正则特殊字符灾难 |
-| **Node.js `String.replace()`** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | 中等风险，比 Python 好 | 
+| **Python `str.replace()`** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | **推荐**。跨平台，纯文本替换无转义问题 |
+| **Python `re.sub()`** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | **推荐**。正则替换，跨平台一致，用原始字符串 `r''` 防转义 |
+| **`sd`（Rust CLI）** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 如果项目已安装，语法最简洁 |
+| **Node.js `replace-in-file`** | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | 已用 Node.js 的项目可选 |
+| **`sed -i`** | ⭐⭐ | ⭐⭐ | ⭐⭐ | ❌ **项目禁止。** macOS/Linux sed 行为不一致，--符号转义极易出错 |
+| **`awk`** | ⭐⭐ | ⭐⭐ | ⭐⭐ | 仅简单文本，复杂正则不推荐 |
 | **AI Agent 批量替换** | ⭐ | ⭐ | ⭐ | **禁止**。成功率 <50%，必须逐文件操作 |
+
+### 10.3 build.sh 文件替换规范 🔴
+
+`build.sh` 中所有文件内容替换操作**必须**使用 `python3`，禁止使用 `sed -i`。
+
+**标准模板：**
+
+```bash
+# 纯文本替换 (str.replace)
+python3 -c "
+import os
+DOMAIN = 'https://brew.yukoli.com'
+for r, d, fs in os.walk('dist'):
+    for f in fs:
+        fp = os.path.join(r, f)
+        with open(fp) as fh: c = fh.read()
+        nc = c.replace('%DOMAIN%', DOMAIN)
+        if nc != c:
+            with open(fp, 'w') as fh: fh.write(nc)
+"
+
+# 正则替换 (re.sub)
+python3 -c "
+import os, re
+for r, d, fs in os.walk('dist'):
+    for f in fs:
+        fp = os.path.join(r, f)
+        with open(fp) as fh: c = fh.read()
+        nc = re.sub(r'\\?v=[a-zA-Z0-9._-]*', '?v=' + VERSION, c)
+        if nc != c:
+            with open(fp, 'w') as fh: fh.write(nc)
+"
+```
+
+**规则：**
+| 规则 | 说明 |
+|------|------|
+| 使用原始字符串 `r'...'` 或 `r"..."` 避免反斜杠转义 | `r'\?v=...'` 优于 `'\\\\?v=...'` |
+| 用 `.replace()` 做纯文本替换 | 比正则更快，无需转义 |
+| 用 `re.sub()` 做正则替换 | 需确保正则跨平台一致 |
+| 跳过不匹配的文件 | `if nc != c: with open(fp, 'w')` — 只写有变化的文件 |
+| 禁止 `sed -i` | macOS/ Linux sed 的 `-i` 参数语法不同 |
+
+**build.sh 现有 python3 替换场景：**
+| 场景 | 方式 | 说明 |
+|------|------|------|
+| i18n 缓存版本刷新 | `re.sub()` | 替换 `I18N_CACHE_V` 数字 |
+| %DOMAIN% 占位符 | `.replace()` | 纯文本替换，所有 HTML |
+| sw.js 版本号注入 | `re.sub()` | 替换 `SW_VERSION` 字符串 |
+| 资源版本号 (v=...) | `re.sub()` | 所有 HTML/CSS 的 `?v=...` 参数 |
 
 #### 10.2.2 各工具的致命陷阱
 

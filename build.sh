@@ -3,6 +3,11 @@
 # Usage: ./build.sh [dev|production]
 #   (no arg) = production build (default)
 #   dev      = development build (no version bump)
+#
+# 文件替换规范（统一使用 python3）:
+#   - 所有字符串/正则替换使用 python3，避免 sed 跨平台不兼容
+#   - 禁止: sed -i, sed -i.bak (macOS 和 Linux 行为不一致)
+#   - 使用: python3 -c "import re; ..." (跨平台一致，项目标准)
 
 set -euo pipefail
 
@@ -14,7 +19,7 @@ echo "🏗️  Building ($BUILD_MODE)..."
 SRC="src"
 DIST="dist"
 
-# ─── 版本号 (毫秒时间戳, 兼容 Linux + macOS) ─────────────────
+# ─── 版本号 (毫秒时间戳) ────────────────────────────────────
 VERSION=$(python3 -c "import time; print(int(time.time()*1000))")
 VERSION_TAG="v=$VERSION"
 BUILD_TS=$(date -u "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u +"%Y-%m-%dT%H:%M:%SZ")
@@ -42,7 +47,7 @@ else
   npx webpack --mode=production 2>&1 | tail -3 || echo "  ⚠️  Webpack had non-fatal errors"
 fi
 
-# ─── 3. i18n cache version ──────────────────────────────────────
+# ─── 2. i18n cache version ──────────────────────────────────────
 I18N_CACHE_TS=$(python3 -c "import time; print(int(time.time()))")
 python3 -c "
 import re, os
@@ -50,10 +55,10 @@ fp = os.path.expandvars('$SRC/assets/js/translations.js')
 with open(fp) as f: c = f.read()
 c = re.sub(r'var I18N_CACHE_V = \d+;', 'var I18N_CACHE_V = $I18N_CACHE_TS;', c)
 with open(fp, 'w') as f: f.write(c)
-" 2>/dev/null || echo "  ⚠️  i18n cache bump failed (translations.js may use different format)"
+" 2>/dev/null || echo "  ⚠️  i18n cache bump failed"
 echo "🔄 i18n cache version → $I18N_CACHE_TS"
 
-# ─── 4. Assets ──────────────────────────────────────────────────
+# ─── 3. Assets ──────────────────────────────────────────────────
 echo "📦 Syncing assets..."
 sync_assets() {
   local src_dir="$1"
@@ -76,7 +81,7 @@ sync_assets "images"   "*"
 sync_assets "video"    "*"
 sync_assets "pdf"      "*.pdf"
 
-# ─── 4.5. site.config.js → dist/ ───────────────────────────────
+# ─── 4. site.config.js → dist/ ─────────────────────────────────
 # Must be at /site.config.js for SPA shell (after webpack so not cleaned)
 cp "$SRC/site.config.js" "$DIST/site.config.js"
 
@@ -90,12 +95,25 @@ done
 cp "$SRC/index.html" "$DIST/index.html"
 
 # ─── 5.5. Replace %DOMAIN% placeholder ──────────────────────────
-find "$DIST" -name '*.html' -exec sed -i.bak 's|%DOMAIN%|https://brew.yukoli.com|g' {} + && find "$DIST" -name '*.bak' -delete 2>/dev/null || true
-find "$SRC" -name '*.html' -exec sed -i.bak 's|%DOMAIN%|https://brew.yukoli.com|g' {} + && find "$SRC" -name '*.bak' -delete 2>/dev/null || true
+python3 -c "
+import os
+DOMAIN = 'https://brew.yukoli.com'
+for root in [os.environ['DIST'], os.environ['SRC']]:
+    for r, d, fs in os.walk(root):
+        for f in fs:
+            if not f.endswith('.html'): continue
+            fp = os.path.join(r, f)
+            with open(fp) as fh: c = fh.read()
+            if '%DOMAIN%' not in c: continue
+            nc = c.replace('%DOMAIN%', DOMAIN)
+            with open(fp, 'w') as fh: fh.write(nc)
+            print('  ', fp)
+" 2>/dev/null || echo "  ⚠️  DOMAIN replacement skipped"
 echo "🔧 Replaced %DOMAIN% placeholders"
 
 # CNAME must be a file (not directory) for GitHub Pages custom domain
 rm -rf "$DIST/CNAME"
+
 # ─── 6. Root files ──────────────────────────────────────────────
 cp "CNAME"                       "$DIST/CNAME"             2>/dev/null || true
 cp "$SRC/404.html"               "$DIST/404.html"          2>/dev/null || true
@@ -104,15 +122,18 @@ cp "$SRC/manifest.json"          "$DIST/manifest.json"     2>/dev/null || true
 touch "$DIST/.nojekyll"
 
 # ─── 7. sw.js 版本号注入 ──────────────────────────────────────
-# 优先根目录 sw.js，其次 src/sw.js
 SW_SRC=""
 [ -f "sw.js" ]      && SW_SRC="sw.js"
 [ -z "$SW_SRC" ] && [ -f "$SRC/sw.js" ] && SW_SRC="$SRC/sw.js"
 if [ -n "$SW_SRC" ]; then
   cp "$SW_SRC" "$DIST/sw.js"
   if [ "$BUILD_MODE" != "dev" ]; then
-    # sed 跨平台兼容: -i.bak + rm .bak (兼容 macOS 和 Linux GHA)
-    sed -i.bak "s/var SW_VERSION = \"[^\"]*\";/var SW_VERSION = \"v$VERSION\";/" "$DIST/sw.js" && rm -f "$DIST/sw.js.bak"
+    python3 -c "
+import re
+with open('$DIST/sw.js') as f: c = f.read()
+c = re.sub(r'(var SW_VERSION = \")[^\"]*(\";)', r'\1v$VERSION\2', c)
+with open('$DIST/sw.js', 'w') as f: f.write(c)
+" 2>/dev/null || echo "  ⚠️  sw.js version injection failed"
     echo "  📦 sw.js → v$VERSION"
   fi
 fi
@@ -149,11 +170,12 @@ fi
 # ─── Fix permissions ──────────────────────────────────────────
 chmod -R a+rX "$DIST" 2>/dev/null || true
 
-# ─── Summary ────────────────────────────────────────────────────
-FILES=$(find "$DIST" -type f | wc -l | tr -d ' ')
-echo ""
+# ─── Build identifier ──────────────────────────────────────────
 echo "$VERSION"  > "$DIST/VERSION.txt"
 echo "$BUILD_TS" >> "$DIST/VERSION.txt"
+
+# ─── Summary ────────────────────────────────────────────────────
+FILES=$(find "$DIST" -type f | wc -l | tr -d ' ')
 echo ""
 echo "✅ Build complete: $FILES files in dist/"
 echo "   Version: $VERSION_TAG"
