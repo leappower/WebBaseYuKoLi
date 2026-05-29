@@ -35,7 +35,7 @@ mkdir -p "$DIST"
 
 # ─── 1. site.config.js → dist/ ──────────────────────────────────
 # Must be available at /site.config.js for SPA shell
-cp "$SRC/assets/js/site.config.js" "$DIST/site.config.js"
+cp "$SRC/site.config.js" "$DIST/site.config.js"
 
 # ─── 2. Tailwind CSS + Webpack ──────────────────────────────────
 echo "📦 Building CSS + JS..."
@@ -88,6 +88,11 @@ find "$SRC/pages" -name '*.html' -print0 | while IFS= read -r -d '' f; do
   cp "$f" "$DIST/$rel"
 done
 cp "$SRC/index.html" "$DIST/index.html"
+
+# ─── 5.5. Replace %DOMAIN% placeholder ──────────────────────────
+find "$DIST" -name '*.html' -exec sed -i.bak 's|%DOMAIN%|https://brew.yukoli.com|g' {} + && find "$DIST" -name '*.bak' -delete 2>/dev/null || true
+find "$SRC" -name '*.html' -exec sed -i.bak 's|%DOMAIN%|https://brew.yukoli.com|g' {} + && find "$SRC" -name '*.bak' -delete 2>/dev/null || true
+echo "🔧 Replaced %DOMAIN% placeholders"
 
 # ─── 6. Root files ──────────────────────────────────────────────
 cp "CNAME"                       "$DIST/CNAME"             2>/dev/null || true
