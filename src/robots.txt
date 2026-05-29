@@ -6,4 +6,4 @@ Disallow: /products/detail/
 Disallow: /quote/
 Disallow: /thank-you/
 
-Sitemap: https://www.kitchen.yukoli.com/sitemap.xml
+Sitemap: https://brew.yukoli.com/sitemap.xml

@@ -403,14 +403,14 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 3099;
 const SSL_PORT = process.env.SSL_PORT ? parseInt(process.env.SSL_PORT) : 0;
-const ENABLE_SSL = false;
+const ENABLE_SSL = true;
 var https;
 var sslOptions = {};
 try {
   https = require('https');
   sslOptions = {
-    key: fs.readFileSync('/Users/chee/certs/192.168.3.181-key.pem'),
-    cert: fs.readFileSync('/Users/chee/certs/192.168.3.181-new.pem'),
+    key: fs.readFileSync('/Users/chee/certs/192.168.3.180-key.pem'),
+    cert: fs.readFileSync('/Users/chee/certs/192.168.3.180.pem'),
   };
 } catch (e) {
   // SSL cert files missing — skip HTTPS (behind Caddy reverse proxy anyway)

@@ -61,17 +61,16 @@
     // 如果配置了自定义导航项（nav.items 格式），转换为内部格式
     if (cfg.nav && Array.isArray(cfg.nav.items) && cfg.nav.items.length > 0) {
       return cfg.nav.items.map(function (navItem) {
-        var label = typeof navItem.label === "object"
-          ? (navItem.label["zh-CN"] || navItem.label.en || navItem.id)
-          : navItem.label;
+        var label =
+          typeof navItem.label === "object" ? navItem.label["zh-CN"] || navItem.label.en || navItem.id : navItem.label;
         return {
-          key: navItem.i18nKey || ("nav_" + navItem.id),
+          key: navItem.i18nKey || "nav_" + navItem.id,
           label: label,
-          path: navItem.href || ("/" + navItem.id + "/"),
+          path: navItem.href || "/" + navItem.id + "/",
           id: navItem.id,
           hasDropdown: !!(navItem.children && navItem.children.length > 0),
-          children: navItem.children || [],   // 供 MegaMenu 渲染子项
-          i18nKey: navItem.i18nKey || ("nav_" + navItem.id),
+          children: navItem.children || [], // 供 MegaMenu 渲染子项
+          i18nKey: navItem.i18nKey || "nav_" + navItem.id,
           // 保留原始引用，供未来扩展
           _source: navItem,
         };
@@ -92,13 +91,12 @@
       return CANONICAL_NAV_ITEMS;
     }
     return navItems.map(function (navItem) {
-      var label = typeof navItem.label === "object"
-        ? (navItem.label["zh-CN"] || navItem.label.en || navItem.id)
-        : navItem.label;
+      var label =
+        typeof navItem.label === "object" ? navItem.label["zh-CN"] || navItem.label.en || navItem.id : navItem.label;
       return {
-        key: navItem.i18nKey || ("nav_" + navItem.id),
+        key: navItem.i18nKey || "nav_" + navItem.id,
         label: label,
-        path: navItem.href || ("/" + navItem.id + "/"),
+        path: navItem.href || "/" + navItem.id + "/",
         id: navItem.id,
         hasDropdown: !!(navItem.children && navItem.children.length > 0),
         _source: navItem,
@@ -131,6 +129,21 @@
     "case-studies": "solutions",
     news: "contact",
     "thank-you": "contact",
+    all: "products",
+    coffee: "products",
+    tea: "products",
+    meal: "products",
+    beauty: "products",
+    weight: "products",
+    gut: "products",
+    lifestyle: "products",
+    legacy: "products",
+    oem: "solutions",
+    rd: "solutions",
+    packaging: "solutions",
+    catalog: "resources",
+    videos: "resources",
+    whitepapers: "resources",
   };
 
   /**
@@ -161,12 +174,28 @@
     compliance: "cmp",
     about: "abt",
     contact: "cnt",
+    resources: "res",
     "case-studies": "sol",
     "oem-customization": "sol",
     "odm-service": "sol",
     "obm-partnership": "sol",
     news: "cnt",
     "thank-you": "cnt",
+    all: "prod",
+    coffee: "prod",
+    tea: "prod",
+    meal: "prod",
+    beauty: "prod",
+    weight: "prod",
+    gut: "prod",
+    lifestyle: "prod",
+    legacy: "prod",
+    oem: "sol",
+    rd: "sol",
+    packaging: "sol",
+    catalog: "res",
+    videos: "res",
+    whitepapers: "res",
   };
 
   /** @type {string} 当前检测到的设备变体（mobile / tablet / pc） */
@@ -340,8 +369,17 @@
       /* ---------- Mega Menu 模式 ---------- */
       if (typeof window.MegaMenu !== "undefined") {
         var cfg = window.SITE_CONFIG || window._cfg || {};
-        if ((cfg.navMode || {}).desktop === "mega-menu" && (cfg.features || {}).megaMenu !== false && variant === "pc") {
-          return window.MegaMenu.render({ href: href, label: navItem.label, activeClass: activeClass, navItem: navItem });
+        if (
+          (cfg.navMode || {}).desktop === "mega-menu" &&
+          (cfg.features || {}).megaMenu !== false &&
+          variant === "pc"
+        ) {
+          return window.MegaMenu.render({
+            href: href,
+            label: navItem.label,
+            activeClass: activeClass,
+            navItem: navItem,
+          });
         }
       }
 
@@ -478,7 +516,11 @@
     selectEl.innerHTML = "";
 
     var currentLang;
-    try { currentLang = localStorage.getItem("userLanguage"); } catch(e) { currentLang = null; }
+    try {
+      currentLang = localStorage.getItem("userLanguage");
+    } catch (e) {
+      currentLang = null;
+    }
     currentLang = currentLang || "zh-CN";
     var groups = {
       common: { label: "常用 / Common", langs: [] },
@@ -522,7 +564,11 @@
     // The <select> is populated lazily on first click (when LANG_REGISTRY is available),
     // so this works even on pages that don't load lang-registry.js directly.
     var currentLang;
-    try { currentLang = localStorage.getItem("userLanguage"); } catch(e) { currentLang = null; }
+    try {
+      currentLang = localStorage.getItem("userLanguage");
+    } catch (e) {
+      currentLang = null;
+    }
     currentLang = currentLang || "zh-CN";
     var currentLangName = currentLang;
     var reg = window.LANG_REGISTRY;
@@ -670,8 +716,9 @@
   /**
    * 注入 iOS 风格搜索栏样式（仅注入一次）
    */
-  function injectSearchStyles() { /* migrated to styles.css — no-op */ }
-
+  function injectSearchStyles() {
+    /* migrated to styles.css — no-op */
+  }
 
   /**
    * 注入所有 dropdown 模块的基础样式
@@ -895,7 +942,9 @@
     if (!langCode) return;
 
     // Update localStorage
-    try { localStorage.setItem("userLanguage", langCode); } catch(e) {}
+    try {
+      localStorage.setItem("userLanguage", langCode);
+    } catch (e) {}
 
     // Update button label
     var labelEl = document.getElementById("current-lang-label");
@@ -1162,9 +1211,7 @@
         );
         if (!trigger) return;
         if (window.innerWidth <= 720) return;
-        var wrap = trigger.closest(
-          ".prod-dropdown-wrap, .sol-dropdown-wrap, .abt-dropdown-wrap, .cnt-dropdown-wrap"
-        );
+        var wrap = trigger.closest(".prod-dropdown-wrap, .sol-dropdown-wrap, .abt-dropdown-wrap, .cnt-dropdown-wrap");
         if (wrap) {
           closeOtherDropdowns(wrap);
         }
@@ -1288,9 +1335,11 @@
       "header nav a.prod-dropdown-trigger",
       "header nav a.sol-dropdown-trigger",
       "header nav a.abt-dropdown-trigger",
+      "header nav a.nav-dropdown-trigger",
       "header nav a[data-sol-trigger-label]",
       "header nav a[data-prod-trigger-label]",
       "header nav a[data-abt-trigger-label]",
+      "header nav a[data-nav-trigger-label]",
     ];
 
     var triggers = document.querySelectorAll(triggerSelectors.join(", "));
@@ -1312,6 +1361,7 @@
         triggerEl.getAttribute("data-sol-trigger-label") ||
         triggerEl.getAttribute("data-abt-trigger-label") ||
         triggerEl.getAttribute("data-cnt-trigger-label") ||
+        triggerEl.getAttribute("data-nav-trigger-label") ||
         "";
 
       var isMatch = false;
@@ -1342,7 +1392,8 @@
       if (
         plainEl.classList.contains("prod-dropdown-trigger") ||
         plainEl.classList.contains("sol-dropdown-trigger") ||
-        plainEl.classList.contains("abt-dropdown-trigger")
+        plainEl.classList.contains("abt-dropdown-trigger") ||
+        plainEl.classList.contains("nav-dropdown-trigger")
       ) {
         continue;
       }
@@ -1368,7 +1419,9 @@
     var activeItems = document.querySelectorAll(
       ".prod-dropdown-item.is-active, " +
         ".sol-dropdown-item.is-active, " +
-        ".abt-dropdown-item.is-active"
+        ".abt-dropdown-item.is-active, " +
+        ".nav-dropdown-item.is-active, " +
+        ".nav-dropdown-popup-item.is-active"
     );
     for (var k = 0; k < activeItems.length; k++) {
       activeItems[k].classList.remove("is-active");
@@ -1412,6 +1465,38 @@
         if (normalizedPath.indexOf(pathPrefix + "/") === 0) {
           matchedItem = dropdownItems[n];
           break;
+        }
+      }
+    }
+
+    /* 3c. NavDropdown 回退匹配：如果前缀匹配未找到，搜索所有 nav-dropdown items */
+    if (!matchedItem) {
+      var navDropdownItems = document.querySelectorAll(
+        ".nav-dropdown-item, .nav-dropdown-popup-item, .nav-dropdown-center"
+      );
+      /* 精确匹配 href */
+      for (var nd1 = 0; nd1 < navDropdownItems.length; nd1++) {
+        var ndHref = navDropdownItems[nd1].getAttribute("href");
+        if (!ndHref) continue;
+        var cleanNdHref = ndHref.replace(/\/$/, "");
+        var cleanPath2 = currentPath.replace(/\/$/, "");
+        if (cleanNdHref === cleanPath2) {
+          matchedItem = navDropdownItems[nd1];
+          break;
+        }
+      }
+      /* 前缀匹配 */
+      if (!matchedItem) {
+        for (var nd2 = 0; nd2 < navDropdownItems.length; nd2++) {
+          var subNdHref = navDropdownItems[nd2].getAttribute("href");
+          if (!subNdHref) continue;
+          var cleanSubNdHref = subNdHref.replace(/\/$/, "");
+          var ndPathPrefix = cleanSubNdHref.split("?")[0].replace(/\/$/, "");
+          var normalizedPath2 = currentPath.replace(/\/$/, "");
+          if (normalizedPath2.indexOf(ndPathPrefix + "/") === 0) {
+            matchedItem = navDropdownItems[nd2];
+            break;
+          }
         }
       }
     }
@@ -1525,7 +1610,13 @@
   var CANONICAL_NAV_ITEMS = [
     { key: "nav_solutions", label: "Solutions", path: "/solutions/", id: "solutions", hasDropdown: true },
     { key: "nav_products", label: "Products", path: "/products/", id: "products", hasDropdown: true },
-    { key: "nav_manufacturing", label: "Manufacturing", path: "/manufacturing/", id: "manufacturing", hasDropdown: false },
+    {
+      key: "nav_manufacturing",
+      label: "Manufacturing",
+      path: "/manufacturing/",
+      id: "manufacturing",
+      hasDropdown: false,
+    },
     { key: "nav_compliance", label: "Compliance", path: "/compliance/", id: "compliance", hasDropdown: false },
     { key: "nav_resources", label: "Resources", path: "/resources/", id: "resources", hasDropdown: true },
     { key: "nav_contact", label: "Contact", path: "/contact/", id: "contact", hasDropdown: false },

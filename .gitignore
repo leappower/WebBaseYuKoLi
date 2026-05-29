@@ -79,3 +79,17 @@ scripts/archive/
 scripts/.archive/
 .reference/
 .githooks/
+
+# Generated scripts
+generate_hero_images.py
+i18n_delta_fixed.py
+scripts/regenerate_oem_images.py
+scripts/run_i18n_translate.sh
+
+# Temp directories
+output/
+products-original/
+hero-original/
+
+# Backups
+zh-CN-ui.json.bak
