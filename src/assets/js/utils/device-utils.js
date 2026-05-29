@@ -59,6 +59,22 @@
   };
 
   /**
+   * 预注册 matchMedia 监听，用于精确的断点变化通知。
+   * getDeviceType() 仍然使用 window.innerWidth 做实时判断，
+   * matchMedia 仅用于监听跨越断点的时机。
+   */
+  var _mqBreakpoints = null;
+
+  function initMatchMedia() {
+    if (_mqBreakpoints) return;
+    _mqBreakpoints = {
+      mobile: window.matchMedia("(max-width: 767px)"),
+      tablet: window.matchMedia("(min-width: 768px) and (max-width: 1279px)"),
+      pc: window.matchMedia("(min-width: 1280px)"),
+    };
+  }
+
+  /**
    * 获取当前屏幕宽度（视口宽度）
    * 使用 window.innerWidth 而非 screen.width，因为：
    * - window.innerWidth 是视口宽度（不包括滚动条）
@@ -73,19 +89,21 @@
 
   /**
    * 判断当前设备类型
+   * 使用 matchMedia 查询，与 CSS 断点完全一致，
+   * 不会出现 JS 判定与 CSS @media 不一致的情况。
    *
    * @returns {string} DeviceType.MOBILE | DeviceType.TABLET | DeviceType.PC
    */
   function getDeviceType() {
-    var width = getScreenSize();
+    initMatchMedia();
 
-    if (width < Breakpoints.TABLET_MIN) {
+    if (_mqBreakpoints.mobile.matches) {
       return DeviceType.MOBILE;
-    } else if (width < Breakpoints.PC_MIN) {
-      return DeviceType.TABLET;
-    } else {
-      return DeviceType.PC;
     }
+    if (_mqBreakpoints.tablet.matches) {
+      return DeviceType.TABLET;
+    }
+    return DeviceType.PC;
   }
 
   /**
@@ -211,17 +229,18 @@
   }
 
   /**
-   * 检查设备类型是否变化
+   * 检查设备类型是否变化，并通知所有回调
    */
   function checkDeviceChange() {
+    initMatchMedia();
     var currentDeviceType = getDeviceType();
     if (currentDeviceType !== lastDeviceType) {
+      var oldDeviceType = lastDeviceType;
       lastDeviceType = currentDeviceType;
 
-      // 触发所有回调
       deviceChangeCallbacks.forEach(function (callback) {
         try {
-          callback(currentDeviceType, lastDeviceType);
+          callback(currentDeviceType, oldDeviceType);
         } catch (e) {
           console.error("[DeviceUtils] Error in device change callback:", e);
         }
@@ -230,14 +249,18 @@
   }
 
   /**
-   * 初始化窗口大小变化监听
+   * 初始化 matchMedia change 监听
+   * 代替 resize + 防抖方案：
+   * - resize 在每次窗口大小变化时都触发，浪费性能
+   * - matchMedia change 只在条件真值跨断点时触发，更精确
+   * - 三个断点互斥，但各自独立监听确保不会遗漏
    */
   function initResizeListener() {
-    var resizeTimer;
-    window.addEventListener("resize", function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(checkDeviceChange, 250); // 防抖250ms
-    });
+    initMatchMedia();
+
+    _mqBreakpoints.mobile.addEventListener("change", checkDeviceChange);
+    _mqBreakpoints.tablet.addEventListener("change", checkDeviceChange);
+    _mqBreakpoints.pc.addEventListener("change", checkDeviceChange);
 
     // 初始检查
     setTimeout(checkDeviceChange, 100);
@@ -247,6 +270,11 @@
   window.DeviceUtils = {
     DeviceType: DeviceType,
     Breakpoints: Breakpoints,
+    /** 获取 matchMedia 断点对象（只读），供外部直接查询 */
+    getMqBreakpoints: function () {
+      initMatchMedia();
+      return _mqBreakpoints;
+    },
     getScreenSize: getScreenSize,
     getDeviceType: getDeviceType,
     isMobile: isMobile,
