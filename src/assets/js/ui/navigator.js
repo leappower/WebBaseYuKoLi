@@ -144,6 +144,7 @@
     catalog: "resources",
     videos: "resources",
     whitepapers: "resources",
+    cases: "resources",
   };
 
   /**
@@ -196,6 +197,7 @@
     catalog: "res",
     videos: "res",
     whitepapers: "res",
+    cases: "res",
   };
 
   /** @type {string} 当前检测到的设备变体（mobile / tablet / pc） */

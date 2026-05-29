@@ -163,6 +163,7 @@
         "case-studies": "resources",
         news: "contact",
         "thank-you": "contact",
+        cases: "resources",
       },
     },
 

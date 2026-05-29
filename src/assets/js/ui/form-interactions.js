@@ -25,6 +25,13 @@
       console.warn("[FormInteractions] " + fnName + " not found.");
     };
 
+  // ─── Skip builder form ──────────────────────────────────────────────
+  function isBuilderField(input) {
+    var form = input && input.form;
+    if (!form) return false;
+    return form.getAttribute("data-builder-form") === "true";
+  }
+
   // ─── B. On-blur inline validation ────────────────────────────────────────────
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   var PHONE_RE = /^[\d\s\-+().]{7,20}$/;
@@ -71,6 +78,8 @@
   function bindInlineValidation() {
     var forms = document.querySelectorAll("form");
     forms.forEach(function (form) {
+      // Skip builder form — it has its own validation
+      if (form.getAttribute("data-builder-form") === "true") return;
       var fields = form.querySelectorAll("input, textarea, select");
       fields.forEach(function (input) {
         if (!input.dataset.blurBound) {
@@ -132,6 +141,8 @@
   function bindForms() {
     var forms = document.querySelectorAll("form");
     forms.forEach(function (form) {
+      // Skip builder form — it has its own submit handler
+      if (form.getAttribute("data-builder-form") === "true") return;
       // Assign id="contact-form" if form has no id (so submitContactForm can find it)
       if (!form.id) {
         form.id = "contact-form";

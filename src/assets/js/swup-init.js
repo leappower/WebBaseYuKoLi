@@ -92,45 +92,73 @@
     var prodMatch = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\//);
     if (prodMatch) {
       if (typeof global.ProductGrid !== "undefined" && global.ProductGrid && global.ProductGrid.init) {
-        try { global.ProductGrid.init(); } catch (e) { /* noop */ }
+        try {
+          global.ProductGrid.init();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
 
     // home-core-products: 首页
     if (/^\/home\//.test(path) || path === "/") {
       if (typeof global.HomeCoreProducts !== "undefined" && global.HomeCoreProducts && global.HomeCoreProducts.init) {
-        try { global.HomeCoreProducts.init(); } catch (e) { /* noop */ }
+        try {
+          global.HomeCoreProducts.init();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
 
     // product-detail: 产品详情
     if (/^\/products\/detail\//.test(path)) {
       if (typeof global.ProductDetail !== "undefined" && global.ProductDetail && global.ProductDetail.init) {
-        try { global.ProductDetail.init(); } catch (e) { /* noop */ }
+        try {
+          global.ProductDetail.init();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
 
     // cases: 案例页
     if (/^\/cases\//.test(path)) {
       if (typeof global.CasesPage !== "undefined" && global.CasesPage && global.CasesPage.init) {
-        try { global.CasesPage.init(); } catch (e) { /* noop */ }
+        try {
+          global.CasesPage.init();
+        } catch (e) {
+          /* noop */
+        }
       }
       if (typeof global.CaseGrid !== "undefined" && global.CaseGrid && global.CaseGrid.init) {
-        try { global.CaseGrid.init(); } catch (e) { /* noop */ }
+        try {
+          global.CaseGrid.init();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
 
     // news-detail: 新闻详情
     if (/^\/news\/detail\//.test(path)) {
       if (typeof global.NewsDetail !== "undefined" && global.NewsDetail && global.NewsDetail.init) {
-        try { global.NewsDetail.init(); } catch (e) { /* noop */ }
+        try {
+          global.NewsDetail.init();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
 
     // profit-calculator
     if (/^\/profit-calculator\//.test(path)) {
       if (typeof global.ProfitCalculator !== "undefined" && global.ProfitCalculator && global.ProfitCalculator.init) {
-        try { global.ProfitCalculator.init(); } catch (e) { /* noop */ }
+        try {
+          global.ProfitCalculator.init();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
   }
@@ -163,11 +191,18 @@
     if (!footerActive) {
       var path = global.location.pathname.replace(/\/$/, "");
       var map = {
-        "/home": "home", "/products": "products", "/solutions": "solutions",
-        "/manufacturing": "manufacturing", "/compliance": "compliance",
-        "/contact": "contact", "/cases": "cases", "/about": "about",
-        "/news": "news", "/quote": "quote",
-        "/support": "support", "/profit-calculator": "profit-calculator",
+        "/home": "home",
+        "/products": "products",
+        "/solutions": "solutions",
+        "/manufacturing": "manufacturing",
+        "/compliance": "compliance",
+        "/contact": "contact",
+        "/cases": "cases",
+        "/about": "about",
+        "/news": "news",
+        "/quote": "quote",
+        "/support": "support",
+        "/profit-calculator": "profit-calculator",
         "/resources": "resources",
       };
       var best = "";
@@ -260,13 +295,15 @@
     }
 
     // 产品详情 PDP: /products/<model>/
-    if (/^\/products\/[^/]+\/$/.test(path) &&
-        !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)) {
+    if (
+      /^\/products\/[^/]+\/$/.test(path) &&
+      !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)
+    ) {
       return "/pages/products/detail/" + suffix;
 
-    // 产品详情 PDP (三级路径): /products/detail/<model>/
-    var detailMatch = path.match(/^\/products\/detail\/([^\/]+)\/$/);
-    if (detailMatch) return '/pages/products/detail/' + suffix;
+      // 产品详情 PDP (三级路径): /products/detail/<model>/
+      var detailMatch = path.match(/^\/products\/detail\/([^\/]+)\/$/);
+      if (detailMatch) return "/pages/products/detail/" + suffix;
     }
 
     // 旧路由兼容: /beauty/ → /products/beauty/
@@ -290,7 +327,8 @@
       swup = new global.Swup({
         containers: ["#spa-content"],
         animateHistoryBrowsing: false,
-        linkSelector: 'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
+        linkSelector:
+          'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
@@ -315,7 +353,9 @@
         cache: false,
         plugins: [
           new global.SwupHeadPlugin({
-            persistTags: "style[id], style[data-swup-persist], link[rel=stylesheet], link[rel=icon], meta[property], link[rel=canonical], link[rel=alternate], script[src]", persistAssets: true,
+            persistTags:
+              "style[id], style[data-swup-persist], link[rel=stylesheet], link[rel=icon], meta[property], link[rel=canonical], link[rel=alternate], script[src]",
+            persistAssets: true,
             awaitAssets: true,
             attributes: ["lang", "dir", "class"],
           }),
@@ -383,6 +423,20 @@
 
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
+
+        // 解决方案页面 SPA 导航后强制重绘（解决跳转后卡片内容不显示的问题）
+        if (/^\/solutions\/$/.test(global.location.pathname)) {
+          setTimeout(function () {
+            var c = document.getElementById("spa-content");
+            if (c) {
+              void c.offsetWidth;
+              var cards = c.querySelectorAll(".grid > a");
+              if (cards.length > 1) {
+                // grid 已正确渲染
+              }
+            }
+          }, 50);
+        }
       });
 
       // ─── page:view — spa:load 兼容事件 ───
@@ -403,7 +457,9 @@
 
       // ─── visit:end — 清除导航标志 ───
       swup.hooks.on("visit:end", function () {
-        setTimeout(function () { global.__spaNavigating = false; }, 100);
+        setTimeout(function () {
+          global.__spaNavigating = false;
+        }, 100);
       });
 
       // ─── fetch:request — 将 SPA URL 转换为设备特定页面 ───
@@ -524,5 +580,4 @@
   } else {
     initSwup();
   }
-
 })(window);

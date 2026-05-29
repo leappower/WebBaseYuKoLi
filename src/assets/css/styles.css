@@ -2345,6 +2345,25 @@ html.dark .mobile-menu-l1-arrow {
   transform: rotate(90deg);
 }
 
+/* ---- 一级菜单高亮（选中态） ---- */
+.mobile-menu-l1.is-active {
+  background: rgba(46, 125, 32, 0.08);
+  color: var(--color-primary, #2e7d32);
+}
+html.dark .mobile-menu-l1.is-active {
+  background: rgba(46, 125, 32, 0.18);
+  color: #4caf50;
+}
+.mobile-menu-l1.is-active .mobile-menu-l1-icon {
+  background: var(--color-primary, #2e7d32);
+}
+.mobile-menu-l1.is-active .mobile-menu-l1-icon .material-symbols-outlined {
+  color: #fff;
+}
+html.dark .mobile-menu-l1.is-active .mobile-menu-l1-icon {
+  background: #4caf50;
+}
+
 /* ---------- 二级菜单 ---------- */
 .mobile-menu-l2 {
   max-height: 0;
@@ -2967,6 +2986,11 @@ html.is-rendering .transition-main {
 }
 html.is-leaving .transition-main {
   opacity: 0;
+}
+
+/* ─── swup-fade-in — visibility fallback for SPA transitions ── */
+#spa-content.swup-fade-in {
+  opacity: 1;
 }
 
 /* ─── Nav Dropdown (nav-dropdown.js) ── */

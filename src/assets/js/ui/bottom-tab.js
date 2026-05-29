@@ -113,7 +113,7 @@
   function buildWhatsAppHref() {
     var c = getContacts();
     var num = c.whatsapp || "";
-    var msg = c.whatsappDefaultMsg || "";
+    var msg = c.whatsappMessage || c.whatsappDefaultMsg || "";
     var href = "https://wa.me/" + num;
     if (msg) href += "?text=" + encodeURIComponent(msg);
     return href;
@@ -177,7 +177,12 @@
       case "toggle":
         e.preventDefault();
         if (window.SlideMenu) {
-          window.SlideMenu.toggle();
+          var menuPanel = document.getElementById("mobile-menu-panel");
+          if (menuPanel) {
+            window.SlideMenu.close();
+          } else {
+            window.SlideMenu.open();
+          }
         } else {
           var toggle = document.getElementById("mobile-menu-toggle");
           if (toggle) toggle.click();

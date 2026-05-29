@@ -17,8 +17,8 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
-  var _primaryHover = ((_theme.colors || {}).primaryHover) || "#1B5E20";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
+  var _primaryHover = (_theme.colors || {}).primaryHover || "#1B5E20";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -49,7 +49,7 @@
    * 注入移动端菜单所需的全部 CSS 样式（仅注入一次）
    * 创建 <style id="mobile-menu-styles"> 并追加到 <head>
    */
-    function injectStyles() {
+  function injectStyles() {
     // CSS moved to styles.css (mobile-menu section)
   }
 
@@ -101,7 +101,7 @@
     for (var i = 0; i < cats.length; i++) {
       var cat = cats[i];
       result.push({
-        key: cat.i18nKey || cat.key || ("nav_" + categoryKey + "_" + cat.slug),
+        key: cat.i18nKey || cat.key || "nav_" + categoryKey + "_" + cat.slug,
         label: resolveLabel(cat.label) || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         emoji: cat.emoji || "",
@@ -127,26 +127,23 @@
       var cfgItems = window.SITE_CONFIG && window.SITE_CONFIG.nav && window.SITE_CONFIG.nav.items;
       if (cfgItems && cfgItems.length > 0) {
         navFromConfig = cfgItems.map(function (item) {
-          var label = typeof item.label === "object"
-            ? (item.label["zh-CN"] || item.label.en || item.id)
-            : item.label || item.id;
+          var label =
+            typeof item.label === "object" ? item.label["zh-CN"] || item.label.en || item.id : item.label || item.id;
           var mapped = {
-            key: item.i18nKey || ("nav_" + item.id),
+            key: item.i18nKey || "nav_" + item.id,
             label: label,
-            href: item.href || ("/" + item.id + "/"),
+            href: item.href || "/" + item.id + "/",
             id: item.id,
             icon: item.icon || "link",
             children: [],
           };
           if (item.children && item.children.length > 0) {
             mapped.children = item.children.map(function (child) {
-              var childLabel = typeof child.label === "object"
-                ? resolveLabel(child.label)
-                : child.label || child.id;
+              var childLabel = typeof child.label === "object" ? resolveLabel(child.label) : child.label || child.id;
               return {
-                key: child.i18nKey || ("nav_" + child.id),
+                key: child.i18nKey || "nav_" + child.id,
                 label: childLabel,
-                href: child.href || ("/" + child.id + "/"),
+                href: child.href || "/" + child.id + "/",
                 id: child.id,
                 icon: child.icon || "arrow_forward",
                 emoji: child.emoji || "",
@@ -156,84 +153,161 @@
           return mapped;
         });
       }
-    } catch (e) { /* fall through to hardcoded defaults */ }
+    } catch (e) {
+      /* fall through to hardcoded defaults */
+    }
 
-    var items = navFromConfig.length > 0 ? navFromConfig : [
-      // CANONICAL_NAV_ITEMS-based fallback — matches navigator.js canonical order
-      {
-        key: "nav_solutions",
-        label: "Solutions",
-        href: "/solutions/",
-        id: "solutions",
-        icon: "lightbulb",
-        children: [
-          { key: "nav_oem", label: "OEM", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
-          { key: "nav_odm", label: "ODM", icon: "design_services", emoji: "", href: "/solutions/odm/" },
-          { key: "nav_obm", label: "OBM", icon: "verified", emoji: "", href: "/solutions/obm/" },
-          { key: "nav_rd", label: "R&D & Flavor Lab", icon: "science", emoji: "", href: "/solutions/rd/" },
-          { key: "nav_packaging", label: "Packaging & Labeling", icon: "inventory", emoji: "", href: "/solutions/packaging/" },
-        ],
-      },
-      {
-        key: "nav_products",
-        label: "Products",
-        href: "/products/",
-        id: "products",
-        icon: "inventory_2",
-        children: productChildren,
-      },
-      {
-        key: "nav_manufacturing",
-        label: "Manufacturing",
-        href: "/manufacturing/",
-        id: "manufacturing",
-        icon: "factory",
-        children: [
-          { key: "nav_bases", label: "4 Production Bases", icon: "factory", emoji: "", href: "/manufacturing/#bases" },
-          { key: "nav_quality", label: "Quality Control", icon: "verified", emoji: "", href: "/manufacturing/#quality" },
-          { key: "nav_smart", label: "Smart Factory", icon: "precision_manufacturing", emoji: "", href: "/manufacturing/#smart" },
-          { key: "nav_supplychain", label: "Global Supply Chain", icon: "public", emoji: "", href: "/manufacturing/#supplychain" },
-        ],
-      },
-      {
-        key: "nav_compliance",
-        label: "Compliance",
-        href: "/compliance/",
-        id: "compliance",
-        icon: "verified_user",
-        children: [
-          { key: "nav_certs", label: "Global Certifications", icon: "verified_user", emoji: "", href: "/compliance/#certs" },
-          { key: "nav_halal", label: "Halal Certified", icon: "assured_workload", emoji: "", href: "/compliance/#halal" },
-          { key: "nav_coa", label: "Lab Reports & COA", icon: "description", emoji: "", href: "/compliance/#coa" },
-        ],
-      },
-      {
-        key: "nav_resources",
-        label: "Resources",
-        href: "/resources/",
-        id: "resources",
-        icon: "menu_book",
-        children: [
-          { key: "nav_catalog", label: "2026 Product Catalog", icon: "menu_book", emoji: "", href: "/resources/catalog/" },
-          { key: "nav_whitepapers", label: "Whitepapers", icon: "article", emoji: "", href: "/resources/whitepapers/" },
-          { key: "nav_cases", label: "Case Studies", icon: "analytics", emoji: "", href: "/cases/" },
-          { key: "nav_videos", label: "Video Library", icon: "play_circle", emoji: "", href: "/resources/videos/" },
-        ],
-      },
-      {
-        key: "nav_contact",
-        label: "Contact",
-        href: "/contact/",
-        id: "contact",
-        icon: "mail",
-        children: [
-          { key: "nav_quote", label: "Get a Quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
-          { key: "nav_samples", label: "Free Samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
-          { key: "nav_visit", label: "Visit Our Factory", icon: "tour", emoji: "", href: "/contact/#visit" },
-          { key: "nav_network", label: "Global Sales Network", icon: "language", emoji: "", href: "/contact/#network" },
-        ],
-      },
-    ];
+    var items =
+      navFromConfig.length > 0
+        ? navFromConfig
+        : [
+            // CANONICAL_NAV_ITEMS-based fallback — matches navigator.js canonical order
+            {
+              key: "nav_solutions",
+              label: "Solutions",
+              href: "/solutions/",
+              id: "solutions",
+              icon: "lightbulb",
+              children: [
+                { key: "nav_oem", label: "OEM", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
+                { key: "nav_odm", label: "ODM", icon: "design_services", emoji: "", href: "/solutions/odm/" },
+                { key: "nav_obm", label: "OBM", icon: "verified", emoji: "", href: "/solutions/obm/" },
+                { key: "nav_rd", label: "R&D & Flavor Lab", icon: "science", emoji: "", href: "/solutions/rd/" },
+                {
+                  key: "nav_packaging",
+                  label: "Packaging & Labeling",
+                  icon: "inventory",
+                  emoji: "",
+                  href: "/solutions/packaging/",
+                },
+              ],
+            },
+            {
+              key: "nav_products",
+              label: "Products",
+              href: "/products/",
+              id: "products",
+              icon: "inventory_2",
+              children: productChildren,
+            },
+            {
+              key: "nav_manufacturing",
+              label: "Manufacturing",
+              href: "/manufacturing/",
+              id: "manufacturing",
+              icon: "factory",
+              children: [
+                {
+                  key: "nav_bases",
+                  label: "4 Production Bases",
+                  icon: "factory",
+                  emoji: "",
+                  href: "/manufacturing/#bases",
+                },
+                {
+                  key: "nav_quality",
+                  label: "Quality Control",
+                  icon: "verified",
+                  emoji: "",
+                  href: "/manufacturing/#quality",
+                },
+                {
+                  key: "nav_smart",
+                  label: "Smart Factory",
+                  icon: "precision_manufacturing",
+                  emoji: "",
+                  href: "/manufacturing/#smart",
+                },
+                {
+                  key: "nav_supplychain",
+                  label: "Global Supply Chain",
+                  icon: "public",
+                  emoji: "",
+                  href: "/manufacturing/#supplychain",
+                },
+              ],
+            },
+            {
+              key: "nav_compliance",
+              label: "Compliance",
+              href: "/compliance/",
+              id: "compliance",
+              icon: "verified_user",
+              children: [
+                {
+                  key: "nav_certs",
+                  label: "Global Certifications",
+                  icon: "verified_user",
+                  emoji: "",
+                  href: "/compliance/#certs",
+                },
+                {
+                  key: "nav_halal",
+                  label: "Halal Certified",
+                  icon: "assured_workload",
+                  emoji: "",
+                  href: "/compliance/#halal",
+                },
+                {
+                  key: "nav_coa",
+                  label: "Lab Reports & COA",
+                  icon: "description",
+                  emoji: "",
+                  href: "/compliance/#coa",
+                },
+              ],
+            },
+            {
+              key: "nav_resources",
+              label: "Resources",
+              href: "/resources/",
+              id: "resources",
+              icon: "menu_book",
+              children: [
+                {
+                  key: "nav_catalog",
+                  label: "2026 Product Catalog",
+                  icon: "menu_book",
+                  emoji: "",
+                  href: "/resources/catalog/",
+                },
+                {
+                  key: "nav_whitepapers",
+                  label: "Whitepapers",
+                  icon: "article",
+                  emoji: "",
+                  href: "/resources/whitepapers/",
+                },
+                { key: "nav_cases", label: "Case Studies", icon: "analytics", emoji: "", href: "/cases/" },
+                {
+                  key: "nav_videos",
+                  label: "Video Library",
+                  icon: "play_circle",
+                  emoji: "",
+                  href: "/resources/videos/",
+                },
+              ],
+            },
+            {
+              key: "nav_contact",
+              label: "Contact",
+              href: "/contact/",
+              id: "contact",
+              icon: "mail",
+              children: [
+                { key: "nav_quote", label: "Get a Quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
+                { key: "nav_samples", label: "Free Samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
+                { key: "nav_visit", label: "Visit Our Factory", icon: "tour", emoji: "", href: "/contact/#visit" },
+                {
+                  key: "nav_network",
+                  label: "Global Sales Network",
+                  icon: "language",
+                  emoji: "",
+                  href: "/contact/#network",
+                },
+              ],
+            },
+          ];
 
     cachedMenuItems = items;
     return items;
@@ -336,24 +410,28 @@
 
       if (item.id === "products") {
         subMenuHtml =
-          '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' +
+          '<div class="mobile-menu-l2" data-menu-l2="' +
+          escapeHtml(item.id) +
+          '">' +
           '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/">' +
           '<span class="mobile-menu-l2-icon">' +
           '<span class="material-symbols-outlined">store</span>' +
-          '</span>' +
+          "</span>" +
           '<span class="mobile-menu-l2-label" data-i18n="nav_products_center">Products Center</span>' +
-          '</a>' +
+          "</a>" +
           '<div class="mobile-menu-l2-separator"></div>' +
           childItemsHtml;
       } else if (item.id === "solutions") {
         subMenuHtml =
-          '<div class="mobile-menu-l2" data-menu-l2="' + escapeHtml(item.id) + '">' +
+          '<div class="mobile-menu-l2" data-menu-l2="' +
+          escapeHtml(item.id) +
+          '">' +
           '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/solutions/">' +
           '<span class="mobile-menu-l2-icon">' +
           '<span class="material-symbols-outlined">design_services</span>' +
-          '</span>' +
+          "</span>" +
           '<span class="mobile-menu-l2-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
-          '</a>' +
+          "</a>" +
           '<div class="mobile-menu-l2-separator"></div>' +
           childItemsHtml;
       } else {
@@ -412,7 +490,9 @@
       })
       .join("\n");
 
-    return headerHtml + '<div class="mobile-menu-scroll">' + menuItemsHtml + "</div>"; /**ctaBarHtml removed — rendered as separate body child in openMenu()*/
+    return (
+      headerHtml + '<div class="mobile-menu-scroll">' + menuItemsHtml + "</div>"
+    ); /**ctaBarHtml removed — rendered as separate body child in openMenu()*/
   }
 
   /* ================================================================
@@ -512,6 +592,11 @@
 
     // 绑定交互事件
     bindMenuEvents();
+
+    // 应用当前页面激活状态到刚创建的菜单
+    if (typeof window.SlideMenu !== "undefined" && window.SlideMenu.updateActive) {
+      window.SlideMenu.updateActive();
+    }
   }
 
   /**
@@ -1117,19 +1202,49 @@
     /** 更新子菜单项的 is-active 高亮（SPA 导航后调用） */
     updateActive: function () {
       var menuItems = getMenuItems();
-      var currentPath = location.pathname.replace(/\/$/, "");
+      var currentPath = location.pathname.replace(/\/$/, "") || "/";
+
+      // 清除所有已有的一级菜单高亮
+      var allL1 = document.querySelectorAll(".mobile-menu-l1");
+      for (var b = 0; b < allL1.length; b++) {
+        allL1[b].classList.remove("is-active");
+      }
+
       menuItems.forEach(function (item) {
         if (!item.children || item.children.length === 0) return;
+
         var activeHref = findActiveChildHref(item.children);
         var panel = document.querySelector('[data-menu-l2="' + item.id + '"]');
         if (!panel) return;
-        var items = panel.querySelectorAll(".mobile-menu-l2-item");
-        for (var i = 0; i < items.length; i++) {
-          var href = items[i].getAttribute("href") || "";
-          if (href.replace(/\/$/, "") === activeHref.replace(/\/$/, "")) {
-            items[i].classList.add("is-active");
+
+        var isOnChildPage = false;
+        var childItems = panel.querySelectorAll(".mobile-menu-l2-item");
+
+        // 处理二级项目的高亮
+        for (var i = 0; i < childItems.length; i++) {
+          var href = childItems[i].getAttribute("href") || "";
+          if (activeHref && href.replace(/\/$/, "") === activeHref.replace(/\/$/, "")) {
+            childItems[i].classList.add("is-active");
+            isOnChildPage = true;
           } else {
-            items[i].classList.remove("is-active");
+            childItems[i].classList.remove("is-active");
+          }
+        }
+
+        // 处理一级菜单按钮的高亮 + 自动展开
+        var l1Button = document.querySelector('[data-menu-toggle="' + item.id + '"]');
+        if (!l1Button) return;
+
+        var parentPath = (item.href || "").replace(/\/$/, "");
+        var isOnParentPage = parentPath.length > 0 && currentPath === parentPath;
+
+        if (isOnChildPage || isOnParentPage) {
+          l1Button.classList.add("is-active");
+
+          // 在二级页面时自动展开（一级页面不展开）
+          if (isOnChildPage && !isOnParentPage) {
+            l1Button.classList.add("is-expanded");
+            panel.classList.add("is-open");
           }
         }
       });
