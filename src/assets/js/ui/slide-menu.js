@@ -1055,10 +1055,10 @@
           .replace(/>/g, "&gt;");
         var model = (item.model || "").replace(/</g, "&lt;");
         var category = (item._displayCategory || item.category || "").replace(/</g, "&lt;");
-        var imageUrl = item.productImage || item.imageUrl || "";
+        var imageUrl = item.image || item.productImage || item.imageUrl || "";
 
         var imageHtml = imageUrl
-          ? '<img src="' + imageUrl + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+          ? '<img src="' + imageUrl + '" alt="" loading="lazy" ><div style="font-size:6px;color:rgba(0,0,0,0.3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40px">' + imageUrl + '</div>'
           : '<span class="material-symbols-outlined">inventory_2</span>';
 
         html +=

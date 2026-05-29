@@ -305,7 +305,7 @@
             >
               <span class="material-symbols-outlined text-primary text-xl mb-2">email</span>
               <p class="text-xs font-bold" data-i18n="contact_card_email_title">Email Us</p>
-              <p class="text-xs text-slate-500">support.brew@yukoli.com</p>
+              <a href="mailto:support.brew@yukoli.com" class="text-xs text-primary font-bold">support.brew@yukoli.com</a>
             </div>
             <div
               class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center"
@@ -364,20 +364,20 @@
       </section>
 
       <!-- Partner -->
-      <section class="bg-slate-900 text-white rounded-2xl p-6 text-center mt-8 mb-6">
-
-        <div>
-        <h2 class="text-xl font-black mb-3" data-i18n="contact_partner_title">Become a Partner</h2>
-        <p class="text-slate-300 text-sm mb-4" data-i18n="contact_partner_desc">Join our global distributor and dealer network.</p>
-        <a href="#contact-form"
-          class="inline-block bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm"
-          data-i18n="contact_partner_btn"
-        >
-          Apply Now
-        </a>
-      
-
-        </div></section>
+      <section id="network" class="fullwidth-bg py-16">
+        <div class="section-content">
+          <div class="w-full bg-slate-900 text-white rounded-2xl overflow-hidden relative">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+              <img loading="lazy" alt="Partnership" data-i18n="alt_partnership" class="w-full h-full object-cover" src="/assets/images/contact-partner-tour.webp" />
+            </div>
+            <div class="relative p-8 text-center">
+              <h2 class="text-xl font-black mb-3" data-i18n="contact_partner_title">Become a Partner</h2>
+              <p class="text-slate-300 text-sm mb-4" data-i18n="contact_partner_desc">Join our global distributor and dealer network. We offer competitive margins, comprehensive training, and dedicated support.</p>
+              <a href="#contact-form" onclick="event.preventDefault();document.getElementById('contact-form').scrollIntoView({behavior:'smooth',block:'start'})" class="inline-block bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm" data-i18n="contact_partner_btn">Apply Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
     
   <!-- Quick Navigation -->
   <section class="fullwidth-bg py-8 bg-white dark:bg-slate-950">

@@ -126,7 +126,7 @@
     "oem-customization": "solutions",
     "odm-service": "solutions",
     "obm-partnership": "solutions",
-    "case-studies": "solutions",
+    "case-studies": "resources",
     news: "contact",
     "thank-you": "contact",
     all: "products",
@@ -176,7 +176,7 @@
     about: "abt",
     contact: "cnt",
     resources: "res",
-    "case-studies": "sol",
+    "case-studies": "res",
     "oem-customization": "sol",
     "odm-service": "sol",
     "obm-partnership": "sol",
@@ -1209,7 +1209,7 @@
       "click",
       function (e) {
         var trigger = e.target.closest(
-          ".prod-dropdown-trigger, .sol-dropdown-trigger, .abt-dropdown-trigger, .cnt-dropdown-trigger"
+          ".prod-dropdown-trigger, .sol-dropdown-trigger, .abt-dropdown-trigger, .cnt-dropdown-trigger, .nav-dropdown-trigger"
         );
         if (!trigger) return;
         if (window.innerWidth <= 767) return;
@@ -1338,9 +1338,11 @@
       "header nav a.sol-dropdown-trigger",
       "header nav a.abt-dropdown-trigger",
       "header nav a.nav-dropdown-trigger",
+      "header nav a.cnt-dropdown-trigger",
       "header nav a[data-sol-trigger-label]",
       "header nav a[data-prod-trigger-label]",
       "header nav a[data-abt-trigger-label]",
+      "header nav a[data-cnt-trigger-label]",
       "header nav a[data-nav-trigger-label]",
     ];
 
@@ -1395,7 +1397,8 @@
         plainEl.classList.contains("prod-dropdown-trigger") ||
         plainEl.classList.contains("sol-dropdown-trigger") ||
         plainEl.classList.contains("abt-dropdown-trigger") ||
-        plainEl.classList.contains("nav-dropdown-trigger")
+        plainEl.classList.contains("nav-dropdown-trigger") ||
+        plainEl.classList.contains("cnt-dropdown-trigger")
       ) {
         continue;
       }

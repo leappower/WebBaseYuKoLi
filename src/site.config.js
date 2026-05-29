@@ -164,6 +164,27 @@
         news: "contact",
         "thank-you": "contact",
         cases: "resources",
+
+        /* Solutions sub-pages */
+        oem: "solutions",
+        rd: "solutions",
+        packaging: "solutions",
+
+        /* Products sub-pages */
+        all: "products",
+        coffee: "products",
+        tea: "products",
+        meal: "products",
+        beauty: "products",
+        weight: "products",
+        gut: "products",
+        lifestyle: "products",
+        legacy: "products",
+
+        /* Resources sub-pages */
+        catalog: "resources",
+        videos: "resources",
+        whitepapers: "resources",
       },
     },
 

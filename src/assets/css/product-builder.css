@@ -33,19 +33,22 @@
 
 .builder-main {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 .builder-options {
-  flex: 1;
+  flex: 3;
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
 }
 .builder-sidebar {
-  width: 220px;
+  flex: 1;
+  min-width: 220px;
+  max-width: 300px;
   flex-shrink: 0;
 }
+/* PC: options ~75%, sidebar ~25% via flex ratio */
 
 /* ═══ Section Labels ═══ */
 .builder-label {

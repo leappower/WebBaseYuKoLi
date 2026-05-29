@@ -363,20 +363,20 @@
       </section>
 
       <!-- Partner -->
-      <section class="bg-slate-900 text-white rounded-xl p-5 text-center mt-8 mb-6">
-
-        <div>
-        <h2 class="text-lg font-black mb-2" data-i18n="contact_partner_title">Become a Partner</h2>
-        <p class="text-slate-300 text-sm mb-3" data-i18n="contact_partner_desc">Join our global network of distributors.</p>
-        <a href="#contact-form"
-          class="inline-block bg-primary text-white px-5 py-2 rounded-lg font-bold text-sm"
-          data-i18n="contact_partner_btn"
-        >
-          Apply Now
-        </a>
-      
-
-        </div></section>
+      <section id="network" class="fullwidth-bg py-10">
+        <div class="section-content">
+          <div class="w-full bg-slate-900 text-white rounded-xl overflow-hidden relative">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+              <img loading="lazy" alt="Partnership" data-i18n="alt_partnership" class="w-full h-full object-cover" src="/assets/images/contact-partner-tour.webp" />
+            </div>
+            <div class="relative p-5 text-center">
+              <h2 class="text-lg font-black mb-2" data-i18n="contact_partner_title">Become a Partner</h2>
+              <p class="text-slate-300 text-sm mb-3" data-i18n="contact_partner_desc">Join our global distributor and dealer network. We offer competitive margins, comprehensive training, and dedicated support.</p>
+              <a href="#contact-form" onclick="event.preventDefault();document.getElementById('contact-form').scrollIntoView({behavior:'smooth',block:'start'})" class="inline-block bg-primary text-white px-5 py-2 rounded-lg font-bold text-sm" data-i18n="contact_partner_btn">Apply Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
     
   <!-- Quick Navigation -->
   <section class="fullwidth-bg py-8 bg-white dark:bg-slate-950">
@@ -423,7 +423,8 @@
 <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/swup-init.js?v=202605291142"></script>
-      <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
+
+    <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
   <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>

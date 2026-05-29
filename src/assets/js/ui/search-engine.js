@@ -95,34 +95,31 @@
    * Each product gets an additional `_searchName` field combining all searchable fields.
    */
   function buildSearchableProducts() {
-    var utils = window.AppUtils;
-    if (!utils || typeof utils.buildProductCatalog !== "function") return [];
+    var table = window.PRODUCT_DATA_TABLE || [];
+    var translations = window.PRODUCT_DATA_TRANSLATIONS || {};
+    var tm = window.translationManager;
+    var lang = (tm && tm.currentLanguage) ? tm.currentLanguage : "en";
 
-    var products = utils.buildProductCatalog();
-    return products.map(function (p) {
-      var translatedName = getProductTranslation(p, "name", p.name || p.model);
-      var translatedCategory = tr(
-        utils.getCategoryI18nKey ? utils.getCategoryI18nKey(p.category) : "filter_" + p.category,
-        p.category
-      );
-      var translatedBadge = getProductTranslation(p, "badge", p.badge || "");
-      var translatedScenarios = p.scenarios || "";
-      var translatedUsage = getProductTranslation(p, "throughput", p.throughput || "");
+    return table.map(function (p) {
+      var t = translations[p.model] || {};
+      var displayName = (lang === "zh-CN" && t.nameZh) ? t.nameZh : (t.nameEn || p.name);
+      var displayCategory = tr("filter_" + p.category, p.category);
+      var displayDescription = t.descriptionEn || t.descriptionZh || p.description || "";
 
       return _extend({}, p, {
-        _displayName: translatedName || (translatedCategory + " " + (p.model || "")).trim(),
-        _displayCategory: translatedCategory,
-        _displayBadge: translatedBadge,
+        _displayName: displayName,
+        _displayCategory: displayCategory,
+        _displayBadge: "",
         _searchText: [
-          translatedName,
+          displayName,
           p.model,
-          translatedCategory,
+          displayCategory,
           p.category,
-          translatedScenarios,
-          translatedUsage,
-          p.voltage,
-          p.power,
-          translatedBadge,
+          p.brand,
+          displayDescription,
+          (p.diets || []).join(" "),
+          (p.tags || []).join(" "),
+          p.origin,
         ]
           .filter(Boolean)
           .join(" ")
@@ -132,7 +129,84 @@
   }
 
   /**
-   * Perform the actual search.
+   * Search page content index.
+   * @param {string} query - The search query
+   * @returns {Array} Matching pages
+   */
+  function searchPages(query) {
+    var index = window.SEARCH_INDEX || [];
+    if (!query || !index.length) return [];
+
+    var q = query.toLowerCase().trim();
+    var tokens = q
+      .replace(/\//g, " ")
+      .split(/[\s,，、-]+/)
+      .filter(Boolean);
+
+    var results = [];
+    var seen = {};
+
+    // Detect current language for multilingual matching
+    var tm = window.translationManager;
+    var lang = (tm && tm.currentLanguage) || "en";
+    var isZh = lang === "zh-CN" || lang === "zh-TW";
+
+    for (var i = 0; i < index.length; i++) {
+      var page = index[i];
+      if (seen[page.path]) continue;
+      seen[page.path] = true;
+
+      var text = [
+        page.title,
+        page.titleZh,
+        page.h1,
+        (page.keywords || []).join(" "),
+        page.meta,
+        (page.h2s || []).join(" "),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      var score = 0;
+      var matched = false;
+
+      for (var t = 0; t < tokens.length; t++) {
+        var token = tokens[t];
+        if (text.indexOf(token) === -1) {
+          matched = false;
+          break;
+        }
+        matched = true;
+        if (page.title && page.title.toLowerCase() === token) score += 30;
+        else if (page.titleZh && page.titleZh.toLowerCase() === token) score += 30;
+        else if ((page.keywords || []).indexOf(token) !== -1) score += 20;
+        else score += 10;
+      }
+
+      if (matched) {
+        // Pick display name based on current language
+        var displayName = isZh && page.titleZh ? page.titleZh : page.title;
+        results.push({
+          _type: "page",
+          _score: score,
+          _displayName: displayName,
+          _displayCategory: "Page",
+          _page: page,
+          path: page.path,
+        });
+      }
+    }
+
+    results.sort(function (a, b) {
+      return (b._score || 0) - (a._score || 0);
+    });
+
+    return results;
+  }
+
+  /**
+   * Perform the actual search (products + pages).
    * @param {string} query - The search query
    * @returns {Array} Matching products (max 8)
    */
@@ -147,8 +221,15 @@
       .filter(Boolean);
 
     var allProducts = buildSearchableProducts();
+    var allPages = searchPages(query);
     var results = [];
     var seen = {};
+
+    // Page results first (up to 3), then product results (fill to 8)
+    var pageLimit = 3;
+    for (var pi = 0; pi < allPages.length && pi < pageLimit; pi++) {
+      results.push(allPages[pi]);
+    }
 
     for (var i = 0; i < allProducts.length && results.length < 8; i++) {
       var p = allProducts[i];
@@ -305,54 +386,128 @@
       return;
     }
 
-    var countText = tr("search_results_count", "{count} products found").replace("{count}", String(results.length));
+    var countText = tr("search_results_count", "{count} results found").replace("{count}", String(results.length));
     var viewAllText = tr("search_view_all", "View all products");
+
+    // Count by type
+    var productCount = 0;
+    var pageCount = 0;
+    for (var ri = 0; ri < results.length; ri++) {
+      if (results[ri]._type === "page") pageCount++;
+      else productCount++;
+    }
 
     var html =
       '<div class="ios-search-header">' + '<span class="ios-search-count">' + esc(countText) + "</span>" + "</div>";
 
     html += '<div class="ios-search-results-list">';
 
-    for (var i = 0; i < results.length; i++) {
-      var p = results[i];
-      var idx = i;
-      var name = esc(p._displayName || p._displayCategory + " " + p.model);
-      var model = esc(p.model || "");
-      var category = esc(p._displayCategory || p.category || "");
-      var badge = p._displayBadge ? '<span class="ios-search-badge">' + esc(p._displayBadge) + "</span>" : "";
-      var imgSrc = p.productImage || p.imageUrl || "";
-      var hlClass = idx === highlightedIndex ? " is-highlighted" : "";
+    // Render pages first, then products
+    var sections = [
+      { type: "page", label: tr("search_pages", "Pages") },
+      { type: "product", label: tr("search_products", "Products") },
+    ];
+    var renderedIndex = 0;
 
-      html +=
-        '<a class="ios-search-result-item' +
-        hlClass +
-        '" ' +
-        'href="/products/" data-search-idx="' +
-        idx +
-        '" role="option">' +
-        '<div class="ios-search-result-img">' +
-        (imgSrc
-          ? '<img src="' +
-            esc(imgSrc) +
-            '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'
-          : '<span class="material-symbols-outlined">inventory_2</span>') +
-        "</div>" +
-        '<div class="ios-search-result-info">' +
-        '<div class="ios-search-result-name">' +
-        name +
-        badge +
-        "</div>" +
-        '<div class="ios-search-result-meta">' +
-        '<span class="ios-search-result-model">' +
-        model +
-        "</span>" +
-        '<span class="ios-search-result-sep">·</span>' +
-        '<span class="ios-search-result-category">' +
-        category +
-        "</span>" +
-        "</div>" +
-        "</div>" +
-        "</a>";
+    for (var si = 0; si < sections.length; si++) {
+      var sectionType = sections[si].type;
+      var sectionLabel = sections[si].label;
+      var sectionItems = [];
+      for (var rj = 0; rj < results.length; rj++) {
+        if ((results[rj]._type || "product") === sectionType) {
+          results[rj]._sectionIndex = renderedIndex++;
+          sectionItems.push(results[rj]);
+        }
+      }
+      if (sectionItems.length === 0) continue;
+
+      // Section header
+      html += '<div class="ios-search-section-label">' + esc(sectionLabel) + "</div>";
+
+      for (var sk = 0; sk < sectionItems.length; sk++) {
+        var item = sectionItems[sk];
+        var idx = item._sectionIndex;
+        var hlClass = idx === highlightedIndex ? " is-highlighted" : "";
+
+        if (sectionType === "page") {
+          // Page item: icon + title + path
+          var page = item._page || {};
+          var pageTitle = esc(item._displayName || page.title || page.path);
+          var pagePath = esc(page.path || "");
+          html +=
+            '<a class="ios-search-result-item' +
+            hlClass +
+            '" href="' +
+            pagePath +
+            '" data-search-idx="' +
+            idx +
+            '" role="option">' +
+            '<div class="ios-search-result-img">' +
+            '<span class="material-symbols-outlined">language</span>' +
+            "</div>" +
+            '<div class="ios-search-result-info">' +
+            '<div class="ios-search-result-name">' +
+            pageTitle +
+            "</div>" +
+            '<div class="ios-search-result-meta">' +
+            '<span class="ios-search-result-model">' +
+            esc("Page") +
+            "</span>" +
+            '<span class="ios-search-result-sep">·</span>' +
+            '<span class="ios-search-result-category">' +
+            pagePath +
+            "</span>" +
+            "</div>" +
+            "</div>" +
+            "</a>";
+        } else {
+          // Product item
+          var name = esc(item._displayName || item._displayCategory + " " + item.model);
+          var model = esc(item.model || "");
+          var category = esc(item._displayCategory || item.category || "");
+          var badge = item._displayBadge
+            ? '<span class="ios-search-badge">' + esc(item._displayBadge) + "</span>"
+            : "";
+          if (!item.image && !item.productImage && !item.imageUrl) {
+      console.warn("[search-engine] No image for", item.model, item.category);
+    }
+    var imgSrc = item.image || item.productImage || item.imageUrl || "";
+          var detailHref = item.model ? "/products/detail/" + item.model + "/" : "/products/";
+
+          html +=
+            '<a class="ios-search-result-item' +
+            hlClass +
+            '" ' +
+            'href="' +
+            detailHref +
+            '" data-search-idx="' +
+            idx +
+            '" role="option">' +
+            '<div class="ios-search-result-img">' +
+            (imgSrc
+              ? '<img src="' +
+                esc(imgSrc) +
+                '" alt="" loading="lazy" decoding="async">'
+              : '<span class="material-symbols-outlined">inventory_2</span>') +
+            "</div>" +
+            '<div class="ios-search-result-info">' +
+            '<div class="ios-search-result-name">' +
+            name +
+            badge +
+            "</div>" +
+            '<div class="ios-search-result-meta">' +
+            '<span class="ios-search-result-model">' +
+            model +
+            "</span>" +
+            '<span class="ios-search-result-sep">·</span>' +
+            '<span class="ios-search-result-category">' +
+            category +
+            "</span>" +
+            "</div>" +
+            "</div>" +
+            "</a>";
+        }
+      }
     }
 
     html += "</div>";

@@ -186,6 +186,10 @@
     if (navActive && global.Navigator && typeof global.Navigator.updateActive === "function") {
       global.Navigator.updateActive(navActive);
     }
+    // SPA 导航后同步更新手机菜单高亮
+    if (global.SlideMenu && typeof global.SlideMenu.updateActive === "function") {
+      global.SlideMenu.updateActive();
+    }
 
     var footerActive = extractActiveFooter(html);
     if (!footerActive) {
