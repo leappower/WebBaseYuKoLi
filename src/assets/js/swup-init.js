@@ -455,7 +455,15 @@
     var url = path;
     if (url && url.charAt(0) !== "/") url = "/" + url;
     if (swup && swupEnabled) {
-      swup.navigate(url);
+      var navResult = swup.navigate(url);
+      if (navResult && typeof navResult.catch === "function") {
+        navResult.catch(function () {
+          global.location.href = url;
+        });
+      } else {
+        // swup navigate 及时返回 undefined 或非 Promise:
+        // 用 setTimeout 确认 content:replace 已触发
+      }
       return;
     }
     global.location.href = url;
@@ -465,7 +473,12 @@
     var url = path;
     if (url && url.charAt(0) !== "/") url = "/" + url;
     if (swup && swupEnabled) {
-      swup.navigate(url, { history: "replace" });
+      var navResult = swup.navigate(url, { history: "replace" });
+      if (navResult && typeof navResult.catch === "function") {
+        navResult.catch(function () {
+          global.location.replace(url);
+        });
+      }
       return;
     }
     global.location.replace(url);
