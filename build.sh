@@ -33,11 +33,7 @@ fi
 rm -rf "$DIST"
 mkdir -p "$DIST"
 
-# ─── 1. site.config.js → dist/ ──────────────────────────────────
-# Must be available at /site.config.js for SPA shell
-cp "$SRC/site.config.js" "$DIST/site.config.js"
-
-# ─── 2. Tailwind CSS + Webpack ──────────────────────────────────
+# ─── 1. Tailwind CSS + Webpack ──────────────────────────────────
 echo "📦 Building CSS + JS..."
 npm run build:css 2>&1 | tail -1
 if [ "$BUILD_MODE" = "dev" ]; then
@@ -79,6 +75,10 @@ sync_assets "data"     "*.json"
 sync_assets "images"   "*"
 sync_assets "video"    "*"
 sync_assets "pdf"      "*.pdf"
+
+# ─── 4.5. site.config.js → dist/ ───────────────────────────────
+# Must be at /site.config.js for SPA shell (after webpack so not cleaned)
+cp "$SRC/site.config.js" "$DIST/site.config.js"
 
 # ─── 5. HTML pages ─────────────────────────────────────────────
 echo "📦 Syncing HTML pages..."
