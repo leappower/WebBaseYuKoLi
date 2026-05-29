@@ -194,6 +194,7 @@
           _displayCategory: "Page",
           _page: page,
           path: page.path,
+          image: page.image,
         });
       }
     }
@@ -443,7 +444,11 @@
             idx +
             '" role="option">' +
             '<div class="ios-search-result-img">' +
-            '<span class="material-symbols-outlined">language</span>' +
+            (item.image
+              ? '<img src="' +
+                esc(item.image) +
+                '" alt="" loading="lazy" decoding="async">'
+              : '<span class="material-symbols-outlined">language</span>') +
             "</div>" +
             '<div class="ios-search-result-info">' +
             '<div class="ios-search-result-name">' +
