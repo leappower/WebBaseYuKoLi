@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+
+<html class="light" lang="zh-CN">
+  <head>
+  <script src="/site.config.js"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <link rel="canonical" href="https://brew.yukoli.com/contact/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/contact/" />
+  <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/contact/" />
+  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/contact/" />
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/contact/index-mobile.html" />
+    <link
+      rel="alternate"
+      media="only screen and (min-width: 768px) and (max-width: 1279px)"
+      href="/contact/index-tablet.html"
+    />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/contact/index-pc.html" />
+    <script>
+      (function () {
+        if (window.__redirectChecked) return;
+        window.__redirectChecked = true;
+        var urlParams = new URLSearchParams(location.search);
+        var cleanUrl = urlParams.get("clean-url");
+        if (cleanUrl) {
+          history.replaceState({}, "", cleanUrl);
+          return;
+        }
+        if (window.__spaNavigating) return;
+        var currentFile = location.pathname.split("/").pop();
+        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
+        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+          var deviceType = window.DeviceUtils.getDeviceType();
+          var targetFile =
+            deviceType === window.DeviceUtils.DeviceType.MOBILE
+              ? "index-mobile.html"
+              : deviceType === window.DeviceUtils.DeviceType.TABLET
+                ? "index-tablet.html"
+                : "index-pc.html";
+          location.href = targetFile;
+        }
+      })();
+    </script>
+
+    <meta charset="utf-8" />
+ <meta name="description" content="联系 YuKoLi — 获取健康冲调食品 OEM/ODM 报价和技术咨询，全球服务网络覆盖东南亚、中东、南亚市场。" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title data-i18n="contact_meta_title">Yukoli | Contact Us</title>
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
+    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
+    <link rel="stylesheet" href="/assets/css/product-builder.css?v=202605291142" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <script>
+      (function () {
+        if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
+      })();
+    </script>
+    <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip"
+  >
+    <navigator
+      data-component="navigator" data-swup-persist="nav"
+      data-variant="tablet"
+      data-active="contact"
+      data-cta-text-key="nav_get_quote"
+      data-cta-href="/contact/"
+    ></navigator>
+
+    <main id="spa-content" class="py-8">
+      <!-- Hero -->
+      <section id="quote" class="fullwidth-bg hero-overlap py-16">
+        <div class="section-content">
+          <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4"
+          >
+            <span class="material-symbols-outlined text-sm">mail</span>
+            <span data-i18n="contact_hero_badge">Contact Us</span>
+          </div>
+          <h1 class="text-4xl font-black leading-tight tracking-tighter mb-4">
+            <span data-i18n="contact_hero_title">Let's Start a</span>
+            <span class="text-primary" data-i18n="contact_hero_title_highlight">Conversation</span>
+          </h1>
+          <p class="text-slate-600 dark:text-slate-400 mb-6" data-i18n="contact_hero_desc">
+            Whether you need a quote, technical support, or partnership, our global team is ready to serve you.
+          </p>
+        </div>
+      </section>
+
+      <!-- Contact Form -->
+      <section id="samples" class="fullwidth-bg py-16">
+
+        <div class="section-content">
+        
+          <div class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6">
+            <div id="product-builder" class="builder-container">
+
+              <div class="builder-header">
+                <h3 class="flex items-center gap-2 text-base"><span class="material-symbols-outlined text-primary" style="font-size:1.125rem;">edit_note</span> Build Your Product Brief</h3>
+                <p style="font-size:0.8125rem;">Tell us what you're working on — we'll reply with a tailored quote.</p>
+              </div>
+
+              <div class="builder-main">
+                <div class="builder-options">
+
+                  <div>
+                    <div class="builder-label">
+                      <span class="material-symbols-outlined" style="font-size:0.875rem;">handshake</span>
+                      <span>1. Partnership Mode</span>
+                    </div>
+                    <div class="mode-cards">
+                      <div class="mode-card" data-mode="oem">
+                        <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">precision_manufacturing</span>
+                        <span class="mode-title">OEM</span>
+                        <span class="mode-subtitle">I have a formula</span>
+                      </div>
+                      <div class="mode-card" data-mode="odm">
+                        <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">design_services</span>
+                        <span class="mode-title">ODM</span>
+                        <span class="mode-subtitle">We create recipe</span>
+                      </div>
+                      <div class="mode-card" data-mode="obm">
+                        <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">verified</span>
+                        <span class="mode-title">OBM</span>
+                        <span class="mode-subtitle">Build my brand</span>
+                      </div>
+                      <div class="mode-card" data-mode="not-sure">
+                        <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">help_outline</span>
+                        <span class="mode-title">Not Sure</span>
+                        <span class="mode-subtitle">Help me decide</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="builder-label">
+                      <span class="material-symbols-outlined" style="font-size:0.875rem;">category</span>
+                      <span>2. Product Category</span>
+                    </div>
+                    <div class="category-grid">
+                      <div class="category-tag" data-cat="coffee"><span class="cat-emoji">☕</span> Coffee</div>
+                      <div class="category-tag" data-cat="tea"><span class="cat-emoji">🍵</span> Tea &amp; Milk Tea</div>
+                      <div class="category-tag" data-cat="meal"><span class="cat-emoji">🥤</span> Meal Replacement</div>
+                      <div class="category-tag" data-cat="beauty"><span class="cat-emoji">✨</span> Collagen</div>
+                      <div class="category-tag" data-cat="weight"><span class="cat-emoji">⚖️</span> Weight</div>
+                      <div class="category-tag" data-cat="gut"><span class="cat-emoji">🫘</span> Gut</div>
+                      <div class="category-tag" data-cat="lifestyle"><span class="cat-emoji">🍃</span> Lifestyle</div>
+                      <div class="category-tag" data-cat="legacy"><span class="cat-emoji">📖</span> Legacy</div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="builder-label">
+                      <span class="material-symbols-outlined" style="font-size:0.875rem;">trending_up</span>
+                      <span>3. Scale &amp; Timeline</span>
+                    </div>
+                    <div class="scale-slider-wrap">
+                      <input type="range" class="scale-slider" min="0" max="4" value="0" step="1" style="height:5px;" />
+                      <div class="scale-value" style="font-size:0.75rem;">Under 1,000 /mo</div>
+                      <div class="scale-labels" style="font-size:0.5625rem;">
+                        <span class="scale-label active" data-idx="0">&lt;1K</span>
+                        <span class="scale-label" data-idx="1">1K-5K</span>
+                        <span class="scale-label" data-idx="2">5K-10K</span>
+                        <span class="scale-label" data-idx="3">10K-50K</span>
+                        <span class="scale-label" data-idx="4">50K+</span>
+                      </div>
+                    </div>
+                    <div style="margin-top:0.375rem;">
+                      <div class="timeline-cards">
+                        <div class="timeline-card" data-tl="now"><span class="tl-icon">⚡</span> Now</div>
+                        <div class="timeline-card" data-tl="1-3"><span class="tl-icon">📅</span> 1-3mo</div>
+                        <div class="timeline-card" data-tl="3-6"><span class="tl-icon">🗓</span> 3-6mo</div>
+                        <div class="timeline-card" data-tl="research"><span class="tl-icon">🔍</span> Research</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="builder-sidebar">
+                  <div class="brief-panel" style="padding:0.75rem;">
+                    <div class="brief-panel-title" style="font-size:0.6875rem;">📋 Your Brief</div>
+                    <div class="brief-summary">
+                      <div class="brief-empty-state" style="padding:0.5rem 0;font-size:0.75rem;">
+                        Your selections will appear here
+                      </div>
+                    </div>
+                    <div class="brief-match" style="display:none;margin-top:0.5rem;padding-top:0.5rem;">
+                      <div class="brief-match-label" style="font-size:0.625rem;">💡 Smart Match</div>
+                      <div class="brief-match-text" style="font-size:0.6875rem;"></div>
+                    </div>
+                    <div class="brief-score-wrap" style="margin-top:0.5rem;padding-top:0.5rem;">
+                      <div class="brief-score-bar"><div class="brief-score-fill" style="width:0%;"></div></div>
+                      <div class="brief-score-text" style="font-size:0.625rem;">Complete for better quote</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <hr class="contact-divider" style="margin:0.75rem 0;" />
+
+              <div>
+                <div class="builder-label">
+                  <span class="material-symbols-outlined" style="font-size:0.875rem;">contact_page</span>
+                  <span>Your Contact Details</span>
+                </div>
+                <div class="contact-row">
+                  <div class="contact-field">
+                    <label style="font-size:0.6875rem;">Full Name <span style="color:#ef4444;">*</span></label>
+                    <input type="text" name="fullname" required placeholder="John Doe" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
+                  </div>
+                  <div class="contact-field">
+                    <label style="font-size:0.6875rem;">Company <span style="color:#ef4444;">*</span></label>
+                    <input type="text" name="company" required placeholder="Company" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
+                  </div>
+                  <div class="contact-field">
+                    <label style="font-size:0.6875rem;">Country</label>
+                    <select name="country" style="font-size:0.75rem;padding:0.4rem 0.5rem;">
+                      <option value="">Select</option>
+                      <option value="CN">🇨🇳 China</option>
+                      <option value="US">🇺🇸 USA</option>
+                      <option value="MY">🇲🇾 Malaysia</option>
+                      <option value="ID">🇮🇩 Indonesia</option>
+                      <option value="TH">🇹🇭 Thailand</option>
+                      <option value="VN">🇻🇳 Vietnam</option>
+                      <option value="IN">🇮🇳 India</option>
+                      <option value="AE">🇦🇪 UAE</option>
+                      <option value="GB">🇬🇧 UK</option>
+                      <option value="AU">🇦🇺 Australia</option>
+                      <option value="SG">🇸🇬 Singapore</option>
+                      <option value="JP">🇯🇵 Japan</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="contact-row" style="margin-top:0.375rem;">
+                  <div class="contact-field">
+                    <label style="font-size:0.6875rem;">Email <span style="color:#ef4444;">*</span></label>
+                    <input type="email" name="email" required placeholder="you@company.com" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
+                  </div>
+                  <div class="contact-field">
+                    <label style="font-size:0.6875rem;">Phone/WA <span style="color:#ef4444;">*</span></label>
+                    <input type="tel" name="phone" required placeholder="+86 139 2482 8214" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
+                  </div>
+                </div>
+              </div>
+
+              <hr class="contact-divider" style="margin:0.75rem 0;" />
+
+              <div>
+                <div class="prompt-chips" style="margin-bottom:0.375rem;">
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Need samples first">📦 Samples</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Custom packaging design">📦 Packaging</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="I have a target price">💰 Price</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Need R&D support">🧪 R&amp;D</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Want to visit factory">🏭 Visit</span>
+                </div>
+                <textarea
+                  class="builder-message w-full px-3 py-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent text-sm resize-none"
+                  rows="3"
+                  placeholder="Tell us more about your project — brand positioning, target market..."
+                ></textarea>
+              </div>
+
+              <button class="builder-submit" style="padding:0.75rem;font-size:0.875rem;">
+                <span class="material-symbols-outlined" style="font-size:1rem;">send</span>
+                Submit My Product Brief
+              </button>
+
+              <div class="builder-success">
+                <div class="check-circle"><span class="material-symbols-outlined">check_circle</span></div>
+                <h4 style="font-size:1rem;">Brief Sent!</h4>
+                <p class="success-greeting" style="font-size:0.75rem;">Your inquiry has been received.</p>
+                <div class="builder-success-steps" style="gap:0.5rem;">
+                  <div class="builder-success-step">
+                    <span class="step-num" style="width:20px;height:20px;font-size:0.625rem;">1</span>
+                    <span class="step-label" style="font-size:0.625rem;">Reviews</span>
+                  </div>
+                  <div class="builder-success-step">
+                    <span class="step-num" style="width:20px;height:20px;font-size:0.625rem;">2</span>
+                    <span class="step-label" style="font-size:0.625rem;">Quote prep</span>
+                  </div>
+                  <div class="builder-success-step">
+                    <span class="step-num" style="width:20px;height:20px;font-size:0.625rem;">3</span>
+                    <span class="step-label" style="font-size:0.625rem;">24h delivery</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+      
+
+        </div></section>
+
+      <!-- Contact Info -->
+      <section id="visit" class="fullwidth-bg py-16">
+        <div class="section-content">
+          <div class="w-full grid grid-cols-3 gap-3">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center"
+            >
+              <span class="material-symbols-outlined text-primary text-xl mb-2">email</span>
+              <p class="text-xs font-bold" data-i18n="contact_card_email_title">Email Us</p>
+              <a href="mailto:support.brew@yukoli.com" class="text-xs text-primary font-bold">support.brew@yukoli.com</a>
+            </div>
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center"
+            >
+              <span class="material-symbols-outlined text-primary text-xl mb-2">phone</span>
+              <p class="text-xs font-bold" data-i18n="contact_card_phone_title">Call Us</p>
+              <p class="text-xs text-slate-500">+86 18565718814</p>
+            </div>
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center"
+            >
+              <span class="material-symbols-outlined text-primary text-xl mb-2">chat</span>
+              <p class="text-xs font-bold" data-i18n="contact_card_whatsapp_title">WhatsApp</p>
+              <p class="text-xs text-slate-500">+86 18565718814</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Office Address -->
+      <section id="network" class="fullwidth-bg py-16">
+        <div class="section-content">
+          <h2 class="text-xl font-bold mb-4" data-i18n="contact_offices_title">Our Offices</h2>
+          <div class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6">
+            <div class="flex items-start gap-3 mb-5">
+              <div class="size-10 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                <span class="material-symbols-outlined text-primary text-lg">location_on</span>
+              </div>
+              <div>
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xl">🇨🇳</span>
+                  <h3 class="font-bold" data-i18n="contact_office_hq">China Headquarters</h3>
+                </div>
+                <p class="text-xs text-slate-500" data-i18n="contact_company_name">Foshan <span data-i18n="seo_yukoli">YuKoLi</span> Technology Co., Ltd.</p>
+              </div>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary text-base mt-0.5">apartment</span>
+                <div>
+                  <p class="text-sm font-bold mb-0.5" data-i18n="contact_china_address_label">China Address</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="contact_china_address">Room 502-6, Building 12, Wanchuangyuan, No.83 Zhanlun Road, Honggang Community, Daliang Street, Shunde District, Foshan City, Guangdong Province, China</p>
+                </div>
+              </div>
+              <div class="border-t border-slate-100 dark:border-slate-800"></div>
+              <div class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-primary text-base mt-0.5">language</span>
+                <div>
+                  <p class="text-sm font-bold mb-0.5" data-i18n="contact_english_address_label">English Address</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Room 6, 502, Building 12, Wanchuangyuan, No. 83, Zhanlun Road, Honggang Community, Daliang Subdistrict, Shunde District, Foshan City, Guangdong Province, China</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Partner -->
+      <section id="network" class="fullwidth-bg py-16">
+        <div class="section-content">
+          <div class="w-full bg-slate-900 text-white rounded-2xl overflow-hidden relative">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+              <img loading="lazy" alt="Partnership" data-i18n="alt_partnership" class="w-full h-full object-cover" src="/assets/images/contact-partner-tour.webp" />
+            </div>
+            <div class="relative p-8 text-center">
+              <h2 class="text-xl font-black mb-3" data-i18n="contact_partner_title">Become a Partner</h2>
+              <p class="text-slate-300 text-sm mb-4" data-i18n="contact_partner_desc">Join our global distributor and dealer network. We offer competitive margins, comprehensive training, and dedicated support.</p>
+              <a href="#contact-form" onclick="event.preventDefault();document.getElementById('contact-form').scrollIntoView({behavior:'smooth',block:'start'})" class="inline-block bg-primary text-white px-6 py-2.5 rounded-lg font-bold text-sm" data-i18n="contact_partner_btn">Apply Now</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+  <!-- Quick Navigation -->
+  <section class="fullwidth-bg py-8 bg-white dark:bg-slate-950">
+    <div class="section-content">
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="/products/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary transition-all">
+          <span class="material-symbols-outlined text-primary text-sm">local_cafe</span>
+          <span data-i18n="nav_products">Products</span>
+        </a>
+        <a href="/cases/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary transition-all">
+          <span class="material-symbols-outlined text-primary text-sm">analytics</span>
+          <span data-i18n="cases_page_title">Case Studies</span>
+        </a>
+        <a href="/support/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-xs bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary hover:text-primary transition-all">
+          <span class="material-symbols-outlined text-primary text-sm">support_agent</span>
+          <span data-i18n="nav_support">Service & Support</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+    <script src="/assets/js/ui/dropdown-styles.js?v=202605291142"></script>
+    <script src="/assets/js/ui/dropdown-base.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/products-dropdown.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/support-dropdown.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/about-dropdown.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/navigator.js?v=202605291142"></script>
+<script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
+    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
+    <script defer src="/assets/js/translations.js?v=202605291142"></script><script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
+    <script defer src="/assets/js/product-builder.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
+    <script defer src="/assets/js/page-interactions.js?v=202605291142"></script>
+    <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
+<!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
+<script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
+<script defer src="/assets/js/swup-init.js?v=202605291142"></script>
+          <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
+  <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
+</body>
+</html>

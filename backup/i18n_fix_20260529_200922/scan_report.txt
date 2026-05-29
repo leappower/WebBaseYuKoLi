@@ -1,0 +1,890 @@
+i18n 覆盖扫描报告 - 2026-05-29 20:09:22.751401
+文件数: 53, 复合元素: 113, 未包裹文本段: 207
+
+
+============================================================
+📄 src/pages/about/index-mobile.html
+============================================================
+
+  L88 <span data-i18n="about_hero_title_1">
+  子 span keys: ['seo_20_years']
+  未包裹文本 (1段):
+    [1] ", One Mission:"
+
+  L91 <span data-i18n="about_hero_desc">
+  子 span keys: ['seo_4_factories', 'seo_7_product_lines', 'seo_30_countries']
+  未包裹文本 (4段):
+    [1] "From Foshan to the world, providing quality OEM/ODM services for global brands."
+    [2] ","
+    [3] ", serving clients in"
+    [4] "."
+
+  L219 <span data-i18n="about_story_p1">
+  子 span keys: ['about_founded_history', 'seo_yukoli']
+  未包裹文本 (1段):
+    [1] "started as a small food processing plant. We have always focused on health food R&D and manufacturin"
+
+  L220 <span data-i18n="about_founded_history">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Founded in 2004 in Foshan, Guangdong,"
+    [2] "started as a small food processing plant. We have always focused on health food R&D and manufacturin"
+
+  L224 <span data-i18n="about_story_p2">
+  子 span keys: ['seo_20_years', 'seo_yukoli', 'seo_7_product_lines', 'certifications', 'seo_30_countries']
+  未包裹文本 (6段):
+    [1] "After"
+    [2] ","
+    [3] "has grown into a health food manufacturer with 4 modern factories and"
+    [4] ". We hold"
+    [5] "certifications, exporting to"
+    [6] "."
+
+  L327 <p data-i18n="about_ms_2004_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "Technology founded, starting health food processing"
+
+  L369 <p data-i18n="about_ms_2024_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Exported to"
+    [2] ", became long-term OEM/ODM partner for global brands"
+
+  L382 <span data-i18n="about_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Partner with"
+    [2] ". Free OEM/ODM custom solutions with professional team response within 24 hours."
+
+============================================================
+📄 src/pages/about/index-pc.html
+============================================================
+
+  L168 <span data-i18n="about_badge">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "About"
+
+  L174 <span data-i18n="about_hero_desc">
+  子 span keys: ['seo_4_factories', 'seo_7_product_lines', 'seo_30_countries']
+  未包裹文本 (4段):
+    [1] "From Foshan to the world, providing quality OEM/ODM services for global brands."
+    [2] ","
+    [3] ", serving clients in"
+    [4] "."
+
+  L333 <span data-i18n="about_story_p1">
+  子 span keys: ['about_founded_history', 'seo_yukoli']
+  未包裹文本 (1段):
+    [1] "started as a small food processing plant. We have always focused on health food R&D and manufacturin"
+
+  L334 <span data-i18n="about_founded_history">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Founded in 2004 in Foshan, Guangdong,"
+    [2] "started as a small food processing plant. We have always focused on health food R&D and manufacturin"
+
+  L338 <span data-i18n="about_story_p2">
+  子 span keys: ['seo_20_years', 'seo_yukoli', 'seo_7_product_lines', 'certifications', 'seo_30_countries']
+  未包裹文本 (6段):
+    [1] "After"
+    [2] ","
+    [3] "has grown into a health food manufacturer with 4 modern factories and"
+    [4] ". We hold"
+    [5] "certifications, exporting to"
+    [6] "."
+
+  L463 <p data-i18n="about_ms_2004_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "Technology founded, starting health food processing"
+
+  L511 <p data-i18n="about_ms_2024_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Exported to"
+    [2] ", became long-term OEM/ODM partner for global brands"
+
+  L529 <span data-i18n="about_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Partner with"
+    [2] ". Free OEM/ODM custom solutions with professional team response within 24 hours."
+
+============================================================
+📄 src/pages/about/index-tablet.html
+============================================================
+
+  L88 <span data-i18n="about_hero_title_1">
+  子 span keys: ['seo_20_years']
+  未包裹文本 (1段):
+    [1] ", One Mission:"
+
+  L91 <span data-i18n="about_hero_desc">
+  子 span keys: ['seo_4_factories', 'seo_7_product_lines', 'seo_30_countries']
+  未包裹文本 (4段):
+    [1] "From Foshan to the world, providing quality OEM/ODM services for global brands."
+    [2] ","
+    [3] ", serving clients in"
+    [4] "."
+
+  L222 <span data-i18n="about_story_p1">
+  子 span keys: ['about_founded_history', 'seo_yukoli']
+  未包裹文本 (1段):
+    [1] "started as a small food processing plant. We have always focused on health food R&D and manufacturin"
+
+  L223 <span data-i18n="about_founded_history">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Founded in 2004 in Foshan, Guangdong,"
+    [2] "started as a small food processing plant. We have always focused on health food R&D and manufacturin"
+
+  L227 <span data-i18n="about_story_p2">
+  子 span keys: ['seo_20_years', 'seo_yukoli', 'seo_7_product_lines', 'certifications', 'seo_30_countries']
+  未包裹文本 (6段):
+    [1] "After"
+    [2] ","
+    [3] "has grown into a health food manufacturer with 4 modern factories and"
+    [4] ". We hold"
+    [5] "certifications, exporting to"
+    [6] "."
+
+  L328 <p data-i18n="about_ms_2004_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "Technology founded, starting health food processing"
+
+  L370 <p data-i18n="about_ms_2024_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Exported to"
+    [2] ", became long-term OEM/ODM partner for global brands"
+
+  L384 <span data-i18n="about_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Partner with"
+    [2] ". Free OEM/ODM custom solutions with professional team response within 24 hours."
+
+============================================================
+📄 src/pages/cases/index-mobile.html
+============================================================
+
+  L42 <title data-i18n="cases_page_title">
+  子 span keys: ['cases_hero_badge']
+  未包裹文本 (1段):
+    [1] "{brand} | products manufacturing Automation"
+
+  L96 <h2 data-i18n="cases_grid_title">
+  子 span keys: ['cases_hero_badge']
+  未包裹文本 (1段):
+    [1] "All"
+
+============================================================
+📄 src/pages/cases/index-pc.html
+============================================================
+
+  L42 <title data-i18n="cases_page_title">
+  子 span keys: ['cases_hero_badge']
+  未包裹文本 (1段):
+    [1] "{brand} | products manufacturing Automation"
+
+============================================================
+📄 src/pages/cases/index-tablet.html
+============================================================
+
+  L42 <title data-i18n="cases_page_title">
+  子 span keys: ['cases_hero_badge']
+  未包裹文本 (1段):
+    [1] "{brand} | products manufacturing Automation"
+
+  L98 <h2 data-i18n="cases_grid_title">
+  子 span keys: ['cases_hero_badge']
+  未包裹文本 (1段):
+    [1] "All"
+
+============================================================
+📄 src/pages/compliance/index-mobile.html
+============================================================
+
+  L94 <p data-i18n="compliance_service_export_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Familiar with food import regulations in"
+    [2] ", assisting with customs clearance and registration."
+
+============================================================
+📄 src/pages/compliance/index-pc.html
+============================================================
+
+  L94 <p data-i18n="compliance_service_export_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Familiar with food import regulations in"
+    [2] ", assisting with customs clearance and registration."
+
+============================================================
+📄 src/pages/compliance/index-tablet.html
+============================================================
+
+  L94 <p data-i18n="compliance_service_export_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Familiar with food import regulations in"
+    [2] ", assisting with customs clearance and registration."
+
+============================================================
+📄 src/pages/contact/index-mobile.html
+============================================================
+
+  L342 <p data-i18n="contact_company_name">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Foshan"
+    [2] "Technology Co., Ltd."
+
+============================================================
+📄 src/pages/contact/index-pc.html
+============================================================
+
+  L430 <p data-i18n="contact_company_name">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Foshan"
+    [2] "Technology Co., Ltd."
+
+============================================================
+📄 src/pages/contact/index-tablet.html
+============================================================
+
+  L342 <p data-i18n="contact_company_name">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Foshan"
+    [2] "Technology Co., Ltd."
+
+============================================================
+📄 src/pages/home/index-mobile.html
+============================================================
+
+  L107 <title data-i18n="home_meta_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "| Health Food OEM/ODM Expert"
+
+  L203 <p data-i18n="home_hero_desc">
+  子 span keys: ['seo_20_years', 'seo_7_product_lines', 'seo_30_countries']
+  未包裹文本 (3段):
+    [1] "focused on health food OEM/ODM, 4 owned factories,"
+    [2] ", exported to"
+    [3] ", MOQ 500. From R&D to delivery, one-stop branding service."
+
+  L264 <h2 data-i18n="home_advantage_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "Why Choose"
+
+  L265 <p data-i18n="home_advantage_subtitle">
+  子 span keys: ['seo_20_years']
+  未包裹文本 (1段):
+    [1] "of health food manufacturing, one-stop service"
+
+  L293 <p data-i18n="home_why_cert_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "certified"
+
+  L320 <p data-i18n="home_why_export_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (1段):
+    [1] "Exported to"
+
+  L503 <p data-i18n="home_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Contact"
+    [2] "experts for free samples and custom solutions."
+
+============================================================
+📄 src/pages/home/index-pc.html
+============================================================
+
+  L107 <title data-i18n="home_meta_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "| Health Food OEM/ODM Expert"
+
+  L208 <p data-i18n="home_hero_desc">
+  子 span keys: ['seo_20_years', 'seo_7_product_lines', 'seo_30_countries']
+  未包裹文本 (3段):
+    [1] "focused on health food OEM/ODM, 4 owned factories,"
+    [2] ", exported to"
+    [3] ", MOQ 500. From R&D to delivery, one-stop branding service."
+
+  L289 <h2 data-i18n="home_advantage_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "Why Choose"
+
+  L290 <p data-i18n="home_advantage_subtitle">
+  子 span keys: ['seo_20_years']
+  未包裹文本 (1段):
+    [1] "of health food manufacturing, one-stop service from R&D to delivery"
+
+  L318 <p data-i18n="home_why_cert_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "certified, meeting global export standards"
+
+  L345 <p data-i18n="home_why_export_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (2段):
+    [1] "Exported to"
+    [2] ", familiar with global regulations"
+
+  L517 <p data-i18n="home_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Contact"
+    [2] "experts for free samples and custom solutions."
+
+============================================================
+📄 src/pages/home/index-tablet.html
+============================================================
+
+  L107 <title data-i18n="home_meta_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "| Health Food OEM/ODM Expert"
+
+  L207 <p data-i18n="home_hero_desc">
+  子 span keys: ['seo_20_years', 'seo_7_product_lines', 'seo_30_countries']
+  未包裹文本 (3段):
+    [1] "focused on health food OEM/ODM, 4 owned factories,"
+    [2] ", exported to"
+    [3] ", MOQ 500. From R&D to delivery, one-stop branding service."
+
+  L281 <h2 data-i18n="home_advantage_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (1段):
+    [1] "Why Choose"
+
+  L282 <p data-i18n="home_advantage_subtitle">
+  子 span keys: ['seo_20_years']
+  未包裹文本 (1段):
+    [1] "of health food manufacturing, one-stop service"
+
+  L310 <p data-i18n="home_why_cert_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "certified"
+
+  L337 <p data-i18n="home_why_export_desc">
+  子 span keys: ['seo_30_countries']
+  未包裹文本 (1段):
+    [1] "Exported to"
+
+  L505 <p data-i18n="home_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Contact"
+    [2] "experts for free samples and custom solutions."
+
+============================================================
+📄 src/pages/products/beauty/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_beauty_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Beauty Collagen OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/beauty/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_beauty_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Beauty Collagen OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/beauty/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_beauty_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Beauty Collagen OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/coffee/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_coffee_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Coffee Mix OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/coffee/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_coffee_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Coffee Mix OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/coffee/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_coffee_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Coffee Mix OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/gut/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_gut_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Gut Health OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/gut/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_gut_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Gut Health OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/gut/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_gut_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Gut Health OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/legacy/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_legacy_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Classic Drinks -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/legacy/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_legacy_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Classic Drinks -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/legacy/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_legacy_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Classic Drinks -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/lifestyle/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_lifestyle_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Functional Drinks OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/lifestyle/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_lifestyle_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Functional Drinks OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/lifestyle/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_lifestyle_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Functional Drinks OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/meal/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_meal_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Meal Replacement OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/meal/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_meal_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Meal Replacement OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/meal/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_meal_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Meal Replacement OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/tea/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_tea_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Tea & Milk Tea OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/tea/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_tea_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Tea & Milk Tea OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/tea/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_tea_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Tea & Milk Tea OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/weight/index-mobile.html
+============================================================
+
+  L41 <title data-i18n="product_weight_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Weight Management OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/weight/index-pc.html
+============================================================
+
+  L41 <title data-i18n="product_weight_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Weight Management OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/products/weight/index-tablet.html
+============================================================
+
+  L41 <title data-i18n="product_weight_page_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Weight Management OEM/ODM -"
+    [2] "Technology"
+
+============================================================
+📄 src/pages/resources/catalog/index-mobile.html
+============================================================
+
+  L110 <p data-i18n="resources_catalog_cap_qual_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certification, full inspection per batch, ensuring product safety and compliance."
+
+  L121 <p data-i18n="resources_catalog_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/resources/catalog/index-pc.html
+============================================================
+
+  L110 <p data-i18n="resources_catalog_cap_qual_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certification, full inspection per batch, ensuring product safety and compliance."
+
+  L121 <p data-i18n="resources_catalog_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/resources/catalog/index-tablet.html
+============================================================
+
+  L110 <p data-i18n="resources_catalog_cap_qual_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certification, full inspection per batch, ensuring product safety and compliance."
+
+  L121 <p data-i18n="resources_catalog_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/resources/videos/index-mobile.html
+============================================================
+
+  L110 <p data-i18n="resources_videos_cap_stories_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certification, full inspection per batch, ensuring product safety and compliance."
+
+  L121 <p data-i18n="resources_videos_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Contact us to arrange a virtual or in-person tour of our facility and"
+    [2] "quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/resources/videos/index-pc.html
+============================================================
+
+  L110 <p data-i18n="resources_videos_cap_stories_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certification, full inspection per batch, ensuring product safety and compliance."
+
+  L121 <p data-i18n="resources_videos_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Contact us to arrange a virtual or in-person tour of our facility and"
+    [2] "quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/resources/videos/index-tablet.html
+============================================================
+
+  L110 <p data-i18n="resources_videos_cap_stories_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certification, full inspection per batch, ensuring product safety and compliance."
+
+  L121 <p data-i18n="resources_videos_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Contact us to arrange a virtual or in-person tour of our facility and"
+    [2] "quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/resources/whitepapers/index-mobile.html
+============================================================
+
+  L59 <img data-i18n="alt_whitepapers">
+  子 span keys: ['resources_whitepapers_hero_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-3xl font-black leading-tight text-white mb-4" data-i18n="reso"
+
+============================================================
+📄 src/pages/resources/whitepapers/index-pc.html
+============================================================
+
+  L41 <title data-i18n="whitepapers_meta_title">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Whitepapers & Industry Trends -"
+    [2] "Technology"
+
+  L59 <img data-i18n="alt_whitepapers">
+  子 span keys: ['resources_whitepapers_hero_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-5xl lg:text-6xl font-black leading-tight text-white mb-4" dat"
+
+============================================================
+📄 src/pages/solutions/packaging/index-mobile.html
+============================================================
+
+  L59 <img data-i18n="solutions_packaging_alt_hero">
+  子 span keys: ['solutions_packaging_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-3xl font-black leading-tight text-white mb-4" data-i18n="solu"
+
+  L110 <p data-i18n="solutions_packaging_cap_quality_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certified. Full inspection per batch to ensure product safety and compliance."
+
+  L121 <p data-i18n="solutions_packaging_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "Technology quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/solutions/packaging/index-pc.html
+============================================================
+
+  L59 <img data-i18n="solutions_packaging_alt_hero">
+  子 span keys: ['solutions_packaging_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-5xl lg:text-6xl font-black leading-tight text-white mb-4" dat"
+
+  L110 <p data-i18n="solutions_packaging_cap_quality_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certified. Full inspection per batch to ensure product safety and compliance."
+
+  L121 <p data-i18n="solutions_packaging_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "Technology quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/solutions/packaging/index-tablet.html
+============================================================
+
+  L59 <img data-i18n="solutions_packaging_alt_hero">
+  子 span keys: ['solutions_packaging_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-4xl font-black leading-tight text-white mb-4" data-i18n="solu"
+
+  L110 <p data-i18n="solutions_packaging_cap_quality_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certified. Full inspection per batch to ensure product safety and compliance."
+
+  L121 <p data-i18n="solutions_packaging_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "Technology quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/solutions/rd/index-mobile.html
+============================================================
+
+  L59 <img data-i18n="solutions_rd_alt_hero">
+  子 span keys: ['solutions_rd_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-3xl font-black leading-tight text-white mb-4" data-i18n="solu"
+
+  L110 <p data-i18n="solutions_rd_cap_quality_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certified. Full inspection per batch to ensure product safety and compliance."
+
+  L121 <p data-i18n="solutions_rd_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "Technology quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/solutions/rd/index-pc.html
+============================================================
+
+  L59 <img data-i18n="solutions_rd_alt_hero">
+  子 span keys: ['solutions_rd_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-5xl lg:text-6xl font-black leading-tight text-white mb-4" dat"
+
+  L110 <p data-i18n="solutions_rd_cap_quality_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certified. Full inspection per batch to ensure product safety and compliance."
+
+  L121 <p data-i18n="solutions_rd_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "Technology quality difference. Professional response within 24 hours."
+
+============================================================
+📄 src/pages/solutions/rd/index-tablet.html
+============================================================
+
+  L59 <img data-i18n="solutions_rd_alt_hero">
+  子 span keys: ['solutions_rd_badge']
+  未包裹文本 (2段):
+    [1] "<div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+          <div cl"
+    [2] "</div>
+                <h1 class="text-4xl font-black leading-tight text-white mb-4" data-i18n="solu"
+
+  L110 <p data-i18n="solutions_rd_cap_quality_desc">
+  子 span keys: ['certifications']
+  未包裹文本 (1段):
+    [1] "triple certified. Full inspection per batch to ensure product safety and compliance."
+
+  L121 <p data-i18n="solutions_rd_cta_desc">
+  子 span keys: ['seo_yukoli']
+  未包裹文本 (2段):
+    [1] "Get free samples and experience the"
+    [2] "Technology quality difference. Professional response within 24 hours."
