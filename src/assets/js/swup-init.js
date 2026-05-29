@@ -291,6 +291,9 @@
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
           if (m && m[1]) return m[1] + "/";
+          // 无 /pages/ 前缀的响应 URL: /products/index-mobile.html → /products/
+          var dm = url.match(/^\/([^/].*)\/index(?:-[a-z0-9-]+)?\.html$/i);
+          if (dm && dm[1]) return "/" + dm[1] + "/";
           // flat-file: /pages/news/detail-pc.html → /news/detail/
           var fm = url.match(/^\/pages\/news\/detail(?:-[a-z0-9-]+)?\.html$/i);
           if (fm) return "/news/detail/";
