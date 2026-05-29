@@ -1,0 +1,297 @@
+#!/usr/bin/env python3
+"""
+BrewYuKoLi 全量审计工具集
+用法: python3 scripts/audit/audit_tools.py [orphan|i18n-coverage|i18n-zh-keys|all]
+"""
+import os, sys, re, json, glob
+from collections import defaultdict
+
+BASE = os.path.join(os.path.dirname(__file__), '..', '..')
+PAGES_DIR = os.path.join(BASE, 'src', 'pages')
+SRC_DIR = os.path.join(BASE, 'src')
+LANG_DIR = os.path.join(BASE, 'src', 'assets', 'lang')
+SITE_CONFIG = os.path.join(BASE, 'src', 'site.config.js')
+
+# ─── 页面路由 ──────────────────────────────────────────────────
+def get_all_routes():
+    """Return {slug: [pc, mobile, tablet]} for all SSR pages"""
+    routes = {}
+    for root, dirs, files in os.walk(PAGES_DIR):
+        pc = mobile = tablet = None
+        for f in files:
+            if f == 'index-pc.html': pc = os.path.join(root, f)
+            elif f == 'index-mobile.html': mobile = os.path.join(root, f)
+            elif f == 'index-tablet.html': tablet = os.path.join(root, f)
+        rel = os.path.relpath(root, PAGES_DIR)
+        if rel != '.' and (pc or mobile or tablet):
+            routes[rel] = {'pc': pc, 'mobile': mobile, 'tablet': tablet}
+    return routes
+
+def get_all_html_files():
+    """Return all HTML files in src/pages/ (all templates)"""
+    return glob.glob(os.path.join(PAGES_DIR, '**', 'index-*.html'), recursive=True)
+
+def get_all_js_files():
+    """Return all JS files in src/assets/js/"""
+    return glob.glob(os.path.join(SRC_DIR, 'assets', 'js', '**', '*.js'), recursive=True)
+
+# ─── 1. 孤立页面检测 ──────────────────────────────────────────
+def scan_orphan_pages():
+    """Find pages that exist but aren't linked from anywhere on the site."""
+    routes = get_all_routes()
+    html_files = get_all_html_files() + [os.path.join(BASE, 'src', 'index.html')]
+    js_files = glob.glob(os.path.join(SRC_DIR, 'assets', 'js', '**', '*.js'), recursive=True)
+    
+    # Collect all href values across all HTML and JS files
+    all_links = set()
+    link_patterns = [
+        r'href\s*=\s*["\']([^"\']*)["\']',
+        r'location\.href\s*=\s*["\']([^"\']*)["\']',
+        r'window\.location\s*=\s*["\']([^"\']*)["\']',
+        r"to\s*:\s*{?\s*path\s*:\s*['\"]([^'\"]*)['\"]",
+        r'href:\s*["\']([^"\']*)["\']',
+        r'slug:\s*["\']([^"\']*)["\']',
+    ]
+    
+    for f in html_files + js_files:
+        try:
+            with open(f) as fh:
+                content = fh.read()
+            for pat in link_patterns:
+                for m in re.finditer(pat, content):
+                    url = m.group(1)
+                    all_links.add(url)
+        except:
+            pass
+    
+    # Also check site.config.js explicitly
+    if os.path.exists(SITE_CONFIG):
+        with open(SITE_CONFIG) as f:
+            cfg = f.read()
+        for m in re.finditer(r'href:\s*["\']([^"\']*)["\']', cfg):
+            all_links.add(m.group(1))
+        for m in re.finditer(r'slug:\s*["\']([^"\']*)["\']', cfg):
+            all_links.add(m.group(1))
+    
+    # Check for inline script redirects in HTML files
+    for f in html_files:
+        try:
+            with open(f) as fh:
+                content = fh.read()
+            for m in re.finditer(r"location\.href\s*=\s*['\"]([^'\"]+)['\"]", content):
+                all_links.add(m.group(1))
+        except:
+            pass
+    
+    # Normalize: strip trailing slashes, etc.
+    normalized_links = set()
+    for link in all_links:
+        l = link.strip()
+        if l and not l.startswith('#') and not l.startswith('http') and not l.startswith('mailto') and not l.startswith('tel') and not l.startswith('javascript'):
+            # Normalize: remove leading slash, trailing slash
+            l = l.strip('/')
+            if l:
+                normalized_links.add(l)
+    
+    # Check each route against found links
+    orphan_routes = []
+    linked_routes = []
+    for slug, files in sorted(routes.items()):
+        # Check if any part of this route appears in links
+        is_linked = False
+        for link in normalized_links:
+            if link == slug or link.startswith(slug + '/') or link.endswith('/' + slug):
+                is_linked = True
+                break
+        # Also check the route's nav-id or secondary items
+        if is_linked:
+            linked_routes.append(slug)
+        else:
+            orphan_routes.append(slug)
+    
+    return orphan_routes, linked_routes, routes
+
+# ─── 2. i18n 覆盖扫描 ─────────────────────────────────────────
+def load_i18n_en_file():
+    """Load English translation file"""
+    path = os.path.join(LANG_DIR, 'en-ui.json')
+    if os.path.exists(path):
+        with open(path) as f:
+            return json.load(f)
+    return {}
+
+def find_uncovered_text(html_files):
+    """
+    Find text content in HTML that's NOT wrapped in data-i18n.
+    Returns a list of (file, line_num, text_snippet) tuples.
+    """
+    results = []
+    
+    i18n_keys = set()
+    # Pattern for data-i18n="key" and data-i18n-*="key"
+    key_pat = re.compile(r'data-i18n[^=]*="([^"]*)"')
+    
+    for fpath in html_files:
+        try:
+            with open(fpath) as f:
+                lines = f.readlines()
+        except:
+            continue
+        
+        rel = os.path.relpath(fpath, BASE)
+        
+        for i, line in enumerate(lines, 1):
+            stripped = line.strip()
+            
+            # Skip lines that are just script, style, JSON-LD, etc.
+            if any(skip in stripped for skip in ['<script', '<style', 'application/ld+json', '<!--', '-->', '{%', '{{']):
+                continue
+            
+            # Skip lines with no visible text
+            text_content = re.sub(r'<[^>]+>', '', stripped).strip()
+            if not text_content:
+                continue
+            
+            # Skip if it's just HTML structure
+            if text_content in ('<', '>', '</', '/>', '<![CDATA['):
+                continue
+            
+            # Check if this line has Chinese text that's NOT inside a data-i18n span
+            if re.search(r'[\u4e00-\u9fff]', text_content):
+                # Check if ALL text is inside data-i18n span
+                # Multiple data-i18n spans on one line are OK
+                data_i18n_spans = re.findall(r'<span[^>]*data-i18n[^>]*>([^<]*)</span>', stripped)
+                if data_i18n_spans:
+                    # Check if there's Chinese text OUTSIDE these spans
+                    # Remove all data-i18n spans and their content
+                    rest = re.sub(r'<span[^>]*data-i18n[^>]*>[^<]*</span>', '', stripped)
+                    rest_text = re.sub(r'<[^>]+>', '', rest).strip()
+                    if re.search(r'[\u4e00-\u9fff]', rest_text):
+                        results.append((rel, i, text_content[:120]))
+                else:
+                    # No data-i18n at all on this line with Chinese
+                    results.append((rel, i, text_content[:120]))
+    
+    return results
+
+def find_zh_data_i18n_keys():
+    """
+    Find data-i18n="..." where the key contains Chinese characters.
+    E.g., data-i18n="seo_30国家" ← "30国家" has Chinese
+    """
+    results = defaultdict(list)
+    pat = re.compile(r'data-i18n="([^"]*)"')
+    html_files = get_all_html_files() + [os.path.join(BASE, 'src', 'index.html')]
+    js_files = get_all_js_files()
+    
+    all_files = html_files + js_files
+    for fpath in all_files:
+        try:
+            with open(fpath) as f:
+                content = f.read()
+        except:
+            continue
+        
+        for m in pat.finditer(content):
+            key = m.group(1)
+            if re.search(r'[\u4e00-\u9fff]', key):
+                rel = os.path.relpath(fpath, BASE)
+                results[key].append(rel)
+    
+    return dict(results)
+
+# ─── 主入口 ────────────────────────────────────────────────────
+def main():
+    cmd = sys.argv[1] if len(sys.argv) > 1 else 'all'
+    
+    if cmd in ('orphan', 'all'):
+        print("=" * 60)
+        print("📋 1. 孤立页面检测")
+        print("=" * 60)
+        orphans, linked, routes = scan_orphan_pages()
+        print(f"\n总路由数: {len(routes)}")
+        print(f"有外部链接: {len(linked)}")
+        print(f"孤立页面: {len(orphans)}")
+        if orphans:
+            print("\n⚠️  孤立页面清单:")
+            for slug in sorted(orphans):
+                print(f"  📄 {slug}/")
+                for device in ['pc', 'mobile', 'tablet']:
+                    if routes[slug].get(device):
+                        print(f"      {os.path.relpath(routes[slug][device], BASE)}")
+        if linked:
+            print(f"\n✅ 有引用的页面 ({len(linked)}):")
+            for slug in sorted(linked)[:20]:
+                print(f"  ✓ {slug}/")
+            if len(linked) > 20:
+                print(f"  ... 还有 {len(linked)-20} 个")
+        print()
+    
+    if cmd in ('i18n-coverage', 'all'):
+        print("=" * 60)
+        print("📋 2. i18n 覆盖扫描")
+        print("=" * 60)
+        en_i18n = load_i18n_en_file()
+        html_files = get_all_html_files() + [os.path.join(BASE, 'src', 'index.html')]
+        
+        uncovered = find_uncovered_text(html_files)
+        print(f"\n发现有中文但未用 data-i18n 包裹的内容: {len(uncovered)} 处")
+        
+        # Group by file
+        by_file = defaultdict(list)
+        for rel, line, text in uncovered:
+            by_file[rel].append((line, text))
+        
+        for rel, items in sorted(by_file.items()):
+            print(f"\n  📄 {rel}:")
+            for line, text in items[:5]:  # Limit per file
+                print(f"    L{line}: {text[:80]}")
+            if len(items) > 5:
+                print(f"    ... 还有 {len(items)-5} 处")
+        
+        # Also check unused i18n keys
+        if en_i18n:
+            used_keys = set()
+            for f in html_files:
+                try:
+                    with open(f) as fh:
+                        for m in re.finditer(r'data-i18n="([^"]*)"', fh.read()):
+                            used_keys.add(m.group(1))
+                except:
+                    pass
+            # Also check JS files  
+            for f in get_all_js_files():
+                try:
+                    with open(f) as fh:
+                        for m in re.finditer(r'data-i18n="([^"]*)"', fh.read()):
+                            used_keys.add(m.group(1))
+                except:
+                    pass
+            
+            unused = [k for k in en_i18n if k not in used_keys]
+            print(f"\n📝 英文多语言文件 ({len(en_i18n)} key):")
+            print(f"  已使用: {len(used_keys & set(en_i18n.keys()))}")
+            print(f"  未使用: {len(unused)}")
+            if unused:
+                print("  未使用的 key 样例:")
+                for k in sorted(unused)[:10]:
+                    print(f"    {k}: {str(en_i18n[k])[:60]}")
+                if len(unused) > 10:
+                    print(f"    ... 还有 {len(unused)-10} 个")
+        print()
+
+    if cmd in ('i18n-zh-keys', 'all'):
+        print("=" * 60)
+        print("📋 3. 含中文的 data-i18n key 扫描")
+        print("=" * 60)
+        zh_keys = find_zh_data_i18n_keys()
+        print(f"\n含中文的 data-i18n key: {len(zh_keys)} 个")
+        for key, files in sorted(zh_keys.items()):
+            print(f"\n  🔑 {key}")
+            for f in files[:3]:
+                print(f"      {f}")
+            if len(files) > 3:
+                print(f"      ... 还有 {len(files)-3} 个文件")
+
+if __name__ == '__main__':
+    main()

@@ -299,21 +299,7 @@ var SEARCH_INDEX = [
     h2s: ["Industry Whitepapers", "Need Industry Insights?"],
     image: "/assets/images/oem/resources/catalog-hero.webp",
   },
-  {
-    path: "/support/",
-    title: "Support",
-    titleZh: "支持中心",
-    keywords: ["支持", "帮助", "FAQ"],
-    meta: "YuKoLi 健康冲调食品售后服务与技术支持：安装指导、操作培训、故障排查、Genuine Parts供应。覆盖东南亚 10 国，48 小时上门响应。",
-    h1: "",
-    h2s: [
-      "Global Service Network",
-      "Professional After-Sales System",
-      "Frequently Asked Questions",
-      "Need Professional products After-Sales Service?",
-    ],
-    image: "/assets/images/support-hero-overview.webp",
-  },
+
   {
     path: "/solutions/packaging/",
     title: "Packaging Solutions",

@@ -95,13 +95,11 @@ const SRC_PAGES_DIR = path.resolve(__dirname, '..', 'src', 'pages');
 const ROUTES = [
   { slug: 'home',         navId: 'home' },
   { slug: 'products',     navId: 'products' },
-  { slug: 'applications', navId: 'applications' },
   { slug: 'cases',        navId: 'cases' },
   { slug: 'profit-calculator', navId: 'profit-calculator' },
   { slug: 'products/compare', navId: 'products' },
   { slug: 'catalog',      navId: 'catalog' },
   { slug: 'quote',        navId: 'quote' },
-  { slug: 'support',      navId: 'support' },
   { slug: 'news',         navId: 'news' },
   { slug: 'about',        navId: 'about' },
   { slug: 'contact',      navId: 'contact' },
@@ -116,13 +114,6 @@ const ROUTES = [
   { slug: 'thank-you',    navId: 'thank-you' },
   // { slug: 'landing',      navId: 'landing' },  // removed in i18n cleanup
   // Application sub-pages
-  { slug: 'applications/chain-restaurant', navId: 'applications' },
-  { slug: 'applications/food-factory',  navId: 'applications' },
-  { slug: 'applications/central-kitchen', navId: 'applications' },
-  { slug: 'applications/small-restaurant', navId: 'applications' },
-  { slug: 'applications/canteen',       navId: 'applications' },
-  { slug: 'applications/menu-lab',      navId: 'applications' },
-  { slug: 'applications/cloud-kitchen', navId: 'applications' },
 ];
 
 // Parse CLI args
