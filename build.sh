@@ -94,6 +94,8 @@ find "$DIST" -name '*.html' -exec sed -i.bak 's|%DOMAIN%|https://brew.yukoli.com
 find "$SRC" -name '*.html' -exec sed -i.bak 's|%DOMAIN%|https://brew.yukoli.com|g' {} + && find "$SRC" -name '*.bak' -delete 2>/dev/null || true
 echo "🔧 Replaced %DOMAIN% placeholders"
 
+# CNAME must be a file (not directory) for GitHub Pages custom domain
+rm -rf "$DIST/CNAME"
 # ─── 6. Root files ──────────────────────────────────────────────
 cp "CNAME"                       "$DIST/CNAME"             2>/dev/null || true
 cp "$SRC/404.html"               "$DIST/404.html"          2>/dev/null || true
