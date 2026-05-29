@@ -3144,6 +3144,20 @@ html.dark .cnt-popup-item.is-whatsapp .cnt-dropdown-icon {
 .mega-menu-wrap {
   position: relative;
 }
+.mega-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.mega-menu-arrow {
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+.mega-menu-wrap.is-open .mega-menu-arrow,
+.mega-menu-wrap:not(.touch-device):hover .mega-menu-arrow {
+  transform: rotate(180deg);
+}
 .mega-menu-panel {
   position: absolute;
   top: 100%;
