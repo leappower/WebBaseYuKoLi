@@ -100,5 +100,11 @@
     "performance"
   ],
   "author": "YuKoLi Technology",
-  "license": "MIT"
+  "license": "MIT",
+  "jest": {
+    "testMatch": [
+      "**/tests/unit/**/*.test.js"
+    ],
+    "testEnvironment": "node"
+  }
 }

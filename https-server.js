@@ -95,6 +95,12 @@ https
       const cleanPath = urlPath.replace(/\/+$/, "") || "/home";
       // Try with device suffix first, then fallback chain
       const candidates = [
+        // SSG-generated direct paths: dist/<route>/index-{device}.html
+        // (has mega-menu.js injection — prefer over pages/ raw copies)
+        path.join(ROOT, cleanPath, suffix),
+        path.join(ROOT, cleanPath, "index-pc.html"),
+        path.join(ROOT, cleanPath, "index.html"),
+        // Fallback to dist/pages/<route>/
         path.join(PAGES, cleanPath, suffix),
         path.join(PAGES, cleanPath, "index-pc.html"),
         path.join(PAGES, cleanPath, "index.html"),

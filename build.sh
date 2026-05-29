@@ -1,104 +1,183 @@
 #!/bin/bash
-# build.sh — Sync src/ to dist/ + bump JS version cache buster
-# Usage: npm run build (or ./build.sh)
+# build.sh — SSG 构建 (BrewYuKoLi)
+# Usage: ./build.sh [dev|production]
+#   (no arg) = production build (default)
+#   dev      = development build (no version bump)
 #
-# What it does:
-# 1. Sync all HTML pages from src/pages/ → dist/pages/
-# 2. Sync all assets (JS, CSS, fonts, images, lang, video) from src/assets/ → dist/assets/
-# 3. Replace ?v=YYYYMMDD with today's date in all dist HTML files
-# 4. Sync SPA shell (index.html)
+# 文件替换规范（统一使用 python3）:
+#   - 所有字符串/正则替换使用 python3，避免 sed 跨平台不兼容
+#   - 禁止: sed -i, sed -i.bak (macOS 和 Linux 行为不一致)
+#   - 使用: python3 -c "import re; ..." (跨平台一致，项目标准)
 
 set -euo pipefail
 
+BUILD_MODE="${1:-production}"
+[ "$BUILD_MODE" = "dev" ] && WEBPACK_MODE="development" || WEBPACK_MODE="production"
+
+echo "🏗️  Building ($BUILD_MODE)..."
+
 SRC="src"
 DIST="dist"
-VERSION="v=$(date +%Y%m%d%H%M)"
 
-echo "🏗️  Building..."
-
-# Ensure dist root exists
-mkdir -p "$DIST"
+# ─── 版本号 (毫秒时间戳) ────────────────────────────────────
+VERSION=$(python3 -c "import time; print(int(time.time()*1000))")
+VERSION_TAG="v=$VERSION"
+BUILD_TS=$(date -u "+%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u +"%Y-%m-%dT%H:%M:%SZ")
+echo "   Build: $BUILD_TS"
+echo "   Version: $VERSION_TAG"
 
 # ─── Pre-flight checks ───────────────────────────────────────────
-# Catch corrupted source files before they propagate to dist
-INDEX_SIZE=$(wc -c < "$SRC/index.html")
+INDEX_SIZE=$(wc -c < "$SRC/index.html" | tr -d ' ')
 if [ "$INDEX_SIZE" -lt 1000 ]; then
   echo "❌ ERROR: src/index.html is suspiciously small (${INDEX_SIZE} bytes)."
   echo "   Expected ~8000+ bytes. File may be corrupted."
-  echo "   Restore with: git checkout -- src/index.html"
   exit 1
 fi
 
-# ─── Generic sync helper ─────────────────────────────────────────
-# Usage: sync_assets <src_subdir> <ext_glob> [incremental]
-#   incremental: only copy if newer or missing (for large dirs)
+# ─── 0. Clean dist ─────────────────────────────────────────────
+rm -rf "$DIST"
+mkdir -p "$DIST"
+
+# ─── 1. Tailwind CSS + Webpack ──────────────────────────────────
+echo "📦 Building CSS + JS..."
+npm run build:css 2>&1 | tail -1
+if [ "$BUILD_MODE" = "dev" ]; then
+  npx webpack --env devBuild 2>&1 | tail -3 || echo "  ⚠️  Webpack had non-fatal errors"
+else
+  npx webpack --mode=production 2>&1 | tail -3 || echo "  ⚠️  Webpack had non-fatal errors"
+fi
+
+# ─── 2. i18n cache version ──────────────────────────────────────
+I18N_CACHE_TS=$(python3 -c "import time; print(int(time.time()))")
+python3 -c "
+import re, os
+fp = os.path.expandvars('$SRC/assets/js/translations.js')
+with open(fp) as f: c = f.read()
+c = re.sub(r'var I18N_CACHE_V = \d+;', 'var I18N_CACHE_V = $I18N_CACHE_TS;', c)
+with open(fp, 'w') as f: f.write(c)
+" 2>/dev/null || echo "  ⚠️  i18n cache bump failed"
+echo "🔄 i18n cache version → $I18N_CACHE_TS"
+
+# ─── 3. Assets ──────────────────────────────────────────────────
+echo "📦 Syncing assets..."
 sync_assets() {
   local src_dir="$1"
   local ext_glob="$2"
-  local incremental="${3:-}"
   local full_src="$SRC/assets/$src_dir"
-
   [ -d "$full_src" ] || return 0
-
-  echo "📦 Syncing $src_dir..."
-  # Use null-delimited find for safety with special characters
   find "$full_src" -type f -name "$ext_glob" -print0 | while IFS= read -r -d '' f; do
     rel="${f#$SRC/}"
     mkdir -p "$DIST/$(dirname "$rel")"
-    if [ -n "$incremental" ]; then
-      [ -f "$DIST/$rel" ] && [ ! "$f" -nt "$DIST/$rel" ] && continue
-    fi
     cp "$f" "$DIST/$rel"
   done
 }
 
-# ─── 1. HTML pages ──────────────────────────────────────────────
+sync_assets "js"       "*.js"
+sync_assets "css"      "*.css"
+sync_assets "fonts"    "*"
+sync_assets "lang"     "*.json"
+sync_assets "data"     "*.json"
+sync_assets "images"   "*"
+sync_assets "video"    "*"
+sync_assets "pdf"      "*.pdf"
+
+# ─── 4. site.config.js → dist/ ─────────────────────────────────
+# Must be at /site.config.js for SPA shell (after webpack so not cleaned)
+cp "$SRC/site.config.js" "$DIST/site.config.js"
+
+# ─── 5. HTML pages ─────────────────────────────────────────────
 echo "📦 Syncing HTML pages..."
-# Copy site.config.js to dist root
-cp "src/site.config.js" "$DIST/site.config.js"
 find "$SRC/pages" -name '*.html' -print0 | while IFS= read -r -d '' f; do
   rel="${f#$SRC/}"
   mkdir -p "$DIST/$(dirname "$rel")"
   cp "$f" "$DIST/$rel"
 done
 cp "$SRC/index.html" "$DIST/index.html"
-# Copy 404.html
-[ -f "$SRC/404.html" ] && cp "$SRC/404.html" "$DIST/404.html"
-# Copy robots.txt if it exists
-[ -f "$SRC/robots.txt" ] && cp "$SRC/robots.txt" "$DIST/robots.txt"
 
-# ─── 2. Assets ──────────────────────────────────────────────────
-sync_assets "js"           "*.js"
-sync_assets "css"          "*.css"
-sync_assets "fonts"        "*"
-sync_assets "lang"         "*.json"
-sync_assets "images"       "*"  incremental
-sync_assets "video"        "*"  incremental
-
-# ─── 3. Fix permissions ────────────────────────────────────────────
-# Ensure dist files are readable (may have been created by root/sudo)
-chmod -R a+rX "$DIST" 2>/dev/null || true
-
-# Replace %DOMAIN% placeholder
-find "$DIST" -name '*.html' -exec sed -i '' 's|%DOMAIN%|https://brew.yukoli.com|g' {} +
-find "$SRC" -name '*.html' -exec sed -i '' 's|%DOMAIN%|https://brew.yukoli.com|g' {} +
-
+# ─── 5.5. Replace %DOMAIN% placeholder ──────────────────────────
+python3 -c "
+import os
+DOMAIN = 'https://brew.yukoli.com'
+for root in [os.environ['DIST'], os.environ['SRC']]:
+    for r, d, fs in os.walk(root):
+        for f in fs:
+            if not f.endswith('.html'): continue
+            fp = os.path.join(r, f)
+            with open(fp) as fh: c = fh.read()
+            if '%DOMAIN%' not in c: continue
+            nc = c.replace('%DOMAIN%', DOMAIN)
+            with open(fp, 'w') as fh: fh.write(nc)
+            print('  ', fp)
+" 2>/dev/null || echo "  ⚠️  DOMAIN replacement skipped"
 echo "🔧 Replaced %DOMAIN% placeholders"
 
-# ─── 4. Version bump ────────────────────────────────────────────
-echo "🔄 Bumping JS version to $VERSION..."
-# Replace all version query params (handles v=20260508, v=20260508-v3, v=anystring, v=this)
-find "$DIST" -name '*.html' -exec sed -i '' "s|?v=[a-zA-Z0-9._-]*|?$VERSION|g" {} +
-find "$SRC/pages" -name '*.html' -exec sed -i '' "s|?v=[a-zA-Z0-9._-]*|?$VERSION|g" {} +
-# Also update src/index.html (SPA shell)
-sed -i '' "s|?v=[a-zA-Z0-9._-]*|?$VERSION|g" "$SRC/index.html" 2>/dev/null || true
+# CNAME must be a file (not directory) for GitHub Pages custom domain
+rm -rf "$DIST/CNAME"
 
-# Generate sitemap.xml
-if command -v node &>/dev/null; then
-  node scripts/generate-sitemap.js 2>/dev/null || true
+# ─── 6. Root files ──────────────────────────────────────────────
+cp "CNAME"                       "$DIST/CNAME"             2>/dev/null || true
+cp "$SRC/404.html"               "$DIST/404.html"          2>/dev/null || true
+cp "$SRC/robots.txt"             "$DIST/robots.txt"        2>/dev/null || true
+cp "$SRC/manifest.json"          "$DIST/manifest.json"     2>/dev/null || true
+touch "$DIST/.nojekyll"
+
+# ─── 7. sw.js 版本号注入 ──────────────────────────────────────
+SW_SRC=""
+[ -f "sw.js" ]      && SW_SRC="sw.js"
+[ -z "$SW_SRC" ] && [ -f "$SRC/sw.js" ] && SW_SRC="$SRC/sw.js"
+if [ -n "$SW_SRC" ]; then
+  cp "$SW_SRC" "$DIST/sw.js"
+  if [ "$BUILD_MODE" != "dev" ]; then
+    python3 -c "
+import re
+with open('$DIST/sw.js') as f: c = f.read()
+c = re.sub(r'(var SW_VERSION = \")[^\"]*(\";)', r'\1v$VERSION\2', c)
+with open('$DIST/sw.js', 'w') as f: f.write(c)
+" 2>/dev/null || echo "  ⚠️  sw.js version injection failed"
+    echo "  📦 sw.js → v$VERSION"
+  fi
 fi
 
+# ─── 8. SSG: 生成路由 index.html ──────────────────────────────
+echo "🔄 Running SSG..."
+node scripts/build-ssg.js 2>&1 | grep -E 'Step|✓|✅|WARN|ERROR' || echo "  (SSG completed)"
+
+# ─── 9. Sitemap ─────────────────────────────────────────────────
+node scripts/generate-sitemap.js 2>/dev/null || echo "  ⚠️  sitemap generation skipped"
+
+# ─── 10. 版本号注入 (production only) ──────────────────────────
+if [ "$BUILD_MODE" != "dev" ]; then
+  echo "🔄 Bumping version to $VERSION_TAG..."
+  python3 -c "
+import os, re
+root = os.environ.get('DIST', 'dist')
+version = '$VERSION'
+for r, d, fs in os.walk(root):
+    for f in fs:
+        fp = os.path.join(r, f)
+        if not (f.endswith('.html') or f.endswith('.css')):
+            continue
+        with open(fp) as fh:
+            c = fh.read()
+        nc = re.sub(r'\?v=[a-zA-Z0-9._-]*', '?v=' + version, c)
+        if nc != c:
+            with open(fp, 'w') as fh:
+                fh.write(nc)
+"
+  echo "  ✅ Version bump complete"
+fi
+
+# ─── Fix permissions ──────────────────────────────────────────
+chmod -R a+rX "$DIST" 2>/dev/null || true
+
+# ─── Build identifier ──────────────────────────────────────────
+echo "$VERSION"  > "$DIST/VERSION.txt"
+echo "$BUILD_TS" >> "$DIST/VERSION.txt"
+
+# ─── Summary ────────────────────────────────────────────────────
 FILES=$(find "$DIST" -type f | wc -l | tr -d ' ')
 echo ""
 echo "✅ Build complete: $FILES files in dist/"
-echo "   Version: $VERSION"
+echo "   Version: $VERSION_TAG"
+echo "   Build at: $BUILD_TS"
+echo "   i18n cache: $I18N_CACHE_TS"

@@ -300,10 +300,11 @@
     var triggerLabel = esc(opts.label || navItem.label || "");
     var triggerI18n = esc(opts.labelKey || navItem.i18nKey || "");
     var triggerHtml =
-      '<a class="' + triggerClass + " " + (opts.activeClass || "") + '" ' +
+      '<a class="mega-menu-trigger ' + triggerClass + " " + (opts.activeClass || "") + '" ' +
         'href="' + esc(opts.href || navItem.path || "#") + '" ' +
         'data-i18n="' + triggerI18n + '">' +
-        triggerLabel +
+        '<span>' + triggerLabel + '</span>' +
+        '<span class="material-symbols-outlined mega-menu-arrow">expand_more</span>' +
       "</a>";
 
     /* ── 根据导航项 id 决定内容 ── */

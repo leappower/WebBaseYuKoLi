@@ -1209,6 +1209,7 @@
 
   // Guard: ensure init runs once even if script loads multiple times
   if (window._productGridInited) {
+    /* already inited */
   } else {
     window._productGridInited = true;
     if (document.readyState !== "loading") {

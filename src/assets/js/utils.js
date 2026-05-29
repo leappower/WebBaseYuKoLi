@@ -124,7 +124,6 @@
     resolveImage: resolveImage,
     applyImageAssets: applyImageAssets,
     buildProductCatalog: buildProductCatalog,
-    getSeriesFilters: getSeriesFilters,
     getCategoryI18nKey: getCategoryI18nKey,
   };
 })(window);

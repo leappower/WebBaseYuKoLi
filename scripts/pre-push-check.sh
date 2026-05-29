@@ -46,7 +46,30 @@ else
   PASS=$((PASS + 1))
 fi
 
-# ─── 3. Empty script tags ─────────────────────────────────────
+# ─── 3. HTML structure check (重复 body/html 标签) ──────────
+echo ""
+echo "🏗️  Checking HTML structure..."
+STRUCTURE_ERRORS=0
+for f in $(find src/pages -name '*.html' src/index.html 2>/dev/null); do
+  BODY_COUNT=$(grep -c '<body' "$f" 2>/dev/null || echo 0)
+  HTML_COUNT=$(grep -c '<html' "$f" 2>/dev/null || echo 0)
+  if [ "$BODY_COUNT" -gt 1 ]; then
+    echo "  ❌ $f: $BODY_COUNT body tags"
+    STRUCTURE_ERRORS=$((STRUCTURE_ERRORS + 1))
+  fi
+  if [ "$HTML_COUNT" -gt 1 ]; then
+    echo "  ❌ $f: $HTML_COUNT html tags"
+    STRUCTURE_ERRORS=$((STRUCTURE_ERRORS + 1))
+  fi
+done
+if [ "$STRUCTURE_ERRORS" -gt 0 ]; then
+  FAIL=$((FAIL + 1))
+else
+  echo "  ✅ All HTML files have valid structure"
+  PASS=$((PASS + 1))
+fi
+
+# ─── 4. Empty script tags ─────────────────────────────────────
 echo ""
 echo "🔍 Checking for truly empty <script> tags (no src, no type)..."
 EMPTY_SCRIPTS=$(grep -rn '<script[^>]*>\s*</script>' src/ --include="*.html" 2>/dev/null | \
@@ -63,7 +86,7 @@ else
   PASS=$((PASS + 1))
 fi
 
-# ─── 4. Duplicate event listener patterns ─────────────────────
+# ─── 5. Duplicate event listener patterns ─────────────────────
 echo ""
 echo "🎧 Checking for duplicate addEventListener patterns..."
 DUP=$(grep -rn 'addEventListener' src/assets/js/*.js src/assets/js/ui/*.js 2>/dev/null | \
@@ -78,7 +101,32 @@ else
   PASS=$((PASS + 1))
 fi
 
-# ─── 5. Build check ───────────────────────────────────────────
+# ─── 6. Build output integrity ────────────────────────────────
+echo ""
+echo "📦 Checking build output integrity..."
+# Rebuild if dist doesn't exist or forced
+if [ ! -d "dist" ]; then
+  echo "  ⚠️  dist/ not found, running build first..."
+  bash build.sh 2>&1 | tail -2
+fi
+
+MANDATORY=("dist/site.config.js" "dist/sw.js" "dist/CNAME" "dist/404.html" "dist/.nojekyll" "dist/VERSION.txt")
+MISSING=0
+for f in "${MANDATORY[@]}"; do
+  if [ ! -f "$f" ]; then
+    echo "  ❌ MISSING: $f"
+    MISSING=$((MISSING + 1))
+  fi
+done
+if [ "$MISSING" -gt 0 ]; then
+  echo "  ❌ $MISSING required file(s) missing from build output"
+  FAIL=$((FAIL + 1))
+else
+  echo "  ✅ All required build artifacts present"
+  PASS=$((PASS + 1))
+fi
+
+# ─── 7. Build check ───────────────────────────────────────────
 echo ""
 echo "🏗️  Running build..."
 if npm run build:css 2>&1 | tail -3; then

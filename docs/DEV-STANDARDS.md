@@ -906,11 +906,63 @@ grep -rn '#ec5b13' src/assets/js/
 |------|--------|---------|---------|---------|
 | **`edit` (OpenClaw)** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | **首选**。精确文本匹配，无需处理转义 |
 | **VS Code 查找替换** | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 手动逐文件确认 |
-| **`sed -i`** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | 仅简单纯 ASCII 替换 |
-| **Python `.replace()`** | ⭐⭐ | ⭐ | ⭐ | **高风险**。引号嵌套、转义字符极易出错 |
-| **`sed` 正则替换** | ⭐⭐ | ⭐ | ⭐⭐ | **极高风险**。正则特殊字符灾难 |
-| **Node.js `String.replace()`** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | 中等风险，比 Python 好 | 
+| **Python `str.replace()`** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ | **推荐**。跨平台，纯文本替换无转义问题 |
+| **Python `re.sub()`** | ⭐⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐⭐ | **推荐**。正则替换，跨平台一致，用原始字符串 `r''` 防转义 |
+| **`sd`（Rust CLI）** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | 如果项目已安装，语法最简洁 |
+| **Node.js `replace-in-file`** | ⭐⭐⭐ | ⭐⭐⭐ | ⭐⭐⭐ | 已用 Node.js 的项目可选 |
+| **`sed -i`** | ⭐⭐ | ⭐⭐ | ⭐⭐ | ❌ **项目禁止。** macOS/Linux sed 行为不一致，--符号转义极易出错 |
+| **`awk`** | ⭐⭐ | ⭐⭐ | ⭐⭐ | 仅简单文本，复杂正则不推荐 |
 | **AI Agent 批量替换** | ⭐ | ⭐ | ⭐ | **禁止**。成功率 <50%，必须逐文件操作 |
+
+### 10.3 build.sh 文件替换规范 🔴
+
+`build.sh` 中所有文件内容替换操作**必须**使用 `python3`，禁止使用 `sed -i`。
+
+**标准模板：**
+
+```bash
+# 纯文本替换 (str.replace)
+python3 -c "
+import os
+DOMAIN = 'https://brew.yukoli.com'
+for r, d, fs in os.walk('dist'):
+    for f in fs:
+        fp = os.path.join(r, f)
+        with open(fp) as fh: c = fh.read()
+        nc = c.replace('%DOMAIN%', DOMAIN)
+        if nc != c:
+            with open(fp, 'w') as fh: fh.write(nc)
+"
+
+# 正则替换 (re.sub)
+python3 -c "
+import os, re
+for r, d, fs in os.walk('dist'):
+    for f in fs:
+        fp = os.path.join(r, f)
+        with open(fp) as fh: c = fh.read()
+        nc = re.sub(r'\\?v=[a-zA-Z0-9._-]*', '?v=' + VERSION, c)
+        if nc != c:
+            with open(fp, 'w') as fh: fh.write(nc)
+"
+```
+
+**规则：**
+| 规则 | 说明 |
+|------|------|
+| 使用原始字符串 `r'...'` 或 `r"..."` 避免反斜杠转义 | `r'\?v=...'` 优于 `'\\\\?v=...'` |
+| 用 `.replace()` 做纯文本替换 | 比正则更快，无需转义 |
+| 用 `re.sub()` 做正则替换 | 需确保正则跨平台一致 |
+| 跳过不匹配的文件 | `if nc != c: with open(fp, 'w')` — 只写有变化的文件 |
+| 禁止 `sed -i` | macOS/ Linux sed 的 `-i` 参数语法不同 |
+
+**build.sh 现有 python3 替换场景：**
+| 场景 | 方式 | 说明 |
+|------|------|------|
+| i18n 缓存版本刷新 | `re.sub()` | 替换 `I18N_CACHE_V` 数字 |
+| %DOMAIN% 占位符 | `.replace()` | 纯文本替换，所有 HTML |
+| sw.js 版本号注入 | `re.sub()` | 替换 `SW_VERSION` 字符串 |
+| 资源版本号 (v=...) | `re.sub()` | 所有 HTML/CSS 的 `?v=...` 参数 |
 
 #### 10.2.2 各工具的致命陷阱
 
@@ -1679,3 +1731,133 @@ git log -p --follow -S "要改的具体内容" -- <文件路径> | head -100
 修改历史代码时，你的改动行数应该等于或少于你理解了的行数。
 不理解的行 = 保持不动 = 不引入新风险。
 ```
+
+---
+
+## 14. 跨仓库同步与冲突合并规范 🔴
+
+> **原则：当从上游仓库同步代码时，冲突合并不是你赢我输的博弈，而是分析两边的改动意图后做正确的融合。**
+
+### 14.1 冲突来源的三种情况
+
+| 情况 | 描述 | 错误做法 | 正确做法 |
+|------|------|---------|---------|
+| **A: 上游重写，本地无改动** | 上游完整重构了文件，本地该文件无任何自定义改动 | 逐行 merge | 直接用上游版本 (`git checkout --theirs`) |
+| **B: 本地有改动，上游也有改动** | 两边都修改了同一文件的不同部分 | 直接 `--theirs` 或 `--ours` | **深入分析两边改动，人工融合** |
+| **C: 本地重写，上游有增量改进** | 像本次 R1+R2 一样，我们完整重写了 `build.sh`，但远程也有两个有价值的增量提交 | 用 `--theirs` 丢掉远程改进 | **提取远程的改动片段，合并进我们的重写版本** |
+
+### 14.2 冲突合并决策流程 🔴
+
+```text
+遇到冲突
+    │
+    ├─ ① 先看远程改了什么
+    │     git log <upstream-ref>..<local-ref> --oneline -- <conflicted-file>
+    │     git show <each-remote-commit> -- <conflicted-file>
+    │
+    ├─ ② 分类冲突类型（见 §14.1 三种情况）
+    │
+    ├─ ③ 按情况处理
+    │   ├─ 情况 A → 用 theirs  ✅
+    │   ├─ 情况 B → 人工对比两边 diff，逐块决定
+    │   └─ 情况 C → 提取远程片段，融入本地版本（见 §14.3）
+    │
+    └─ ④ 验证
+          - 文件语法正确？（node -c / tidy / jq）
+          - 两边的改动意图都保留了？
+          - 构建通过？
+```
+
+### 14.3 情况 C 处理流程（最常见也是最容易出错的）🔴
+
+**本次 R1+R2 同步就是典型案例**：我们对 `build.sh` 做了完整重写，
+但 rebase 时发现远程也有两个独立提交修改了 `build.sh`。
+
+```text
+我们的改动: build.sh 从 98 行重写为 154 行
+远程的改动:
+  - commit 94340a8: cp src/assets/js/site.config.js → cp src/site.config.js (路径修正)
+  - commit 94340a8: 新增 %DOMAIN% → https://brew.yukoli.com 占位符替换步骤
+
+处理步骤:
+
+1. git rebase origin/dev  → 检测到冲突
+
+2. 先不要直接 --theirs 或 --ours
+
+3. 查看远程改了什么:
+   git show 94340a8 -- build.sh
+   → 发现两个有价值的改动
+
+4. 查看我们的版本是否有这些:
+   grep 'site.config.js\|%DOMAIN%' build.sh
+   → 发现缺失（我们用了 src/assets/js/ 路径，且没有 %DOMAIN% 步骤）
+
+5. 决定：用我们重写的版本为基础 + 手动合并远程的两处改进
+   → 编辑 build.sh，补上 site.config 路径修正和 %DOMAIN% 步骤
+
+6. 提交合并结果
+```
+
+### 14.4 禁止的合并行为 🔴
+
+| 禁止 | 原因 |
+|------|------|
+| **不查看远程改动就直接 `--theirs`** | 丢失远程有价值改动 |
+| **不查看远程改动就直接 `--ours`** | 丢失上游修复 |
+| **不 `git show` 就合并** | 不知道远程到底改了什么 |
+| **合并后不验证就推送** | 语法错误、逻辑错误可能被引入 |
+| **把冲突文件当成"选一个版本就行"** | 两边可能都有需要保留的内容 |
+
+### 14.5 跨仓库同步的标准命令序列 🔴
+
+```bash
+# === 第 1 步：拉取最新 ===
+git fetch origin
+
+# === 第 2 步：查看差异 ===
+# 本地领先远程多少
+git log --oneline <branch> ^origin/<branch>
+# 远程领先本地多少
+git log --oneline origin/<branch> ^<branch>
+
+# === 第 3 步：查看远程提交改了哪些文件 ===
+for h in $(git log --oneline origin/<branch> ^<branch> --format='%H'); do
+  echo "=== $h ==="
+  git show --stat $h | head -10
+  echo
+done
+
+# === 第 4 步：如果有冲突风险的文件，先看远程改了什么 ===
+git log origin/<branch> ^<branch> --oneline -- <file>
+git show <commit> -- <file>
+
+# === 第 5 步：执行 rebase/merge ===
+git rebase origin/<branch>
+# 或 git merge origin/<branch>
+
+# === 第 6 步：如有冲突，按 §14.2 流程处理 ===
+
+# === 第 7 步：验证 ===
+node -c <changed-file>  # JS 语法
+bash build.sh           # 构建通过
+git diff --stat         # 确认改动范围
+
+# === 第 8 步：推送 ===
+git push origin <branch>
+```
+
+### 14.6 教训：本次 R1+R2 的复盘
+
+| 时间线 | 做了什么 | 问题 |
+|--------|---------|------|
+| 11:02 | 在 dev 上提交 R1+R2 | ✅ |
+| 11:03 | cherry-pick 到 chef-v1.0，推送成功 | ✅ |
+| 11:05 | dev rebase 到 origin/dev，遇冲突 | — |
+| 11:05 | **直接用 `--theirs` 解决冲突** | ❌ 丢失远程 `site.config 路径修正` 和 `%DOMAIN%` |
+| 11:12 | 远程改动被覆盖后推送 | ❌ 错误已进入远程 |
+| 11:15 | **事后分析发现丢失，手动补回** | ⚠️ 如果没复查就会留下 bug |
+
+**正确做法**：在 rebase 冲突时，先 `git show` 看远程改了什么，
+确认是"我们可以安全覆盖"还是"有价值需要保留"，再做决定。
+本案例中正确的处理是情况 C：用我们的重写版本 + 手动合并远程两处改进。

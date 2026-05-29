@@ -70,6 +70,8 @@
           path: navItem.href || ("/" + navItem.id + "/"),
           id: navItem.id,
           hasDropdown: !!(navItem.children && navItem.children.length > 0),
+          children: navItem.children || [],   // 供 MegaMenu 渲染子项
+          i18nKey: navItem.i18nKey || ("nav_" + navItem.id),
           // 保留原始引用，供未来扩展
           _source: navItem,
         };
