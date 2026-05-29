@@ -263,6 +263,10 @@
     if (/^\/products\/[^/]+\/$/.test(path) &&
         !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)) {
       return "/pages/products/detail/" + suffix;
+
+    // 产品详情 PDP (三级路径): /products/detail/<model>/
+    var detailMatch = path.match(/^\/products\/detail\/([^\/]+)\/$/);
+    if (detailMatch) return '/pages/products/detail/' + suffix;
     }
 
     // 旧路由兼容: /beauty/ → /products/beauty/
