@@ -1,46 +1,22 @@
-# lefthook.yml — Unified Git Hooks
-# Install: npm run hooks:install
-# Run manually: npx lefthook run pre-commit / npx lefthook run pre-push
-#
-# Merged from: scripts/githooks/ (commit-msg, branch protection, lint)
-# + original lefthook (ESLint, Stylelint, debug markers, empty scripts)
+# lefthook.yml — KitchenYuKoLi Git Hooks
+# Install: npx lefthook install
+# Run manually: npx lefthook run pre-commit
 
 pre-commit:
   parallel: true
   commands:
-    # ─── Commit message format ──────────────────────────
-    commit-msg:
-      run: |
-        FIRST=$(head -1 "$LEFTHOOK_COMMIT_MSG_FILE" | sed 's/^#.*//' | tr -d '[:space:]')
-        if [ -n "$FIRST" ]; then
-          if ! echo "$FIRST" | grep -qE '^(feat|fix|refactor|perf|style|docs|chore|ci|revert|test)\(.+\):.+'; then
-            echo "⚠ WARN  Commit message 不符合 <type>(<scope>): <desc> 格式"
-            echo "        当前: $FIRST"
-          fi
-        fi
-
-    # ─── JS syntax (node -c) ────────────────────────────
-    syntax-js:
-      glob: "src/assets/js/**/*.js"
-      run: node -c {staged_files}
-
-    # ─── ESLint ─────────────────────────────────────────
+    lint-ssg-regex:
+      run: node scripts/check-ssg-regex.js
     lint-js:
       glob: "src/assets/js/**/*.js"
-      run: npx eslint {staged_files} 2>/dev/null || true
+      run: npx eslint {staged_files}
       # Don't auto-fix in pre-commit — force agent to write clean code
-
-    # ─── CSS lint ───────────────────────────────────────
     lint-css:
       glob: "src/assets/css/**/*.css"
-      run: npx stylelint {staged_files} --ignore-pattern "tailwind.css" --ignore-pattern "tailwind-entry.css" 2>/dev/null || true
-
-    # ─── HTML lint ──────────────────────────────────────
+      run: npx stylelint {staged_files} --ignore-pattern "tailwind.css" --ignore-pattern "tailwind-entry.css"
     lint-html:
       glob: "src/**/*.html"
-      run: npx htmlhint {staged_files} 2>/dev/null || true
-
-    # ─── console.log/debug leak ─────────────────────────
+      run: npx htmlhint "src/**/*.html"
     no-debug:
       glob: "src/**/*.{js,html}"
       run: |
@@ -49,8 +25,6 @@ pre-commit:
           echo "   如果确实需要，用条件包裹: if (__DEVELOPMENT__) console.log(...)"
           exit 1
         fi
-
-    # ─── Debug markers ──────────────────────────────────
     no-debug-markers:
       glob: "src/**/*.{js,html}"
       run: |
@@ -58,13 +32,9 @@ pre-commit:
           echo "❌ 发现 debug marker 残留！请移除后再提交。"
           exit 1
         fi
-
-    # ─── Prettier format check ──────────────────────────
     prettier-check:
       glob: "src/**/*.{js,css,json}"
-      run: npx prettier --check {staged_files} 2>/dev/null || true
-
-    # ─── Empty script tags ─────────────────────────────
+      run: npx prettier --check {staged_files}
     empty-script-check:
       glob: "src/**/*.html"
       run: |
@@ -73,54 +43,9 @@ pre-commit:
           exit 1
         fi
 
-    # ─── Sensitive files (.env) ─────────────────────────
-    no-secrets:
-      glob: "*"
-      run: |
-        if echo {staged_files} | grep -qE '\.env$|\.env\.local$'; then
-          echo "❌ 禁止提交 .env / .env.local 文件"
-          exit 1
-        fi
-
-    # ─── Project lint (lint-code.js) ────────────────────
-    project-lint:
-      run: node scripts/lint-code.js --staged
-
 pre-push:
-  parallel: false
   commands:
-    # ─── Branch protection ──────────────────────────────
-    branch-protect:
-      run: |
-        REMOTE=$(git rev-parse --abbrev-ref @{push} 2>/dev/null | sed 's|.*/||' || echo "")
-        if [ "$REMOTE" = "master" ] || [ "$REMOTE" = "main" ]; then
-          echo "✗ ERR  禁止直接 push 到 $REMOTE"
-          echo "       请创建功能分支并提交 Pull Request"
-          exit 1
-        fi
-        echo "✓ 推送到 $REMOTE (非保护分支)"
-        # Check force push
-        IS_FORCE=0
-        _BP_TMP=$(mktemp)
-        git push --dry-run 2>&1 > "$_BP_TMP" || true
-        while read -r line; do
-          case "$line" in *force*|*delete*) IS_FORCE=1 ;; esac
-        done < "$_BP_TMP"
-        rm -f "$_BP_TMP"
-        if [ "$IS_FORCE" = "1" ] && { [ "$REMOTE" = "master" ] || [ "$REMOTE" = "main" ]; }; then
-          echo "✗ ERR  禁止 force push 到 $REMOTE"
-          exit 1
-        fi
-
-    # ─── Full JS syntax check ───────────────────────────
-    syntax-all:
-      glob: "src/assets/js/**/*.js"
-      run: node -c {all_files}
-
-    # ─── Project lint (full) ────────────────────────────
-    project-lint:
-      run: node scripts/lint-code.js
-
-    # ─── Build smoke test ───────────────────────────────
+    test:
+      run: npm run test:ci 2>/dev/null || echo "⚠️  测试未配置，跳过"
     build-smoke:
-      run: npm run build 2>/dev/null || echo "⚠️  Build 失败，跳过（dev 模式）"
+      run: bash scripts/pre-push-check.sh

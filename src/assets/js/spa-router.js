@@ -888,8 +888,7 @@
         scripts.push({ src: "/assets/js/ui/pi-maps.js", id: "spa-pi-maps" });
       }
 
-      if (/\/deploy-/.test(path)) {
-      }
+      if (/\/deploy-/.test(path)) { /* debug */ }
 
       // Support 页面需要 custom-select.js
       if (

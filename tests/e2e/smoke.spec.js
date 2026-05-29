@@ -11,7 +11,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Home Page', () => {
   test('loads without errors', async ({ page }) => {
-    const errors: string[] = [];
+    const errors = [];
     page.on('pageerror', (err) => errors.push(err.message));
 
     await page.goto('/');
@@ -110,7 +110,7 @@ test.describe('Compare Page', () => {
 
 test.describe('SPA Router Stability', () => {
   test('navigate home → category → detail → home without errors', async ({ page }) => {
-    const errors: string[] = [];
+    const errors = [];
     page.on('pageerror', (err) => errors.push(err.message));
 
     // Home
