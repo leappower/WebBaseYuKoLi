@@ -1092,24 +1092,17 @@ button.bg-primary[class*="hover:"]:hover {
 @media (min-width: 1024px) {
   .trust-bar {
     font-size: 13px;
-    overflow: visible;
-    white-space: normal;
   }
   .trust-bar__inner {
     text-align: center;
-    width: 100%;
-    max-width: var(--section-max-width, 1280px);
-    margin: 0 auto;
   }
   .trust-bar__track {
     animation: none;
     display: flex;
     justify-content: space-evenly;
-    flex-wrap: wrap;
   }
   .trust-bar__item {
-    padding: 0 16px;
-    white-space: nowrap;
+    padding: 0 24px;
   }
   .trust-bar__dot {
     color: rgba(255, 255, 255, 0.35);
