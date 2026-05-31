@@ -276,7 +276,7 @@
     var bar = document.getElementById("bottom-tab-bar");
     if (!bar) return;
     var items = bar.querySelectorAll(".btab-item");
-    var path = (window.location.pathname || "/").replace(/\/$/, "");
+    var path = (location.pathname || "").replace(/\/$/, "");
 
     for (var i = 0; i < items.length; i++) {
       var btn = items[i];
@@ -284,18 +284,22 @@
       var href = btn.getAttribute("data-btab-href") || "";
       var itemPath = href.replace(/\/$/, "");
 
-      // External and toggle never active
+      // External/toggle never active
       if (type === "external" || type === "toggle") {
         btn.classList.remove("btab-item--active");
         continue;
       }
 
-      // Match: /home/ is exact; others match by prefix
       var isActive = false;
-      if (itemPath === "/home" && path === "/home") {
-        isActive = true;
-      } else if (itemPath && itemPath !== "/home" && path.indexOf(itemPath) === 0) {
-        isActive = true;
+
+      if (type === "link" || type === "cta") {
+        // Home item: only match when on exact /home/ or root /
+        if (itemPath === "/home") {
+          isActive = path === "" || path === "/home";
+        } else {
+          // Other items: prefix match (e.g. /products matches /products/coffee/)
+          isActive = itemPath.length > 0 && path.indexOf(itemPath) === 0;
+        }
       }
 
       if (isActive) {

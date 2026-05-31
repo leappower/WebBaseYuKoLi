@@ -70,7 +70,7 @@
   };
 
   function getL1Icon(navId) {
-    return L1_ICON_MAP[navId] || "menu";
+    return L1_ICON_MAP[navId] || "";
   }
 
   /* ── Config-driven helpers ── */
@@ -134,7 +134,7 @@
             label: label,
             href: item.href || "/" + item.id + "/",
             id: item.id,
-            icon: item.icon || "link",
+            icon: item.icon || getL1Icon(item.id) || "link",
             children: [],
           };
           if (item.children && item.children.length > 0) {
@@ -1058,7 +1058,11 @@
         var imageUrl = item.image || item.productImage || item.imageUrl || "";
 
         var imageHtml = imageUrl
-          ? '<img src="' + imageUrl + '" alt="" loading="lazy" ><div style="font-size:6px;color:rgba(0,0,0,0.3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40px">' + imageUrl + '</div>'
+          ? '<img src="' +
+            imageUrl +
+            '" alt="" loading="lazy" ><div style="font-size:6px;color:rgba(0,0,0,0.3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:40px">' +
+            imageUrl +
+            "</div>"
           : '<span class="material-symbols-outlined">inventory_2</span>';
 
         html +=

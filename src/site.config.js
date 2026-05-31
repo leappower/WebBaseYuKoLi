@@ -125,16 +125,16 @@
     // ═══════════════════════════════════════════════════════════
     footer: {
       mobileItems: [
-        { id: "menu", type: "toggle", icon: "menu", label: { en: "Menu", "zh-CN": "菜单" } },
+        { id: "home", type: "link", icon: "home", label: { en: "Home", "zh-CN": "首页" }, href: "/home/" },
         { id: "solutions", type: "link", icon: "lightbulb", label: { en: "Solutions", "zh-CN": "方案" }, href: "/solutions/" },
-        { id: "inquiry", type: "cta", icon: "send", label: { en: "Inquiry", "zh-CN": "询盘" }, href: "/contact/", highlight: true },
+        { id: "inquiry", type: "link", icon: "send", label: { en: "Inquiry", "zh-CN": "询盘" }, href: "/contact/" },
         { id: "whatsapp", type: "external", icon: "chat", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, href: "https://wa.me/8613924828214", whatsapp: true },
       ],
       tabletItems: [
-        { id: "menu", type: "toggle", icon: "menu", label: { en: "Menu", "zh-CN": "菜单" } },
-        { id: "products", type: "link", icon: "inventory_2", label: { en: "Products", "zh-CN": "产品中心" }, href: "/products/" },
-        { id: "manufacturing", type: "link", icon: "factory", label: { en: "Manufacturing", "zh-CN": "制造" }, href: "/manufacturing/" },
-        { id: "inquiry", type: "cta", icon: "send", label: { en: "Inquiry", "zh-CN": "询盘" }, href: "/contact/", highlight: true },
+        { id: "home", type: "link", icon: "home", label: { en: "Home", "zh-CN": "首页" }, href: "/home/" },
+        { id: "products", type: "link", icon: "inventory_2", label: { en: "Products", "zh-CN": "产品" }, href: "/products/" },
+        { id: "solutions", type: "link", icon: "design_services", label: { en: "Solutions", "zh-CN": "方案" }, href: "/solutions/" },
+        { id: "inquiry", type: "link", icon: "send", label: { en: "Inquiry", "zh-CN": "询盘" }, href: "/contact/" },
         { id: "whatsapp", type: "external", icon: "chat", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, href: "https://wa.me/8613924828214", whatsapp: true },
       ],
     },

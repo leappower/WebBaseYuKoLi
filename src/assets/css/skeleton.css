@@ -230,6 +230,18 @@
   .sk-card {
     height: 240px;
   }
+  .sk-cta-group {
+    max-width: 400px;
+  }
+  .sk-cta {
+    max-width: 190px;
+  }
+  .sk-cta--outline {
+    max-width: 170px;
+  }
+  .sk-hero .sk-line {
+    max-width: 600px;
+  }
 }
 
 /* ───────── Animations ───────── */
