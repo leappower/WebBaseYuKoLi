@@ -293,6 +293,10 @@
                 l = _extend({}, e, s),
                 u = function (e) {
                   var n = t.resolveTranslationValue(l, e);
+                  // If not found, try with current language prefix (e.g. 'en_nav_products_coffee')
+                  if ((!n || n === e) && t.currentLanguage) {
+                    n = t.resolveTranslationValue(l, t.currentLanguage + '_' + e);
+                  }
                   return n && n !== e ? t.interpolate(n) : t.interpolate(t.getFallbackTranslation(e));
                 },
                 c = [];
@@ -381,6 +385,7 @@
         var en = this.translationsCache.get("ui-en");
         if (en) {
           var v = this.resolveTranslationValue(en, t);
+          if (!v || v === t) v = this.resolveTranslationValue(en, "en_" + t);
           if (v && v !== t) return v;
         }
       }
