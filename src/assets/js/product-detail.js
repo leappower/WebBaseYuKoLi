@@ -205,6 +205,7 @@
   }
 
   function renderPDP() {
+    console.log("[TRACE/pdp] renderPDP called, path:", window.location.pathname);
     // Read model from path: /products/<category>/<model>/
     var path = window.location.pathname.replace(/\/$/, "");
     var model = null;
@@ -218,9 +219,10 @@
         model = decodeURIComponent(m[1]);
       }
     }
-    if (!model) return; // Not a PDP URL, skip silently
+    if (!model) { console.log("[TRACE/pdp] no model found, skipping"); return; }
 
     var product = findProduct(model);
+    console.log("[TRACE/pdp] model=", model, "product found:", !!product);
     if (!product) {
       ensureContainers();
       var ce = document.getElementById("product-content");
