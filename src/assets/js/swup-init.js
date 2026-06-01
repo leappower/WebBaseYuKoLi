@@ -310,14 +310,25 @@
               var allCards = c.querySelectorAll('a[href^="/solutions/"]');
               console.log("[DEBUG/solutions] card count:", allCards.length);
               allCards.forEach(function(card, i) {
-                console.log("[DEBUG/solutions] card", i, "visibility:", getComputedStyle(card).display, "width:", card.offsetWidth);
+                var rect = card.getBoundingClientRect();
+                console.log("[DEBUG/solutions] card", i, "display:", getComputedStyle(card).display, "width:", card.offsetWidth, "rect.top:", rect.top, "rect.left:", rect.left, "rect.bottom:", rect.bottom);
               });
               // 检查 grid 容器样式
               var gridContainer = document.querySelector(".solutions-grid");
               if (gridContainer) {
                 var cs = getComputedStyle(gridContainer);
-                console.log("[DEBUG/solutions] grid-container display:", cs.display, "grid-template:", cs.gridTemplateColumns, "gap:", cs.gap);
+                console.log("[DEBUG/solutions] grid-container display:", cs.display, "grid-template:", cs.gridTemplateColumns, "grid-auto-flow:", cs.gridAutoFlow, "gap:", cs.gap);
+                console.log("[DEBUG/solutions] grid-container width:", gridContainer.offsetWidth);
                 console.log("[DEBUG/solutions] grid children:", gridContainer.children.length);
+                // 检查父级 section-content 宽度
+                var sectionContent = gridContainer.closest('.section-content');
+                if (sectionContent) {
+                  console.log("[DEBUG/solutions] section-content width:", sectionContent.offsetWidth);
+                }
+                var skeletonContainer = gridContainer.closest('.skeleton-container');
+                if (skeletonContainer) {
+                  console.log("[DEBUG/solutions] PARENT IS SKELETON! skeleton-container width:", skeletonContainer.offsetWidth);
+                }
               } else {
                 console.warn("[DEBUG/solutions] .solutions-grid container NOT FOUND in DOM");
               }
