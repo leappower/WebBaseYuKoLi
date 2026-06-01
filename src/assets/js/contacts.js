@@ -43,7 +43,7 @@
       "/support/": "售后支持",
       "/products/": "产品中心",
       "/products/compare/": "产品对比",
-      "/products/detail/": "产品详情",
+      "/products/": "产品详情",
       "/quote/": "在线询价",
       "/contact/": "联系我们",
       // "/landing/": "着陆页",  // removed

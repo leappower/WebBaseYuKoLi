@@ -108,23 +108,13 @@
       return result;
     }
 
-    // PDP pages: /products/DLB-TBS30/ or /products/detail/?model=DLB-TBS30
+    // PDP pages: /products/<category>/<model>/
     var pdpMatch = path.match(/^\/products\/(detail\/?(?:\?model=([^&]+))?|([^/]+))$/);
     if (pdpMatch) {
-      var model = (pdpMatch && (pdpMatch[3] || pdpMatch[1])) || "";
+      var model = pdpMatch ? pdpMatch[2] : "";
+      var categoryFromUrl = pdpMatch ? pdpMatch[1] : "";
       // Extract category slug from URL: /products/coffee/WT-009/ → coffee
-      // Fallback: sessionStorage pdp_referrer
-      var refSlug = "";
-      var catMatch = path.match(/^\/products\/([a-zA-Z0-9_-]+)\/[a-zA-Z0-9_-]+\/?$/);
-      if (catMatch && PRODUCT_SLUGS[catMatch[1]]) {
-        refSlug = catMatch[1];
-      } else {
-        var referrer;
-        try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
-        referrer = referrer || "";
-        refSlug = referrer.replace(/\/$/, "").split("/").pop();
-        if (!PRODUCT_SLUGS[refSlug]) refSlug = "";
-      }
+      var refSlug = categoryFromUrl && PRODUCT_SLUGS[categoryFromUrl] ? categoryFromUrl : "";
 
       // Try to detect category from product data (async — will update after)
       result.type = "pdp";

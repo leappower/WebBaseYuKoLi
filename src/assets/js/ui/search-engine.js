@@ -477,7 +477,8 @@
       console.warn("[search-engine] No image for", item.model, item.category);
     }
     var imgSrc = item.image || item.productImage || item.imageUrl || "";
-          var detailHref = item.model ? "/products/detail/" + item.model + "/" : "/products/";
+          var cat = item.category || "";
+          var detailHref = item.model ? "/products/" + encodeURIComponent(cat) + "/" + item.model + "/" : "/products/";
 
           html +=
             '<a class="ios-search-result-item' +

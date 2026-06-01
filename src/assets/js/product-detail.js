@@ -1,10 +1,7 @@
 /**
  * PDP Renderer - product detail page (SPA-safe)
- * URL: /products/detail/<model>/ or /products/detail/?model=<model>
+ * URL: /products/<category>/<model>/
  * Self-contained: creates #product-content and #related-products if missing
- *
- * NOTE: /products/<category>/ (cutting, stirfry, etc.) are PRODUCT LISTING pages,
- *       NOT PDP pages. Only render PDP for /products/detail/<model>/ paths.
  */
 (function () {
   "use strict";
@@ -210,14 +207,14 @@
   }
 
   function renderPDP() {
-    // Read model from path: /products/detail/<model>/ or legacy /products/<model>/
+    // Read model from path: /products/<category>/<model>/
     var path = window.location.pathname.replace(/\/$/, "");
     var model = null;
-    var m = path.match(/^\/products\/detail\/([^/]+)$/);
+    var m = path.match(/^\/products\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/);
     if (m) {
-      model = decodeURIComponent(m[1]);
+      model = decodeURIComponent(m[2]);
     } else {
-      // Legacy path: /products/<model>/ — skip category slugs
+      // Fallback: /products/<model>/
       m = path.match(/^\/products\/([^/]+)$/);
       if (m && !isCategorySlug(m[1])) {
         model = decodeURIComponent(m[1]);
@@ -684,7 +681,7 @@
   _spaOn(document, "spa:load", function () {
     var segs = location.pathname.split("/").filter(Boolean);
     if (__DEVELOPMENT__) console.log("[ProductDetail] spa:load fired, pathname:", location.pathname, "segs:", segs);
-    // Only render PDP on /products/detail/<model>/ or /products/<model>/ (non-category)
+    // Only render PDP on /products/<category>/<model>/ or /products/<model>/ (non-category)
     if (segs[0] === "products") {
       if (segs[1] === "detail" && segs[2]) {
         if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (detail path)");
