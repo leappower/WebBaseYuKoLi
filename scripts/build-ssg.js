@@ -761,8 +761,8 @@ function main() {
 
   // Step 5.7: Copy PDF/files from src/assets/files to dist/assets/files
   log('\nStep 5.7: Copying PDF/files...');
-  const srcFilesDir = path.join(SRC_DIR, 'assets', 'files');
-  const distFilesDir = path.join(DIST_DIR, 'assets', 'files');
+  const srcFilesDir = path.resolve(__dirname, '..', 'src', 'assets', 'files');
+  const distFilesDir = path.resolve(__dirname, '..', 'dist', 'assets', 'files');
   if (fs.existsSync(srcFilesDir)) {
     fs.mkdirSync(distFilesDir, { recursive: true });
     const fileEntries = fs.readdirSync(srcFilesDir);

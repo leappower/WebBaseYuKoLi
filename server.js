@@ -160,6 +160,33 @@ app.post('/api/quote-submit', quoteLimiter, express.json({ limit: '100kb' }), as
   }
 });
 
+/** Lead form submission (whitepaper downloads) */
+app.post('/api/submit-lead', express.json({ limit: '100kb' }), async (req, res) => {
+  if (!GOOGLE_FORM_URL) {
+    console.log('[submit-lead] lead captured:', JSON.stringify(req.body));
+    return res.json({ ok: true });
+  }
+  const body = req.body;
+  if (!body || typeof body !== 'object') {
+    return res.status(400).json({ error: 'Invalid request body' });
+  }
+  try {
+    const response = await fetch(GOOGLE_FORM_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ form_type: 'lead', ...body }),
+    });
+    if (!response.ok) {
+      console.error('[submit-lead] upstream error:', response.status);
+      return res.status(502).json({ error: 'Submission service error' });
+    }
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[submit-lead] fetch error:', err.message);
+    res.status(502).json({ error: 'Failed to submit lead' });
+  }
+});
+
 // Allowed origins for CORS (same-origin + production domain)
 const ALLOWED_ORIGINS = new Set([
   'https://www.yukoli.com',
