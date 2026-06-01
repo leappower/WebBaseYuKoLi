@@ -30,9 +30,12 @@
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  /* 对齐 main#spa-content 的宽度 */
-  max-width: 1920px;
+  /* 对齐 #spa-content 内容宽度 */
+  max-width: 1280px;
   margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
 }
 #skeleton-overlay[hidden] {
   display: none;
