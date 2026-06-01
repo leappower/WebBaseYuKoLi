@@ -151,14 +151,14 @@
     // ═══════════════════════════════════════════════════════════
     categories: {
       products: [
-        { slug: "coffee", key: "nav_products_coffee", label: "咖啡系列", icon: "coffee", emoji: "☕", accent: "coral" },
-        { slug: "tea", key: "nav_products_tea", label: "茶饮系列", icon: "local_cafe", emoji: "🍵", accent: "green" },
-        { slug: "meal", key: "nav_products_meal", label: "代餐系列", icon: "restaurant", emoji: "🥤", accent: "gold" },
-        { slug: "beauty", key: "nav_products_beauty", label: "胶原养颜", icon: "spa", emoji: "✨", accent: "pink" },
-        { slug: "weight", key: "nav_products_weight", label: "体重管理", icon: "monitor_weight", emoji: "⚖️", accent: "orange" },
-        { slug: "gut", key: "nav_products_gut", label: "肠道健康", icon: "biotech", emoji: "🫘", accent: "lime" },
-        { slug: "lifestyle", key: "nav_products_lifestyle", label: "功能冲饮", icon: "energy_savings_leaf", emoji: "🍃", accent: "purple" },
-        { slug: "legacy", key: "nav_products_legacy", label: "经典冲饮", icon: "auto_stories", emoji: "📖", accent: "teal" },
+        { slug: "coffee", key: "nav_products_coffee", label: { en: "Coffee", "zh-CN": "咖啡系列" }, icon: "coffee", emoji: "☕", accent: "coral" },
+        { slug: "tea", key: "nav_products_tea", label: { en: "Tea &amp; Milk Tea", "zh-CN": "茶饮系列" }, icon: "local_cafe", emoji: "🍵", accent: "green" },
+        { slug: "meal", key: "nav_products_meal", label: { en: "Meal Replacement", "zh-CN": "代餐系列" }, icon: "restaurant", emoji: "🥤", accent: "gold" },
+        { slug: "beauty", key: "nav_products_beauty", label: { en: "Beauty &amp; Collagen", "zh-CN": "胶原养颜" }, icon: "spa", emoji: "✨", accent: "pink" },
+        { slug: "weight", key: "nav_products_weight", label: { en: "Weight Management", "zh-CN": "体重管理" }, icon: "monitor_weight", emoji: "⚖️", accent: "orange" },
+        { slug: "gut", key: "nav_products_gut", label: { en: "Gut Health", "zh-CN": "肠道健康" }, icon: "biotech", emoji: "🫘", accent: "lime" },
+        { slug: "lifestyle", key: "nav_products_lifestyle", label: { en: "Functional Drinks", "zh-CN": "功能冲饮" }, icon: "energy_savings_leaf", emoji: "🍃", accent: "purple" },
+        { slug: "legacy", key: "nav_products_legacy", label: { en: "Classic Beverages", "zh-CN": "经典冲饮" }, icon: "auto_stories", emoji: "📖", accent: "teal" },
       ],
     },
 
