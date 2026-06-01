@@ -416,8 +416,7 @@
         var page = _a ? _a.page : null;
         if (!page) return;
 
-        // 临时调试：骨架保留 30 秒观察内容加载情况
-        setTimeout(function () { hideSkeleton(); }, 30000);
+        hideSkeleton();
 
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
         var container = document.getElementById("spa-content");
@@ -481,10 +480,8 @@
       // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
       swup.hooks.on("visit:abort", function (visit) {
         console.warn("[SWUP] visit aborted, falling back to native navigation:", visit.to.url);
-        setTimeout(function () {
-          global.__spaNavigating = false;
-          global.location.href = visit.to.url;
-        }, 100);
+        global.__spaNavigating = false;
+        global.location.href = visit.to.url;
       });
 
       // ─── visit:end — 清除导航标志 ───
