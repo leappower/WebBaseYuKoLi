@@ -115,9 +115,13 @@
     // product-grid: /products/<slug>/ 产品分类页
     var prodMatch = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\//);
     if (prodMatch) {
-      if (typeof global.ProductGrid !== "undefined" && global.ProductGrid && global.ProductGrid.init) {
+      if (typeof global.ProductGrid !== "undefined" && global.ProductGrid) {
         try {
-          global.ProductGrid.init();
+          if (typeof global.ProductGrid.autoRender === "function") {
+            global.ProductGrid.autoRender();
+          } else if (typeof global.ProductGrid.init === "function") {
+            global.ProductGrid.init();
+          }
         } catch (e) {
           /* noop */
         }
@@ -432,9 +436,9 @@
         var p = global.location.pathname;
         console.log("[SWUP] content:replace path:", p, "fetchUrl:", visit.to ? visit.to.url : "?");
 
-        // SPA 导航到品类页：触发 ProductGrid 渲染
+        // SPA 导航到产品页：触发 ProductGrid 渲染
         // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染
-        if (/^\/products\/[a-z]+\/$/.test(p)) {
+        if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
           if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
             setTimeout(function () { global.ProductGrid.autoRender(); }, 50);
           }
