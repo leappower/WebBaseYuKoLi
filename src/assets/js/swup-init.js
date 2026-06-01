@@ -488,6 +488,7 @@
       swup.hooks.replace("fetch:request", function (visit, _a, defaultFetch) {
         var originalUrl = _a.url;
         var deviceUrl = routeToFetchUrl(originalUrl);
+        console.log("[SWUP] fetch:request", originalUrl, "→", deviceUrl);
         return defaultFetch(visit, {
           url: deviceUrl,
           options: _a.options,
