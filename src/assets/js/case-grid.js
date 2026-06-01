@@ -265,6 +265,17 @@
   var activeFilters = { industry: null, volume: null, region: null, benefit: null };
 
   /* ── Helpers ────────────────────────────────────── */
+  function currentLang() {
+    try { return localStorage.getItem('userLanguage') || document.documentElement.lang || 'zh-CN'; }
+    catch(e) { return 'zh-CN'; }
+  }
+
+  function l10n(c, field) {
+    var lang = currentLang();
+    if (lang !== 'zh-CN' && c[field + '_en']) return c[field + '_en'];
+    return c[field] || '';
+  }
+
   function benefitColor(benefit) {
     var map = {
       "Fast Sampling": "#3b82f6",
@@ -360,43 +371,43 @@
       esc(c.title) +
       "</h3>" +
       '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
-      esc(c.highlight) +
+      esc(l10n(c, 'highlight')) +
       "</span>" +
       '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
-      esc(c.country) +
+      esc(l10n(c, 'country')) +
       "</span>" +
       "</div>" +
       '<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span>' +
-      esc(c.industry) +
+      esc(l10n(c, 'industry')) +
       "</span>" +
       '<span class="text-slate-300 dark:text-slate-600">·</span>' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">inventory_2</span>' +
-      esc(c.monthly_volume) +
+      esc(l10n(c, 'monthly_volume')) +
       "</span>" +
       "</div>" +
       '<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 italic border-l-4 border-primary-400 pl-3" data-i18n="cases_quote_' +
       esc(c.slug) +
       '">' +
-      esc(c.quote) +
+      esc(l10n(c, 'quote')) +
       "</p>" +
       '<div class="grid grid-cols-3 gap-2 mt-1">' +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-lg font-black text-primary"><span class="material-symbols-outlined text-xl align-middle">schedule</span></div>' +
       '<div class="text-xs text-slate-500 dark:text-slate-400">' +
-      esc(c.lead_time) +
+      esc(l10n(c, 'lead_time')) +
       "</div>" +
       "</div>" +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-lg font-black text-slate-700 dark:text-slate-200"><span class="material-symbols-outlined text-xl align-middle">inventory_2</span></div>' +
       '<div class="text-xs text-slate-500 dark:text-slate-400">' +
-      esc(c.moq_label) +
+      esc(l10n(c, 'moq_label')) +
       "</div>" +
       "</div>" +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-base font-black text-primary"><span class="material-symbols-outlined text-xl align-middle">verified</span></div>' +
       '<div class="text-xs text-slate-500 dark:text-slate-400">' +
-      esc(c.cert_label) +
+      esc(l10n(c, 'cert_label')) +
       "</div>" +
       "</div>" +
       "</div>" +
@@ -430,10 +441,10 @@
       '<div class="p-4 flex flex-col gap-2">' +
       '<div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">storefront</span>' +
-      esc(c.industry) +
+      esc(l10n(c, 'industry')) +
       "</span>" +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">inventory_2</span>' +
-      esc(c.monthly_volume) +
+      esc(l10n(c, 'monthly_volume')) +
       "</span>" +
       "</div>" +
       '<div class="flex flex-wrap items-center gap-1.5">' +
@@ -443,29 +454,29 @@
       esc(c.title) +
       "</h3>" +
       '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
-      esc(c.highlight) +
+      esc(l10n(c, 'highlight')) +
       "</span>" +
       '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
-      esc(c.country) +
+      esc(l10n(c, 'country')) +
       "</span>" +
       "</div>" +
       '<div class="flex items-center gap-2 text-xs">' +
       '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">schedule</span>' +
-      esc(c.lead_time) +
+      esc(l10n(c, 'lead_time')) +
       "</span>" +
       '<span class="text-slate-300 dark:text-slate-600">|</span>' +
       '<span class="inline-flex items-center gap-1 text-slate-700 dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-sm">inventory_2</span>' +
-      esc(c.moq_label) +
+      esc(l10n(c, 'moq_label')) +
       "</span>" +
       '<span class="text-slate-300 dark:text-slate-600">|</span>' +
       '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">verified</span>' +
-      esc(c.cert_label) +
+      esc(l10n(c, 'cert_label')) +
       "</span>" +
       "</div>" +
       '<p class="text-sm text-slate-600 dark:text-slate-400 italic" data-i18n="cases_quote_' +
       c.slug +
       '">' +
-      esc(c.quote) +
+      esc(l10n(c, 'quote')) +
       "</p>" +
       '<a href="/cases/' +
       esc(c.slug) +
