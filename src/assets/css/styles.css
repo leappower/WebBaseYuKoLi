@@ -1612,16 +1612,13 @@ function endAnimation(element) {
 #skeleton-overlay {
   position: absolute;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1;
   background: var(--color-bg, #fff);
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  /* 与 skeleton-container 同宽居中，导航栏偏移 */
-  left: 0;
-  right: 0;
-  max-width: 1280px;
-  margin: 0 auto;
   padding-top: var(--nav-height, 65px);
 }
 @media (min-width: 1024px) {
@@ -1654,8 +1651,6 @@ function endAnimation(element) {
   } /* lg: aligned */
 }
 @media (min-width: 1280px) {
-  /* PC: main#spa-content already has padding-top from --nav-height CSS variable;
-   skeleton-container just needs content padding */
   .skeleton-container {
     padding: 0 var(--container-px, 2.5rem);
   }
@@ -1878,6 +1873,50 @@ function endAnimation(element) {
 }
 
 /* ───────── Dark Mode ───────── */
+/* ───────── Product grid skeleton cards ───────── */
+.sk-product-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+}
+.dark .sk-product-card {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+.sk-product-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-product-img {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-product-text {
+  height: 16px;
+  width: 60%;
+  margin: 12px auto 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-product-text {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+.dark .sk-badge,
+.dark .sk-line,
+.dark .sk-cta,
+.dark .sk-card {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
 /* ───────── Product grid skeleton cards ───────── */
 .sk-product-card {
   border-radius: 12px;
