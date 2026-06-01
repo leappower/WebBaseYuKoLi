@@ -494,6 +494,11 @@
         }, 100);
         });
 
+      // ─── page:view — 派发 spa:load 兼容事件（页面完全渲染后）───
+      swup.hooks.on("page:view", function () {
+        dispatchSpaLoad();
+      });
+
       // ─── visit:start — 显示骨架屏并设置导航标志 ───
       swup.hooks.on("visit:start", function () {
         global.__spaNavigating = true;

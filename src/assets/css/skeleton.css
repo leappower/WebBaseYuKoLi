@@ -29,10 +29,10 @@
   transition: opacity 350ms ease-out;
   pointer-events: auto;
   /* 与 skeleton-container 同宽居中，导航栏偏移 */
+  left: 0;
+  right: 0;
   max-width: 1280px;
-  left: 50%;
-  transform: translateX(-50%);
-  right: auto;
+  margin: 0 auto;
   padding-top: var(--nav-height, 65px);
 }
 @media (min-width: 1024px) {
