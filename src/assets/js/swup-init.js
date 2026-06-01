@@ -322,9 +322,8 @@
       return "/pages/products/" + slug + "/" + suffix;
     }
 
-    // 产品详情 PDP: /products/detail/<model>/ 或 /products/<category>/<model>/
-    // 两种格式都映射到同一个 PDP HTML
-    if (/^\/products\/detail\//.test(path) || /^\/products\/[a-zA-Z0-9_-]+\/[^\/]+\/$/.test(path)) {
+    // 产品详情 PDP: /products/<category>/<model>/
+    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path)) {
       return "/pages/products/detail/" + suffix;
     }
 
