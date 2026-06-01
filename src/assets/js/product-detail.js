@@ -6,12 +6,9 @@
 (function () {
   "use strict";
   var _cfg = window.SITE_CONFIG || window._cfg || {};
-  var _spaRegs = {};
-  function _spaOn(tgt, evt, fn, key) {
-    if (_spaRegs[key]) _spaRegs[key].abort();
-    var ac = new AbortController();
-    _spaRegs[key] = ac;
-    tgt.addEventListener(evt, fn, { signal: ac.signal });
+  var _spaInitDone = false;
+  function _spaOn(tgt, evt, fn) {
+    tgt.addEventListener(evt, fn);
   }
 
   // Category slugs used for product listing — NOT PDP pages
@@ -677,7 +674,7 @@
     if (callback) callback();
   };
 
-  _spaOn(window, "languageChanged", renderPDP, "languageChanged");
+  _spaOn(window, "languageChanged", renderPDP);
   document.addEventListener("productTranslationsLoaded", renderPDP);
   _spaOn(document, "spa:load", function () {
     console.log("[TRACE/pdp] spa:load received");
