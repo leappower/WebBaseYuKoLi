@@ -114,12 +114,10 @@
     var itemHref = sub.href || parentHref;
     var chevron = '<span class="material-symbols-outlined prod-dropdown-chevron">chevron_right</span>';
     var emojiHtml = sub.emoji ? '<span class="prod-dropdown-emoji">' + sub.emoji + "</span>" : "";
-    // NOTE: L2 items use config label directly (not data-i18n).
-    // Translation keys like nav_products_tea don't exist in language files
-    // (carried over from old KitchenYuKoLi), so data-i18n would cause the
-    // translation manager to show the key string as fallback text.
-    // Labels from SITE_CONFIG.categories are already bilingual objects
-    // resolved by _buildCategoryItems → resolveLabel().
+    // Use data-i18n so translations.js can update text when language switches.
+    // Fallback label resolved by resolveLabel() for initial render before i18n loads.
+    var i18nKey = sub.key || "";
+    var fallbackLabel = esc(sub.label || sub.key);
     return (
       '<a href="' +
       esc(itemHref) +
@@ -129,8 +127,8 @@
       esc(sub.icon) +
       "</span>" +
       "</span>" +
-      '<span class="prod-dropdown-label">' +
-      esc(sub.label || sub.key) +
+      '<span class="prod-dropdown-label" data-i18n="' + esc(i18nKey) + '">' +
+      fallbackLabel +
       "</span>" +
       chevron +
       "</a>"
