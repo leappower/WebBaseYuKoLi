@@ -431,18 +431,16 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 3099;
 const SSL_PORT = process.env.SSL_PORT ? parseInt(process.env.SSL_PORT) : 0;
-const ENABLE_SSL = false;
 var https;
 var sslOptions = {};
 try {
   https = require('https');
   sslOptions = {
-    key: fs.readFileSync('/Users/chee/certs/192.168.3.181-key.pem'),
-    cert: fs.readFileSync('/Users/chee/certs/192.168.3.181-new.pem'),
+    key: fs.readFileSync('/Users/chee/certs/192.168.3.180-key.pem'),
+    cert: fs.readFileSync('/Users/chee/certs/192.168.3.180.pem'),
   };
 } catch (e) {
-  // SSL cert files missing — skip HTTPS (behind Caddy reverse proxy anyway)
-  console.log('⚠️  SSL certs not found, HTTPS disabled (use Caddy for TLS)');
+  console.log('⚠️  SSL certs not found, HTTPS disabled');
 }
 
 // Start server with error handling
@@ -466,7 +464,7 @@ const server = app.listen(PORT, (err) => {
   // Feishu daily sync removed
 
   // Start HTTPS server (only if SSL_PORT > 0 — skip when behind reverse proxy)
-  if (ENABLE_SSL) {
+  if (SSL_PORT > 0) {
     const httpsServer = https.createServer(sslOptions, app);
     httpsServer.listen(SSL_PORT, (err) => {
       if (err) { console.error('Failed to start HTTPS server:', err); return; }

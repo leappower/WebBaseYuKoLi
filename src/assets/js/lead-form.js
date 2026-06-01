@@ -8,6 +8,8 @@
 
   var STORAGE_KEY = "yukoli_leads";
   var BRAND_COLOR = "#2E7D32";
+  var GAS_FORM_URL =
+    "https://script.google.com/macros/s/AKfycbymllbA_mL_l3muQN9QaU04FEGpXbmvzuGmZvYvDntjxK1QMF6BK8NZBrdqc1E22rBa5w/exec";
 
   /* ---- helpers ---- */
 
@@ -28,12 +30,22 @@
       /* quota exceeded – silent */
     }
 
-    // Send to server (fire-and-forget)
+    // Send directly to Google Sheets (works on GitHub Pages, no server required)
     try {
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", "/api/submit-lead", true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.send(JSON.stringify(lead));
+      xhr.open("POST", GAS_FORM_URL, true);
+      xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+      xhr.send(
+        JSON.stringify({
+          formType: "lead",
+          name: lead.name,
+          company: lead.company,
+          email: lead.email,
+          url: lead.pageUrl || "",
+          language: lead.language || navigator.language || "en",
+          message: "Whitepaper: " + (lead.pdf || ""),
+        })
+      );
     } catch (_) {}
   }
 
