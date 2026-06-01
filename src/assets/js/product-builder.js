@@ -176,7 +176,7 @@
     dom.modeCards = dom.builder.querySelectorAll(".mode-card");
     dom.categoryTags = dom.builder.querySelectorAll(".category-tag");
     dom.scaleSlider = dom.builder.querySelector(".scale-slider");
-    dom.scaleDisplay = dom.builder.querySelector(".scale-value");
+    dom.scaleDisplay = dom.builder.querySelector(".scale-display");
     dom.scaleLabels = dom.builder.querySelectorAll(".scale-label");
     dom.timelineCards = dom.builder.querySelectorAll(".timeline-card");
     dom.briefPanel = dom.builder.querySelector(".brief-panel");
