@@ -474,23 +474,22 @@
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
 
-        // ─── 解决方案页面：强制加载卡片图片（修复 SPA 导航首次渲染失效）───
-        if (/^\/solutions\/$/.test(global.location.pathname)) {
-          setTimeout(function () {
-            var gc = document.querySelector(".solutions-grid");
-            if (!gc) return;
-            // 移除后重设图片 src 强制触发 load
-            var imgs = gc.querySelectorAll('img');
-            imgs.forEach(function(img) {
-              var src = img.getAttribute('src');
-              if (src) {
-                img.removeAttribute('src');
-                void img.offsetWidth;
-                img.setAttribute('src', src);
-              }
-            });
-          }, 100);
-        }     });
+        // ─── 全局：SPA 导航后重新触发所有 lazy 图片加载 ───
+        // swup 通过 innerHTML 替换内容时，浏览器不会为
+        // loading="lazy" 的图片重新触发 IntersectionObserver
+        setTimeout(function () {
+          var container = document.getElementById("spa-content");
+          if (!container) return;
+          var imgs = container.querySelectorAll('img[loading="lazy"]');
+          for (var i = 0; i < imgs.length; i++) {
+            var src = imgs[i].getAttribute('src');
+            if (src) {
+              imgs[i].removeAttribute('src');
+              void imgs[i].offsetWidth;
+              imgs[i].setAttribute('src', src);
+            }
+          }
+        }, 100);     });
 
       // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
       swup.hooks.on("visit:abort", function (visit) {
