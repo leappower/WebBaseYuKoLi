@@ -266,14 +266,17 @@
 
   /* ── Helpers ────────────────────────────────────── */
   function currentLang() {
-    try { return localStorage.getItem('userLanguage') || document.documentElement.lang || 'zh-CN'; }
-    catch(e) { return 'zh-CN'; }
+    try {
+      return localStorage.getItem("userLanguage") || document.documentElement.lang || "zh-CN";
+    } catch (e) {
+      return "zh-CN";
+    }
   }
 
   function l10n(c, field) {
     var lang = currentLang();
-    if (lang !== 'zh-CN' && c[field + '_en']) return c[field + '_en'];
-    return c[field] || '';
+    if (lang !== "zh-CN" && c[field + "_en"]) return c[field + "_en"];
+    return c[field] || "";
   }
 
   function benefitColor(benefit) {
@@ -285,7 +288,7 @@
       "High Volume": "#ef4444",
       "Flexible MOQ": "#06b6d4",
       "Precision Nutrition": "#ec4899",
-      "Global Logistics": "#6366f1"
+      "Global Logistics": "#6366f1",
     };
     return map[benefit] || "#6366f1";
   }
@@ -353,7 +356,9 @@
     return (
       '<div class="case-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all group border border-slate-200 dark:border-slate-700 hover:border-primary/50 flex flex-col">' +
       "<!-- 顶部色条 -->" +
-      '<div class="w-full h-1 flex-shrink-0" style="background:' + esc(barColor) + '"></div>' +
+      '<div class="w-full h-1 flex-shrink-0" style="background:' +
+      esc(barColor) +
+      '"></div>' +
       "<!-- 上方图片 16:9 -->" +
       '<div class="w-full aspect-video bg-slate-200 dark:bg-slate-700 overflow-hidden relative flex-shrink-0">' +
       '<img loading="lazy" alt="' +
@@ -371,43 +376,43 @@
       esc(c.title) +
       "</h3>" +
       '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
-      esc(l10n(c, 'highlight')) +
+      esc(l10n(c, "highlight")) +
       "</span>" +
       '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
-      esc(l10n(c, 'country')) +
+      esc(l10n(c, "country")) +
       "</span>" +
       "</div>" +
       '<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span>' +
-      esc(l10n(c, 'industry')) +
+      esc(l10n(c, "industry")) +
       "</span>" +
       '<span class="text-slate-300 dark:text-slate-600">·</span>' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">inventory_2</span>' +
-      esc(l10n(c, 'monthly_volume')) +
+      esc(l10n(c, "monthly_volume")) +
       "</span>" +
       "</div>" +
       '<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 italic border-l-4 border-primary-400 pl-3" data-i18n="cases_quote_' +
       esc(c.slug) +
       '">' +
-      esc(l10n(c, 'quote')) +
+      esc(l10n(c, "quote")) +
       "</p>" +
       '<div class="grid grid-cols-3 gap-2 mt-1">' +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-lg font-black text-primary"><span class="material-symbols-outlined text-xl align-middle">schedule</span></div>' +
       '<div class="text-xs text-slate-500 dark:text-slate-400">' +
-      esc(l10n(c, 'lead_time')) +
+      esc(l10n(c, "lead_time")) +
       "</div>" +
       "</div>" +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-lg font-black text-slate-700 dark:text-slate-200"><span class="material-symbols-outlined text-xl align-middle">inventory_2</span></div>' +
       '<div class="text-xs text-slate-500 dark:text-slate-400">' +
-      esc(l10n(c, 'moq_label')) +
+      esc(l10n(c, "moq_label")) +
       "</div>" +
       "</div>" +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-base font-black text-primary"><span class="material-symbols-outlined text-xl align-middle">verified</span></div>' +
       '<div class="text-xs text-slate-500 dark:text-slate-400">' +
-      esc(l10n(c, 'cert_label')) +
+      esc(l10n(c, "cert_label")) +
       "</div>" +
       "</div>" +
       "</div>" +
@@ -430,7 +435,9 @@
     return (
       '<div class="case-card bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700">' +
       "<!-- 顶部色条 -->" +
-      '<div class="w-full h-1 flex-shrink-0" style="background:' + esc(barColor) + '"></div>' +
+      '<div class="w-full h-1 flex-shrink-0" style="background:' +
+      esc(barColor) +
+      '"></div>' +
       '<div class="w-full aspect-video bg-slate-200 dark:bg-slate-700 overflow-hidden relative">' +
       '<img loading="lazy" alt="' +
       esc(c.title) +
@@ -441,10 +448,10 @@
       '<div class="p-4 flex flex-col gap-2">' +
       '<div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">storefront</span>' +
-      esc(l10n(c, 'industry')) +
+      esc(l10n(c, "industry")) +
       "</span>" +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">inventory_2</span>' +
-      esc(l10n(c, 'monthly_volume')) +
+      esc(l10n(c, "monthly_volume")) +
       "</span>" +
       "</div>" +
       '<div class="flex flex-wrap items-center gap-1.5">' +
@@ -454,29 +461,29 @@
       esc(c.title) +
       "</h3>" +
       '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
-      esc(l10n(c, 'highlight')) +
+      esc(l10n(c, "highlight")) +
       "</span>" +
       '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
-      esc(l10n(c, 'country')) +
+      esc(l10n(c, "country")) +
       "</span>" +
       "</div>" +
       '<div class="flex items-center gap-2 text-xs">' +
       '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">schedule</span>' +
-      esc(l10n(c, 'lead_time')) +
+      esc(l10n(c, "lead_time")) +
       "</span>" +
       '<span class="text-slate-300 dark:text-slate-600">|</span>' +
       '<span class="inline-flex items-center gap-1 text-slate-700 dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-sm">inventory_2</span>' +
-      esc(l10n(c, 'moq_label')) +
+      esc(l10n(c, "moq_label")) +
       "</span>" +
       '<span class="text-slate-300 dark:text-slate-600">|</span>' +
       '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">verified</span>' +
-      esc(l10n(c, 'cert_label')) +
+      esc(l10n(c, "cert_label")) +
       "</span>" +
       "</div>" +
       '<p class="text-sm text-slate-600 dark:text-slate-400 italic" data-i18n="cases_quote_' +
       c.slug +
       '">' +
-      esc(l10n(c, 'quote')) +
+      esc(l10n(c, "quote")) +
       "</p>" +
       '<a href="/cases/' +
       esc(c.slug) +
@@ -508,7 +515,6 @@
     var container = document.getElementById("case-grid");
     if (!container) return;
     var cases = getFiltered();
-    console.log('[DEBUG/cases] renderGrid: cases.length =', cases.length, ', ROI_CASES.length =', ROI_CASES.length);
     if (cases.length === 0) {
       container.innerHTML =
         '<div class="col-span-full text-center py-16"><p class="text-slate-500 dark:text-slate-400 text-lg" data-i18n="cases_no_results">没有找到匹配的案例，试试调整筛选条件。</p></div>';
@@ -739,23 +745,27 @@
     }
   }
 
-  /* ── Auto-init based on data attribute ──────────── */
-  window.CaseGrid = { init: init, FILTERS: FILTERS, ROI_CASES: ROI_CASES };
-  /* ── SPA navigation: re-init after swup content:replace ── */
-  document.addEventListener('spa:load', function() {
+  /* ── Auto-init on DOMContentLoaded (full page load) ── */
+  document.addEventListener("DOMContentLoaded", function () {
     var path = window.location.pathname;
-    console.log('[TRACE/cases] spa:load received, path:', path);
-    if (/^\/cases\//.test(path) && !/^\/cases\/[a-z0-9-]+\/$/.test(path)) {
-      // Only re-init on the listing page, not detail pages
-      var variant = document.body.getAttribute('data-case-variant') || 'pc';
-      console.log('[TRACE/cases] matched listing page, variant:', variant);
-      setTimeout(function() { 
-        console.log('[TRACE/cases] calling init, variant:', variant, 'CaseGrid.init:', !!CaseGrid.init);
-        init(variant); 
-      }, 50);
-    } else {
-      console.log('[TRACE/cases] NOT a listing page path:', path);
+    if (/^\/cases\/$/.test(path) || /^\/cases$/.test(path)) {
+      var variant = document.body.getAttribute("data-case-variant") || "pc";
+      init(variant);
     }
   });
 
+  /* ── Auto-init based on data attribute ──────────── */
+  window.CaseGrid = { init: init, FILTERS: FILTERS, ROI_CASES: ROI_CASES };
+  /* ── SPA navigation: re-init after swup content:replace ── */
+  document.addEventListener("spa:load", function () {
+    var path = window.location.pathname;
+    if (/^\/cases\//.test(path) && !/^\/cases\/[a-z0-9-]+\/$/.test(path)) {
+      // Only re-init on the listing page, not detail pages
+      var variant = document.body.getAttribute("data-case-variant") || "pc";
+      setTimeout(function () {
+        init(variant);
+      }, 50);
+    } else {
+    }
+  });
 })();

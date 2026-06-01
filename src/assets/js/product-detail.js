@@ -15,7 +15,11 @@
   // Read from SITE_CONFIG.categories.products (config-driven)
   var _pdCfg = window.SITE_CONFIG || {};
   var _pdCats = (_pdCfg.categories || {}).products || [];
-  var CATEGORY_SLUGS = _pdCats.map(function (c) { return c.slug || ""; }).filter(Boolean);
+  var CATEGORY_SLUGS = _pdCats
+    .map(function (c) {
+      return c.slug || "";
+    })
+    .filter(Boolean);
 
   function isCategorySlug(slug) {
     return CATEGORY_SLUGS.indexOf(slug) >= 0;
@@ -26,10 +30,11 @@
    * @returns {boolean} 是否匹配 PDP 路径模式
    */
   function isPDPPath() {
-    // /products/<category>/<model>/
-    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(window.location.pathname)) return true;
-    // /products/detail/<model>/  (旧兼容路由)
-    if (/^\/products\/detail\//.test(window.location.pathname)) return true;
+    var p = window.location.pathname.replace(/\/+$/, "");
+    // /products/<category>/<model>[/]
+    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/.test(p)) return true;
+    // /products/detail/<model>[/]  (旧兼容路由)
+    if (/^\/products\/detail\//.test(p)) return true;
     return false;
   }
 
@@ -99,7 +104,11 @@
               return i.isPrimary;
             }) || rp.images[0]
           ).filePath
-        : "/assets/images/products/" + (rp.category || "default") + "/" + (rp.id ? rp.id.split("-").pop() : "001") + ".webp";
+        : "/assets/images/products/" +
+          (rp.category || "default") +
+          "/" +
+          (rp.id ? rp.id.split("-").pop() : "001") +
+          ".webp";
     var gradients = [
       "from-primary/10 to-blue-100 dark:from-primary/20 dark:to-blue-900/30",
       "from-emerald-100 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/20",
@@ -108,7 +117,8 @@
     var grad = gradients[idx % gradients.length];
     return (
       '<a href="/products/' +
-      encodeURIComponent(rp.category || "all") + "/" +
+      encodeURIComponent(rp.category || "all") +
+      "/" +
       encodeURIComponent(rp.model) +
       '" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700">' +
       '<div class="h-36 bg-gradient-to-br ' +
@@ -230,11 +240,9 @@
   function renderPDP() {
     // 非 PDP 路径不执行渲染
     if (!isPDPPath()) {
-      console.log("[TRACE/pdp] renderPDP skipped: not a PDP path");
       return;
     }
 
-    console.log("[TRACE/pdp] renderPDP called, path:", window.location.pathname);
     // Read model from path: /products/<category>/<model>/
     var path = window.location.pathname.replace(/\/$/, "");
     var model = null;
@@ -248,10 +256,8 @@
         model = decodeURIComponent(m[1]);
       }
     }
-    if (!model) { console.log("[TRACE/pdp] no model found, skipping"); return; }
 
     var product = findProduct(model);
-    console.log("[TRACE/pdp] model=", model, "product found:", !!product);
     if (!product) {
       ensureContainers();
       var ce = document.getElementById("product-content");
@@ -292,8 +298,12 @@
         ? ((window.Breadcrumb && window.Breadcrumb.PRODUCT_SLUGS && window.Breadcrumb.PRODUCT_SLUGS[slug]) || {}).label
         : "";
       // Track referrer for back navigation
-      if (slug) { try { sessionStorage.setItem("pdp_referrer", "/products/" + slug + "/"); } catch(e) {} }
-      
+      if (slug) {
+        try {
+          sessionStorage.setItem("pdp_referrer", "/products/" + slug + "/");
+        } catch (e) {}
+      }
+
       // Set pdp-category-link href dynamically
       var categoryLink = document.getElementById("pdp-category-link");
       if (categoryLink && slug) {
@@ -335,11 +345,16 @@
       /* @audit-safe: config-driven-render */
       /* @audit-safe: config-driven-render */
       bcEl.innerHTML = html;
-      
     })();
 
     // Image: CMS upload > static
-    var imgSrc = product._categoryUrl || "/assets/images/products/" + (product.category || "default") + "/" + (product.id ? product.id.split("-").pop() : "001") + ".webp";
+    var imgSrc =
+      product._categoryUrl ||
+      "/assets/images/products/" +
+        (product.category || "default") +
+        "/" +
+        (product.id ? product.id.split("-").pop() : "001") +
+        ".webp";
     if (!imgSrc || imgSrc.indexOf("undefined") !== -1) {
       imgSrc = "/assets/images/products/default.webp";
     }
@@ -414,7 +429,7 @@
         esc(product.badge) +
         "</span>"
       : "";
-    var wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp || "8618565718814");
+    var wa = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814";
 
     // Video support: product.video or product.videoUrl from CMS
     var videoUrl = product.video || product.videoUrl || "";
@@ -487,7 +502,7 @@
       '<div class="w-full lg:w-1/2 relative">' +
       '<div class="relative w-full h-[220px] md:h-[400px] lg:h-[600px] bg-slate-100 dark:bg-slate-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl border border-white/10">' +
       mediaHtml +
-      '</div></div>' +
+      "</div></div>" +
       '<div class="w-full lg:w-1/2 flex flex-col gap-4 lg:gap-5 py-2"><div>' +
       '<div class="flex items-center gap-3 mb-2">' +
       '<span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">' +
@@ -537,10 +552,11 @@
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">' +
       '<h2 class="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 flex items-center gap-2">' +
       '<span class="material-symbols-outlined text-primary">specifications</span> ' +
-      tl("产品规格") + '</h2>' +
+      tl("产品规格") +
+      "</h2>" +
       '<div class="grid grid-cols-1 md:grid-cols-2 gap-3">' +
       specCards +
-      '</div></div></section>' +
+      "</div></div></section>" +
       // Section 3: CTA
       '<section class="w-full py-8 lg:py-12 bg-primary">' +
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 rounded-xl p-8 text-center">' +
@@ -572,12 +588,16 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    if (isPDPPath()) { renderPDP(); }
+    if (isPDPPath()) {
+      renderPDP();
+    }
   });
   // Use EventManager to prevent duplicate product-data-ready listeners in SPA
   var _pdpEM = window.DomUtils && new DomUtils.EventManager();
-  (_pdpEM || {on:function(){}}).on(document, "product-data-ready", function () {
-    if (isPDPPath()) { renderPDP(); }
+  (_pdpEM || { on: function () {} }).on(document, "product-data-ready", function () {
+    if (isPDPPath()) {
+      renderPDP();
+    }
   });
   // Multi-language helper: get product field for current language
   // Translate spec labels
@@ -629,19 +649,19 @@
     if (!product) return "";
     var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
     if (lang === "zh-CN" || lang === "zh") return product[field] || "";
-    
+
     // Priority: API translations > local translations > fallback to Chinese
     var tKey = product.model || product.id;
     var translations = window._productTranslations || {};
     var t = translations[tKey] || translations[product._productId];
-    
+
     // Check local translations file (API fallback)
     if (!t && window.PRODUCT_DATA_TRANSLATIONS) {
       t = window.PRODUCT_DATA_TRANSLATIONS[tKey];
     }
-    
-    if (t && t[field + 'En']) return t[field + 'En']; // fieldEn format (nameEn, descriptionEn)
-    if (t && t['nameEn' + field]) return t['nameEn' + field]; // alt format (nameEnDescription)
+
+    if (t && t[field + "En"]) return t[field + "En"]; // fieldEn format (nameEn, descriptionEn)
+    if (t && t["nameEn" + field]) return t["nameEn" + field]; // alt format (nameEnDescription)
     return product[field] || "";
   };
 
@@ -694,29 +714,27 @@
   };
 
   _spaOn(window, "languageChanged", function () {
-    if (isPDPPath()) { renderPDP(); }
+    if (isPDPPath()) {
+      renderPDP();
+    }
   });
   document.addEventListener("productTranslationsLoaded", function () {
-    if (isPDPPath()) { renderPDP(); }
+    if (isPDPPath()) {
+      renderPDP();
+    }
   });
   _spaOn(document, "spa:load", function () {
-    console.log("[TRACE/pdp] spa:load received");
     var segs = location.pathname.split("/").filter(Boolean);
-    console.log("[ProductDetail] spa:load fired, pathname:", location.pathname, "segs:", segs);
     // Only render PDP on /products/<category>/<model>/ or /products/<model>/ (non-category)
     if (segs[0] === "products") {
       if (segs[1] === "detail" && segs[2]) {
-        console.log("[ProductDetail] Rendering PDP (detail path)");
         renderPDP();
       } else if (segs.length >= 3 && segs[1] && segs[2]) {
         // New route: /products/<category>/<model>/ — always PDP
-        console.log("[ProductDetail] Rendering PDP (new route)");
         renderPDP();
       } else if (segs[1] && segs[1] !== "compare" && !isCategorySlug(segs[1])) {
-        console.log("[ProductDetail] Rendering PDP (legacy model path)");
         renderPDP();
       } else {
-        console.log("[ProductDetail] Skipping PDP (category/listing page):", segs[1]);
       }
     }
   });

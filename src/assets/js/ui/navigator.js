@@ -45,7 +45,11 @@
 
   /** i18n helper: translate key via window.translationManager */
   function _t(k) {
-    if (typeof window !== 'undefined' && window.translationManager && typeof window.translationManager.translate === 'function') {
+    if (
+      typeof window !== "undefined" &&
+      window.translationManager &&
+      typeof window.translationManager.translate === "function"
+    ) {
       var r = window.translationManager.translate(k);
       return r && r !== k ? r : k;
     }
@@ -275,7 +279,9 @@
       '<input class="ios-search-input" id="' +
       inputId +
       '" ' +
-      'placeholder="' + _t("search_products_placeholder") + '" ' +
+      'placeholder="' +
+      _t("search_products_placeholder") +
+      '" ' +
       'data-i18n-placeholder="' +
       escapeHtml(opts.placeholderI18n || "search_placeholder") +
       '" ' +
@@ -1309,6 +1315,10 @@
       // Replace placeholder with header directly.
       // Main content spacing is handled by CSS: main#spa-content { padding-top: var(--nav-height) }
       // No spacer div needed — prevents double-spacing bug on non-home pages.
+      // Transfer swup persist attribute so SPA navigation keeps the header
+      if (placeholder.hasAttribute("data-swup-persist")) {
+        headerEl.setAttribute("data-swup-persist", placeholder.getAttribute("data-swup-persist"));
+      }
       placeholder.parentNode.replaceChild(headerEl, placeholder);
     }
 

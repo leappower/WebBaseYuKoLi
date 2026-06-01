@@ -360,7 +360,6 @@
   var _dataLoaded = false;
 
   function loadFromAPI(callback) {
-    console.log('[TRACE/product-grid] loadFromAPI: _dataLoaded=', _dataLoaded, 'PRODUCT_DATA_TABLE.length=', (window.PRODUCT_DATA_TABLE||[]).length);
     if (_dataLoaded) {
       if (callback) callback();
       return;
@@ -448,7 +447,13 @@
           if (primary && primary.filePath) img = primary.filePath;
         }
         result.push(
-          (function() { var o = {}; for (var k in p) o[k] = p[k]; o._category = cat.category || cat.slug || ""; o._imageUrl = img; return o; })()
+          (function () {
+            var o = {};
+            for (var k in p) o[k] = p[k];
+            o._category = cat.category || cat.slug || "";
+            o._imageUrl = img;
+            return o;
+          })()
         );
       });
     });
@@ -517,7 +522,8 @@
     return (
       '<article class="product-card group flex flex-col bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
       selectedClass +
-      '" data-accent="' + accent +
+      '" data-accent="' +
+      accent +
       '" data-category="' +
       cat +
       '" data-tier="' +
@@ -585,7 +591,8 @@
     return (
       '<article class="product-card-tablet flex flex-col bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden' +
       selectedClass +
-      '" data-accent="' + accent +
+      '" data-accent="' +
+      accent +
       '" data-category="' +
       cat +
       '" data-model="' +
@@ -644,7 +651,8 @@
     return (
       '<article class="product-card-mobile bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden relative' +
       selectedClass +
-      '" data-accent="' + accent +
+      '" data-accent="' +
+      accent +
       '" data-category="' +
       cat +
       '" data-model="' +
@@ -728,7 +736,8 @@
     nav.className = "gallery-pagination flex items-center justify-center gap-4 mt-8 mb-4";
 
     var prevBtn = document.createElement("button");
-    prevBtn.className = "gallery-prev px-4 py-2 rounded-xl font-bold text-sm transition-all " +
+    prevBtn.className =
+      "gallery-prev px-4 py-2 rounded-xl font-bold text-sm transition-all " +
       (currentPage === 0
         ? "text-slate-300 dark:text-slate-600 cursor-not-allowed"
         : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800");
@@ -737,10 +746,11 @@
 
     var indicator = document.createElement("span");
     indicator.className = "text-sm font-semibold text-slate-600 dark:text-slate-400";
-    indicator.textContent = (currentPage + 1) + " / " + totalPages;
+    indicator.textContent = currentPage + 1 + " / " + totalPages;
 
     var nextBtn = document.createElement("button");
-    nextBtn.className = "gallery-next px-4 py-2 rounded-xl font-bold text-sm transition-all " +
+    nextBtn.className =
+      "gallery-next px-4 py-2 rounded-xl font-bold text-sm transition-all " +
       (currentPage >= totalPages - 1
         ? "text-slate-300 dark:text-slate-600 cursor-not-allowed"
         : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800");
@@ -799,7 +809,6 @@
 
   function getFilteredProducts() {
     var products = getAllProducts();
-    console.log("[TRACE/product-grid] getFilteredProducts: total=", products.length, "activeCategory=", _activeCategory);
     if (_activeCategory !== "all") {
       products = products.filter(function (p) {
         return p._category === _activeCategory;
@@ -825,7 +834,6 @@
 
   function renderGrid(containerId, renderer, maxCount) {
     var container = document.getElementById(containerId);
-    console.log("[TRACE/product-grid] renderGrid: containerId=", containerId, "exists=", !!container, "renderer=", !!renderer, "maxCount=", maxCount);
     if (!container) return;
 
     // Gallery mode: use pagination instead of load-more
@@ -879,18 +887,15 @@
   var _renderPending = false;
 
   function autoRender() {
-    console.log('[TRACE/product-grid] autoRender called, path:', window.location.pathname);
     // Re-sync _activeCategory from current URL (needed for SPA navigation)
     var pathMatch = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (pathMatch && pathMatch[1]) {
       _activeCategory = pathMatch[1];
-    } else if (window.location.pathname.indexOf('/products/') === -1) {
-      _activeCategory = 'all';
+    } else if (window.location.pathname.indexOf("/products/") === -1) {
+      _activeCategory = "all";
     }
-    if (_renderPending) { console.log("[TRACE/product-grid] autoRender: _renderPending=true, skipping"); return; }
     var data = window[STORE_KEY];
     var hasData = Array.isArray(data) && data.length > 0;
-    console.log("[TRACE/product-grid] autoRender: hasData=", hasData, "dataLen=", (data||[]).length, "_activeCategory=", _activeCategory);
     if (hasData) {
       _renderPending = false;
       doRender();
@@ -905,14 +910,14 @@
       // Register a one-shot listener for the data-ready event.
       // If data arrives later, re-render with correct category.
       var _onDataReady = function () {
-        global.removeEventListener('product-data-ready', _onDataReady);
+        global.removeEventListener("product-data-ready", _onDataReady);
         _renderPending = false;
         doRender();
       };
-      global.addEventListener('product-data-ready', _onDataReady);
+      global.addEventListener("product-data-ready", _onDataReady);
       // Safety: if data already loaded between loadFromAPI and here, render now
       if (Array.isArray(global.PRODUCT_DATA_TABLE) && global.PRODUCT_DATA_TABLE.length > 0) {
-        global.removeEventListener('product-data-ready', _onDataReady);
+        global.removeEventListener("product-data-ready", _onDataReady);
         window[STORE_KEY] = global.PRODUCT_DATA_TABLE;
         _renderPending = false;
         doRender();
@@ -926,12 +931,12 @@
     // Reset loadMore binding so it picks up the current filtered products
     var _loadMoreBtn = document.querySelector('[data-i18n="products_load_more"]');
     if (_loadMoreBtn) _loadMoreBtn._bound = false;
-    console.log("[TRACE/product-grid] doRender: cats.length=", cats.length, "prods.length=", prods.length);
     if (!cats.length) {
       console.warn("[ProductGrid] doRender: no categories, showing empty state");
       var target = document.getElementById("product-list") || document.getElementById("product-grid");
       if (target) {
-        target.innerHTML = '<div class="col-span-full flex flex-col items-center justify-center py-20 text-slate-400 dark:text-slate-500">' +
+        target.innerHTML =
+          '<div class="col-span-full flex flex-col items-center justify-center py-20 text-slate-400 dark:text-slate-500">' +
           '<span class="material-symbols-outlined text-4xl mb-4">inventory_2</span>' +
           '<p class="text-lg font-medium text-slate-500 dark:text-slate-400">' +
           '<span data-i18n="no_products_available">No products available yet.</span></p></div>';
@@ -1014,20 +1019,14 @@
 
     // "全部产品" button (data-i18n for multi-language)
     var allBtn = document.createElement("button");
-    allBtn.className =
-      "category-tab active " +
-      tabSizeClass +
-      " font-bold whitespace-nowrap rounded-xl";
+    allBtn.className = "category-tab active " + tabSizeClass + " font-bold whitespace-nowrap rounded-xl";
     allBtn.dataset.category = "all";
     allBtn.innerHTML = '<span data-i18n="products_all_hero_badge">全部产品</span>';
     allTabs.push(allBtn);
 
     categories.forEach(function (cat) {
       var btn = document.createElement("button");
-      btn.className =
-        "category-tab " +
-        tabSizeClass +
-        " font-semibold whitespace-nowrap rounded-xl";
+      btn.className = "category-tab " + tabSizeClass + " font-semibold whitespace-nowrap rounded-xl";
       btn.dataset.category = cat.key;
       var emoji = CATEGORY_EMOJI[cat.key] || "";
       var i18nKey = "nav_products_" + cat.key;
@@ -1035,9 +1034,15 @@
       var displayName = cat.name || cat.key;
       if (emoji) {
         btn.innerHTML =
-          '<span class="cat-tab-emoji">' + emoji + '</span> <span data-i18n="' + i18nKey + '">' + displayName + '</span>';
+          '<span class="cat-tab-emoji">' +
+          emoji +
+          '</span> <span data-i18n="' +
+          i18nKey +
+          '">' +
+          displayName +
+          "</span>";
       } else {
-        btn.innerHTML = '<span data-i18n="' + i18nKey + '">' + displayName + '</span>';
+        btn.innerHTML = '<span data-i18n="' + i18nKey + '">' + displayName + "</span>";
       }
       allTabs.push(btn);
     });
@@ -1148,7 +1153,7 @@
     // Recalculate on resize (debounced, auto-cleanup via EventManager)
     var resizeTimer;
     var _tabEM = window.DomUtils && new DomUtils.EventManager();
-    (_tabEM || {on:function(){}}).on(window, "resize", function () {
+    (_tabEM || { on: function () {} }).on(window, "resize", function () {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(function () {
         calcDynamicMax();
@@ -1241,10 +1246,7 @@
     var list = document.getElementById("product-list");
     if (grid && grid.querySelector(".sk-product-card")) {
       console.warn("[ProductGrid] Skeleton still present after 5s — clearing");
-      var errorMsg =
-        typeof window.t === "function"
-          ? window.t("products_load_error")
-          : "产品加载失败，请刷新页面重试";
+      var errorMsg = typeof window.t === "function" ? window.t("products_load_error") : "产品加载失败，请刷新页面重试";
       var retryText = typeof window.t === "function" ? window.t("products_load_retry") : "重新加载";
       /* @audit-safe: internal-data */
       /* @audit-safe: internal-data */
@@ -1258,10 +1260,7 @@
     }
     if (list && list.querySelector(".sk-product-card")) {
       console.warn("[ProductGrid] Skeleton still present in list after 5s — clearing");
-      var errorMsg =
-        typeof window.t === "function"
-          ? window.t("products_load_error")
-          : "产品加载失败，请刷新页面重试";
+      var errorMsg = typeof window.t === "function" ? window.t("products_load_error") : "产品加载失败，请刷新页面重试";
       var retryText = typeof window.t === "function" ? window.t("products_load_retry") : "重新加载";
       /* @audit-safe: internal-data */
       /* @audit-safe: internal-data */
@@ -1334,9 +1333,8 @@
     },
     retryLoad: function () {
       _dataLoaded = false;
-      _fetchPromise = null;
       _renderPending = false;
       autoRender();
-    }
+    },
   };
 })(window);

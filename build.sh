@@ -145,8 +145,8 @@ node scripts/build-ssg.js 2>&1 | grep -E 'Step|✓|✅|WARN|ERROR' || echo "  (S
 # ─── 9. Sitemap ─────────────────────────────────────────────────
 node scripts/generate-sitemap.js 2>/dev/null || echo "  ⚠️  sitemap generation skipped"
 
-# ─── 10. 版本号注入 (production only) ──────────────────────────
-if [ "$BUILD_MODE" != "dev" ]; then
+# ─── 10. 版本号注入 (dev + production) ──────────────────────────
+if true; then
   echo "🔄 Bumping version to $VERSION_TAG..."
   python3 -c "
 import os, re

@@ -117,21 +117,26 @@
 
   function runPageInitByRoute() {
     var path = global.location.pathname;
-    console.log("[TRACE] runPageInitByRoute called, path:", path);
 
     // product-grid: /products/<slug>/ 产品分类页
     var prodMatch = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\//);
     if (prodMatch) {
-      if (typeof global.ProductGrid !== "undefined" && global.ProductGrid) {
-        try {
-          if (typeof global.ProductGrid.autoRender === "function") {
-            global.ProductGrid.autoRender();
-          } else if (typeof global.ProductGrid.init === "function") {
-            global.ProductGrid.init();
-          }
-        } catch (e) {
-          /* noop */
+      try {
+        if (
+          typeof global.ProductGrid !== "undefined" &&
+          global.ProductGrid &&
+          typeof global.ProductGrid.autoRender === "function"
+        ) {
+          global.ProductGrid.autoRender();
+        } else if (
+          typeof global.ProductGrid !== "undefined" &&
+          global.ProductGrid &&
+          typeof global.ProductGrid.init === "function"
+        ) {
+          global.ProductGrid.init();
         }
+      } catch (e) {
+        console.warn("[SWUP] ProductGrid init error:", e);
       }
     }
 
@@ -148,47 +153,56 @@
 
     // product-detail PDP: /products/<category>/<model>/（新路由）+ 旧兼容
     if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path) || /^\/products\/detail\//.test(path)) {
-      if (typeof global.ProductDetail !== "undefined" && global.ProductDetail && global.ProductDetail.init) {
+      if (typeof global.ProductDetail !== "undefined" && global.ProductDetail && typeof global.ProductDetail.init) {
         try {
           global.ProductDetail.init();
         } catch (e) {
-          /* noop */
+          console.warn("[SWUP] ProductDetail.init error:", e);
         }
+      } else if (!document.querySelector("script[data-force-product-detail]")) {
+        var pd = document.createElement("script");
+        pd.src = "/assets/js/product-detail.js?v=" + (global.SW_VERSION || Date.now());
+        pd.async = true;
+        pd.setAttribute("data-force-product-detail", "1");
+        document.head.appendChild(pd);
       }
     }
 
     // cases: 案例页
     if (/^\/cases/.test(path)) {
-      // Detail page (e.g. /cases/sea-coffee-brand/) — deferred: ScriptsPlugin loads case-detail.js after content:replace
+      // Detail page (e.g. /cases/sea-coffee-brand/)
       if (/^\/cases\/[a-z-]+/.test(path)) {
-        setTimeout(function () {
-          if (
-            typeof global.CaseDetail !== "undefined" &&
-            global.CaseDetail &&
-            typeof global.CaseDetail.init === "function"
-          ) {
-            try {
-              global.CaseDetail.init();
-            } catch (e) {
-              /* noop */
-            }
+        if (
+          typeof global.CaseDetail !== "undefined" &&
+          global.CaseDetail &&
+          typeof global.CaseDetail.init === "function"
+        ) {
+          try {
+            global.CaseDetail.init();
+          } catch (e) {
+            console.warn("[SWUP] CaseDetail.init error:", e);
           }
-        }, 100);
+        } else if (!document.querySelector("script[data-force-case-detail]")) {
+          var cs = document.createElement("script");
+          cs.src = "/assets/js/case-detail.js?v=" + (global.SW_VERSION || Date.now());
+          cs.async = true;
+          cs.setAttribute("data-force-case-detail", "1");
+          document.head.appendChild(cs);
+        }
       } else {
         // List page (/cases/)
-        if (typeof global.CasesPage !== "undefined" && global.CasesPage && global.CasesPage.init) {
-          try {
-            global.CasesPage.init();
-          } catch (e) {
-            /* noop */
-          }
-        }
-        if (typeof global.CaseGrid !== "undefined" && global.CaseGrid && global.CaseGrid.init) {
+        if (typeof global.CaseGrid !== "undefined" && global.CaseGrid && typeof global.CaseGrid.init) {
           try {
             global.CaseGrid.init();
           } catch (e) {
-            /* noop */
+            console.warn("[SWUP] CaseGrid.init error:", e);
           }
+        } else if (!document.querySelector("script[data-force-case-grid]")) {
+          var cg = document.createElement("script");
+          cg.src = "/assets/js/case-grid.js?v=" + (global.SW_VERSION || Date.now());
+          cg.async = true;
+          cg.setAttribute("data-force-case-grid", "1");
+          document.head.appendChild(cg);
         }
       }
     }
@@ -391,7 +405,8 @@
    *
    * 更新: 添加新的全局 JS 文件时，在此列表追加即可。
    */
-  var _globalScriptPatterns = window._BREW_GLOBAL_PATTERNS ||
+  var _globalScriptPatterns =
+    window._BREW_GLOBAL_PATTERNS ||
     /(?:^|[/])(?:device-utils|swup(?:-head-plugin|-scroll-plugin|-scripts-plugin)?[.-]|swup-init|lang-registry|translations|translations-dropdown-template|dropdown-styles|dropdown-base|products-dropdown|solutions-dropdown|applications-dropdown|support-dropdown|about-dropdown|nav-dropdown|mega-menu|custom-select|navigator|slide-menu|search-engine|footer|floating-actions|contacts|product-grid|product-detail|home-core-products|case-grid|currency|breadcrumb|trust-bar|bottom-tab|search-index|page-init|dom-utils)\.js/;
 
   /**
@@ -468,7 +483,6 @@
     }
 
     if (toInject.length > 0) {
-      console.log("[SWUP] reloadPageScripts: injecting", toInject.length, "page-specific scripts");
       (window.requestIdleCallback || window.setTimeout)(function () {
         injectBatch(0);
       });
@@ -492,7 +506,8 @@
         resolveUrl: function (url) {
           // PDP 模板 /pages/pdp/ 和 cases detail /pages/cases/detail/ 是内部分配路径
           // 不应通过 resolveUrl 映射到地址栏
-          if (url.indexOf("/pages/pdp/") !== -1 || url.indexOf("/pages/cases/detail/") !== -1) return window.location.pathname;
+          if (url.indexOf("/pages/pdp/") !== -1 || url.indexOf("/pages/cases/detail/") !== -1)
+            return window.location.pathname;
 
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
@@ -547,8 +562,6 @@
         var page = _a ? _a.page : null;
         if (!page) return;
 
-        console.log("[TRACE] content:replace START, path:", global.location.pathname);
-
         hideSkeleton();
 
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
@@ -567,15 +580,22 @@
 
         // SPA 导航到产品分类页（非 PDP）：触发 ProductGrid 渲染
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
-          console.log("[TRACE] product page detected, ProductGrid exists:", !!global.ProductGrid);
-          if (global.ProductGrid && typeof global.ProductGrid.retryLoad === "function") {
-            console.log("[TRACE] calling ProductGrid.retryLoad");
-            global.ProductGrid.retryLoad();
-          } else if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
-            setTimeout(function() { global.ProductGrid.autoRender(); }, 100);
-          } else {
-            // product-grid.js not loaded — wait for spa:load to handle it
-            console.log("[TRACE] ProductGrid not available, waiting for spa:load");
+          if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
+            try {
+              global.ProductGrid.autoRender();
+            } catch (e) {
+              console.warn("[SWUP] ProductGrid.autoRender error:", e);
+            }
+          } else if (!document.querySelector("script[data-force-grid]")) {
+            // product-grid.js not loaded — force inject once
+            var gridContainer = document.getElementById("product-grid") || document.getElementById("product-list");
+            if (gridContainer) {
+              var s = document.createElement("script");
+              s.src = "/assets/js/product-grid.js?v=" + (global.SW_VERSION || Date.now());
+              s.async = true;
+              s.setAttribute("data-force-grid", "1");
+              document.head.appendChild(s);
+            }
           }
         }
 
@@ -600,19 +620,18 @@
           if (!container) return;
           var imgs = container.querySelectorAll('img[loading="lazy"]');
           for (var i = 0; i < imgs.length; i++) {
-            var src = imgs[i].getAttribute('src');
+            var src = imgs[i].getAttribute("src");
             if (src) {
-              imgs[i].removeAttribute('src');
+              imgs[i].removeAttribute("src");
               void imgs[i].offsetWidth;
-              imgs[i].setAttribute('src', src);
+              imgs[i].setAttribute("src", src);
             }
           }
         }, 100);
-        });
+      });
 
       // ─── page:view — 派发 spa:load 兼容事件（页面完全渲染后）───
       swup.hooks.on("page:view", function () {
-        console.log("[TRACE] page:view -> dispatchSpaLoad, path:", global.location.pathname);
         dispatchSpaLoad();
       });
 
