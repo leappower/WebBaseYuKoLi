@@ -3,7 +3,7 @@
  * Supports PC / tablet / mobile layouts via CSS classes
  * Includes product compare integration (cross-page via localStorage)
  */
-(function () {
+(function (global) {
   "use strict";
 
   var _spaRegs = {};
@@ -1334,8 +1334,7 @@
       _dataLoaded = false;
       _fetchPromise = null;
       _renderPending = false;
-      delete window[STORE_KEY];
       autoRender();
-    },
+    }
   };
-})();
+})(window);
