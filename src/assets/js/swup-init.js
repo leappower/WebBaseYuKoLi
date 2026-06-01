@@ -63,7 +63,31 @@
     }
   }
 
+  function createSkeletonIfMissing() {
+    if (document.getElementById("skeleton-overlay")) return true;
+    var container = document.getElementById("spa-content");
+    if (!container) return false;
+    var overlay = document.createElement("div");
+    overlay.id = "skeleton-overlay";
+    overlay.innerHTML =
+      '<div class="skeleton-container">' +
+      '<div class="sk-hero"><div class="sk-badge"></div>' +
+      '<div class="sk-line"></div><div class="sk-line sk-line--short"></div>' +
+      '<div class="sk-line sk-line--desc"></div>' +
+      '<div class="sk-cta-group"><div class="sk-line sk-cta"></div>' +
+      '<div class="sk-line sk-cta sk-cta--outline"></div></div></div>' +
+      '<div class="sk-grid"><div class="sk-card"></div>' +
+      '<div class="sk-card"></div><div class="sk-card"></div></div>' +
+      '</div>';
+    overlay.setAttribute("hidden", "");
+    overlay.style.opacity = "0";
+    overlay.style.pointerEvents = "none";
+    container.parentNode.insertBefore(overlay, container);
+    return true;
+  }
+
   function showSkeleton() {
+    createSkeletonIfMissing();
     var overlay = document.getElementById("skeleton-overlay");
     if (overlay && overlay.hasAttribute("hidden")) {
       // 跳过过渡：先禁用 transition, 显示, 再恢复
@@ -489,8 +513,27 @@
           }
           swup.navigate(currentUrl, { history: "replace" });
         } else {
-          // SSG 模式: 页面上已有内容, 渐隐骨架
-          hideSkeleton();
+          // SSG 模式: 页面上已有内容
+          // 如果页面有骨架元素（通过 SSG 构建注入），渐变过渡
+          // 否则直接显示内容
+          if (document.getElementById("skeleton-overlay")) {
+            hideSkeleton();
+          } else {
+            // 无骨架：创建骨架并人工设置初始状态，然后渐隐
+            createSkeletonIfMissing();
+            var overlay = document.getElementById("skeleton-overlay");
+            if (overlay) {
+              // 立即显示骨架，然后在下一帧设置 fade-out
+              overlay.style.transition = "none";
+              overlay.removeAttribute("hidden");
+              overlay.style.opacity = "1";
+              // 强制重绘后触发过渡
+              overlay.offsetWidth;
+              overlay.style.transition = "opacity 350ms ease-out";
+              overlay.setAttribute("hidden", "");
+              container.classList.add("swup-fade-in");
+            }
+          }
           // 运行页面级 JS 初始化（如 product-grid, home-core-products 等）
           // 这确保 SSG 页面首次加载时渲染动态内容
           setTimeout(function () {

@@ -347,6 +347,25 @@ function generateRouteIndex(route) {
   // Write to dist/<slug>/index.html
   const distRouteDir = path.join(DIST_DIR, route.slug);
   ensureDir(distRouteDir);
+  // Inject skeleton overlay before footer — provides visual transition on first load
+  if (html.indexOf('skeleton-overlay') === -1) {
+    const skeletonHTML =
+      '<div id="skeleton-overlay">' +
+      '<div class="skeleton-container">' +
+      '<div class="sk-hero"><div class="sk-badge"></div>' +
+      '<div class="sk-line"></div><div class="sk-line sk-line--short"></div>' +
+      '<div class="sk-line sk-line--desc"></div>' +
+      '<div class="sk-cta-group"><div class="sk-line sk-cta"></div>' +
+      '<div class="sk-line sk-cta sk-cta--outline"></div></div></div>' +
+      '<div class="sk-grid"><div class="sk-card"></div>' +
+      '<div class="sk-card"></div><div class="sk-card"></div></div>' +
+      '</div></div>';
+    html = html.replace(
+      /<footer[^>]*data-component="footer"/,
+      skeletonHTML + '\n<footer data-component="footer"'
+    );
+  }
+
   const distFile = path.join(distRouteDir, 'index.html');
 
   fs.writeFileSync(distFile, html, 'utf-8');
