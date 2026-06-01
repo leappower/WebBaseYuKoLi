@@ -425,10 +425,6 @@
       });
 
       // ─── 启动 SWUP ────────
-      swup.on("event", function (eventName) {
-        // 捕获所有事件，用于调试
-      });
-
       swup.init();
     } catch (e) {
       console.error("[SWUP] Failed to initialize SWUP:", e);
