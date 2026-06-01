@@ -3,7 +3,6 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /products/detail/
-Disallow: /quote/
 Disallow: /thank-you/
 
 Sitemap: https://brew.yukoli.com/sitemap.xml

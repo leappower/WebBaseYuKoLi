@@ -418,7 +418,6 @@
       pages: {
         home: "/home/",
         products: "/products/",
-        quote: "/quote/",
         thankYou: "/thank-you/",
         support: "/support/",
         cases: "/cases/",
@@ -692,7 +691,7 @@
     cta: {
       primary: {
         text: { en: "Get Quote", "zh-CN": "获取报价" },
-        href: "/quote/",
+        href: "/contact/",
         style: "cta", // "primary" | "cta" | "whatsapp" (映射到 .btn-* 类)
       },
       whatsapp: {

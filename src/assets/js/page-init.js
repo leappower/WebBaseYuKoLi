@@ -27,7 +27,6 @@
   var PAGES = Object.freeze({
     home: _routes.home || "/home/",
     products: _routes.products || "/products/",
-    quote: _routes.quote || "/quote/",
     thankYou: _routes.thankYou || "/thank-you/",
     // landing: _routes.landing || "/landing/",  // removed
     support: _routes.support || "/support/",
