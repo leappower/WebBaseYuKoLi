@@ -416,39 +416,23 @@
 
         hideSkeleton();
 
+        // 检查容器是否存在（避免 404 页面缺少 #spa-content）
         var container = document.getElementById("spa-content");
-        if (container) {
-          container.classList.add("swup-fade-in");
+        if (!container) {
+          // 容器不存在 → fallback 到原生导航
+          console.warn("[SWUP] #spa-content not found in incoming page, falling back to native navigation");
+          swup.navigate(visit.to.url).catch(function () { global.location.href = visit.to.url; });
+          return;
         }
+        container.classList.add("swup-fade-in");
 
-        // SPA 导航时不重新执行 SSG 页面中的 defer 脚本，
-        // 确保页面级 JS（如 ProductGrid、PRODUCT_DATA_TABLE）已加载
+        // SPA 导航到品类页：触发 ProductGrid 渲染
+        // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染
         var p = global.location.pathname;
-        if (/^\/products\/[a-z]+\/$/.test(p) && !global.ProductGrid) {
-          (function () {
-            if (!global.PRODUCT_DATA_TABLE) {
-              var d = document.createElement("script");
-              d.src = "/assets/js/product-data-table.js?v=" + (global.BUILD_VERSION || "202605271233");
-              d.onload = function () {
-                if (!global.ProductGrid) {
-                  var s = document.createElement("script");
-                  s.src = "/assets/js/product-grid.js?v=" + (global.BUILD_VERSION || "202605271233");
-                  s.onload = function () {
-                    if (global.ProductGrid && global.ProductGrid.init) global.ProductGrid.init();
-                  };
-                  document.body.appendChild(s);
-                }
-              };
-              document.body.appendChild(d);
-            } else {
-              var s = document.createElement("script");
-              s.src = "/assets/js/product-grid.js?v=" + (global.BUILD_VERSION || "202605271233");
-              s.onload = function () {
-                if (global.ProductGrid && global.ProductGrid.init) global.ProductGrid.init();
-              };
-              document.body.appendChild(s);
-            }
-          })();
+        if (/^\/products\/[a-z]+\/$/.test(p)) {
+          if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
+            setTimeout(function () { global.ProductGrid.autoRender(); }, 50);
+          }
         }
 
         // 重新运行页面 init 函数
