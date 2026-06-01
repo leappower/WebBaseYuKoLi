@@ -378,7 +378,22 @@ function resolvePage(reqPath) {
   // page as a full-page refresh instead of routing to the correct PDP.
   // PDP is now exclusively /products/<category>/<model>/
 
-  // 7. SPA shell
+  // 7. SPA shell — for known SPA routes
+  var spaPatterns = [
+    /^\/home\//, /^\/products\//, /^\/solutions\//, /^\/contact\//,
+    /^\/cases\//, /^\/support\//, /^\/quote\//, /^\/thank-you\//,
+    /^\/about\//, /^\/news\//
+  ];
+  var isSpaRoute = spaPatterns.some(function (p) { return p.test(clean + '/'); });
+  if (isSpaRoute) {
+    return path.join(__dirname, 'dist', 'index.html');
+  }
+
+  // Not a known route → return 404.html
+  var nf = path.join(__dirname, 'dist', '404.html');
+  if (isFile(nf)) {
+    return nf;
+  }
   return path.join(__dirname, 'dist', 'index.html');
 }
 
@@ -387,14 +402,17 @@ function isFile(p) {
 }
 
 app.get('*', (req, res) => {
-  // Never intercept API routes
   if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Not found' });
 
   var resolved = resolvePage(req.path);
-  if (resolved.endsWith('index.html')) {
+  var isSpaShell = resolved.endsWith('index.html');
+  var is404 = resolved.endsWith('404.html');
+
+  if (isSpaShell) {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
     res.setHeader('Pragma', 'no-cache');
   }
+  if (is404) res.status(404);
   res.sendFile(resolved);
 });
 
@@ -411,9 +429,14 @@ app.use((err, req, res, _next) => {
   });
 });
 
-// 404 handler
+// 404 handler — 返回 HTML 页面
 app.use((req, res) => {
-  res.status(404).json({ error: 'Not Found' });
+  var notFound = path.join(__dirname, 'dist', '404.html');
+  if (isFile(notFound)) {
+    res.status(404).type('html').sendFile(notFound);
+  } else {
+    res.status(404).json({ error: 'Not Found' });
+  }
 });
 
 const PORT = process.env.PORT || 3099;
