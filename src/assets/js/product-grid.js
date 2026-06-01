@@ -932,9 +932,10 @@
       console.warn("[ProductGrid] doRender: no categories, showing empty state");
       var target = document.getElementById("product-list") || document.getElementById("product-grid");
       if (target) {
-        target.innerHTML = '<div class="col-span-full text-center py-16 text-gray-400">' +
-          '<span class="material-symbols-outlined text-5xl mb-3 block">inventory_2</span>' +
-          '<p><span data-i18n="no_products_available">No products available yet.</span></p></div>';
+        target.innerHTML = '<div class="col-span-full flex flex-col items-center justify-center py-20 text-slate-400 dark:text-slate-500">' +
+          '<span class="material-symbols-outlined text-4xl mb-4">inventory_2</span>' +
+          '<p class="text-lg font-medium text-slate-500 dark:text-slate-400">' +
+          '<span data-i18n="no_products_available">No products available yet.</span></p></div>';
       }
       var overlay = document.getElementById("skeleton-overlay");
       if (overlay) overlay.setAttribute("hidden", "");
