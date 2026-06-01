@@ -522,10 +522,11 @@
         }
       });
 
-      // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
+      // ─── visit:abort — 容器不匹配 / fetch 失败时 404 ───
       swup.hooks.on("visit:abort", function (visit) {
         global.__spaNavigating = false;
-        global.location.href = visit.to.url;
+        // 跳转到 404 页面（保留当前 URL 用 replaceState 设 404）
+        global.location.replace("/404?from=" + encodeURIComponent(visit.to.url));
       });
 
       // ─── visit:end — 清除导航标志 ───

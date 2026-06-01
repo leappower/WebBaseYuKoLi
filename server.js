@@ -408,15 +408,20 @@ function resolvePage(reqPath) {
   // page as a full-page refresh instead of routing to the correct PDP.
   // PDP is now exclusively /products/<category>/<model>/
 
-  // 7. SPA shell — for known SPA routes
-  var spaPatterns = [
-    /^\/home\//, /^\/products\//, /^\/solutions\//, /^\/contact\//,
-    /^\/cases\//, /^\/support\//, /^\/quote\//, /^\/thank-you\//,
-    /^\/about\//, /^\/news\//, /^\/profit-calculator\//, /^\/resources\//
-  ];
-  var isSpaRoute = spaPatterns.some(function (p) { return p.test(clean + '/'); });
-  if (isSpaRoute) {
-    return path.join(__dirname, 'dist', 'index.html');
+  // 7. SPA shell — for known SPA routes (exclude PDP format)
+  // PDP format /products/<cat>/<model>/ must NOT match SPA shell
+  // even if the product doesn't exist — the PDP template handles 404 internally
+  var isPdpFormat = /^\/products\/[a-z]+\/[A-Z0-9]+(?:-[a-zA-Z0-9]+)*$/.test(clean);
+  if (!isPdpFormat) {
+    var spaPatterns = [
+      /^\/home\//, /^\/products\//, /^\/solutions\//, /^\/contact\//,
+      /^\/cases\//, /^\/support\//, /^\/quote\//, /^\/thank-you\//,
+      /^\/about\//, /^\/news\//, /^\/profit-calculator\//, /^\/resources\//
+    ];
+    var isSpaRoute = spaPatterns.some(function (p) { return p.test(clean + '/'); });
+    if (isSpaRoute) {
+      return path.join(__dirname, 'dist', 'index.html');
+    }
   }
 
   // Not a known route → return 404.html
