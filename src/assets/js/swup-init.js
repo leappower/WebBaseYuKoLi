@@ -322,16 +322,17 @@
       return "/pages/products/" + slug + "/" + suffix;
     }
 
+    // 产品详情 PDP (三级路径): /products/detail/<model>/ — 必须在前优先匹配
+    if (/^\/products\/detail\//.test(path)) {
+      return "/pages/products/detail/" + suffix;
+    }
+
     // 产品详情 PDP: /products/<model>/
     if (
       /^\/products\/[^/]+\/$/.test(path) &&
       !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)
     ) {
       return "/pages/products/detail/" + suffix;
-
-      // 产品详情 PDP (三级路径): /products/detail/<model>/
-      var detailMatch = path.match(/^\/products\/detail\/([^\/]+)\/$/);
-      if (detailMatch) return "/pages/products/detail/" + suffix;
     }
 
     // 旧路由兼容: /beauty/ → /products/beauty/
