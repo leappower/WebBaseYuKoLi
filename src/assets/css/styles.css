@@ -3253,6 +3253,18 @@ html.dark .mega-menu-panel {
   gap: 32px;
   align-items: flex-start;
 }
+/* ───────── Solutions Grid (solutions landing page) ───────── */
+.solutions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+@media (max-width: 767px) {
+  .solutions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .mega-menu-grid {
   display: grid;
   gap: 16px;
