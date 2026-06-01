@@ -759,6 +759,26 @@ function main() {
     log('  ⚠ Image directory not found: ' + srcImagesDir);
   }
 
+  // Step 5.7: Copy PDF/files from src/assets/files to dist/assets/files
+  log('\nStep 5.7: Copying PDF/files...');
+  const srcFilesDir = path.join(SRC_DIR, 'assets', 'files');
+  const distFilesDir = path.join(DIST_DIR, 'assets', 'files');
+  if (fs.existsSync(srcFilesDir)) {
+    fs.mkdirSync(distFilesDir, { recursive: true });
+    const fileEntries = fs.readdirSync(srcFilesDir);
+    let filesCopied = 0;
+    for (const entry of fileEntries) {
+      const srcPath = path.join(srcFilesDir, entry);
+      const dstPath = path.join(distFilesDir, entry);
+      const stat = fs.statSync(srcPath);
+      if (stat.isFile()) {
+        fs.copyFileSync(srcPath, dstPath);
+        filesCopied++;
+      }
+    }
+    log('  ✓ Copied ' + filesCopied + ' file(s) to assets/files/');
+  }
+
   // Step 6: Patch CSS files for basePath (font URLs in local-fonts.css)
   if (BASE_PATH) {
     log('\nStep 6: Patching CSS files for basePath...');
