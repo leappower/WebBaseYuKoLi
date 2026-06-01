@@ -3711,3 +3711,9 @@ html.dark .cs-popup-panel .cs-group-label {
 .text-\[\#25d366\] {
   color: #25d366;
 }
+
+/* ─── Contact Form Builder Icons (三屏统一) ── */
+.builder-header .material-symbols-outlined { font-size: 1.125rem; }
+.builder-label .material-symbols-outlined { font-size: 0.875rem; }
+.builder-options .mode-icon { font-size: 1.25rem; }
+.brief-panel-title .material-symbols-outlined { font-size: 0.875rem; }
