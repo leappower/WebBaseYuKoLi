@@ -139,7 +139,18 @@
     <script src="/assets/js/ui/navigator.js?v=202605291142"></script>
     <script src="/assets/js/ui/footer.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script data-swup-reload-script>
+    <script>
+      // Both SSG load and SPA navigation
+      (function() {
+        if (window.CaseGrid) { CaseGrid.init('tablet'); return; }
+        var tries = 0;
+        var check = setInterval(function() {
+          tries++;
+          if (window.CaseGrid) { clearInterval(check); CaseGrid.init('tablet'); }
+          else if (tries > 30) clearInterval(check);
+        }, 100);
+      })();
+    </script>
       // SPA reload script
         if (window.CaseGrid) CaseGrid.init('tablet');
       });
