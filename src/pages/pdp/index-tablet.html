@@ -7,13 +7,13 @@
   <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/products/" />
   <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/products/" />
   <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/products/" />
-    <link rel="alternate" media="only screen and (max-width: 767px)" href="/products/detail/index-mobile.html" />
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/pdp/index-mobile.html" />
     <link
       rel="alternate"
       media="only screen and (min-width: 768px) and (max-width: 1279px)"
-      href="/products/detail/index-tablet.html"
+      href="/pdp/index-tablet.html"
     />
-    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/products/detail/index-pc.html" />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/pdp/index-pc.html" />
     <script>
       (function () {
         if (window.__redirectChecked) return;
@@ -44,7 +44,7 @@
     <meta name="robots" content="noindex,follow" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Product Details | {brand} Smart products manufacturing" />
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="pdp_page_title">Product Details | {brand} Smart products manufacturing</title>
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
@@ -64,12 +64,13 @@
   >
     <navigator
       data-component="navigator" data-swup-persist="nav"
-      data-variant="mobile"
+      data-variant="tablet"
       data-active="products"
       data-search="true"
+      data-cta-text-key="nav_get_quote"
+      data-cta-href="/contact/"
     ></navigator>
-<!-- Breadcrumb -->
-<main id="spa-content">
+    <main id="spa-content">
       
         <!-- Product category navigation (populated by product-detail.js) -->
         <div id="product-category-nav" class="hidden">
@@ -78,8 +79,8 @@
           <a href="" id="pdp-category-link" class="text-sm text-slate-500 hover:text-primary transition-colors"></a>
         </div>
         <div id="product-content" class="w-full py-10">
-          <div class="max-w-7xl mx-auto px-4 py-6">
-            <div class="grid grid-cols-2 gap-4">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="grid grid-cols-2 gap-6">
               <div class="sk-product-card"><div class="sk-product-img"></div><div class="sk-product-text"></div></div>
               <div class="sk-product-card"><div class="sk-product-img"></div><div class="sk-product-text"></div></div>
             </div>
@@ -88,7 +89,7 @@
 
                 <!-- Specs & Related rendered dynamically by product-detail.js -->
     </main>
-    <footer data-component="footer" data-swup-persist="footer" data-variant="mobile" data-cta="true"></footer>
+    <footer data-component="footer" data-swup-persist="footer" data-variant="tablet" data-cta="true"></footer>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
 <script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>

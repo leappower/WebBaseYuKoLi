@@ -367,7 +367,7 @@ function resolvePage(reqPath) {
   var pdpMatch = clean.match(/^\/products\/[a-z]+\/[A-Z0-9]+(?:-[a-zA-Z0-9]+)*$/);
   if (pdpMatch) {
     // Serve the PC detail template directly (SPA handles device detection client-side)
-    var pdpFile = path.join(__dirname, 'dist', 'pages', 'products', 'detail', 'index-pc.html');
+    var pdpFile = path.join(__dirname, 'dist', 'pages', 'pdp', 'index-pc.html');
     if (isFile(pdpFile)) {
       return pdpFile;
     }

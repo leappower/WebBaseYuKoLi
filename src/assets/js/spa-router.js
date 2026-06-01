@@ -527,8 +527,8 @@
           // Category page — convention: /products/<slug>/ → /pages/products/<slug>/index-pc.html
           pagePath = "/pages/products/" + segment + "/index-pc.html";
         } else {
-          // PDP — convention: /products/<model>/ → /pages/products/detail/index-pc.html
-          pagePath = "/pages/products/detail/index-pc.html";
+          // PDP — convention: /products/<model>/ → /pages/pdp/index-pc.html
+          pagePath = "/pages/pdp/index-pc.html";
         }
       }
 
@@ -925,8 +925,8 @@
       }
 
       // 产品详情页需要 product-detail.js
-      // 新路由: /products/<cat>/<model>/ ; 旧兼容: /products/detail/<model>/
-      if (path.indexOf("/products/detail/") !== -1 || /^\/products\/[a-z]+\/[A-Za-z0-9_-]+\/$/.test(path)) {
+      // 路由: /products/<cat>/<model>/
+      if (/^\/products\/[a-z]+\/[A-Za-z0-9_-]+\/$/.test(path)) {
         scripts.push({ src: "/assets/js/product-detail.js", id: "spa-product-detail" });
       }
 

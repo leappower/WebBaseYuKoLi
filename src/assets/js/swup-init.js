@@ -278,7 +278,7 @@
    * /home/         → /home/index-pc.html
    * /products/     → /products/index-pc.html
    * /products/coffee/ → /products/coffee/index-pc.html
-   * /products/<category>/<model>/ → /pages/products/detail/index-pc.html  (PDP)
+   * /products/<category>/<model>/ → /pages/pdp/index-pc.html  (PDP)
    * /solutions/oem/ → /solutions/oem/index-pc.html
    * /manufacturing/ → /manufacturing/index-pc.html
    * /compliance/   → /compliance/index-pc.html
@@ -324,7 +324,7 @@
 
     // 产品详情 PDP: /products/<category>/<model>/
     if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path)) {
-      return "/pages/products/detail/" + suffix;
+      return "/pages/pdp/" + suffix;
     }
 
     // 产品详情 PDP: /products/<model>/
@@ -332,7 +332,7 @@
       /^\/products\/[^/]+\/$/.test(path) &&
       !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)
     ) {
-      return "/pages/products/detail/" + suffix;
+      return "/pages/pdp/" + suffix;
     }
 
     // 旧路由兼容: /beauty/ → /products/beauty/
@@ -359,9 +359,9 @@
         linkSelector:
           'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
-          // /pages/products/detail/ 是 PDP 内部分配路径，不是公开 URL
-          // 不应通过 resolveUrl 将其映射到地址栏。返回 false 保留原始 URL
-          if (url.indexOf("/pages/products/detail/") !== -1) return false;
+          // PDP 模板文件 /pages/pdp/ 是内部分配路径，只在 fetch 时使用
+          // 不应通过 resolveUrl 映射到地址栏。返回 false 保留原始点击 URL
+          if (url.indexOf("/pages/pdp/") !== -1) return false;
 
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);

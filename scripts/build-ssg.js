@@ -103,7 +103,7 @@ const ROUTES = [
   { slug: 'news',         navId: 'news' },
   { slug: 'about',        navId: 'about' },
   { slug: 'contact',      navId: 'contact' },
-  { slug: 'products/detail', navId: 'products' },
+  { slug: .pdp., navId: 'products' },
   // Product category sub-pages
   { slug: 'products/stirfry',  navId: 'products' },
   { slug: 'products/cutting',  navId: 'products' },
