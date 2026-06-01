@@ -750,7 +750,7 @@
       var variant = document.body.getAttribute('data-case-variant') || 'pc';
       console.log('[TRACE/cases] matched listing page, variant:', variant);
       setTimeout(function() { 
-        console.log('[TRACE/cases] calling init, variant:', variant);
+        console.log('[TRACE/cases] calling init, variant:', variant, 'CaseGrid.init:', !!CaseGrid.init);
         init(variant); 
       }, 50);
     } else {

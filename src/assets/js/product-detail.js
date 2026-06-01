@@ -680,6 +680,7 @@
   _spaOn(window, "languageChanged", renderPDP, "languageChanged");
   document.addEventListener("productTranslationsLoaded", renderPDP);
   _spaOn(document, "spa:load", function () {
+    console.log("[TRACE/pdp] spa:load received");
     var segs = location.pathname.split("/").filter(Boolean);
     if (__DEVELOPMENT__) console.log("[ProductDetail] spa:load fired, pathname:", location.pathname, "segs:", segs);
     // Only render PDP on /products/<category>/<model>/ or /products/<model>/ (non-category)
