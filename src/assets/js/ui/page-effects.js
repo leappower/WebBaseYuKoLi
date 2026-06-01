@@ -65,7 +65,9 @@
     );
 
     // Avoid marking tiny utility wrappers (< 60px tall)
+    // Also skip sections that contain .solutions-grid (cards section is above-the-fold)
     targets = targets.filter(function (el) {
+      if (el.querySelector && el.querySelector(".solutions-grid")) return false;
       return el.offsetHeight > 60;
     });
 
