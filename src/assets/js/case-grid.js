@@ -265,6 +265,20 @@
   var activeFilters = { industry: null, volume: null, region: null, benefit: null };
 
   /* ── Helpers ────────────────────────────────────── */
+  function benefitColor(benefit) {
+    var map = {
+      "Fast Sampling": "#3b82f6",
+      "Halal Compliance": "#10b981",
+      "Multi-Certification": "#8b5cf6",
+      "Rapid Delivery": "#f59e0b",
+      "High Volume": "#ef4444",
+      "Flexible MOQ": "#06b6d4",
+      "Precision Nutrition": "#ec4899",
+      "Global Logistics": "#6366f1"
+    };
+    return map[benefit] || "#6366f1";
+  }
+
   function benefitLabel(key) {
     var map = {
       "Fast Sampling": "快打样",
@@ -324,8 +338,11 @@
    * Render a single case card (PC variant — used for PC & Tablet)
    */
   function renderCardPc(c) {
+    var barColor = benefitColor(c.benefit);
     return (
       '<div class="case-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all group border border-slate-200 dark:border-slate-700 hover:border-primary/50 flex flex-col">' +
+      "<!-- 顶部色条 -->" +
+      '<div class="w-full h-1 flex-shrink-0" style="background:' + esc(barColor) + '"></div>' +
       "<!-- 上方图片 16:9 -->" +
       '<div class="w-full aspect-video bg-slate-200 dark:bg-slate-700 overflow-hidden relative flex-shrink-0">' +
       '<img loading="lazy" alt="' +
@@ -333,22 +350,22 @@
       '" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="' +
       esc(c.image) +
       '" />' +
-      '<div class="absolute top-3 left-3 flex items-center gap-2">' +
-      '<span class="px-3 py-1 rounded-full bg-white/90 dark:bg-slate-800/90 text-sm font-semibold text-slate-700 dark:text-slate-200 backdrop-blur-sm">' +
-      esc(c.country) +
-      "</span>" +
-      '<span class="px-3 py-1 rounded-full bg-primary text-white text-sm font-bold">' +
-      esc(c.highlight) +
-      "</span>" +
-      "</div>" +
       "</div>" +
       "<!-- 下方内容 -->" +
       '<div class="flex-1 p-5 lg:p-6 flex flex-col gap-2.5">' +
+      '<div class="flex flex-wrap items-center gap-2">' +
       '<h3 class="font-bold text-lg lg:text-xl leading-snug text-slate-900 dark:text-white" data-i18n="cases_title_' +
       esc(c.slug) +
       '">' +
       esc(c.title) +
       "</h3>" +
+      '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
+      esc(c.highlight) +
+      "</span>" +
+      '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
+      esc(c.country) +
+      "</span>" +
+      "</div>" +
       '<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">' +
       '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span>' +
       esc(c.industry) +
@@ -398,22 +415,17 @@
    * Render a single case card (Mobile variant — compact)
    */
   function renderCardMobile(c) {
+    var barColor = benefitColor(c.benefit);
     return (
       '<div class="case-card bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700">' +
+      "<!-- 顶部色条 -->" +
+      '<div class="w-full h-1 flex-shrink-0" style="background:' + esc(barColor) + '"></div>' +
       '<div class="w-full aspect-video bg-slate-200 dark:bg-slate-700 overflow-hidden relative">' +
       '<img loading="lazy" alt="' +
       esc(c.title) +
       '" class="w-full h-full object-cover" src="' +
       esc(c.image) +
       '" />' +
-      '<div class="absolute top-2 left-2 flex items-center gap-1.5">' +
-      '<span class="px-2 py-0.5 rounded-full bg-white/90 dark:bg-slate-800/90 text-xs font-semibold text-slate-700 dark:text-slate-200 backdrop-blur-sm">' +
-      esc(c.country) +
-      "</span>" +
-      '<span class="px-2 py-0.5 rounded-full bg-primary text-white text-xs font-bold">' +
-      esc(c.highlight) +
-      "</span>" +
-      "</div>" +
       "</div>" +
       '<div class="p-4 flex flex-col gap-2">' +
       '<div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">' +
@@ -424,11 +436,19 @@
       esc(c.monthly_volume) +
       "</span>" +
       "</div>" +
+      '<div class="flex flex-wrap items-center gap-1.5">' +
       '<h3 class="font-bold text-base leading-snug" data-i18n="cases_title_' +
       esc(c.slug) +
       '">' +
       esc(c.title) +
       "</h3>" +
+      '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
+      esc(c.highlight) +
+      "</span>" +
+      '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
+      esc(c.country) +
+      "</span>" +
+      "</div>" +
       '<div class="flex items-center gap-2 text-xs">' +
       '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">schedule</span>' +
       esc(c.lead_time) +
