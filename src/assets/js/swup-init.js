@@ -462,23 +462,24 @@
 
         var p = global.location.pathname;
 
-        // SPA 导航到产品页：等待 ProductGrid 就绪后渲染
+        // SPA 导航到产品页：确保 ProductGrid 已加载再渲染
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
           console.log("[TRACE] product page detected, ProductGrid exists:", !!global.ProductGrid);
-          var attempt = 0;
-          var tryRender = function() {
-            attempt++;
-            if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
-              console.log("[TRACE] ProductGrid ready (attempt " + attempt + "), calling autoRender");
-              global.ProductGrid.autoRender();
-            } else if (attempt < 20) {
-              console.log("[TRACE] ProductGrid not ready (attempt " + attempt + "), retrying in 150ms");
-              setTimeout(tryRender, 150);
-            } else {
-              console.error("[TRACE] ProductGrid failed to load after " + attempt + " attempts");
-            }
-          };
-          setTimeout(tryRender, 100);
+          if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
+            setTimeout(function() { global.ProductGrid.autoRender(); }, 100);
+          } else {
+            // product-grid.js not loaded yet — inject it dynamically
+            console.log("[TRACE] injecting product-grid.js dynamically");
+            var s = document.createElement("script");
+            s.src = "/assets/js/product-grid.js?v=" + (global.BUILD_VERSION || Date.now());
+            s.onload = function() {
+              console.log("[TRACE] product-grid.js loaded, calling autoRender");
+              if (global.ProductGrid && global.ProductGrid.autoRender) {
+                global.ProductGrid.autoRender();
+              }
+            };
+            document.head.appendChild(s);
+          }
         }
 
         // 重新运行页面 init 函数
