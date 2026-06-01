@@ -300,18 +300,47 @@
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
 
-        // 解决方案页面 SPA 导航后强制重绘（解决跳转后卡片内容不显示的问题）
+        // ─── 解决方案页面 debug 诊断 ───
         if (/^\/solutions\/$/.test(global.location.pathname)) {
           setTimeout(function () {
             var c = document.getElementById("spa-content");
             if (c) {
               void c.offsetWidth;
-              var cards = c.querySelectorAll(".grid > a");
-              if (cards.length > 1) {
-                // grid 已正确渲染
+              // 检查卡片数量
+              var allCards = c.querySelectorAll('a[href^="/solutions/"]');
+              console.log("[DEBUG/solutions] card count:", allCards.length);
+              allCards.forEach(function(card, i) {
+                console.log("[DEBUG/solutions] card", i, "visibility:", getComputedStyle(card).display, "width:", card.offsetWidth);
+              });
+              // 检查 grid 容器样式
+              var gridContainer = document.querySelector(".solutions-grid");
+              if (gridContainer) {
+                var cs = getComputedStyle(gridContainer);
+                console.log("[DEBUG/solutions] grid-container display:", cs.display, "grid-template:", cs.gridTemplateColumns, "gap:", cs.gap);
+                console.log("[DEBUG/solutions] grid children:", gridContainer.children.length);
+              } else {
+                console.warn("[DEBUG/solutions] .solutions-grid container NOT FOUND in DOM");
+              }
+              // 检查 CSS 加载状态
+              var stylesheets = document.styleSheets;
+              var foundSolutionsGrid = false;
+              for (var si = 0; si < stylesheets.length; si++) {
+                try {
+                  var rules = stylesheets[si].cssRules || stylesheets[si].rules;
+                  for (var ri = 0; ri < rules.length; ri++) {
+                    if (rules[ri].selectorText && rules[ri].selectorText.indexOf("solutions-grid") !== -1) {
+                      foundSolutionsGrid = true;
+                      console.log("[DEBUG/solutions] FOUND .solutions-grid in stylesheet:", stylesheets[si].href || "inline");
+                      break;
+                    }
+                  }
+                } catch(e) { /* cross-origin stylesheet */ }
+              }
+              if (!foundSolutionsGrid) {
+                console.warn("[DEBUG/solutions] .solutions-grid CSS rule NOT FOUND in any stylesheet — this is likely the bug");
               }
             }
-          }, 50);
+          }, 500);
         }
       });
 
