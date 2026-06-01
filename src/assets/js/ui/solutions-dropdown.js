@@ -54,6 +54,7 @@
   function buildChildHtml(child) {
     var childHref = child.href || "/" + (child.slug || child.id) + "/";
     var childLabel = resolveLabel(child.label) || child.id;
+    var i18nKey = child.i18nKey || ("nav_" + (child.slug || child.id));
     return (
       '<a href="' +
       esc(childHref) +
@@ -61,7 +62,7 @@
       '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' +
       esc(child.icon || "circle") +
       "</span></span>" +
-      '<span class="nav-dropdown-label">' +
+      '<span class="nav-dropdown-label" data-i18n="' + esc(i18nKey) + '">' +
       esc(childLabel) +
       "</span>" +
       '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
