@@ -744,10 +744,17 @@
   /* ── SPA navigation: re-init after swup content:replace ── */
   document.addEventListener('spa:load', function() {
     var path = window.location.pathname;
+    console.log('[TRACE/cases] spa:load received, path:', path);
     if (/^\/cases\//.test(path) && !/^\/cases\/[a-z0-9-]+\/$/.test(path)) {
       // Only re-init on the listing page, not detail pages
       var variant = document.body.getAttribute('data-case-variant') || 'pc';
-      setTimeout(function() { init(variant); }, 50);
+      console.log('[TRACE/cases] matched listing page, variant:', variant);
+      setTimeout(function() { 
+        console.log('[TRACE/cases] calling init, variant:', variant);
+        init(variant); 
+      }, 50);
+    } else {
+      console.log('[TRACE/cases] NOT a listing page path:', path);
     }
   });
 
