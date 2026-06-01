@@ -156,13 +156,16 @@
       if (seen[page.path]) continue;
       seen[page.path] = true;
 
+      // Use Chinese h1/h2s when language is zh-CN
+      var h1Text = (isZh && page.h1Zh) ? page.h1Zh : page.h1;
+      var h2sText = (isZh && page.h2sZh) ? page.h2sZh : page.h2s;
       var text = [
         page.title,
         page.titleZh,
-        page.h1,
+        h1Text,
         (page.keywords || []).join(" "),
         page.meta,
-        (page.h2s || []).join(" "),
+        (h2sText || []).join(" "),
       ]
         .filter(Boolean)
         .join(" ")
@@ -298,7 +301,7 @@
     panel.id = "ios-search-results";
     panel.className = "ios-search-results";
     panel.setAttribute("role", "listbox");
-    panel.setAttribute("aria-label", "Search results");
+    panel.setAttribute("aria-label", tr("search_results_title", "Search results"));
     document.body.appendChild(panel);
 
     // Close on click outside

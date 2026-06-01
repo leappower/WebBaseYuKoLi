@@ -12,6 +12,7 @@
   "use strict";
 
   var _spaRegs = {};
+  function _t(k){if(typeof window!=="undefined"&&window.translationManager&&typeof window.translationManager.translate==="function"){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
     var ac = new AbortController();
@@ -247,7 +248,7 @@
    */
   function startTikTok() {
     var notify = typeof window.showNotification === "function" ? window.showNotification : _showNotification;
-    notify("Coming Soon", "success");
+    notify(_t("contact_coming_soon") || "Coming Soon", "success");
   }
 
   // ============================================

@@ -127,8 +127,8 @@
 
               <!-- Builder Header -->
               <div class="builder-header">
-                <h3 class="flex items-center gap-2 text-base"><span class="material-symbols-outlined text-primary" style="font-size:1.125rem;">edit_note</span> Build Your Product Brief</h3>
-                <p style="font-size:0.8125rem;">Tell us what you're working on — we'll reply with a tailored quote.</p>
+                <h3 class="flex items-center gap-2 text-base"><span class="material-symbols-outlined text-primary" style="font-size:1.125rem;">edit_note</span><span data-i18n="product_builder_header_title">配置产品需求</span></h3>
+                <p style="font-size:0.8125rem;" data-i18n="product_builder_header_desc">选择下方选项，摘要面板将实时跟踪您的选择。</p>
               </div>
 
               <div class="builder-main">
@@ -138,28 +138,28 @@
                   <div>
                     <div class="builder-label">
                       <span class="material-symbols-outlined" style="font-size:0.875rem;">handshake</span>
-                      <span>Mode</span>
+                      <span data-i18n="product_builder_step_partnership" data-i18n="product_builder_step_partnership">Mode</span>
                     </div>
                     <div class="mode-cards">
                       <div class="mode-card" data-mode="oem">
                         <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">precision_manufacturing</span>
-                        <span class="mode-title">OEM</span>
-                        <span class="mode-subtitle">I have a formula</span>
+                        <span class="mode-title" data-i18n="product_builder_mode_oem_title" data-i18n="product_builder_mode_oem_title">OEM</span>
+                        <span class="mode-subtitle" data-i18n="product_builder_mode_oem_sub">I have a formula</span>
                       </div>
                       <div class="mode-card" data-mode="odm">
                         <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">design_services</span>
-                        <span class="mode-title">ODM</span>
-                        <span class="mode-subtitle">We create recipe</span>
+                        <span class="mode-title" data-i18n="product_builder_mode_odm_title" data-i18n="product_builder_mode_odm_title">ODM</span>
+                        <span class="mode-subtitle" data-i18n="product_builder_mode_odm_sub">We create recipe</span>
                       </div>
                       <div class="mode-card" data-mode="obm">
                         <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">verified</span>
-                        <span class="mode-title">OBM</span>
-                        <span class="mode-subtitle">Build my brand</span>
+                        <span class="mode-title" data-i18n="product_builder_mode_obm_title" data-i18n="product_builder_mode_obm_title">OBM</span>
+                        <span class="mode-subtitle" data-i18n="product_builder_mode_obm_sub">Build my brand</span>
                       </div>
                       <div class="mode-card" data-mode="not-sure">
                         <span class="material-symbols-outlined mode-icon" style="font-size:1.25rem;">help_outline</span>
-                        <span class="mode-title">Not Sure</span>
-                        <span class="mode-subtitle">Help me decide</span>
+                        <span class="mode-title" data-i18n="product_builder_mode_not_sure_title">Not Sure</span>
+                        <span class="mode-subtitle" data-i18n="product_builder_mode_not_sure_sub">Help me decide</span>
                       </div>
                     </div>
                   </div>
@@ -168,11 +168,11 @@
                   <div>
                     <div class="builder-label">
                       <span class="material-symbols-outlined" style="font-size:0.875rem;">category</span>
-                      <span>Category</span>
+                      <span data-i18n="product_builder_step_category" data-i18n="product_builder_step_category">Category</span>
                     </div>
                     <div class="category-grid">
                       <div class="category-tag" data-cat="coffee"><span class="cat-emoji">☕</span> Coffee</div>
-                      <div class="category-tag" data-cat="tea"><span class="cat-emoji">🍵</span> Tea &amp; Milk Tea</div>
+                      <div class="category-tag" data-cat="tea"><span class="cat-emoji">🍵</span><span data-i18n="product_builder_cat_tea">茶饮/奶茶</span></div>
                       <div class="category-tag" data-cat="meal"><span class="cat-emoji">🥤</span> Meal</div>
                       <div class="category-tag" data-cat="beauty"><span class="cat-emoji">✨</span> Collagen</div>
                       <div class="category-tag" data-cat="weight"><span class="cat-emoji">⚖️</span> Weight</div>
@@ -186,11 +186,11 @@
                   <div>
                     <div class="builder-label">
                       <span class="material-symbols-outlined" style="font-size:0.875rem;">trending_up</span>
-                      <span>Scale</span>
+                      <span data-i18n="product_builder_step_scale" data-i18n="product_builder_step_scale">Scale</span>
                     </div>
                     <div class="scale-slider-wrap">
                       <input type="range" class="scale-slider" min="0" max="4" value="0" step="1" style="height:4px;" />
-                      <div class="scale-value" style="font-size:0.75rem;">Under 1,000 /mo</div>
+                      <div class="scale-value" style="font-size:0.75rem;" data-i18n="product_builder_quantity_under_1k">Under 1,000 /mo</div>
                       <div class="scale-labels">
                         <span class="scale-label active" data-idx="0">&lt;1K</span>
                         <span class="scale-label" data-idx="1">1K-5K</span>
@@ -214,19 +214,19 @@
 
               <!-- Brief Panel (compact for mobile) -->
               <div class="brief-panel" style="margin:0.5rem 0; padding:0.75rem;">
-                <div class="brief-panel-title" style="font-size:0.6875rem;">📋 Your Brief</div>
+                <div class="brief-panel-title" style="font-size:0.6875rem;" data-i18n="product_builder_brief_title">📋 Your Brief</div>
                 <div class="brief-summary">
                   <div class="brief-empty-state" style="padding:0.5rem 0;font-size:0.75rem;">
                     Your selections will appear here
                   </div>
                 </div>
                 <div class="brief-match" style="display:none;margin-top:0.5rem;padding-top:0.5rem;">
-                  <div class="brief-match-label" style="font-size:0.625rem;">💡 Smart Match</div>
+                  <div class="brief-match-label" style="font-size:0.625rem;" data-i18n="product_builder_smartmatch_title">💡 Smart Match</div>
                   <div class="brief-match-text" style="font-size:0.6875rem;"></div>
                 </div>
                 <div class="brief-score-wrap" style="margin-top:0.5rem;padding-top:0.5rem;">
                   <div class="brief-score-bar"><div class="brief-score-fill" style="width:0%;"></div></div>
-                  <div class="brief-score-text" style="font-size:0.625rem;">Fill in for better quote</div>
+                  <div class="brief-score-text" style="font-size:0.625rem;" data-i18n="product_builder_brief_prompt">Fill in for better quote</div>
                 </div>
               </div>
 
@@ -236,11 +236,11 @@
               <div>
                 <div class="builder-label">
                   <span class="material-symbols-outlined" style="font-size:0.875rem;">contact_page</span>
-                  <span>Your Details</span>
+                  <span data-i18n="product_builder_contact_title">Your Details</span>
                 </div>
                 <div class="contact-row">
                   <div class="contact-field">
-                    <label style="font-size:0.6875rem;">Full Name <span style="color:#ef4444;">*</span></label>
+                    <label style="font-size:0.6875rem;" data-i18n="product_builder_contact_name">姓名 <span style="color:#ef4444;">*</span></label>
                     <input type="text" name="fullname" required placeholder="John Doe" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
                   </div>
                   <div class="contact-field">
@@ -250,23 +250,23 @@
                 </div>
                 <div class="contact-row" style="margin-top:0.375rem;">
                   <div class="contact-field">
-                    <label style="font-size:0.6875rem;">Country</label>
+                    <label style="font-size:0.6875rem;" data-i18n="product_builder_contact_country">Country</label>
                     <select name="country" style="font-size:0.75rem;padding:0.4rem 0.5rem;">
-                      <option value="">Select</option>
-                      <option value="CN">🇨🇳 China</option>
-                      <option value="US">🇺🇸 USA</option>
-                      <option value="MY">🇲🇾 Malaysia</option>
-                      <option value="ID">🇮🇩 Indonesia</option>
-                      <option value="TH">🇹🇭 Thailand</option>
-                      <option value="VN">🇻🇳 Vietnam</option>
-                      <option value="IN">🇮🇳 India</option>
-                      <option value="AE">🇦🇪 UAE</option>
-                      <option value="NG">🇳🇬 Nigeria</option>
+                      <option value="" data-i18n="product_builder_contact_select">Select</option>
+                      <option value="CN" data-i18n="country_china">🇨🇳 中国</option>
+                      <option value="US" data-i18n="country_usa">🇺🇸 美国</option>
+                      <option value="MY" data-i18n="country_malaysia">🇲🇾 马来西亚</option>
+                      <option value="ID" data-i18n="country_indonesia">🇮🇩 印度尼西亚</option>
+                      <option value="TH" data-i18n="country_thailand">🇹🇭 泰国</option>
+                      <option value="VN" data-i18n="country_vietnam">🇻🇳 越南</option>
+                      <option value="IN" data-i18n="country_india">🇮🇳 印度</option>
+                      <option value="AE" data-i18n="country_uae">🇦🇪 阿联酋</option>
+                      <option value="NG" data-i18n="country_nigeria">🇳🇬 尼日利亚</option>
                       <option value="GB">🇬🇧 UK</option>
                       <option value="US">🇺🇸 US</option>
-                      <option value="AU">🇦🇺 Australia</option>
-                      <option value="SG">🇸🇬 Singapore</option>
-                      <option value="JP">🇯🇵 Japan</option>
+                      <option value="AU" data-i18n="country_australia">🇦🇺 澳大利亚</option>
+                      <option value="SG" data-i18n="country_singapore">🇸🇬 新加坡</option>
+                      <option value="JP" data-i18n="country_japan">🇯🇵 日本</option>
                     </select>
                   </div>
                   <div class="contact-field">
@@ -274,7 +274,7 @@
                     <input type="email" name="email" required placeholder="you@company.com" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
                   </div>
                   <div class="contact-field">
-                    <label style="font-size:0.6875rem;">Phone/WA <span style="color:#ef4444;">*</span></label>
+                    <label style="font-size:0.6875rem;" data-i18n="product_builder_contact_phone">电话/WhatsApp <span style="color:#ef4444;">*</span></label>
                     <input type="tel" name="phone" required placeholder="+86 139 2482 8214" style="font-size:0.75rem;padding:0.4rem 0.5rem;" />
                   </div>
                 </div>
@@ -285,11 +285,11 @@
               <!-- Message + Chips -->
               <div>
                 <div class="prompt-chips" style="margin-bottom:0.375rem;">
-                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Need samples first">📦 Samples</span>
-                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Custom packaging design">📦 Packaging</span>
-                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="I have a target price">💰 Price</span>
-                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Need R&D support">🧪 R&amp;D</span>
-                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Want to visit factory">🏭 Visit</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Need samples first" data-i18n="product_builder_chip_samples">📦 Samples</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Custom packaging design" data-i18n="product_builder_chip_packaging">📦 Packaging</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="I have a target price" data-i18n="product_builder_chip_price">💰 Price</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Need R&D support" data-i18n="product_builder_chip_rd">🧪 R&amp;D</span>
+                  <span class="prompt-chip" style="font-size:0.625rem;padding:0.15rem 0.5rem;" data-text="Want to visit factory" data-i18n="product_builder_chip_visit">🏭 Visit</span>
                 </div>
                 <textarea
                   class="builder-message w-full px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-transparent text-sm resize-none"
@@ -301,26 +301,26 @@
               <!-- Submit -->
               <button class="builder-submit" style="padding:0.75rem;font-size:0.875rem;margin-top:0.5rem;">
                 <span class="material-symbols-outlined" style="font-size:1rem;">send</span>
-                Submit Brief
+                data-i18n="product_builder_submit_btn">提交需求
               </button>
 
               <!-- Success -->
               <div class="builder-success">
                 <div class="check-circle"><span class="material-symbols-outlined">check_circle</span></div>
-                <h4 style="font-size:1rem;">Brief Sent!</h4>
-                <p class="success-greeting" style="font-size:0.75rem;">Your inquiry has been received.</p>
+                <h4 style="font-size:1rem;" data-i18n="product_builder_success_title">Brief Sent!</h4>
+                <p class="success-greeting" style="font-size:0.75rem;" data-i18n="product_builder_success_greeting">Your inquiry has been received.</p>
                 <div class="builder-success-steps" style="gap:0.5rem;">
                   <div class="builder-success-step">
                     <span class="step-num" style="width:20px;height:20px;font-size:0.625rem;">1</span>
-                    <span class="step-label" style="font-size:0.625rem;">Team reviews</span>
+                    <span class="step-label" style="font-size:0.625rem;" data-i18n="product_builder_success_step_1">Team reviews</span>
                   </div>
                   <div class="builder-success-step">
                     <span class="step-num" style="width:20px;height:20px;font-size:0.625rem;">2</span>
-                    <span class="step-label" style="font-size:0.625rem;">Quote prepared</span>
+                    <span class="step-label" style="font-size:0.625rem;" data-i18n="product_builder_success_step_2">Quote prepared</span>
                   </div>
                   <div class="builder-success-step">
                     <span class="step-num" style="width:20px;height:20px;font-size:0.625rem;">3</span>
-                    <span class="step-label" style="font-size:0.625rem;">Delivered 24h</span>
+                    <span class="step-label" style="font-size:0.625rem;" data-i18n="product_builder_success_step_3">Delivered 24h</span>
                   </div>
                 </div>
               </div>

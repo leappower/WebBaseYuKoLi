@@ -106,7 +106,7 @@
           if (r) {
             var s = JSON.parse(r);
             if (s && "object" == typeof s && s.data && "object" == typeof s.data) {
-              if (s.timestamp && Date.now() - s.timestamp < 864e5 && s._v === 2)
+              if (s.timestamp && Date.now() - s.timestamp < 864e5 && s._v === 3)
                 return ((o = s.data), this.translationsCache.set(e, o), Promise.resolve(o));
               try { localStorage.removeItem(n); } catch(e) {}
             } else (console.warn("[i18n] Invalid cache structure for " + t + ", clearing"), (function(){ try { localStorage.removeItem(n); } catch(e) {} })());

@@ -313,7 +313,7 @@
         '<h3 style="font-size:1.25rem;font-weight:700;color:#0f172a;margin:0 0 .25rem;" ' +
         'data-i18n="popup_get_custom_quote">Get a Custom Quote</h3>' +
         '<p style="font-size:.875rem;color:#64748b;margin:0;" ' +
-        'data-i18n="popup_tell_us">' +
+        'data-i18n="popup_form_desc">' +
         "Tell us about your kitchen needs — our team will respond within 24 hours.</p>" +
         "</div>" +
         // 联系表单
@@ -879,7 +879,10 @@
    * 接收 JSON 格式的表单数据，通过服务端代理发送。
    * @constant {string}
    */
-  var FORM_ENDPOINT = "/api/quote-submit";
+  var FORM_ENDPOINT = '';
+  try {
+    FORM_ENDPOINT = (window.SITE_CONFIG && window.SITE_CONFIG.forms && window.SITE_CONFIG.forms.gasUrl) || '';
+  } catch(e) {}
 
   /**
    * 从表单元素中收集提交数据，附加用户环境信息。
@@ -923,7 +926,7 @@
 
     fetch(FORM_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      mode: "no-cors",
       body: JSON.stringify(formData),
     })
       .then(function (response) {

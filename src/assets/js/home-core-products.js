@@ -1,3 +1,4 @@
+function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
 /**
  * home-core-products.js — Dynamic Home Core Products renderer
  *
@@ -160,7 +161,7 @@
           catLabel +
           '</div><h3 class="font-bold text-sm leading-snug mb-2 line-clamp-2">' +
           (p.name || p.model || "") +
-          '</h3><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">Learn More<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>';
+          '</h3><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">' + (_t("cta_learn_more") || "Learn More") + '<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>';
       }
       html += "</div>";
 
@@ -211,7 +212,7 @@
           '" onerror="this.style.display=\'none\'">' +
           '</div><div class="p-4"><h3 class="font-bold text-sm mb-1 line-clamp-2">' +
           (p.name || p.model || "") +
-          '</h3><span class="text-xs text-primary font-bold">Learn More →</span></div></a>';
+          '</h3><span class="text-xs text-primary font-bold">' + (_t("cta_learn_more") || "Learn More") + ' →</span></div></a>';
       }
       html += "</div>";
       /* @audit-safe: config-driven-render */

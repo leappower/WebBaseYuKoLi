@@ -35,6 +35,15 @@
     } catch (_) {}
   }
 
+  /** i18n helper */
+  function _t(k) {
+    if (typeof window !== 'undefined' && window.translationManager && typeof window.translationManager.translate === 'function') {
+      var r = window.translationManager.translate(k);
+      return r && r !== k ? r : k;
+    }
+    return k;
+  }
+
   function hasSubmitted(email) {
     var leads = getLeads();
     for (var i = 0; i < leads.length; i++) {
@@ -165,12 +174,12 @@
     var email = form.elements.email.value.trim();
 
     if (!name || !company || !email) {
-      errorEl.textContent = 'Please fill in all fields.';
+      errorEl.textContent = _t("form_lead_required") || "Please fill in all fields.";
       errorEl.style.display = 'block';
       return;
     }
     if (!isValidEmail(email)) {
-      errorEl.textContent = 'Please enter a valid email address.';
+      errorEl.textContent = _t("form_lead_email") || "Please enter a valid email address.";
       errorEl.style.display = 'block';
       return;
     }
@@ -199,7 +208,7 @@
       'background:' + BRAND_COLOR + ';color:#fff;padding:14px 28px;border-radius:10px;' +
       'font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);' +
       'z-index:100000;animation:ykFadeIn .3s ease;max-width:90%;text-align:center;';
-    toast.textContent = '\u2713 Thank you! Your download has started.';
+    toast.textContent = _t("form_lead_download_success") || "\u2713 Thank you! Your download has started.";
     document.body.appendChild(toast);
     setTimeout(function () {
       toast.style.opacity = '0';

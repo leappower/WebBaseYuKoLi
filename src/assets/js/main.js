@@ -1,3 +1,4 @@
+function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
 // main.js - Core functionality with modular architecture
 // IIFE wrapper for src2 (no build tools)
 // Outputs: window.app (App instance)
@@ -155,10 +156,10 @@
       self.reportError(e.reason);
     });
     window.addEventListener("offline", function () {
-      self.showNetworkStatus("You are currently offline", "warning");
+      self.showNetworkStatus(_t("status_offline") || "You are currently offline", "warning");
     });
     window.addEventListener("online", function () {
-      self.showNetworkStatus("You are back online", "success");
+      self.showNetworkStatus(_t("status_online") || "You are back online", "success");
     });
   };
 

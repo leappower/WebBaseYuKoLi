@@ -1,3 +1,4 @@
+function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
 /**
  * nav-dropdown.js — 通用导航 Dropdown（走 DropdownBase 体系）
  *
@@ -103,7 +104,7 @@
         href: "/solutions/",
         icon: "design_services",
         i18nKey: "nav_solutions_center",
-        label: "Solutions Center",
+        label: _t("nav_solutions_center") || "Solutions Center",
       },
     };
     var entry = centerMap[navId];

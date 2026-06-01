@@ -7,6 +7,7 @@ var SEARCH_INDEX = [
     meta: "YuKoLi 优科力科技 — 20年专注健康食品 OEM/ODM 制造，4座自有工厂，8大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家，MOQ 500起。",
     h1: "",
     h2s: ["Core Product Lines", "Manufacturing Excellence", "Ready to Start Your Brand?"],
+    h2sZh: ["核心产品线", "制造卓越", "准备启动您的品牌？"],
     image: "/assets/images/hero-main.webp",
   },
   {
@@ -16,7 +17,9 @@ var SEARCH_INDEX = [
     keywords: ["产品", "冲调", "咖啡", "茶饮", "代餐"],
     meta: "探索 Yukoli 冲调食品全系列产品，包括咖啡冲调、茶饮、代餐蛋白、胶原蛋白、Weight Management、Gut Health、Lifestyle Drinks七大品类，提供健康食品OEM/ODM一站式解决方案。",
     h1: "130+ products OEM/ODM solutions, One-Stop Selection",
+    h1Zh: "130+产品 OEM/ODM 解决方案，一站式选择",
     h2s: ["Need a Custom Solution?"],
+    h2sZh: ["需要定制方案？"],
     image: "/assets/images/products/hero-all-products.webp",
   },
   {
@@ -26,7 +29,9 @@ var SEARCH_INDEX = [
     keywords: ["全部产品", "SKU", "产品目录"],
     meta: "探索 YuKoLi 全系列冲调食品，咖啡、茶饮、代餐、胶原蛋白、体重管理、肠道健康、功能冲饮七大品类，按分类筛选，找到最适合您的 OEM/ODM 方案。",
     h1: "All Products",
+    h1Zh: "全部产品",
     h2s: ["All Products"],
+    h2sZh: ["全部产品"],
     image: "/assets/images/products/hero-all-products.webp",
   },
   {
@@ -36,12 +41,14 @@ var SEARCH_INDEX = [
     keywords: ["咖啡", "coffee"],
     meta: "YuKoLi Technology Coffee Mix OEM/ODM制造 — Customization of various flavors including instant coffee, latte, cappuccino",
     h1: "Coffee Mix",
+    h1Zh: "咖啡冲调",
     h2s: [
       "Coffee Mix — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Coffee Mix OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要咖啡冲调 OEM/ODM 服务？"],
     image: "/assets/images/products/coffee/001.webp",
   },
   {
@@ -51,12 +58,14 @@ var SEARCH_INDEX = [
     keywords: ["茶饮", "tea"],
     meta: "YuKoLi Technology Tea & Milk Tea OEM/ODM制造 — 珍珠奶茶粉、果茶、花草茶、纯茶",
     h1: "Tea & Milk Tea",
+    h1Zh: "茶饮/奶茶",
     h2s: [
       "Tea & Milk Tea — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Tea & Milk Tea OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要茶饮/奶茶 OEM/ODM 服务？"],
     image: "/assets/images/products/tea/001.webp",
   },
   {
@@ -66,12 +75,14 @@ var SEARCH_INDEX = [
     keywords: ["代餐", "meal"],
     meta: "YuKoLi Technology Meal Replacement OEM/ODM制造 — 代餐奶昔、蛋白粉、蛋白棒",
     h1: "Meal Replacement",
+    h1Zh: "代餐奶昔",
     h2s: [
       "Meal Replacement — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Meal Replacement OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要代餐奶昔 OEM/ODM 服务？"],
     image: "/assets/images/products/meal/001.webp",
   },
   {
@@ -81,12 +92,14 @@ var SEARCH_INDEX = [
     keywords: ["胶原", "beauty"],
     meta: "YuKoLi Technology Beauty Collagen OEM/ODM制造 — 胶原蛋白肽、燕窝胶原粉",
     h1: "Beauty Collagen",
+    h1Zh: "美容胶原",
     h2s: [
       "Beauty Collagen — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Beauty Collagen OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要美容胶原 OEM/ODM 服务？"],
     image: "/assets/images/products/beauty/001.webp",
   },
   {
@@ -96,12 +109,14 @@ var SEARCH_INDEX = [
     keywords: ["体重", "weight"],
     meta: "YuKoLi Technology Weight Management OEM/ODM制造 — 燃脂咖啡、膳食纤维、代餐粉",
     h1: "Weight Management",
+    h1Zh: "体重管理",
     h2s: [
       "Weight Management — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Weight Management OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要体重管理 OEM/ODM 服务？"],
     image: "/assets/images/products/weight/001.webp",
   },
   {
@@ -111,12 +126,14 @@ var SEARCH_INDEX = [
     keywords: ["肠道", "gut"],
     meta: "YuKoLi Technology Gut Health OEM/ODM制造 — 益生菌、益生元、膳食纤维",
     h1: "Gut Health",
+    h1Zh: "肠道健康",
     h2s: [
       "Gut Health — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Gut Health OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要肠道健康 OEM/ODM 服务？"],
     image: "/assets/images/products/gut/001.webp",
   },
   {
@@ -126,12 +143,14 @@ var SEARCH_INDEX = [
     keywords: ["功能", "lifestyle"],
     meta: "YuKoLi Technology Functional Drinks OEM/ODM制造 — 助眠、免疫、能量补充",
     h1: "Functional Drinks",
+    h1Zh: "功能冲饮",
     h2s: [
       "Functional Drinks — Professional OEM/ODM Manufacturing",
       "Core Capabilities",
       "Product Gallery",
       "Need Functional Drinks OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要功能冲饮 OEM/ODM 服务？"],
     image: "/assets/images/products/lifestyle/001.webp",
   },
   {
@@ -141,12 +160,14 @@ var SEARCH_INDEX = [
     keywords: ["经典", "legacy"],
     meta: "YuKoLi Technology Classic Drinks OEM/ODM制造 — 精选Classic Drinks配方",
     h1: "Classic Drinks",
+    h1Zh: "经典冲饮",
     h2s: [
       "Classic Drinks — Quality Heritage",
       "Core Capabilities",
       "Product Gallery",
       "Need Classic Drinks OEM/ODM Service?",
     ],
+    h2sZh: ["核心能力", "产品展示", "需要经典冲饮 OEM/ODM 服务？"],
     image: "/assets/images/products/legacy/001.webp",
   },
   {
@@ -156,7 +177,9 @@ var SEARCH_INDEX = [
     keywords: ["解决方案", "合作", "OEM", "ODM", "OBM"],
     meta: "YuKoLi Technology — OEM/ODM/OBM manufacturing solutions, R&D lab, packaging & labeling services. One-stop health food manufacturing partner since 2004.",
     h1: "One-Stop Manufacturing Solutions",
+    h1Zh: "一站式制造解决方案",
     h2s: ["Ready to Start Your Project?"],
+    h2sZh: ["准备开始您的项目？"],
     image: "/assets/images/oem/hero/hero-pc.webp",
   },
   {
@@ -166,7 +189,9 @@ var SEARCH_INDEX = [
     keywords: ["OEM", "代工", "制造", "生产"],
     meta: "YuKoLi Technology — You supply the formula, we handle the rest. Contract manufacturing with recipe confidentiality, batch production, and full quality assurance.",
     h1: "OEM Custom Manufacturing",
+    h1Zh: "OEM 定制生产",
     h2s: ["OEM Custom Manufacturing", "Our Services", "OEM vs ODM vs OBM", "Request OEM Quote"],
+    h2sZh: ["OEM 定制生产", "我们的服务", "OEM vs ODM vs OBM"],
     image: "/assets/images/oem/hero/hero-pc2.webp",
   },
   {
@@ -176,7 +201,9 @@ var SEARCH_INDEX = [
     keywords: ["ODM", "研发", "配方"],
     meta: "YuKoLi Technology — We develop the formula, you build the brand. Full private label service from R&D to finished products.",
     h1: "ODM Private Label",
+    h1Zh: "ODM 贴牌代工",
     h2s: ["ODM Private Label", "Services", "OEM vs ODM vs OBM", "Start Private Label"],
+    h2sZh: ["ODM 贴牌代工", "服务", "OEM vs ODM vs OBM"],
     image: "/assets/images/about-story-rd.webp",
   },
   {
@@ -186,7 +213,9 @@ var SEARCH_INDEX = [
     keywords: ["OBM", "品牌", "包装"],
     meta: "YuKoLi Technology — From zero to one, we build your brand together. Full-chain support from brand strategy to product development and market operations.",
     h1: "OBM Brand Building",
+    h1Zh: "OBM 品牌建设",
     h2s: ["OBM Brand Building", "Services", "OEM vs ODM vs OBM", "Build Your Brand"],
+    h2sZh: ["OBM 品牌建设", "服务", "OEM vs ODM vs OBM"],
     image: "/assets/images/contact-product-robot.webp",
   },
   {
@@ -196,7 +225,9 @@ var SEARCH_INDEX = [
     keywords: ["研发", "实验室", "配方开发"],
     meta: "YuKoLi 科技研发与风味开发实验室 — 配方定制、功能成分调校、口味测试与优化",
     h1: "R&D &amp; Flavor Laboratory",
+    h1Zh: "研发与风味实验室",
     h2s: ["R&D &amp; Flavor Laboratory", "Our R&D Capabilities", "Need Custom Formula Development?"],
+    h2sZh: ["研发与风味实验室", "我们的研发能力", "需要定制配方开发？"],
     image: "/assets/images/about-story-rd.webp",
   },
   {
@@ -206,11 +237,13 @@ var SEARCH_INDEX = [
     keywords: ["包装", "设计"],
     meta: "YuKoLi 科技包装设计与全球标签合规 — 环保包装、30+ 国家出口标签合规",
     h1: "Packaging &amp; Label Compliance",
+    h1Zh: "包装与标签合规",
     h2s: [
       "Packaging &amp; Label Compliance Services",
       "Our Packaging Capabilities",
       "Need Packaging &amp; Label Compliance?",
     ],
+    h2sZh: ["包装与标签合规服务", "我们的包装能力", "需要包装与标签合规？"],
     image: "/assets/images/contact-partner.webp",
   },
   {
@@ -220,7 +253,9 @@ var SEARCH_INDEX = [
     keywords: ["制造", "工厂", "生产线", "品质"],
     meta: "YuKoLi Technology — 4 modern factories with annual capacity over 10,000 tons. Full quality control from raw materials to finished goods.",
     h1: "Manufacturing",
+    h1Zh: "生产基地",
     h2s: ["Manufacturing", "Services", "Consult Now"],
+    h2sZh: ["生产基地", "服务", "立即咨询"],
     image: "/assets/images/oem/factory/compliance-hero.webp",
   },
   {
@@ -230,7 +265,9 @@ var SEARCH_INDEX = [
     keywords: ["认证", "合规", "资质"],
     meta: "YuKoLi Technology — Multiple international certifications, strict food safety standards ensuring every product is safe and compliant.",
     h1: "Quality Compliance",
+    h1Zh: "质量合规",
     h2s: ["Quality Compliance", "Services", "Consult Now"],
+    h2sZh: ["质量合规", "服务", "立即咨询"],
     image: "/assets/images/cert-3.webp",
   },
   {
@@ -276,7 +313,9 @@ var SEARCH_INDEX = [
     keywords: ["目录", "catalog", "产品手册"],
     meta: "YuKoLi 科技 2026 全品类产品目录 — 浏览我们完整的 OEM/ODM 饮料粉末解决方案",
     h1: "2026 Product Catalog",
+    h1Zh: "2026 产品目录",
     h2s: ["Your Trusted OEM/ODM Partner", "Our Capabilities", "Request Full Catalog", "Download 2026 Product Catalog"],
+    h2sZh: ["您信赖的OEM/ODM合作伙伴", "我们的能力", "申请完整目录"],
     image: "/assets/images/oem/resources/catalog-hero.webp",
   },
   {
@@ -286,7 +325,9 @@ var SEARCH_INDEX = [
     keywords: ["视频", "工厂参观"],
     meta: "YuKoLi 科技视频中心 — 工厂参观、产品冲调展示、生产线实拍",
     h1: "Manufacturing Excellence",
+    h1Zh: "制造卓越",
     h2s: ["Watch Our Factory Tour", "Our Capabilities", "Schedule a Factory Tour"],
+    h2sZh: ["观看工厂参观", "我们的能力", "预约工厂参观"],
     image: "/assets/images/factory-video-poster.webp",
   },
   {
@@ -296,7 +337,9 @@ var SEARCH_INDEX = [
     keywords: ["白皮书", "技术资料"],
     meta: "YuKoLi 科技行业白皮书与趋势报告 — 功能食品市场洞察、健康饮品创新",
     h1: "Whitepapers & Industry Trends",
+    h1Zh: "白皮书与行业趋势",
     h2s: ["Industry Whitepapers", "Need Industry Insights?"],
+    h2sZh: ["行业白皮书", "需要行业洞察？"],
     image: "/assets/images/oem/resources/catalog-hero.webp",
   },
 
@@ -307,6 +350,7 @@ var SEARCH_INDEX = [
     keywords: ["包装", "设计", "sachet", "袋装"],
     meta: "Custom packaging design: sachet, stick pack, jar, box. Sustainable materials, FDA-grade compliance.",
     h1: "Packaging Solutions",
+    h1Zh: "包装解决方案",
     h2s: [],
     image: "/assets/images/contact-partner.webp",
   },
@@ -317,6 +361,7 @@ var SEARCH_INDEX = [
     keywords: ["报价", "询价", "quote", "咨询", "合作"],
     meta: "Submit a product brief for a free quote within 24 hours.",
     h1: "Build Your Product Brief",
+    h1Zh: "配置产品需求",
     h2s: [],
     image: "/assets/images/contact-partner.webp",
   },

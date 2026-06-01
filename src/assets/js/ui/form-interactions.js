@@ -18,6 +18,7 @@
 
   // ─── Helpers (from PiHelpers) ─────────────────────────────────────────
   var _h = window.PiHelpers || {};
+  function _t(k){if(typeof window!=="undefined"&&window.translationManager&&typeof window.translationManager.translate==="function"){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
   var safeCall =
     _h.safeCall ||
     function (fnName, args) {
@@ -43,12 +44,12 @@
     var error = "";
 
     if (input.required && val === "") {
-      error = "This field is required.";
+      error = _t("form_validate_required") || "This field is required.";
     } else if (val !== "") {
       if (type === "email" || name.indexOf("email") !== -1) {
-        if (!EMAIL_RE.test(val)) error = "Please enter a valid email address.";
+        if (!EMAIL_RE.test(val)) error = _t("form_validate_email") || "Please enter a valid email address.";
       } else if (type === "tel" || name.indexOf("phone") !== -1 || name.indexOf("tel") !== -1) {
-        if (!PHONE_RE.test(val)) error = "Please enter a valid phone number.";
+        if (!PHONE_RE.test(val)) error = _t("form_validate_phone") || "Please enter a valid phone number.";
       }
     }
 
@@ -125,8 +126,8 @@
       /* @audit-safe: array-concat-template */
       overlay.innerHTML = [
         CHECKMARK_SVG,
-        '<p style="font-weight:700;font-size:1.125rem;color:#16a34a;">Submitted Successfully!</p>',
-        '<p style="color:#64748b;font-size:0.875rem;">Our team will reach out within 24 hours.</p>',
+        '<p style="font-weight:700;font-size:1.125rem;color:#16a34a;">' + (_t("form_success_title") || "Submitted Successfully!") + '</p>',
+        '<p style="color:#64748b;font-size:0.875rem;">' + (_t("form_success_desc") || "Our team will reach out within 24 hours.") + '</p>',
       ].join("");
       wrapper.appendChild(overlay);
 
@@ -179,7 +180,7 @@
             showFormSuccess(form, null);
           } else {
             showFormSuccess(form, function () {
-              safeCall("showNotification", ["Form submitted successfully!", "success"]);
+              safeCall("showNotification", [_t("form_submit_success") || "Form submitted successfully!", "success"]);
             });
           }
         });

@@ -16,6 +16,7 @@
 /* global SlideMenu */
 (function (global) {
   "use strict";
+  function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
   var _primary = (_theme.colors || {}).primary || "#2E7D32";
   var _primaryHover = (_theme.colors || {}).primaryHover || "#1B5E20";
@@ -164,18 +165,18 @@
             // CANONICAL_NAV_ITEMS-based fallback — matches navigator.js canonical order
             {
               key: "nav_solutions",
-              label: "Solutions",
+              label: _t("nav_solutions") || "Solutions",
               href: "/solutions/",
               id: "solutions",
               icon: "lightbulb",
               children: [
-                { key: "nav_oem", label: "OEM", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
-                { key: "nav_odm", label: "ODM", icon: "design_services", emoji: "", href: "/solutions/odm/" },
-                { key: "nav_obm", label: "OBM", icon: "verified", emoji: "", href: "/solutions/obm/" },
-                { key: "nav_rd", label: "R&D & Flavor Lab", icon: "science", emoji: "", href: "/solutions/rd/" },
+                { key: "nav_oem", label: _t("nav_oem") || "OEM", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
+                { key: "nav_odm", label: _t("nav_odm") || "ODM", icon: "design_services", emoji: "", href: "/solutions/odm/" },
+                { key: "nav_obm", label: _t("nav_obm") || "OBM", icon: "verified", emoji: "", href: "/solutions/obm/" },
+                { key: "nav_rd", label: _t("nav_rd") || "R&D & Flavor Lab", icon: "science", emoji: "", href: "/solutions/rd/" },
                 {
                   key: "nav_packaging",
-                  label: "Packaging & Labeling",
+                  label: _t("nav_packaging") || "Packaging & Labeling",
                   icon: "inventory",
                   emoji: "",
                   href: "/solutions/packaging/",
@@ -184,7 +185,7 @@
             },
             {
               key: "nav_products",
-              label: "Products",
+              label: _t("nav_products") || "Products",
               href: "/products/",
               id: "products",
               icon: "inventory_2",
@@ -192,35 +193,35 @@
             },
             {
               key: "nav_manufacturing",
-              label: "Manufacturing",
+              label: _t("nav_manufacturing") || "Manufacturing",
               href: "/manufacturing/",
               id: "manufacturing",
               icon: "factory",
               children: [
                 {
                   key: "nav_bases",
-                  label: "4 Production Bases",
+                  label: _t("nav_bases") || "4 Production Bases",
                   icon: "factory",
                   emoji: "",
                   href: "/manufacturing/#bases",
                 },
                 {
                   key: "nav_quality",
-                  label: "Quality Control",
+                  label: _t("nav_quality") || "Quality Control",
                   icon: "verified",
                   emoji: "",
                   href: "/manufacturing/#quality",
                 },
                 {
                   key: "nav_smart",
-                  label: "Smart Factory",
+                  label: _t("nav_smart") || "Smart Factory",
                   icon: "precision_manufacturing",
                   emoji: "",
                   href: "/manufacturing/#smart",
                 },
                 {
                   key: "nav_supplychain",
-                  label: "Global Supply Chain",
+                  label: _t("nav_supplychain") || "Global Supply Chain",
                   icon: "public",
                   emoji: "",
                   href: "/manufacturing/#supplychain",
@@ -229,28 +230,28 @@
             },
             {
               key: "nav_compliance",
-              label: "Compliance",
+              label: _t("nav_compliance") || "Compliance",
               href: "/compliance/",
               id: "compliance",
               icon: "verified_user",
               children: [
                 {
                   key: "nav_certs",
-                  label: "Global Certifications",
+                  label: _t("nav_certs") || "Global Certifications",
                   icon: "verified_user",
                   emoji: "",
                   href: "/compliance/#certs",
                 },
                 {
                   key: "nav_halal",
-                  label: "Halal Certified",
+                  label: _t("nav_halal") || "Halal Certified",
                   icon: "assured_workload",
                   emoji: "",
                   href: "/compliance/#halal",
                 },
                 {
                   key: "nav_coa",
-                  label: "Lab Reports & COA",
+                  label: _t("nav_coa") || "Lab Reports & COA",
                   icon: "description",
                   emoji: "",
                   href: "/compliance/#coa",
@@ -259,29 +260,29 @@
             },
             {
               key: "nav_resources",
-              label: "Resources",
+              label: _t("nav_resources") || "Resources",
               href: "/resources/",
               id: "resources",
               icon: "menu_book",
               children: [
                 {
                   key: "nav_catalog",
-                  label: "2026 Product Catalog",
+                  label: _t("nav_catalog") || "2026 Product Catalog",
                   icon: "menu_book",
                   emoji: "",
                   href: "/resources/catalog/",
                 },
                 {
                   key: "nav_whitepapers",
-                  label: "Whitepapers",
+                  label: _t("nav_whitepapers") || "Whitepapers",
                   icon: "article",
                   emoji: "",
                   href: "/resources/whitepapers/",
                 },
-                { key: "nav_cases", label: "Case Studies", icon: "analytics", emoji: "", href: "/cases/" },
+                { key: "nav_cases", label: _t("nav_cases") || "Case Studies", icon: "analytics", emoji: "", href: "/cases/" },
                 {
                   key: "nav_videos",
-                  label: "Video Library",
+                  label: _t("nav_videos") || "Video Library",
                   icon: "play_circle",
                   emoji: "",
                   href: "/resources/videos/",
@@ -290,17 +291,17 @@
             },
             {
               key: "nav_contact",
-              label: "Contact",
+              label: _t("nav_contact") || "Contact",
               href: "/contact/",
               id: "contact",
               icon: "mail",
               children: [
-                { key: "nav_quote", label: "Get a Quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
-                { key: "nav_samples", label: "Free Samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
-                { key: "nav_visit", label: "Visit Our Factory", icon: "tour", emoji: "", href: "/contact/#visit" },
+                { key: "nav_quote", label: _t("nav_quote") || "Get a Quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
+                { key: "nav_samples", label: _t("nav_samples") || "Free Samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
+                { key: "nav_visit", label: _t("nav_visit") || "Visit Our Factory", icon: "tour", emoji: "", href: "/contact/#visit" },
                 {
                   key: "nav_network",
-                  label: "Global Sales Network",
+                  label: _t("nav_network") || "Global Sales Network",
                   icon: "language",
                   emoji: "",
                   href: "/contact/#network",

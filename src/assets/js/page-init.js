@@ -16,6 +16,7 @@
  */
 (function (global) {
   "use strict";
+  function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
   /* ═══════════════════════════════════════════════════════════════════
      SECTION 1: CONSTANTS & CONFIGURATION
      ═══════════════════════════════════════════════════════════════════ */
@@ -148,7 +149,7 @@
      ═══════════════════════════════════════════════════════════════════ */
   function wireWhatsAppLinks() {
     var wa = document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"]');
-    var href = whatsappHref("Hello Yukoli, I need support.");
+    var href = whatsappHref(_t("whatsapp_default_msg") || "Hello Yukoli, I need support.");
     for (var i = 0; i < wa.length; i++) {
       var link = wa[i];
       var current = link.getAttribute("href") || "";
@@ -217,7 +218,7 @@
           if (submitBtn) {
             submitBtn.disabled = true;
             submitBtn.dataset.originalText = submitBtn.textContent;
-            submitBtn.textContent = "Sending\u2026";
+            submitBtn.textContent = _t("form_sending") || "Sending\u2026";
           }
           setTimeout(function () {
             navigate(PAGES.thankYou);

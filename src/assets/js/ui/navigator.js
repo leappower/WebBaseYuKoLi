@@ -43,6 +43,15 @@
     tgt.addEventListener(evt, fn, { signal: ac.signal });
   }
 
+  /** i18n helper: translate key via window.translationManager */
+  function _t(k) {
+    if (typeof window !== 'undefined' && window.translationManager && typeof window.translationManager.translate === 'function') {
+      var r = window.translationManager.translate(k);
+      return r && r !== k ? r : k;
+    }
+    return k;
+  }
+
   /* ================================================================
    *  常量 & 配置
    * ================================================================ */
@@ -266,7 +275,7 @@
       '<input class="ios-search-input" id="' +
       inputId +
       '" ' +
-      'placeholder="Search products..." ' +
+      'placeholder="' + _t("search_products_placeholder") + '" ' +
       'data-i18n-placeholder="' +
       escapeHtml(opts.placeholderI18n || "search_placeholder") +
       '" ' +

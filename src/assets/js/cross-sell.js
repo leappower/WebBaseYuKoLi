@@ -1,3 +1,4 @@
+function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
 /**
  * cross-sell.js — Cross-sell recommendations & scene entry links
  *
@@ -148,12 +149,12 @@
   var SOLUTIONS_CROSS_SELL = {
     oem: [
       { slug: 'rd', label: 'R&D 研发', reason: 'OEM 配合专业研发，配方定制更精准', highlight: '研发赋能' },
-      { slug: 'packaging', label: 'Custom Packaging', reason: 'OEM + 定制包装，品牌视觉一体化', highlight: '品牌一体' },
+      { slug: 'packaging', label: _t("cross_sell_packaging") || "定制包装", reason: 'OEM + 定制包装，品牌视觉一体化', highlight: '品牌一体' },
       { slug: 'obm', label: 'OBM 全案', reason: 'OEM 升级为 OBM，从代工到自有品牌', highlight: '品牌升级' }
     ],
     odm: [
       { slug: 'rd', label: 'R&D 研发', reason: 'ODM 深度研发合作，差异化产品设计', highlight: '深度定制' },
-      { slug: 'packaging', label: 'Custom Packaging', reason: 'ODM + 专属包装，产品差异化竞争', highlight: '差异化' },
+      { slug: 'packaging', label: _t("cross_sell_packaging") || "定制包装", reason: 'ODM + 专属包装，产品差异化竞争', highlight: '差异化' },
       { slug: 'oem', label: 'OEM 代工', reason: 'ODM 经典方案转 OEM 批量生产', highlight: '量产保障' }
     ],
     obm: [
@@ -163,7 +164,7 @@
     ],
     rd: [
       { slug: 'oem', label: 'OEM 代工', reason: '研发成果通过 OEM 高效量产落地', highlight: '研发落地' },
-      { slug: 'packaging', label: 'Custom Packaging', reason: '研发新品搭配创新包装设计', highlight: '产品创新' },
+      { slug: 'packaging', label: _t("cross_sell_packaging") || "定制包装", reason: '研发新品搭配创新包装设计', highlight: '产品创新' },
       { slug: 'odm', label: 'ODM 设计', reason: '研发与设计协同，加速产品上市', highlight: '协同加速' }
     ],
     packaging: [
@@ -246,7 +247,7 @@
     odm: 'ODM 设计',
     obm: 'OBM 全案',
     rd: 'R&D 研发',
-    packaging: 'Custom Packaging',
+    packaging: _t("cross_sell_packaging") || "定制包装",
     quality: 'Quality 认证'
   };
 
