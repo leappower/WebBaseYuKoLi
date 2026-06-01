@@ -305,12 +305,6 @@
       /* @audit-safe: config-driven-render */
       bcEl.innerHTML = html;
       
-      // Show product category navigation if breadcrumb exists
-      var categoryNav = document.getElementById("product-category-nav");
-      if (categoryNav && slug) {
-        categoryNav.classList.remove("hidden");
-        categoryNav.style.display = "block";
-      }
     })();
 
     // Image: CMS upload > static
