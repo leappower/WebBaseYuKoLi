@@ -799,6 +799,7 @@
 
   function getFilteredProducts() {
     var products = getAllProducts();
+    console.log("[TRACE/product-grid] getFilteredProducts: total=", products.length, "activeCategory=", _activeCategory);
     if (_activeCategory !== "all") {
       products = products.filter(function (p) {
         return p._category === _activeCategory;
@@ -824,6 +825,7 @@
 
   function renderGrid(containerId, renderer, maxCount) {
     var container = document.getElementById(containerId);
+    console.log("[TRACE/product-grid] renderGrid: containerId=", containerId, "exists=", !!container, "renderer=", !!renderer, "maxCount=", maxCount);
     if (!container) return;
 
     // Gallery mode: use pagination instead of load-more
@@ -885,9 +887,10 @@
     } else if (window.location.pathname.indexOf('/products/') === -1) {
       _activeCategory = 'all';
     }
-    if (_renderPending) return;
+    if (_renderPending) { console.log("[TRACE/product-grid] autoRender: _renderPending=true, skipping"); return; }
     var data = window[STORE_KEY];
     var hasData = Array.isArray(data) && data.length > 0;
+    console.log("[TRACE/product-grid] autoRender: hasData=", hasData, "dataLen=", (data||[]).length, "_activeCategory=", _activeCategory);
     if (hasData) {
       _renderPending = false;
       doRender();
@@ -923,6 +926,7 @@
     // Reset loadMore binding so it picks up the current filtered products
     var _loadMoreBtn = document.querySelector('[data-i18n="products_load_more"]');
     if (_loadMoreBtn) _loadMoreBtn._bound = false;
+    console.log("[TRACE/product-grid] doRender: cats.length=", cats.length, "prods.length=", prods.length);
     if (!cats.length) {
       console.warn("[ProductGrid] doRender: no categories, showing empty state");
       var target = document.getElementById("product-list") || document.getElementById("product-grid");
