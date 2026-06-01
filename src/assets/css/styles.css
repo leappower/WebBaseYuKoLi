@@ -2330,7 +2330,7 @@ html.dark .mobile-menu-l1:active {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-right: 12px;
+  margin-right: 8px;
 }
 html.dark .mobile-menu-l1-icon {
   background: rgba(46, 125, 50, 0.18);
@@ -2420,7 +2420,7 @@ html.dark .mobile-menu-l2-separator {
 .mobile-menu-l2-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 12px 20px 12px 60px;
   font-size: 15px;
   font-weight: 400;
@@ -3089,7 +3089,7 @@ html.dark .nav-dropdown-card {
 .nav-dropdown-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   padding: 9px 12px;
   font-size: 13px;
   font-weight: 500;
