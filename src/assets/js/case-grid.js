@@ -741,4 +741,14 @@
 
   /* ── Auto-init based on data attribute ──────────── */
   window.CaseGrid = { init: init, FILTERS: FILTERS, ROI_CASES: ROI_CASES };
+  /* ── SPA navigation: re-init after swup content:replace ── */
+  document.addEventListener('spa:load', function() {
+    var path = window.location.pathname;
+    if (/^\/cases\//.test(path) && !/^\/cases\/[a-z0-9-]+\/$/.test(path)) {
+      // Only re-init on the listing page, not detail pages
+      var variant = document.body.getAttribute('data-case-variant') || 'pc';
+      setTimeout(function() { init(variant); }, 50);
+    }
+  });
+
 })();

@@ -157,7 +157,7 @@
     <script src="/assets/js/case-grid.js?v=202605291142" data-swup-reload-script></script>
     <script data-swup-reload-script>
       // SPA 导航时 swup 替换 #spa-content 后会重新执行此 script
-      console.log('[DEBUG/cases] CaseGrid init called, CaseGrid exists:', !!window.CaseGrid); if (window.CaseGrid) setTimeout(function() { CaseGrid.init('pc') }, 150);
+      console.log('[DEBUG/cases] CaseGrid init called, CaseGrid exists:', !!window.CaseGrid); if (window.CaseGrid) CaseGrid.init('pc');
     </script>
     <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
   <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
