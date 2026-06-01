@@ -38,7 +38,7 @@
       icon: "chat",
       href:
         "https://wa.me/" +
-        ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8613924828214"),
+        ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814"),
       isWhatsApp: true,
     },
   ];

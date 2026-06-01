@@ -38,8 +38,8 @@
     // Contact
     // ═══════════════════════════════════════════════════════════
     contacts: {
-      whatsapp: "8613924828214",
-      whatsappDisplay: "+86 139 2482 8214",
+      whatsapp: "8618565718814",
+      whatsappDisplay: "+86 185 6571 8814",
       whatsappMessage: "Hi YuKoLi, I'm interested in your OEM/ODM solutions.",
       email: "sales@yukoli.com",
       phone: "+86-757-xxxxxxx",
@@ -135,14 +135,14 @@
         { id: "home", type: "link", icon: "home", label: { en: "Home", "zh-CN": "首页" }, href: "/home/" },
         { id: "solutions", type: "link", icon: "lightbulb", label: { en: "Solutions", "zh-CN": "方案" }, href: "/solutions/" },
         { id: "inquiry", type: "link", icon: "send", label: { en: "Inquiry", "zh-CN": "询盘" }, href: "/contact/" },
-        { id: "whatsapp", type: "external", icon: "chat", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, href: "https://wa.me/8613924828214", whatsapp: true },
+        { id: "whatsapp", type: "external", icon: "chat", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, href: "https://wa.me/8618565718814", whatsapp: true },
       ],
       tabletItems: [
         { id: "home", type: "link", icon: "home", label: { en: "Home", "zh-CN": "首页" }, href: "/home/" },
         { id: "products", type: "link", icon: "inventory_2", label: { en: "Products", "zh-CN": "产品" }, href: "/products/" },
         { id: "solutions", type: "link", icon: "design_services", label: { en: "Solutions", "zh-CN": "方案" }, href: "/solutions/" },
         { id: "inquiry", type: "link", icon: "send", label: { en: "Inquiry", "zh-CN": "询盘" }, href: "/contact/" },
-        { id: "whatsapp", type: "external", icon: "chat", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, href: "https://wa.me/8613924828214", whatsapp: true },
+        { id: "whatsapp", type: "external", icon: "chat", label: { en: "WhatsApp", "zh-CN": "WhatsApp" }, href: "https://wa.me/8618565718814", whatsapp: true },
       ],
     },
 

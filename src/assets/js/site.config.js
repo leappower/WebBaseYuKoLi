@@ -44,7 +44,7 @@
     // 联系渠道
     // ═══════════════════════════════════════════════════════════
     contacts: {
-      whatsapp: typeof WHATSAPP_NUMBER !== "undefined" ? WHATSAPP_NUMBER : "8613924828214",
+      whatsapp: typeof WHATSAPP_NUMBER !== "undefined" ? WHATSAPP_NUMBER : "8618565718814",
       whatsappDefaultMsg:
         typeof WHATSAPP_DEFAULT_MSG !== "undefined"
           ? WHATSAPP_DEFAULT_MSG
@@ -350,7 +350,7 @@
           id: "whatsapp",
           label: { en: "WhatsApp", "zh-CN": "WhatsApp" },
           icon: "chat",
-          href: "https://wa.me/8613924828214",
+          href: "https://wa.me/8618565718814",
         },
       ],
       tabletItems: [
