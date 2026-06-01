@@ -22,66 +22,60 @@
  *   <script defer src="/assets/js/vendor/swup-head-plugin.umd.js"></script>
  *   <script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js"></script>
  *   <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js"></script>
- *
- * 先决条件:
- *   - site.config.js 已加载 (SITE_CONFIG)
- *   - 上述 swup 依赖已加载
- *
- * 所有方括号 *** 开头的 CSS 类名/ID 被 @audit-safe 标记跳过审查
+ *   <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js"></script>
  */
 
-(function () {
-  var global = window;
-  var swup = null;
-  var swupEnabled = false;
+(function (global) {
+  "use strict";
 
-  // ─── Hooks ────────
-  // 用于重新挂载 navigator 和 footer (在 content:replace 后调用)
-
-  // ─── SPA 兼容事件 ────────
-  function dispatchSpaLoad() {
-    try {
-      var evt = new CustomEvent("spa:load", { detail: { source: "swup" } });
-      document.dispatchEvent(evt);
-    } catch (e) {
-      /* noop */
-    }
+  if (typeof global.Swup === "undefined") {
+    console.warn("[SWUP] Swup library not loaded. Skipping SWUP, relying on SPA Router fallback.");
+    return;
   }
 
-  // ─── 骨架屏 ────────
-  function showSkeleton() {
-    var overlay = document.getElementById("skeleton-overlay");
-    if (overlay) {
-      overlay.removeAttribute("hidden");
-      overlay.style.opacity = "1";
-      overlay.style.pointerEvents = "none";
-    }
-  }
+  // ═══════════════════════════════════════════════════════════════════
+  // 骨架屏 — CSS 过渡版
+  // ═══════════════════════════════════════════════════════════════════
+  //
+  // display:none → opacity transition (需要 skeleton.css 升级)
+  // - skeleton.css: #skeleton-overlay { transition: opacity 350ms ease-out }
+  // - skeleton.css: #skeleton-overlay[hidden] { opacity:0; pointer-events:none }
+  //
+  // 过渡时序:
+  //   0ms     → 骨架 fadeOut (opacity: 1→0, 350ms ease-out)
+  //   350ms   → 骨架不可见, 内容 fadeIn (opacity: 0→1)
+  //   700ms   → 过渡完成
 
   function hideSkeleton() {
+    clearTimeout(global._skDebugTimer);
     var overlay = document.getElementById("skeleton-overlay");
-    if (overlay) {
-      overlay.style.opacity = "0";
-      overlay.style.pointerEvents = "none";
-      setTimeout(function () {
-        overlay.setAttribute("hidden", "");
-      }, 300);
+    var container = document.getElementById("spa-content");
+    if (overlay && !overlay.hasAttribute("hidden")) {
+      overlay.setAttribute("hidden", "");
+      if (container && container.innerHTML.trim()) {
+        container.classList.add("swup-fade-in");
+      }
+    } else {
+      // 即使已经隐藏，也要确保内容可见
+      if (container && container.innerHTML.trim()) {
+        container.classList.add("swup-fade-in");
+      }
     }
   }
 
   function createSkeletonIfMissing() {
+    if (document.getElementById("skeleton-overlay")) return true;
     var container = document.getElementById("spa-content");
     if (!container) return false;
-    if (document.getElementById("skeleton-overlay")) return false;
     var overlay = document.createElement("div");
     overlay.id = "skeleton-overlay";
     overlay.innerHTML =
       '<div class="skeleton-container">' +
       '<div class="sk-hero"><div class="sk-badge"></div>' +
-      '<div class="sk-line"></div><div class="sk-line ***"></div>' +
-      '<div class="sk-line ***"></div>' +
-      '<div class="***"><div class="sk-line sk-cta"></div>' +
-      '<div class="sk-line sk-cta ***"></div></div></div>' +
+      '<div class="sk-line"></div><div class="sk-line sk-line--short"></div>' +
+      '<div class="sk-line sk-line--desc"></div>' +
+      '<div class="sk-cta-group"><div class="sk-line sk-cta"></div>' +
+      '<div class="sk-line sk-cta sk-cta--outline"></div></div></div>' +
       '<div class="sk-grid"><div class="sk-card"></div>' +
       '<div class="sk-card"></div><div class="sk-card"></div></div>' +
       "</div>";
@@ -92,51 +86,234 @@
     return true;
   }
 
-  // ─── 路由到设备页面 ────────
-  function getDeviceSuffix() {
-    var dt;
-    if (typeof global.DeviceUtils !== "undefined" && global.DeviceUtils) {
-      dt = global.DeviceUtils.getDeviceType();
-    } else {
-      // fallback: use window width
-      var w = global.innerWidth;
-      if (w < 768) dt = 1;
-      else if (w < 1280) dt = 2;
-      else dt = 3;
+  function showSkeleton() {
+    createSkeletonIfMissing();
+    var overlay = document.getElementById("skeleton-overlay");
+    if (overlay && overlay.hasAttribute("hidden")) {
+      // 跳过过渡：先禁用 transition, 显示, 再恢复
+      overlay.style.transition = "none";
+      overlay.removeAttribute("hidden");
+      void overlay.offsetHeight; // 强制重绘
+      overlay.style.transition = "";
     }
-    var suffixes = {
-      1: "index-mobile.html",
-      2: "index-tablet.html",
-      3: "index-pc.html",
-    };
-    return suffixes[dt] || "index-pc.html";
+  }
+
+  function ensureSkeletonHidden() {
+    var overlay = document.getElementById("skeleton-overlay");
+    if (overlay && !overlay.hasAttribute("hidden")) {
+      overlay.setAttribute("hidden", "");
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 页面级 JS 初始化函数映射 (SPA 导航后重运行)
+  // ═══════════════════════════════════════════════════════════════════
+
+  function runPageInitByRoute() {
+    var path = global.location.pathname;
+
+    // product-grid: /products/<slug>/ 产品分类页
+    var prodMatch = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\//);
+    if (prodMatch) {
+      if (typeof global.ProductGrid !== "undefined" && global.ProductGrid) {
+        try {
+          if (typeof global.ProductGrid.autoRender === "function") {
+            global.ProductGrid.autoRender();
+          } else if (typeof global.ProductGrid.init === "function") {
+            global.ProductGrid.init();
+          }
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+
+    // home-core-products: 首页
+    if (/^\/home\//.test(path) || path === "/") {
+      if (typeof global.HomeCoreProducts !== "undefined" && global.HomeCoreProducts && global.HomeCoreProducts.init) {
+        try {
+          global.HomeCoreProducts.init();
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+
+    // product-detail: 产品详情
+    if (/^\/products\/detail\//.test(path)) {
+      if (typeof global.ProductDetail !== "undefined" && global.ProductDetail && global.ProductDetail.init) {
+        try {
+          global.ProductDetail.init();
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+
+    // cases: 案例页
+    if (/^\/cases/.test(path)) {
+      // Detail page (e.g. /cases/sea-coffee-brand/) — deferred: ScriptsPlugin loads case-detail.js after content:replace
+      if (/^\/cases\/[a-z-]+/.test(path)) {
+        setTimeout(function () {
+          if (
+            typeof global.CaseDetail !== "undefined" &&
+            global.CaseDetail &&
+            typeof global.CaseDetail.init === "function"
+          ) {
+            try {
+              global.CaseDetail.init();
+            } catch (e) {
+              /* noop */
+            }
+          }
+        }, 100);
+      } else {
+        // List page (/cases/)
+        if (typeof global.CasesPage !== "undefined" && global.CasesPage && global.CasesPage.init) {
+          try {
+            global.CasesPage.init();
+          } catch (e) {
+            /* noop */
+          }
+        }
+        if (typeof global.CaseGrid !== "undefined" && global.CaseGrid && global.CaseGrid.init) {
+          try {
+            global.CaseGrid.init();
+          } catch (e) {
+            /* noop */
+          }
+        }
+      }
+    }
+
+    // news-detail: 新闻详情
+    if (/^\/news\/detail\//.test(path)) {
+      if (typeof global.NewsDetail !== "undefined" && global.NewsDetail && global.NewsDetail.init) {
+        try {
+          global.NewsDetail.init();
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+
+    // profit-calculator
+    if (/^\/profit-calculator\//.test(path)) {
+      if (typeof global.ProfitCalculator !== "undefined" && global.ProfitCalculator && global.ProfitCalculator.init) {
+        try {
+          global.ProfitCalculator.init();
+        } catch (e) {
+          /* noop */
+        }
+      }
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // Navigator/Footer active 状态 (从 incoming HTML 提取)
+  // ═══════════════════════════════════════════════════════════════════
+
+  function extractActiveNav(html) {
+    var m = html && html.match(/<navigator[\s\S]*?data-component="navigator"[\s\S]*?>/i);
+    if (!m) return null;
+    var v = m[0].match(/data-active="([^"]*)"/i);
+    return v ? v[1] : null;
+  }
+
+  function extractActiveFooter(html) {
+    var m = html && html.match(/<footer[\s\S]*?data-component="footer"[\s\S]*?>/i);
+    if (!m) return null;
+    var v = m[0].match(/data-active="([^"]*)"/i);
+    return v ? v[1] : null;
+  }
+
+  function updateActiveState(html) {
+    var navActive = extractActiveNav(html);
+    if (navActive && global.Navigator && typeof global.Navigator.updateActive === "function") {
+      global.Navigator.updateActive(navActive);
+    }
+    // SPA 导航后同步更新手机菜单高亮
+    if (global.SlideMenu && typeof global.SlideMenu.updateActive === "function") {
+      global.SlideMenu.updateActive();
+    }
+
+    var footerActive = extractActiveFooter(html);
+    if (!footerActive) {
+      var path = global.location.pathname.replace(/\/$/, "");
+      var map = {
+        "/home": "home",
+        "/products": "products",
+        "/solutions": "solutions",
+        "/manufacturing": "manufacturing",
+        "/compliance": "compliance",
+        "/contact": "contact",
+        "/cases": "cases",
+        "/about": "about",
+        "/news": "news",
+        "/quote": "quote",
+        "/support": "support",
+        "/profit-calculator": "profit-calculator",
+        "/resources": "resources",
+      };
+      var best = "";
+      for (var k in map) {
+        if (path.indexOf(k) === 0 && k.length > best.length) best = k;
+      }
+      footerActive = map[best] || "home";
+    }
+    if (global.Footer && typeof global.Footer.updateActive === "function") {
+      global.Footer.updateActive(footerActive);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // spa:load 兼容事件派发
+  // ═══════════════════════════════════════════════════════════════════
+
+  function dispatchSpaLoad() {
+    document.dispatchEvent(new CustomEvent("spa:load", { bubbles: true }));
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 设备感知页面路径映射 (适配 dev 的 88 个 SSG 页面)
+  // ═══════════════════════════════════════════════════════════════════
+
+  function getDeviceSuffix() {
+    if (typeof DeviceUtils !== "undefined" && DeviceUtils && DeviceUtils.getDevicePagePath) {
+      // 使用项目统一的设备检测
+      var device = DeviceUtils.getDeviceType ? DeviceUtils.getDeviceType() : "pc";
+      if (device === "mobile") return "index-mobile.html";
+      if (device === "tablet") return "index-tablet.html";
+      return "index-pc.html";
+    }
+    // fallback: viewport width
+    var w = window.innerWidth;
+    if (w < 768) return "index-mobile.html";
+    if (w < 1280) return "index-tablet.html";
+    return "index-pc.html";
   }
 
   /**
-   * routeToFetchUrl — 将公开 URL 转换为 /pages/ 下的设备特定 SSG 静态文件
-   *
-   * 映射规则（优先级从高到低）:
-   * / → /home/
-   *
-   *   / -> /home/
-   *   /home/ → /pages/home/index-{device}.html
-   *   /products/ → /pages/products/index-{device}.html
-   *   /products/coffee/ → /products/coffee/index-{device}.html
-   *   /products/<category>/<model>/ → /pages/pdp/index-{device}.html  (PDP)
-   *   /solutions/oem/ → /solutions/oem/index-{device}.html
-   *   /manufacturing/ → /manufacturing/index-{device}.html
-   *   /compliance/   → /compliance/index-{device}.html
-   *   /cases/        → /cases/index-{device}.html
-   *   /resources/catalog/ → /resources/catalog/index-{device}.html
-   *   /news/detail/  → /pages/news/detail-{device}.html (flat-file pattern)
-   *   /<path>/       → /pages/<path>/index-{device}.html (fallback convention)
+   * 将 SPA 路由路径转换为设备特定页面的 fetch URL.
+   * 映射关系（对齐 dev 的 SpaRouter.routes + 文件约定）:
+   * /              → /home/index-pc.html
+   * /home/         → /home/index-pc.html
+   * /products/     → /products/index-pc.html
+   * /products/coffee/ → /products/coffee/index-pc.html
+   * /products/<category>/<model>/ → /pages/pdp/index-pc.html  (PDP)
+   * /solutions/oem/ → /solutions/oem/index-pc.html
+   * /manufacturing/ → /manufacturing/index-pc.html
+   * /compliance/   → /compliance/index-pc.html
+   * /cases/        → /cases/index-pc.html
+   * /resources/catalog/ → /resources/catalog/index-pc.html
+   * /news/detail/  → /news/detail-pc.html (flat-file pattern)
    */
   function routeToFetchUrl(path) {
     var suffix = getDeviceSuffix();
 
     // 所有 fetch URL 统一加 /pages/ 前缀，以确保:
     // 1. swup resolveUrl 能反向映射回干净的目录 URL (如 /products/coffee/)
-    // 2. 与 server.js 的静态文件查找约定一致
+    // 2. 防止 swup 从 response.url 提取的 /products/coffee/index-mobile.html 污染地址栏
 
     // Aliases / redirects
     if (path === "/" || path === "/home/") return "/pages/home/" + suffix;
@@ -146,6 +323,7 @@
 
     // Solutions pages (all variants)
     if (path.indexOf("/solutions/") === 0) {
+      // 首页
       if (path === "/solutions/") return "/pages/solutions/" + suffix;
       var solMatch = path.match(/^\/solutions\/(oem|odm|obm|rd|packaging)\/$/);
       if (solMatch) return "/pages/solutions/" + solMatch[1] + "/" + suffix;
@@ -157,20 +335,9 @@
       if (resMatch) return "/pages/resources/" + resMatch[1] + "/" + suffix;
     }
 
-    // Manufacturing & Compliance & About
+    // Manufacturing & Compliance
     if (path === "/manufacturing/") return "/pages/manufacturing/" + suffix;
     if (path === "/compliance/") return "/pages/compliance/" + suffix;
-
-    // Contact & Quote & Support & Thank-you
-    if (path === "/contact/") return "/pages/contact/" + suffix;
-    if (path === "/quote/") return "/pages/quote/" + suffix;
-    if (path === "/support/") return "/pages/support/" + suffix;
-    if (path === "/thank-you/" || path === "/thank-you/received/") return "/pages/thank-you/" + suffix;
-
-    // About & Privacy & Terms
-    if (path === "/about/") return "/pages/about/" + suffix;
-    if (path === "/privacy/") return "/pages/privacy/" + suffix;
-    if (path === "/terms/") return "/pages/terms/" + suffix;
 
     // 动态产品分类页: /products/<slug>/
     var prodMatch = path.match(/^\/(products\/)?(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
@@ -192,6 +359,11 @@
       return "/pages/pdp/" + suffix;
     }
 
+    // 案例详情页: /cases/<slug>/ → 共享模板 /pages/cases/detail/
+    if (/^\/cases\/[a-z-]+/.test(path)) {
+      return "/pages/cases/detail/" + suffix;
+    }
+
     // 旧路由兼容: /beauty/ → /products/beauty/
     var redirectMatch = path.match(/^\/(coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
     if (redirectMatch) return "/pages/products/" + redirectMatch[1] + "/" + suffix;
@@ -205,9 +377,10 @@
   // 创建 SWUP 实例
   // ═══════════════════════════════════════════════════════════════════
 
-  function initSwup() {
-    if (swup) return;
+  var swup = null;
+  var swupEnabled = false;
 
+  function initSwup() {
     try {
       swup = new global.Swup({
         containers: ["#spa-content"],
@@ -277,7 +450,9 @@
         if (!container) {
           // 容器不存在 → fallback 到原生导航
           console.warn("[SWUP] #spa-content not found in incoming page, falling back to native navigation");
-          swup.navigate(visit.to.url).catch(function () { global.location.href = visit.to.url; });
+          swup.navigate(visit.to.url).catch(function () {
+            global.location.href = visit.to.url;
+          });
           return;
         }
         container.classList.add("swup-fade-in");
@@ -290,7 +465,9 @@
         // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
           if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
-            setTimeout(function () { global.ProductGrid.autoRender(); }, 50);
+            setTimeout(function () {
+              global.ProductGrid.autoRender();
+            }, 50);
           }
         }
 
@@ -300,58 +477,18 @@
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
 
-        // ─── 解决方案页面 debug 诊断 ───
+        // 解决方案页面 SPA 导航后强制重绘（解决跳转后卡片内容不显示的问题）
         if (/^\/solutions\/$/.test(global.location.pathname)) {
           setTimeout(function () {
             var c = document.getElementById("spa-content");
             if (c) {
               void c.offsetWidth;
-              // 检查卡片数量
-              var allCards = c.querySelectorAll('a[href^="/solutions/"]');
-              console.log("[DEBUG/solutions] card count:", allCards.length);
-              allCards.forEach(function(card, i) {
-                var rect = card.getBoundingClientRect();
-                console.log("[DEBUG/solutions] card", i, "display:", getComputedStyle(card).display, "width:", card.offsetWidth, "rect.top:", rect.top, "rect.left:", rect.left, "rect.bottom:", rect.bottom);
-              });
-              // 检查 grid 容器样式
-              var gridContainer = document.querySelector(".solutions-grid");
-              if (gridContainer) {
-                var cs = getComputedStyle(gridContainer);
-                console.log("[DEBUG/solutions] grid-container display:", cs.display, "grid-template:", cs.gridTemplateColumns, "grid-auto-flow:", cs.gridAutoFlow, "gap:", cs.gap);
-                console.log("[DEBUG/solutions] grid-container width:", gridContainer.offsetWidth);
-                console.log("[DEBUG/solutions] grid children:", gridContainer.children.length);
-                // 检查父级 section-content 宽度
-                var sectionContent = gridContainer.closest('.section-content');
-                if (sectionContent) {
-                  console.log("[DEBUG/solutions] section-content width:", sectionContent.offsetWidth);
-                }
-                var skeletonContainer = gridContainer.closest('.skeleton-container');
-                if (skeletonContainer) {
-                  console.log("[DEBUG/solutions] PARENT IS SKELETON! skeleton-container width:", skeletonContainer.offsetWidth);
-                }
-              } else {
-                console.warn("[DEBUG/solutions] .solutions-grid container NOT FOUND in DOM");
-              }
-              // 检查 CSS 加载状态
-              var stylesheets = document.styleSheets;
-              var foundSolutionsGrid = false;
-              for (var si = 0; si < stylesheets.length; si++) {
-                try {
-                  var rules = stylesheets[si].cssRules || stylesheets[si].rules;
-                  for (var ri = 0; ri < rules.length; ri++) {
-                    if (rules[ri].selectorText && rules[ri].selectorText.indexOf("solutions-grid") !== -1) {
-                      foundSolutionsGrid = true;
-                      console.log("[DEBUG/solutions] FOUND .solutions-grid in stylesheet:", stylesheets[si].href || "inline");
-                      break;
-                    }
-                  }
-                } catch(e) { /* cross-origin stylesheet */ }
-              }
-              if (!foundSolutionsGrid) {
-                console.warn("[DEBUG/solutions] .solutions-grid CSS rule NOT FOUND in any stylesheet — this is likely the bug");
+              var cards = c.querySelectorAll(".grid > a");
+              if (cards.length > 1) {
+                // grid 已正确渲染
               }
             }
-          }, 500);
+          }, 50);
         }
       });
 
@@ -421,113 +558,42 @@
             var overlay = document.getElementById("skeleton-overlay");
             if (overlay) {
               // 立即显示骨架，然后在下一帧设置 fade-out
+              overlay.style.transition = "none";
+              overlay.removeAttribute("hidden");
               overlay.style.opacity = "1";
-              setTimeout(function () {
-                overlay.style.opacity = "0";
-                setTimeout(function () {
-                  overlay.style.display = "none";
-                  hideSkeleton();
-                }, 500);
-              }, 0);
+              // 强制重绘后触发过渡
+              overlay.offsetWidth;
+              overlay.style.transition = "opacity 350ms ease-out";
+              overlay.setAttribute("hidden", "");
+              container.classList.add("swup-fade-in");
             }
           }
-          runPageInitByRoute();
+          // 运行页面级 JS 初始化（如 product-grid, home-core-products 等）
+          // 这确保 SSG 页面首次加载时渲染动态内容
+          setTimeout(function () {
+            runPageInitByRoute();
+          }, 0);
         }
       });
-
-      // ─── 启动 SWUP ────────
-      swup.init();
     } catch (e) {
       console.error("[SWUP] Failed to initialize SWUP:", e);
     }
   }
 
-  // ─── 页面初始化 ────────
-  function runPageInitByRoute() {
-    var path = global.location.pathname;
-
-    // ──────── 工具函数：安全调用模块 init/autoRender ────────
-    function safeCall(module, method) {
-      if (typeof module !== "undefined" && module && typeof module[method] === "function") {
-        try { module[method](); } catch (e) { /* noop */ }
-      }
-    }
-
-    // product-grid: /products/<slug>/ 产品分类页（含 /products/all/）
-    if (/^\/products\/(all|[a-z]+)\/$/.test(path)) {
-      safeCall(global.ProductGrid, "autoRender");
-    }
-
-    // product-detail PDP: /products/<category>/<model>/（新路由）
-    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path)) {
-      safeCall(global.ProductDetail, "init");
-    }
-
-    // 旧兼容: /products/detail/<model>/
-    if (/^\/products\/detail\//.test(path)) {
-      safeCall(global.ProductDetail, "init");
-    }
-
-    // home: 首页
-    if (/^\/home\//.test(path) || path === "/") {
-      safeCall(global.HomeCoreProducts, "init");
-    }
-
-    // cases: 案例页
-    if (/^\/cases\//.test(path)) {
-      safeCall(global.CasesPage, "init");
-      safeCall(global.CaseGrid, "init");
-    }
-
-    // news-detail: 新闻详情
-    if (/^\/news\/detail\//.test(path)) {
-      safeCall(global.NewsDetail, "init");
-    }
-
-    // profit-calculator: 利润计算器
-    if (/^\/profit-calculator\//.test(path)) {
-      safeCall(global.ProfitCalculator, "init");
-    }
-  }
-
   // ═══════════════════════════════════════════════════════════════════
-  // Navigator/Footer active 状态 (从 incoming HTML 提取)
+  // SpaRouter 向前兼容层 (供旧模块调用)
   // ═══════════════════════════════════════════════════════════════════
 
-  function extractActiveNav(html) {
-    var m = html && html.match(/<navigator[\s\S]*?data-component="navigator"[\s\S]*?>/i);
-    if (!m) return null;
-    var v = m[0].match(/data-active="([^"]*)"/i);
-    return v ? v[1] : null;
-  }
-
-  function extractActiveFooter(html) {
-    var m = html && html.match(/<footer[\s\S]*?data-component="footer"[\s\S]*?>/i);
-    if (!m) return null;
-    var v = m[0].match(/data-active="([^"]*)"/i);
-    return v ? v[1] : null;
-  }
-
-  function updateActiveState(html) {
-    var navActive = extractActiveNav(html);
-    if (navActive && global.Navigator && typeof global.Navigator.updateActive === "function") {
-      global.Navigator.updateActive(navActive);
-    }
-
-    var footerActive = extractActiveFooter(html);
-    if (footerActive && global.Footer && typeof global.Footer.updateActive === "function") {
-      global.Footer.updateActive(footerActive);
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════════════════
-  // SPA Router compatibility layer
-  // ═══════════════════════════════════════════════════════════════════
-
-  // 确保 SpaRouter 对象存在（供旧模块调用）
-  if (typeof global.SpaRouter === "undefined") {
+  // 如果 spa-router.js 先加载了 SpaRouter, 我们替换其 navigate 方法
+  // 否则创建新的兼容对象
+  if (!global.SpaRouter) {
     global.SpaRouter = {};
   }
+
+  // 保存旧引用（如果有的话）
+  var _oldNavigate = global.SpaRouter.navigate;
+  var _oldReplace = global.SpaRouter.replace;
+  var _oldGetPath = global.SpaRouter.getCurrentPath;
 
   global.SpaRouter.navigate = function (path) {
     var url = path;
@@ -562,11 +628,49 @@
     global.location.replace(url);
   };
 
-  // ─── 初始化 SWUP ────────
-  // 等待 DOM 就绪以确保 SPA 容器可用
-  if (document.readyState !== "loading") {
-    initSwup();
-  } else {
-    document.addEventListener("DOMContentLoaded", initSwup);
+  global.SpaRouter.getCurrentPath = function () {
+    var path = global.location.pathname;
+    if (path.endsWith(".html")) {
+      var ls = path.lastIndexOf("/");
+      if (ls > 0) path = path.substring(0, ls + 1);
+    }
+    if (!path.endsWith("/")) path = path + "/";
+    return path;
+  };
+
+  global.SpaRouter._pendingScroll = null;
+
+  // ═══════════════════════════════════════════════════════════════════
+  // __spaNavigate — 统一 SPA 导航入口（供 bottom-tab 等模块调用）
+  // ═══════════════════════════════════════════════════════════════════
+
+  global.__spaNavigate = function (url) {
+    if (swup && swupEnabled) {
+      swup.navigate(url);
+    } else {
+      global.location.href = url;
+    }
+  };
+
+  // ═══════════════════════════════════════════════════════════════════
+  // 启动
+  // ═══════════════════════════════════════════════════════════════════
+
+  // 处理根路径重定向
+  var path = global.location.pathname;
+  if (path === "/" || path === "/index.html") {
+    history.replaceState(null, "", "/home/");
   }
-})();
+
+  var redirectParam = new URLSearchParams(global.location.search).get("redirect");
+  if (redirectParam) {
+    history.replaceState(null, "", redirectParam);
+  }
+
+  // 初始化 SWUP
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSwup);
+  } else {
+    initSwup();
+  }
+})(window);

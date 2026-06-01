@@ -103,7 +103,7 @@ const ROUTES = [
   { slug: 'news',         navId: 'news' },
   { slug: 'about',        navId: 'about' },
   { slug: 'contact',      navId: 'contact' },
-  { slug: .pdp., navId: 'products' },
+  { slug: 'pdp', navId: 'products' },
   // Product category sub-pages
   { slug: 'products/stirfry',  navId: 'products' },
   { slug: 'products/cutting',  navId: 'products' },
@@ -114,6 +114,18 @@ const ROUTES = [
   { slug: 'thank-you',    navId: 'thank-you' },
   // { slug: 'landing',      navId: 'landing' },  // removed in i18n cleanup
   // Application sub-pages
+];
+
+// Case detail slugs — each is a dynamic route sharing the same detail template
+const CASE_DETAIL_SLUGS = [
+  'sea-coffee-brand',
+  'mideast-meal-brand',
+  'eu-collagen-brand',
+  'jp-functional-drink',
+  'na-probiotic-brand',
+  'au-tea-chain',
+  'af-weight-brand',
+  'cn-new-consumer'
 ];
 
 // Parse CLI args
@@ -290,7 +302,7 @@ function detectDeviceType(filename) {
  * - Correct asset paths (root-relative)
  */
 function generateRouteIndex(route) {
-  const srcDir = path.join(SRC_PAGES_DIR, route.slug);
+  const srcDir = path.join(SRC_PAGES_DIR, route.sourceDir || route.slug);
   
   // 查找响应式文件，优先使用 index-pc.html 作为主入口
   const possibleFiles = [
@@ -380,7 +392,7 @@ function generateRouteIndex(route) {
  * We copy them to dist/<route>/ so the directory URL structure works
  */
 function copyDeviceFiles(route) {
-  const srcPagesDir = path.join(DIST_DIR, 'pages', route.slug);
+  const srcPagesDir = path.join(DIST_DIR, 'pages', route.sourceDir || route.slug);
   const destRouteDir = path.join(DIST_DIR, route.slug);
 
   if (!fs.existsSync(srcPagesDir)) {
@@ -466,7 +478,9 @@ function generateRootIndex() {
  */
 function generate404() {
   var bp = BASE_PATH; // alias for shorter references
-  var routesJson = JSON.stringify(ROUTES.map(function (r) { return r.slug; }));
+  var caseDetailRoutes = CASE_DETAIL_SLUGS.map(function (s) { return 'cases/' + s; });
+  var allRouteSlugs = ROUTES.map(function (r) { return r.slug; }).concat(caseDetailRoutes);
+  var routesJson = JSON.stringify(allRouteSlugs);
   var html = [
     '<!DOCTYPE html>',
     '<html class="light" lang="en">',
@@ -622,10 +636,15 @@ function main() {
     }
   }
 
+  // Build full route list including case detail sub-routes
+  var ALL_ROUTES = ROUTES.concat(CASE_DETAIL_SLUGS.map(function (slug) {
+    return { slug: 'cases/' + slug, navId: 'cases', sourceDir: 'cases/detail' };
+  }));
+
   // Step 1: Generate route entry points
   log('\nStep 1: Generating route entry points...');
   let generatedRoutes = 0;
-  for (const route of ROUTES) {
+  for (const route of ALL_ROUTES) {
     const ok = generateRouteIndex(route);
     if (ok) {
       generatedRoutes++;
@@ -636,7 +655,7 @@ function main() {
   // Step 2: Copy device-specific files from dist/pages/<route>/ to dist/<route>/
   log('\nStep 2: Copying device-specific files...');
   let totalCopied = 0;
-  for (const route of ROUTES) {
+  for (const route of ALL_ROUTES) {
     const n = copyDeviceFiles(route);
     if (n > 0) {
       log('  ✓ ' + route.slug + '/ (' + n + ' device files)');
@@ -770,12 +789,12 @@ function main() {
   log('  dist/');
   log('    index.html          → / (redirects to /home/)');
   log('    404.html            → handles /home → /home/ (no-trailing-slash)');
-  for (var _ri = 0; _ri < ROUTES.length; _ri++) {
-    log('    ' + ROUTES[_ri].slug + '/');
-    log('      index.html        → /' + ROUTES[_ri].slug + '/');
-    log('      index-pc.html     → /' + ROUTES[_ri].slug + '/index-pc.html');
-    log('      index-mobile.html → /' + ROUTES[_ri].slug + '/index-mobile.html');
-    log('      index-tablet.html → /' + ROUTES[_ri].slug + '/index-tablet.html');
+  for (var _ri = 0; _ri < ALL_ROUTES.length; _ri++) {
+    log('    ' + ALL_ROUTES[_ri].slug + '/');
+    log('      index.html        → /' + ALL_ROUTES[_ri].slug + '/');
+    log('      index-pc.html     → /' + ALL_ROUTES[_ri].slug + '/index-pc.html');
+    log('      index-mobile.html → /' + ALL_ROUTES[_ri].slug + '/index-mobile.html');
+    log('      index-tablet.html → /' + ALL_ROUTES[_ri].slug + '/index-tablet.html');
   }
   log('    assets/               → /assets/ (JS, CSS, images, lang)');
 }
