@@ -31,6 +31,9 @@
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
+  /* 对齐 main#spa-content 的宽度 */
+  max-width: 1920px;
+  margin: 0 auto;
 }
 @media (min-width: 1024px) {
   #skeleton-overlay {
