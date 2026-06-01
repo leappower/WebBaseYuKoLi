@@ -23,16 +23,16 @@
 #skeleton-overlay {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
   z-index: 1;
   background: var(--color-bg, #fff);
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  /* 对齐 main#spa-content 的宽度 */
-  max-width: 1920px;
-  margin: 0 auto;
+  /* 与 skeleton-container 同宽居中 */
+  max-width: 1280px;
+  left: 50%;
+  transform: translateX(-50%);
+  right: auto;
 }
 #skeleton-overlay[hidden] {
   display: none;
