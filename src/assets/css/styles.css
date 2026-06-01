@@ -2359,14 +2359,16 @@ html.dark .mobile-menu-l1-arrow {
 
 /* ---- 一级菜单高亮（选中态） ---- */
 /* Use negative margins to extend active background beyond the 20px padding,
-   making it span the full panel width. */
+   making it span the full panel width.
+   padding-left is 17px (not 20px) so the border-left 3px doesn't shift
+   the icon/text position relative to inactive state (20px = 3px border + 17px padding). */
 .mobile-menu-l1.is-active {
   background: rgba(46, 125, 32, 0.08);
   color: var(--color-primary, #2e7d32);
   width: calc(100% + 40px);
   margin-left: -20px;
   margin-right: -20px;
-  padding-left: 20px;
+  padding-left: 17px;
   padding-right: 20px;
   border-left: 3px solid var(--color-primary, #2e7d32);
   border-bottom: 0.5px solid rgba(60, 60, 67, 0.08);
