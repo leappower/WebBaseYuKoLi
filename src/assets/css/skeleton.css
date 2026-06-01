@@ -41,6 +41,7 @@
 /* ───────── 容器 ───────── */
 .skeleton-container {
   width: 100%;
+  max-width: 1920px;
   margin: 0 auto;
   min-height: 50vh;
   padding: 2rem var(--container-px, 0.75rem); /* mobile: aligned with section-content */
