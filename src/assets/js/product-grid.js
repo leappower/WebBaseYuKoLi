@@ -365,6 +365,7 @@
   var _dataLoaded = false;
 
   function loadFromAPI(callback) {
+    console.log('[TRACE/product-grid] loadFromAPI: _dataLoaded=', _dataLoaded, 'PRODUCT_DATA_TABLE.length=', (window.PRODUCT_DATA_TABLE||[]).length);
     if (_dataLoaded) {
       if (callback) callback();
       return;
@@ -881,6 +882,7 @@
   var _renderPending = false;
 
   function autoRender() {
+    console.log('[TRACE/product-grid] autoRender called, path:', window.location.pathname);
     // Re-sync _activeCategory from current URL (needed for SPA navigation)
     var pathMatch = window.location.pathname.match(/^\/products\/([^/]+)\/$/);
     if (pathMatch && pathMatch[1]) {

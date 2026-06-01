@@ -111,6 +111,7 @@
 
   function runPageInitByRoute() {
     var path = global.location.pathname;
+    console.log("[TRACE] runPageInitByRoute called, path:", path);
 
     // product-grid: /products/<slug>/ 产品分类页
     var prodMatch = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\//);
@@ -443,6 +444,8 @@
         var page = _a ? _a.page : null;
         if (!page) return;
 
+        console.log("[TRACE] content:replace START, path:", global.location.pathname);
+
         hideSkeleton();
 
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
@@ -460,11 +463,12 @@
         var p = global.location.pathname;
 
         // SPA 导航到产品页：触发 ProductGrid 渲染
-        // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染。
-        // 等 200ms 确保 swup 完成 DOM 替换 + product-data-table 就绪
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
+          console.log("[TRACE] content:replace -> product page detected, p=", p, "ProductGrid exists:", !!global.ProductGrid);
           if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
+            console.log("[TRACE] scheduling ProductGrid.autoRender in 200ms");
             setTimeout(function () {
+              console.log("[TRACE] ProductGrid.autoRender() firing NOW, path:", global.location.pathname);
               global.ProductGrid.autoRender();
             }, 200);
           }
@@ -496,6 +500,7 @@
 
       // ─── page:view — 派发 spa:load 兼容事件（页面完全渲染后）───
       swup.hooks.on("page:view", function () {
+        console.log("[TRACE] page:view -> dispatchSpaLoad, path:", global.location.pathname);
         dispatchSpaLoad();
       });
 
