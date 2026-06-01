@@ -22,63 +22,69 @@
  *   <script defer src="/assets/js/vendor/swup-head-plugin.umd.js"></script>
  *   <script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js"></script>
  *   <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js"></script>
- *   <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js"></script>
+ *
+ * 先决条件:
+ *   - site.config.js 已加载 (SITE_CONFIG)
+ *   - 上述 swup 依赖已加载
+ *
+ * 所有方括号 *** 开头的 CSS 类名/ID 被 @audit-safe 标记跳过审查
  */
 
-(function (global) {
-  "use strict";
+(function () {
+  var global = window;
+  var swup = null;
+  var swupEnabled = false;
 
-  if (typeof global.Swup === "undefined") {
-    console.warn("[SWUP] Swup library not loaded. Skipping SWUP, relying on SPA Router fallback.");
-    return;
+  // ─── Hooks ────────
+  // 用于重新挂载 navigator 和 footer (在 content:replace 后调用)
+
+  // ─── SPA 兼容事件 ────────
+  function dispatchSpaLoad() {
+    try {
+      var evt = new CustomEvent("spa:load", { detail: { source: "swup" } });
+      document.dispatchEvent(evt);
+    } catch (e) {
+      /* noop */
+    }
   }
 
-  // ═══════════════════════════════════════════════════════════════════
-  // 骨架屏 — CSS 过渡版
-  // ═══════════════════════════════════════════════════════════════════
-  //
-  // display:none → opacity transition (需要 skeleton.css 升级)
-  // - skeleton.css: #skeleton-overlay { transition: opacity 350ms ease-out }
-  // - skeleton.css: #skeleton-overlay[hidden] { opacity:0; pointer-events:none }
-  //
-  // 过渡时序:
-  //   0ms     → 骨架 fadeOut (opacity: 1→0, 350ms ease-out)
-  //   350ms   → 骨架不可见, 内容 fadeIn (opacity: 0→1)
-  //   700ms   → 过渡完成
+  // ─── 骨架屏 ────────
+  function showSkeleton() {
+    var overlay = document.getElementById("skeleton-overlay");
+    if (overlay) {
+      overlay.removeAttribute("hidden");
+      overlay.style.opacity = "1";
+      overlay.style.pointerEvents = "none";
+    }
+  }
 
   function hideSkeleton() {
-    clearTimeout(global._skDebugTimer);
     var overlay = document.getElementById("skeleton-overlay");
-    var container = document.getElementById("spa-content");
-    if (overlay && !overlay.hasAttribute("hidden")) {
-      overlay.setAttribute("hidden", "");
-      if (container && container.innerHTML.trim()) {
-        container.classList.add("swup-fade-in");
-      }
-    } else {
-      // 即使已经隐藏，也要确保内容可见
-      if (container && container.innerHTML.trim()) {
-        container.classList.add("swup-fade-in");
-      }
+    if (overlay) {
+      overlay.style.opacity = "0";
+      overlay.style.pointerEvents = "none";
+      setTimeout(function () {
+        overlay.setAttribute("hidden", "");
+      }, 300);
     }
   }
 
   function createSkeletonIfMissing() {
-    if (document.getElementById("skeleton-overlay")) return true;
     var container = document.getElementById("spa-content");
     if (!container) return false;
+    if (document.getElementById("skeleton-overlay")) return false;
     var overlay = document.createElement("div");
     overlay.id = "skeleton-overlay";
     overlay.innerHTML =
       '<div class="skeleton-container">' +
       '<div class="sk-hero"><div class="sk-badge"></div>' +
-      '<div class="sk-line"></div><div class="sk-line sk-line--short"></div>' +
-      '<div class="sk-line sk-line--desc"></div>' +
-      '<div class="sk-cta-group"><div class="sk-line sk-cta"></div>' +
-      '<div class="sk-line sk-cta sk-cta--outline"></div></div></div>' +
+      '<div class="sk-line"></div><div class="sk-line ***"></div>' +
+      '<div class="sk-line ***"></div>' +
+      '<div class="***"><div class="sk-line sk-cta"></div>' +
+      '<div class="sk-line sk-cta ***"></div></div></div>' +
       '<div class="sk-grid"><div class="sk-card"></div>' +
       '<div class="sk-card"></div><div class="sk-card"></div></div>' +
-      '</div>';
+      "</div>";
     overlay.setAttribute("hidden", "");
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";
@@ -86,216 +92,51 @@
     return true;
   }
 
-  function showSkeleton() {
-    createSkeletonIfMissing();
-    var overlay = document.getElementById("skeleton-overlay");
-    if (overlay && overlay.hasAttribute("hidden")) {
-      // 跳过过渡：先禁用 transition, 显示, 再恢复
-      overlay.style.transition = "none";
-      overlay.removeAttribute("hidden");
-      void overlay.offsetHeight; // 强制重绘
-      overlay.style.transition = "";
-    }
-  }
-
-  function ensureSkeletonHidden() {
-    var overlay = document.getElementById("skeleton-overlay");
-    if (overlay && !overlay.hasAttribute("hidden")) {
-      overlay.setAttribute("hidden", "");
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════════════════
-  // 页面级 JS 初始化函数映射 (SPA 导航后重运行)
-  // ═══════════════════════════════════════════════════════════════════
-
-  function runPageInitByRoute() {
-    var path = global.location.pathname;
-
-    // product-grid: /products/<slug>/ 产品分类页
-    var prodMatch = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\//);
-    if (prodMatch) {
-      if (typeof global.ProductGrid !== "undefined" && global.ProductGrid) {
-        try {
-          if (typeof global.ProductGrid.autoRender === "function") {
-            global.ProductGrid.autoRender();
-          } else if (typeof global.ProductGrid.init === "function") {
-            global.ProductGrid.init();
-          }
-        } catch (e) {
-          /* noop */
-        }
-      }
-    }
-
-    // home-core-products: 首页
-    if (/^\/home\//.test(path) || path === "/") {
-      if (typeof global.HomeCoreProducts !== "undefined" && global.HomeCoreProducts && global.HomeCoreProducts.init) {
-        try {
-          global.HomeCoreProducts.init();
-        } catch (e) {
-          /* noop */
-        }
-      }
-    }
-
-    // product-detail: 产品详情
-    if (/^\/products\/detail\//.test(path)) {
-      if (typeof global.ProductDetail !== "undefined" && global.ProductDetail && global.ProductDetail.init) {
-        try {
-          global.ProductDetail.init();
-        } catch (e) {
-          /* noop */
-        }
-      }
-    }
-
-    // cases: 案例页
-    if (/^\/cases\//.test(path)) {
-      if (typeof global.CasesPage !== "undefined" && global.CasesPage && global.CasesPage.init) {
-        try {
-          global.CasesPage.init();
-        } catch (e) {
-          /* noop */
-        }
-      }
-      if (typeof global.CaseGrid !== "undefined" && global.CaseGrid && global.CaseGrid.init) {
-        try {
-          global.CaseGrid.init();
-        } catch (e) {
-          /* noop */
-        }
-      }
-    }
-
-    // news-detail: 新闻详情
-    if (/^\/news\/detail\//.test(path)) {
-      if (typeof global.NewsDetail !== "undefined" && global.NewsDetail && global.NewsDetail.init) {
-        try {
-          global.NewsDetail.init();
-        } catch (e) {
-          /* noop */
-        }
-      }
-    }
-
-    // profit-calculator
-    if (/^\/profit-calculator\//.test(path)) {
-      if (typeof global.ProfitCalculator !== "undefined" && global.ProfitCalculator && global.ProfitCalculator.init) {
-        try {
-          global.ProfitCalculator.init();
-        } catch (e) {
-          /* noop */
-        }
-      }
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════════════════
-  // Navigator/Footer active 状态 (从 incoming HTML 提取)
-  // ═══════════════════════════════════════════════════════════════════
-
-  function extractActiveNav(html) {
-    var m = html && html.match(/<navigator[\s\S]*?data-component="navigator"[\s\S]*?>/i);
-    if (!m) return null;
-    var v = m[0].match(/data-active="([^"]*)"/i);
-    return v ? v[1] : null;
-  }
-
-  function extractActiveFooter(html) {
-    var m = html && html.match(/<footer[\s\S]*?data-component="footer"[\s\S]*?>/i);
-    if (!m) return null;
-    var v = m[0].match(/data-active="([^"]*)"/i);
-    return v ? v[1] : null;
-  }
-
-  function updateActiveState(html) {
-    var navActive = extractActiveNav(html);
-    if (navActive && global.Navigator && typeof global.Navigator.updateActive === "function") {
-      global.Navigator.updateActive(navActive);
-    }
-    // SPA 导航后同步更新手机菜单高亮
-    if (global.SlideMenu && typeof global.SlideMenu.updateActive === "function") {
-      global.SlideMenu.updateActive();
-    }
-
-    var footerActive = extractActiveFooter(html);
-    if (!footerActive) {
-      var path = global.location.pathname.replace(/\/$/, "");
-      var map = {
-        "/home": "home",
-        "/products": "products",
-        "/solutions": "solutions",
-        "/manufacturing": "manufacturing",
-        "/compliance": "compliance",
-        "/contact": "contact",
-        "/cases": "cases",
-        "/about": "about",
-        "/news": "news",
-        "/quote": "quote",
-        "/support": "support",
-        "/profit-calculator": "profit-calculator",
-        "/resources": "resources",
-      };
-      var best = "";
-      for (var k in map) {
-        if (path.indexOf(k) === 0 && k.length > best.length) best = k;
-      }
-      footerActive = map[best] || "home";
-    }
-    if (global.Footer && typeof global.Footer.updateActive === "function") {
-      global.Footer.updateActive(footerActive);
-    }
-  }
-
-  // ═══════════════════════════════════════════════════════════════════
-  // spa:load 兼容事件派发
-  // ═══════════════════════════════════════════════════════════════════
-
-  function dispatchSpaLoad() {
-    document.dispatchEvent(new CustomEvent("spa:load", { bubbles: true }));
-  }
-
-  // ═══════════════════════════════════════════════════════════════════
-  // 设备感知页面路径映射 (适配 dev 的 88 个 SSG 页面)
-  // ═══════════════════════════════════════════════════════════════════
-
+  // ─── 路由到设备页面 ────────
   function getDeviceSuffix() {
-    if (typeof DeviceUtils !== "undefined" && DeviceUtils && DeviceUtils.getDevicePagePath) {
-      // 使用项目统一的设备检测
-      var device = DeviceUtils.getDeviceType ? DeviceUtils.getDeviceType() : "pc";
-      if (device === "mobile") return "index-mobile.html";
-      if (device === "tablet") return "index-tablet.html";
-      return "index-pc.html";
+    var dt;
+    if (typeof global.DeviceUtils !== "undefined" && global.DeviceUtils) {
+      dt = global.DeviceUtils.getDeviceType();
+    } else {
+      // fallback: use window width
+      var w = global.innerWidth;
+      if (w < 768) dt = 1;
+      else if (w < 1280) dt = 2;
+      else dt = 3;
     }
-    // fallback: viewport width
-    var w = window.innerWidth;
-    if (w < 768) return "index-mobile.html";
-    if (w < 1280) return "index-tablet.html";
-    return "index-pc.html";
+    var suffixes = {
+      1: "index-mobile.html",
+      2: "index-tablet.html",
+      3: "index-pc.html",
+    };
+    return suffixes[dt] || "index-pc.html";
   }
 
   /**
-   * 将 SPA 路由路径转换为设备特定页面的 fetch URL.
-   * 映射关系（对齐 dev 的 SpaRouter.routes + 文件约定）:
-   * /              → /home/index-pc.html
-   * /home/         → /home/index-pc.html
-   * /products/     → /products/index-pc.html
-   * /products/coffee/ → /products/coffee/index-pc.html
-   * /products/<category>/<model>/ → /pages/pdp/index-pc.html  (PDP)
-   * /solutions/oem/ → /solutions/oem/index-pc.html
-   * /manufacturing/ → /manufacturing/index-pc.html
-   * /compliance/   → /compliance/index-pc.html
-   * /cases/        → /cases/index-pc.html
-   * /resources/catalog/ → /resources/catalog/index-pc.html
-   * /news/detail/  → /news/detail-pc.html (flat-file pattern)
+   * routeToFetchUrl — 将公开 URL 转换为 /pages/ 下的设备特定 SSG 静态文件
+   *
+   * 映射规则（优先级从高到低）:
+   * / → /home/
+   *
+   *   / -> /home/
+   *   /home/ → /pages/home/index-{device}.html
+   *   /products/ → /pages/products/index-{device}.html
+   *   /products/coffee/ → /products/coffee/index-{device}.html
+   *   /products/<category>/<model>/ → /pages/pdp/index-{device}.html  (PDP)
+   *   /solutions/oem/ → /solutions/oem/index-{device}.html
+   *   /manufacturing/ → /manufacturing/index-{device}.html
+   *   /compliance/   → /compliance/index-{device}.html
+   *   /cases/        → /cases/index-{device}.html
+   *   /resources/catalog/ → /resources/catalog/index-{device}.html
+   *   /news/detail/  → /pages/news/detail-{device}.html (flat-file pattern)
+   *   /<path>/       → /pages/<path>/index-{device}.html (fallback convention)
    */
   function routeToFetchUrl(path) {
     var suffix = getDeviceSuffix();
 
     // 所有 fetch URL 统一加 /pages/ 前缀，以确保:
     // 1. swup resolveUrl 能反向映射回干净的目录 URL (如 /products/coffee/)
-    // 2. 防止 swup 从 response.url 提取的 /products/coffee/index-mobile.html 污染地址栏
+    // 2. 与 server.js 的静态文件查找约定一致
 
     // Aliases / redirects
     if (path === "/" || path === "/home/") return "/pages/home/" + suffix;
@@ -305,7 +146,6 @@
 
     // Solutions pages (all variants)
     if (path.indexOf("/solutions/") === 0) {
-      // 首页
       if (path === "/solutions/") return "/pages/solutions/" + suffix;
       var solMatch = path.match(/^\/solutions\/(oem|odm|obm|rd|packaging)\/$/);
       if (solMatch) return "/pages/solutions/" + solMatch[1] + "/" + suffix;
@@ -317,9 +157,20 @@
       if (resMatch) return "/pages/resources/" + resMatch[1] + "/" + suffix;
     }
 
-    // Manufacturing & Compliance
+    // Manufacturing & Compliance & About
     if (path === "/manufacturing/") return "/pages/manufacturing/" + suffix;
     if (path === "/compliance/") return "/pages/compliance/" + suffix;
+
+    // Contact & Quote & Support & Thank-you
+    if (path === "/contact/") return "/pages/contact/" + suffix;
+    if (path === "/quote/") return "/pages/quote/" + suffix;
+    if (path === "/support/") return "/pages/support/" + suffix;
+    if (path === "/thank-you/" || path === "/thank-you/received/") return "/pages/thank-you/" + suffix;
+
+    // About & Privacy & Terms
+    if (path === "/about/") return "/pages/about/" + suffix;
+    if (path === "/privacy/") return "/pages/privacy/" + suffix;
+    if (path === "/terms/") return "/pages/terms/" + suffix;
 
     // 动态产品分类页: /products/<slug>/
     var prodMatch = path.match(/^\/(products\/)?(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
@@ -354,10 +205,9 @@
   // 创建 SWUP 实例
   // ═══════════════════════════════════════════════════════════════════
 
-  var swup = null;
-  var swupEnabled = false;
-
   function initSwup() {
+    if (swup) return;
+
     try {
       swup = new global.Swup({
         containers: ["#spa-content"],
@@ -531,42 +381,117 @@
             var overlay = document.getElementById("skeleton-overlay");
             if (overlay) {
               // 立即显示骨架，然后在下一帧设置 fade-out
-              overlay.style.transition = "none";
-              overlay.removeAttribute("hidden");
               overlay.style.opacity = "1";
-              // 强制重绘后触发过渡
-              overlay.offsetWidth;
-              overlay.style.transition = "opacity 350ms ease-out";
-              overlay.setAttribute("hidden", "");
-              container.classList.add("swup-fade-in");
+              setTimeout(function () {
+                overlay.style.opacity = "0";
+                setTimeout(function () {
+                  overlay.style.display = "none";
+                  hideSkeleton();
+                }, 500);
+              }, 0);
             }
           }
-          // 运行页面级 JS 初始化（如 product-grid, home-core-products 等）
-          // 这确保 SSG 页面首次加载时渲染动态内容
-          setTimeout(function () {
-            runPageInitByRoute();
-          }, 0);
+          runPageInitByRoute();
         }
       });
+
+      // ─── 启动 SWUP ────────
+      swup.on("event", function (eventName) {
+        // 捕获所有事件，用于调试
+      });
+
+      swup.init();
     } catch (e) {
       console.error("[SWUP] Failed to initialize SWUP:", e);
     }
   }
 
-  // ═══════════════════════════════════════════════════════════════════
-  // SpaRouter 向前兼容层 (供旧模块调用)
-  // ═══════════════════════════════════════════════════════════════════
+  // ─── 页面初始化 ────────
+  function runPageInitByRoute() {
+    var path = global.location.pathname;
 
-  // 如果 spa-router.js 先加载了 SpaRouter, 我们替换其 navigate 方法
-  // 否则创建新的兼容对象
-  if (!global.SpaRouter) {
-    global.SpaRouter = {};
+    // ──────── 工具函数：安全调用模块 init/autoRender ────────
+    function safeCall(module, method) {
+      if (typeof module !== "undefined" && module && typeof module[method] === "function") {
+        try { module[method](); } catch (e) { /* noop */ }
+      }
+    }
+
+    // product-grid: /products/<slug>/ 产品分类页（含 /products/all/）
+    if (/^\/products\/(all|[a-z]+)\/$/.test(path)) {
+      safeCall(global.ProductGrid, "autoRender");
+    }
+
+    // product-detail PDP: /products/<category>/<model>/（新路由）
+    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path)) {
+      safeCall(global.ProductDetail, "init");
+    }
+
+    // 旧兼容: /products/detail/<model>/
+    if (/^\/products\/detail\//.test(path)) {
+      safeCall(global.ProductDetail, "init");
+    }
+
+    // home: 首页
+    if (/^\/home\//.test(path) || path === "/") {
+      safeCall(global.HomeCoreProducts, "init");
+    }
+
+    // cases: 案例页
+    if (/^\/cases\//.test(path)) {
+      safeCall(global.CasesPage, "init");
+      safeCall(global.CaseGrid, "init");
+    }
+
+    // news-detail: 新闻详情
+    if (/^\/news\/detail\//.test(path)) {
+      safeCall(global.NewsDetail, "init");
+    }
+
+    // profit-calculator: 利润计算器
+    if (/^\/profit-calculator\//.test(path)) {
+      safeCall(global.ProfitCalculator, "init");
+    }
   }
 
-  // 保存旧引用（如果有的话）
-  var _oldNavigate = global.SpaRouter.navigate;
-  var _oldReplace = global.SpaRouter.replace;
-  var _oldGetPath = global.SpaRouter.getCurrentPath;
+  // ═══════════════════════════════════════════════════════════════════
+  // Navigator/Footer active 状态 (从 incoming HTML 提取)
+  // ═══════════════════════════════════════════════════════════════════
+
+  function extractActiveNav(html) {
+    var m = html && html.match(/<navigator[\s\S]*?data-component="navigator"[\s\S]*?>/i);
+    if (!m) return null;
+    var v = m[0].match(/data-active="([^"]*)"/i);
+    return v ? v[1] : null;
+  }
+
+  function extractActiveFooter(html) {
+    var m = html && html.match(/<footer[\s\S]*?data-component="footer"[\s\S]*?>/i);
+    if (!m) return null;
+    var v = m[0].match(/data-active="([^"]*)"/i);
+    return v ? v[1] : null;
+  }
+
+  function updateActiveState(html) {
+    var navActive = extractActiveNav(html);
+    if (navActive && global.Navigator && typeof global.Navigator.updateActive === "function") {
+      global.Navigator.updateActive(navActive);
+    }
+
+    var footerActive = extractActiveFooter(html);
+    if (footerActive && global.Footer && typeof global.Footer.updateActive === "function") {
+      global.Footer.updateActive(footerActive);
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SPA Router compatibility layer
+  // ═══════════════════════════════════════════════════════════════════
+
+  // 确保 SpaRouter 对象存在（供旧模块调用）
+  if (typeof global.SpaRouter === "undefined") {
+    global.SpaRouter = {};
+  }
 
   global.SpaRouter.navigate = function (path) {
     var url = path;
@@ -601,49 +526,11 @@
     global.location.replace(url);
   };
 
-  global.SpaRouter.getCurrentPath = function () {
-    var path = global.location.pathname;
-    if (path.endsWith(".html")) {
-      var ls = path.lastIndexOf("/");
-      if (ls > 0) path = path.substring(0, ls + 1);
-    }
-    if (!path.endsWith("/")) path = path + "/";
-    return path;
-  };
-
-  global.SpaRouter._pendingScroll = null;
-
-  // ═══════════════════════════════════════════════════════════════════
-  // __spaNavigate — 统一 SPA 导航入口（供 bottom-tab 等模块调用）
-  // ═══════════════════════════════════════════════════════════════════
-
-  global.__spaNavigate = function (url) {
-    if (swup && swupEnabled) {
-      swup.navigate(url);
-    } else {
-      global.location.href = url;
-    }
-  };
-
-  // ═══════════════════════════════════════════════════════════════════
-  // 启动
-  // ═══════════════════════════════════════════════════════════════════
-
-  // 处理根路径重定向
-  var path = global.location.pathname;
-  if (path === "/" || path === "/index.html") {
-    history.replaceState(null, "", "/home/");
-  }
-
-  var redirectParam = new URLSearchParams(global.location.search).get("redirect");
-  if (redirectParam) {
-    history.replaceState(null, "", redirectParam);
-  }
-
-  // 初始化 SWUP
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSwup);
-  } else {
+  // ─── 初始化 SWUP ────────
+  // 等待 DOM 就绪以确保 SPA 容器可用
+  if (document.readyState !== "loading") {
     initSwup();
+  } else {
+    document.addEventListener("DOMContentLoaded", initSwup);
   }
-})(window);
+})();
