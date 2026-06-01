@@ -176,7 +176,7 @@
     dom.modeCards = dom.builder.querySelectorAll(".mode-card");
     dom.categoryTags = dom.builder.querySelectorAll(".category-tag");
     dom.scaleSlider = dom.builder.querySelector(".scale-slider");
-    dom.scaleValue = dom.builder.querySelector(".scale-value");
+    dom.scaleDisplay = dom.builder.querySelector(".scale-value");
     dom.scaleLabels = dom.builder.querySelectorAll(".scale-label");
     dom.timelineCards = dom.builder.querySelectorAll(".timeline-card");
     dom.briefPanel = dom.builder.querySelector(".brief-panel");
@@ -353,8 +353,8 @@
       for (var i = 0; i < dom.scaleLabels.length; i++) {
         dom.scaleLabels[i].classList.toggle("active", i === idx);
       }
-      if (dom.scaleValue) {
-        dom.scaleValue.textContent = formatQuantity(state.quantity);
+      if (dom.scaleDisplay) {
+        dom.scaleDisplay.textContent = formatQuantity(state.quantity);
       }
       renderBrief();
       updateSubmitState();
@@ -558,7 +558,7 @@
     if (dom.builderForm) dom.builderForm.style.display = "";
     if (dom.successEl) dom.successEl.classList.remove("visible");
     if (dom.scaleSlider) dom.scaleSlider.value = "0";
-    if (dom.scaleValue) dom.scaleValue.textContent = formatQuantity(0);
+    if (dom.scaleDisplay) dom.scaleDisplay.textContent = formatQuantity(0);
 
     // Unselect all
     if (dom.modeCards) for (var i = 0; i < dom.modeCards.length; i++) dom.modeCards[i].classList.remove("selected");
