@@ -389,7 +389,7 @@
         plugins: [
           new global.SwupHeadPlugin({
             persistTags:
-              "style[id], style[data-swup-persist], link[rel=stylesheet], link[rel=icon], meta[property], link[rel=canonical], link[rel=alternate], script[src]",
+              "style, link[rel=stylesheet], link[rel=icon], meta[property], link[rel=canonical], link[rel=alternate], script[src]",
             persistAssets: true,
             awaitAssets: true,
             attributes: ["lang", "dir", "class"],
