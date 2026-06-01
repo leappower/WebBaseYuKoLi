@@ -489,7 +489,18 @@
               imgs[i].setAttribute('src', src);
             }
           }
-        }, 100);     });
+        }, 100);
+        });
+
+      // ─── visit:start — 显示骨架屏并设置导航标志 ───
+      swup.hooks.on("visit:start", function () {
+        global.__spaNavigating = true;
+        showSkeleton();
+        var container = document.getElementById("spa-content");
+        if (container) {
+          container.classList.remove("swup-fade-in");
+        }
+      });
 
       // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
       swup.hooks.on("visit:abort", function (visit) {
