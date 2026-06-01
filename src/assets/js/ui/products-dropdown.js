@@ -44,6 +44,18 @@
 
   var SUBSERIES = _buildCategoryItems("products", "/products/");
 
+  /* ── Prepend: All Products entry ───────────────────────── */
+  SUBSERIES.unshift({
+    key: "all",
+    label: (function(){
+      var lang = (document.documentElement && document.documentElement.lang) || "zh-CN";
+      return lang === "zh-CN" ? "全部产品" : "All Products";
+    })(),
+    icon: "grid_view",
+    emoji: "📋",
+    href: "/products/all/",
+  });
+
   /* ───────────────────────── CSS ───────────────────────── */
 
   function injectStyles() {

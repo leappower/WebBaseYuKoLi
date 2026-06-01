@@ -351,7 +351,16 @@
     var gridHtml = "";
 
     if (navId === "products") {
-      gridHtml = renderProductCardsHtml();
+      var allCard = renderProductCard({
+        key: "all",
+        name: resolveLabel({ en: "All Products", "zh-CN": "全部产品" }),
+        icon: "grid_view",
+        emoji: "📋",
+        accent: "coral",
+        desc: resolveLabel({ en: "Browse all product categories", "zh-CN": "浏览全部产品分类" }),
+        href: (global.BASE_PATH || "") + "/products/all/",
+      }, global.BASE_PATH || "");
+      gridHtml = allCard + "\n" + renderProductCardsHtml();
     } else if (navItem.children && navItem.children.length > 0) {
       var basePathLocal = basePath;
       gridHtml = navItem.children

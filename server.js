@@ -363,7 +363,23 @@ function resolvePage(reqPath) {
     if (isFile(candidates[i])) return candidates[i];
   }
 
-  // 6. SPA shell
+  // 6. Product detail page (PDP): /products/<category>/<model>/ → detail template (PC)
+  var pdpMatch = clean.match(/^\/products\/[a-z]+\/[A-Z0-9]+(?:-[a-zA-Z0-9]+)*$/);
+  if (pdpMatch) {
+    // Serve the PC detail template directly (SPA handles device detection client-side)
+    var pdpFile = path.join(__dirname, 'dist', 'pages', 'products', 'detail', 'index-pc.html');
+    if (isFile(pdpFile)) {
+      return pdpFile;
+    }
+  }
+
+  // 6b. Product detail page root: /products/detail/ → index-pc.html
+  if (clean === '/products/detail') {
+    var pdpRoot = path.join(__dirname, 'dist', 'pages', 'products', 'detail', 'index-pc.html');
+    if (isFile(pdpRoot)) return pdpRoot;
+  }
+
+  // 7. SPA shell
   return path.join(__dirname, 'dist', 'index.html');
 }
 
