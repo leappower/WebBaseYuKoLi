@@ -477,6 +477,7 @@
     var container = document.getElementById("case-grid");
     if (!container) return;
     var cases = getFiltered();
+    console.log('[DEBUG/cases] renderGrid: cases.length =', cases.length, ', ROI_CASES.length =', ROI_CASES.length);
     if (cases.length === 0) {
       container.innerHTML =
         '<div class="col-span-full text-center py-16"><p class="text-slate-500 dark:text-slate-400 text-lg" data-i18n="cases_no_results">没有找到匹配的案例，试试调整筛选条件。</p></div>';
