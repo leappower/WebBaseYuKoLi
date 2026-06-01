@@ -34,8 +34,7 @@
   pointer-events: auto;
 }
 #skeleton-overlay[hidden] {
-  opacity: 0;
-  pointer-events: none;
+  display: none;
 }
 
 /* ───────── 容器 ───────── */
@@ -74,6 +73,9 @@
   text-align: center;
   margin-bottom: 1.5rem;
   width: 100%;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Badge（药丸标签） */
@@ -176,7 +178,8 @@
     height: 18px;
   }
   .sk-hero .sk-line {
-    width: 80%;
+    width: 100%;
+    max-width: 360px;
     height: 26px;
   }
   .sk-line--desc {
@@ -215,6 +218,7 @@
 
 /* ───────── 响应式：Tablet ───────── */
 @media (min-width: 768px) and (max-width: 1279px) {
+  .sk-hero .sk-line { max-width: 600px; margin-left: auto; margin-right: auto; }
   .sk-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -225,6 +229,7 @@
 
 /* ───────── 响应式：PC ───────── */
 @media (min-width: 1280px) {
+  .sk-hero .sk-line { max-width: 650px; }
   .sk-grid {
     grid-template-columns: repeat(3, 1fr);
   }
