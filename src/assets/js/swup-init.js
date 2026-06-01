@@ -462,16 +462,23 @@
 
         var p = global.location.pathname;
 
-        // SPA 导航到产品页：触发 ProductGrid 渲染
+        // SPA 导航到产品页：等待 ProductGrid 就绪后渲染
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
-          console.log("[TRACE] content:replace -> product page detected, p=", p, "ProductGrid exists:", !!global.ProductGrid);
-          if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
-            console.log("[TRACE] scheduling ProductGrid.autoRender in 200ms");
-            setTimeout(function () {
-              console.log("[TRACE] ProductGrid.autoRender() firing NOW, path:", global.location.pathname);
+          console.log("[TRACE] product page detected, ProductGrid exists:", !!global.ProductGrid);
+          var attempt = 0;
+          var tryRender = function() {
+            attempt++;
+            if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
+              console.log("[TRACE] ProductGrid ready (attempt " + attempt + "), calling autoRender");
               global.ProductGrid.autoRender();
-            }, 200);
-          }
+            } else if (attempt < 20) {
+              console.log("[TRACE] ProductGrid not ready (attempt " + attempt + "), retrying in 150ms");
+              setTimeout(tryRender, 150);
+            } else {
+              console.error("[TRACE] ProductGrid failed to load after " + attempt + " attempts");
+            }
+          };
+          setTimeout(tryRender, 100);
         }
 
         // 重新运行页面 init 函数
