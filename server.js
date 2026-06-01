@@ -373,11 +373,10 @@ function resolvePage(reqPath) {
     }
   }
 
-  // 6b. Product detail page root: /products/detail/ → index-pc.html
-  if (clean === '/products/detail') {
-    var pdpRoot = path.join(__dirname, 'dist', 'pages', 'products', 'detail', 'index-pc.html');
-    if (isFile(pdpRoot)) return pdpRoot;
-  }
+  // 6b. REMOVED: /products/detail/ → detail/index-pc.html fallback
+  // This caused SPA navigation to /products/detail/ to load the SSG detail
+  // page as a full-page refresh instead of routing to the correct PDP.
+  // PDP is now exclusively /products/<category>/<model>/
 
   // 7. SPA shell
   return path.join(__dirname, 'dist', 'index.html');
