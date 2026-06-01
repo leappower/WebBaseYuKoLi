@@ -140,8 +140,8 @@
       }
     }
 
-    // product-detail: 产品详情
-    if (/^\/products\/detail\//.test(path)) {
+    // product-detail PDP: /products/<category>/<model>/（新路由）+ 旧兼容
+    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path) || /^\/products\/detail\//.test(path)) {
       if (typeof global.ProductDetail !== "undefined" && global.ProductDetail && global.ProductDetail.init) {
         try {
           global.ProductDetail.init();
