@@ -476,7 +476,7 @@
       esc(getCategoryName(product)) +
       "</p></div>" +
       '<div class="flex items-center gap-3">' +
-      '<a href="/quote/?model=' +
+      '<a href="/contact/?model=' +
       encodeURIComponent(product.model) +
       '"' +
       ' class="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-bold' +
@@ -513,7 +513,7 @@
       '<p class="text-white/80 mb-6 text-sm">' +
       tl("告诉我们您的需求，我们为您提供专属解决方案。") +
       "</p>" +
-      '<a href="/quote/" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all">' +
+      '<a href="/contact/" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all">' +
       '<span class="material-symbols-outlined">arrow_forward</span> ' +
       tl("获取报价") +
       "</a></div></section>";
