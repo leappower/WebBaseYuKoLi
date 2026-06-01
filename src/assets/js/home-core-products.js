@@ -47,7 +47,8 @@
    * Get product detail link (to specific product)
    */
   function getProductDetailHref(product) {
-    return "/products/" + encodeURIComponent(product.model) + "/";
+    var cat = product.category || "all";
+    return "/products/" + encodeURIComponent(cat) + "/" + encodeURIComponent(product.model) + "/";
   }
 
   /**

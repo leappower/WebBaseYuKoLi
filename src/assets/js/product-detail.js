@@ -88,6 +88,7 @@
     var grad = gradients[idx % gradients.length];
     return (
       '<a href="/products/' +
+      encodeURIComponent(rp.category || "all") + "/" +
       encodeURIComponent(rp.model) +
       '" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700">' +
       '<div class="h-36 bg-gradient-to-br ' +
