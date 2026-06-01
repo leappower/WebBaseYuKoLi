@@ -921,7 +921,8 @@
       }
 
       // 产品详情页需要 product-detail.js
-      if (path.indexOf("/products/detail/") !== -1) {
+      // 新路由: /products/<cat>/<model>/ ; 旧兼容: /products/detail/<model>/
+      if (path.indexOf("/products/detail/") !== -1 || /^\/products\/[a-z]+\/[A-Za-z0-9_-]+\/$/.test(path)) {
         scripts.push({ src: "/assets/js/product-detail.js", id: "spa-product-detail" });
       }
 
