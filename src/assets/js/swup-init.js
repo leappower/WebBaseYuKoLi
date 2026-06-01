@@ -416,7 +416,8 @@
         var page = _a ? _a.page : null;
         if (!page) return;
 
-        hideSkeleton();
+        // 临时调试：骨架保留 30 秒观察内容加载情况
+        setTimeout(function () { hideSkeleton(); }, 30000);
 
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
         var container = document.getElementById("spa-content");
