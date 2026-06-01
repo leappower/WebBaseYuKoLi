@@ -809,6 +809,10 @@
       document.addEventListener(
         "click",
         function (event) {
+          // 如果 swup 已启用，跳过 spa-router 的 click 处理
+          // swup 的 linkSelector 已经拦截了所有 SPA 链接
+          if (window.__swupEnabled) return;
+
           var link = event.target.closest("a");
           if (!link) return;
           if (event.defaultPrevented) return;

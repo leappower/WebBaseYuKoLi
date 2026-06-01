@@ -508,6 +508,7 @@
       // ─── enable — 首次加载：空容器→navigate 或 hideSkeleton ───
       swup.hooks.on("enable", function () {
         swupEnabled = true;
+        window.__swupEnabled = true;
         var container = document.getElementById("spa-content");
         var isEmpty = !container || !container.innerHTML.trim();
         if (isEmpty) {
