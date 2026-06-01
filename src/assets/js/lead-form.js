@@ -99,25 +99,39 @@
       "background:none;border:none;font-size:24px;cursor:pointer;color:#888;" +
       'line-height:1;">&times;</button>' +
       '<h3 style="margin:0 0 4px;font-size:22px;font-weight:800;color:#1a1a1a;">' +
-      "Download Whitepaper</h3>" +
+      _t("form_lead_title") +
+      "</h3>" +
       '<p style="margin:0 0 20px;font-size:14px;color:#666;">' +
-      "Fill in your details to get instant access.</p>" +
+      _t("form_lead_subtitle") +
+      "</p>" +
       '<form id="yk-lead-form" novalidate>' +
       '<label style="display:block;margin-bottom:14px;">' +
-      '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">Name</span>' +
-      '<input type="text" name="name" required placeholder="Your name" ' +
+      '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">' +
+      _t("form_lead_name_label") +
+      "</span>" +
+      '<input type="text" name="name" required placeholder="' +
+      _t("form_lead_name_placeholder") +
+      '" ' +
       'style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;' +
       'font-size:14px;outline:none;box-sizing:border-box;transition:border .2s;" />' +
       "</label>" +
       '<label style="display:block;margin-bottom:14px;">' +
-      '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">Company</span>' +
-      '<input type="text" name="company" required placeholder="Company name" ' +
+      '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">' +
+      _t("form_lead_company_label") +
+      "</span>" +
+      '<input type="text" name="company" required placeholder="' +
+      _t("form_lead_company_placeholder") +
+      '" ' +
       'style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;' +
       'font-size:14px;outline:none;box-sizing:border-box;transition:border .2s;" />' +
       "</label>" +
       '<label style="display:block;margin-bottom:20px;">' +
-      '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">Email</span>' +
-      '<input type="email" name="email" required placeholder="you@company.com" ' +
+      '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">' +
+      _t("form_lead_email_label") +
+      "</span>" +
+      '<input type="email" name="email" required placeholder="' +
+      _t("form_lead_email_placeholder") +
+      '" ' +
       'style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;' +
       'font-size:14px;outline:none;box-sizing:border-box;transition:border .2s;" />' +
       "</label>" +
@@ -126,7 +140,9 @@
       BRAND_COLOR +
       ";" +
       "color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;" +
-      'cursor:pointer;transition:background .2s;">Get Download Link</button>' +
+      'cursor:pointer;transition:background .2s;">' +
+      _t("form_lead_btn") +
+      "</button>" +
       "</form>";
 
     overlay.appendChild(box);
@@ -200,7 +216,15 @@
       return;
     }
 
-    saveLead({ name: name, company: company, email: email, pdf: currentPdfUrl, ts: Date.now() });
+    saveLead({
+      name: name,
+      company: company,
+      email: email,
+      pdf: currentPdfUrl,
+      ts: Date.now(),
+      language: navigator.language,
+      pageUrl: window.location.href,
+    });
     var pdfToDownload = currentPdfUrl;
     closeModal();
     triggerDownload(pdfToDownload);

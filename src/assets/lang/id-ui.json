@@ -4141,5 +4141,17 @@
   "zh-CN_prod_card_lifestyle_desc": "Pendamping sempurna untuk gaya hidup sehat.",
   "zh-CN_prod_card_meal_desc": "Makanan bergizi dengan resep ilmiah, praktis dan cepat.",
   "zh-CN_prod_card_tea_desc": "Nuansa teh Timur berpadu dengan teknologi modern, nikmati tren kesehatan baru.",
-  "zh-CN_prod_card_weight_desc": "Makanan pengganti dengan kontrol kalori dan perbandingan ilmiah, kelola berat badan dengan mudah."
+  "zh-CN_prod_card_weight_desc": "Makanan pengganti dengan kontrol kalori dan perbandingan ilmiah, kelola berat badan dengan mudah.",
+  "form_lead_download_success": "✓ Thank you! Your download has started.",
+  "form_lead_email": "Please enter a valid email address.",
+  "form_lead_required": "Please fill in all fields.",
+  "form_lead_title": "Download Whitepaper",
+  "form_lead_subtitle": "Fill in your details to get instant access.",
+  "form_lead_name_label": "Name",
+  "form_lead_name_placeholder": "Your name",
+  "form_lead_company_label": "Company",
+  "form_lead_company_placeholder": "Company name",
+  "form_lead_email_label": "Email",
+  "form_lead_email_placeholder": "you@company.com",
+  "form_lead_btn": "Get Download Link"
 }

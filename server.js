@@ -174,7 +174,7 @@ app.post('/api/submit-lead', express.json({ limit: '100kb' }), async (req, res) 
     const response = await fetch(GOOGLE_FORM_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ form_type: 'lead', ...body }),
+      body: JSON.stringify({ formType: 'lead', name: body.name, company: body.company, email: body.email, pageUrl: body.pdf || '', language: body.language || 'en' }),
     });
     if (!response.ok) {
       console.error('[submit-lead] upstream error:', response.status);
