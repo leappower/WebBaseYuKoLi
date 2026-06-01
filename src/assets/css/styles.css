@@ -2302,6 +2302,7 @@ html.dark .mobile-menu-close .material-symbols-outlined {
   font-weight: 600;
   color: #1d1d1f;
   text-decoration: none;
+  text-align: left;
   -webkit-tap-highlight-color: transparent;
   border-bottom: 0.5px solid rgba(60, 60, 67, 0.08);
   width: 100%;
