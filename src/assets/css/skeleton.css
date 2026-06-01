@@ -28,11 +28,17 @@
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  /* 与 skeleton-container 同宽居中 */
+  /* 与 skeleton-container 同宽居中，导航栏偏移 */
   max-width: 1280px;
   left: 50%;
   transform: translateX(-50%);
   right: auto;
+  padding-top: var(--nav-height, 65px);
+}
+@media (min-width: 1024px) {
+  #skeleton-overlay {
+    padding-top: var(--nav-height, 109px);
+  }
 }
 #skeleton-overlay[hidden] {
   display: none;
