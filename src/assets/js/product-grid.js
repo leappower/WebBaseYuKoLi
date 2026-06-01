@@ -1010,14 +1010,14 @@
     var isMobile = window.innerWidth < 768;
     var tabSizeClass = isMobile ? "px-3 py-1.5 text-xs" : "px-4 py-2 text-sm";
 
-    // "全部产品" button
+    // "全部产品" button (data-i18n for multi-language)
     var allBtn = document.createElement("button");
     allBtn.className =
       "category-tab active " +
       tabSizeClass +
       " font-bold whitespace-nowrap rounded-xl";
     allBtn.dataset.category = "all";
-    allBtn.textContent = "全部产品";
+    allBtn.innerHTML = '<span data-i18n="products_all_hero_badge">全部产品</span>';
     allTabs.push(allBtn);
 
     categories.forEach(function (cat) {
@@ -1028,7 +1028,15 @@
         " font-semibold whitespace-nowrap rounded-xl";
       btn.dataset.category = cat.key;
       var emoji = CATEGORY_EMOJI[cat.key] || "";
-      btn.textContent = emoji ? emoji + " " + cat.name : cat.name;
+      var i18nKey = "nav_products_" + cat.key;
+      // Use data-i18n span for multi-language; fallback text is the resolved name
+      var displayName = cat.name || cat.key;
+      if (emoji) {
+        btn.innerHTML =
+          '<span class="cat-tab-emoji">' + emoji + '</span> <span data-i18n="' + i18nKey + '">' + displayName + '</span>';
+      } else {
+        btn.innerHTML = '<span data-i18n="' + i18nKey + '">' + displayName + '</span>';
+      }
       allTabs.push(btn);
     });
 
