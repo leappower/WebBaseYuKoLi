@@ -44,7 +44,11 @@
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
     <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
     <script>if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");</script>
-  </head>
+    <style>
+    .solutions-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+    @media(max-width:767px){.solutions-grid{grid-template-columns:1fr}}
+  </style>
+</head>
   <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-clip">
     <navigator data-component="navigator" data-swup-persist="nav" data-variant="pc" data-active="solutions" data-search="true" data-cta-text-key="nav_contact_us" data-cta-href="/contact/"></navigator>
     <main id="spa-content">
@@ -69,7 +73,7 @@
       <!-- Solution Cards -->
       <section class="fullwidth-bg py-20">
         <div class="section-content">
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="solutions-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <a href="/solutions/oem/" class="group bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
               <div class="h-48 relative overflow-hidden">
                 <img src="/assets/images/oem/solutions/card-oem.webp" alt="OEM Custom Manufacturing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
