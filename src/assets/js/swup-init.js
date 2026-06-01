@@ -462,7 +462,7 @@
 
         var p = global.location.pathname;
 
-        // SPA 导航到产品页：确保 ProductGrid 已加载再渲染
+        // SPA 导航到产品分类页（非 PDP）：触发 ProductGrid 渲染
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
           console.log("[TRACE] product page detected, ProductGrid exists:", !!global.ProductGrid);
           if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
