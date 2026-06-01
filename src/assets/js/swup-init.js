@@ -6,9 +6,15 @@
  *
  * 收益:
  *   - SWUP 原生处理: 内容替换, popstate, head 更新, scroll 恢复
- *   - scripts-plugin optin 模式: data-swup-reload-script 标签自动重执行
  *   - persist 属性: navigator / footer 保留 (data-swup-persist)
  *   - 更短的维护成本, 更成熟的社区支持
+ *
+ * 脚本热重载 (替代 ScriptsPlugin optin 模式):
+ *   - ScriptsPlugin 设为 { head: false, body: false } 基本禁用
+ *   - content:replace hook 中自动提取新页面 HTML 的 <script src> 标签
+ *   - 跳过 SPA shell 已加载的全局脚本（_globalScriptPatterns）
+ *   - 跳过已注入过的脚本（查重）
+ *   - 按批次（3个/批）注入到 <head>，使用 requestIdleCallback
  *
  * 兼容性:
  *   - window.SpaRouter 保留 (有限方法, 供旧模块调用)
@@ -375,6 +381,101 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════
+  // SPA shell 全局脚本列表 (不重复加载)
+  // ═══════════════════════════════════════════════════════════════════
+
+  /**
+   * 定义哪些 JS 文件已由 src/index.html 的 SPA shell 加载。
+   * SPA 导航时自动注入页面特有脚本，跳过这些全局脚本。
+   * 匹配模式: 正则 test() 对 script src 路径进行匹配。
+   *
+   * 更新: 添加新的全局 JS 文件时，在此列表追加即可。
+   */
+  var _globalScriptPatterns = window._BREW_GLOBAL_PATTERNS ||
+    /(?:^|[/])(?:device-utils|swup(?:-head-plugin|-scroll-plugin|-scripts-plugin)?[.-]|swup-init|lang-registry|translations|translations-dropdown-template|dropdown-styles|dropdown-base|products-dropdown|solutions-dropdown|applications-dropdown|support-dropdown|about-dropdown|nav-dropdown|mega-menu|custom-select|navigator|slide-menu|search-engine|footer|floating-actions|contacts|product-grid|product-detail|home-core-products|case-grid|currency|breadcrumb|trust-bar|bottom-tab|search-index|page-init|dom-utils)\.js/;
+
+  /**
+   * 用于缓存当前 SPA 导航周期中已动态注入的 script 元素。
+   * 后续导航会清除旧注入，避免累积。
+   */
+  var _dynamicScripts = [];
+
+  /**
+   * 从新页面 document 中提取 <script src> 标签，
+   * 过滤掉全局脚本和已加载/已注入的脚本，
+   * 按批次（3个/批）注入到 <head>。
+   *
+   * @param {Document|null} newDoc - 新页面的 document (visit.to.document)
+   */
+  function reloadPageScripts(newDoc) {
+    if (!newDoc) return;
+
+    // 清除上一轮注入的脚本
+    for (var d = 0; d < _dynamicScripts.length; d++) {
+      try {
+        if (_dynamicScripts[d].parentNode) {
+          _dynamicScripts[d].parentNode.removeChild(_dynamicScripts[d]);
+        }
+      } catch (e) {
+        // ignore: removeChild may fail if parent was modified by SPA
+      }
+    }
+    _dynamicScripts = [];
+
+    // 从新页面的 head 和 body 提取所有 <script src> 标签
+    var headScripts = newDoc.head.querySelectorAll("script[src]");
+    var bodyScripts = newDoc.body.querySelectorAll("script[src]");
+    var allNewScripts = Array.prototype.slice.call(headScripts).concat(Array.prototype.slice.call(bodyScripts));
+
+    // 构建当前页面已加载的 script src 集合（去版本号）
+    var currentScripts = document.querySelectorAll("script[src]");
+    var currentSrcs = {};
+    for (var c = 0; c < currentScripts.length; c++) {
+      var curKey = currentScripts[c].getAttribute("src").replace(/\?.*$/, "");
+      currentSrcs[curKey] = true;
+    }
+
+    // 筛选需要注入的脚本
+    var toInject = [];
+    for (var i = 0; i < allNewScripts.length; i++) {
+      var src = allNewScripts[i].getAttribute("src");
+      if (!src) continue;
+      var srcKey = src.replace(/\?.*$/, "");
+      // 跳过全局脚本（SPA shell 已加载）
+      if (_globalScriptPatterns.test(srcKey)) continue;
+      // 跳过当前页面已存在的脚本
+      if (currentSrcs[srcKey]) continue;
+      toInject.push(src);
+      currentSrcs[srcKey] = true;
+    }
+
+    // 按批次注入（防阻塞）
+    function injectBatch(idx) {
+      var batchSize = 3;
+      var end = Math.min(idx + batchSize, toInject.length);
+      for (var j = idx; j < end; j++) {
+        var newScript = document.createElement("script");
+        newScript.src = toInject[j];
+        newScript.async = true;
+        document.head.appendChild(newScript);
+        _dynamicScripts.push(newScript);
+      }
+      if (end < toInject.length) {
+        (window.requestIdleCallback || window.setTimeout)(function () {
+          injectBatch(end);
+        });
+      }
+    }
+
+    if (toInject.length > 0) {
+      console.log("[SWUP] reloadPageScripts: injecting", toInject.length, "page-specific scripts");
+      (window.requestIdleCallback || window.setTimeout)(function () {
+        injectBatch(0);
+      });
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════
   // 创建 SWUP 实例
   // ═══════════════════════════════════════════════════════════════════
 
@@ -431,6 +532,8 @@
             doScrollingRightAway: true,
             offset: 0,
           }),
+          // ScriptsPlugin 基本禁用 (head/body: false)，
+          // 脚本热重载由 content:replace 中的 reloadPageScripts() 负责。
           new global.SwupScriptsPlugin({
             head: false,
             body: false,
@@ -439,7 +542,7 @@
         ],
       });
 
-      // ─── content:replace — 骨架屏 + 状态更新 + 页面重初始化 ───
+      // ─── content:replace — 骨架屏 + 脚本热重载 + 状态更新 + 页面重初始化 ───
       swup.hooks.on("content:replace", function (visit, _a) {
         var page = _a ? _a.page : null;
         if (!page) return;
@@ -474,6 +577,13 @@
             // product-grid.js not loaded — wait for spa:load to handle it
             console.log("[TRACE] ProductGrid not available, waiting for spa:load");
           }
+        }
+
+        // ─── 脚本热重载：提取新页面特有脚本并注入 ───
+        // 替代 ScriptsPlugin optin 模式，解决 data-swup-reload-script 遗漏问题
+        var newDoc = visit.to && visit.to.document ? visit.to.document : null;
+        if (newDoc) {
+          reloadPageScripts(newDoc);
         }
 
         // 重新运行页面 init 函数
@@ -663,18 +773,7 @@
   // 启动
   // ═══════════════════════════════════════════════════════════════════
 
-  // 处理根路径重定向
-  var path = global.location.pathname;
-  if (path === "/" || path === "/index.html") {
-    history.replaceState(null, "", "/home/");
-  }
-
-  var redirectParam = new URLSearchParams(global.location.search).get("redirect");
-  if (redirectParam) {
-    history.replaceState(null, "", redirectParam);
-  }
-
-  // 初始化 SWUP
+  // ② 初始化 SWUP
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initSwup);
   } else {

@@ -165,6 +165,16 @@ function ensureDir(dirPath) {
 }
 
 /**
+ * Escape special regex characters in a string for use in RegExp constructor.
+ * Prevents SyntaxError when variable input contains regex meta-characters.
+ * @param {string} str - Input string
+ * @returns {string} Escaped string safe for new RegExp()
+ */
+function escapeRegExp(str) {
+  return (str || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
  * Patch HTML content to replace root-absolute asset paths with basePath-prefixed paths.
  *
  * When BASE_PATH is '/KitchenYuKoLi':
@@ -187,6 +197,7 @@ function patchHtmlPaths(html) {
   var bp = BASE_PATH.replace(/\/$/, '');
   // Extract the path part for negative lookahead (e.g., 'KitchenYuKoLi' from '/KitchenYuKoLi')
   var bpName = bp.replace(/^\//, '');
+  var bpNameEsc = escapeRegExp(bpName);
 
   // 0. Inject window.BASE_PATH for JS files to use
   // Insert site.config.js + BASE_PATH after <head> tag
@@ -199,7 +210,7 @@ function patchHtmlPaths(html) {
   //    $2 captures the leading "/", so we prepend bp (without extra slash)
   //    Only apply negative lookahead if bpName is not empty
   var attrPattern = bpName
-    ? '((?:src|href)\\s*=\\s*")(\\/(?!\\/|#))(?!' + bpName + '\\/)'
+    ? '((?:src|href)\\s*=\\s*")(\\/(?!\\/|#))(?!' + bpNameEsc + '\\/)'
     : '((?:src|href)\\s*=\\s*")(\\/(?!\\/|#))';
   var attrRegex = new RegExp(attrPattern, 'g');
   html = html.replace(attrRegex, '$1' + bp + '$2');
@@ -207,14 +218,14 @@ function patchHtmlPaths(html) {
   // 2. Patch inline JS: location.href = '/home/' and similar redirects
   //    Matches: location.href = '/path', window.location.replace('/path')
   var jsPattern1 = bpName
-    ? "(location\\.href\\s*=\\s*'|window\\.location\\.replace\\(['\"])(\\/(?!\\/|#))(?!" + bpName + ")"
+    ? "(location\\.href\\s*=\\s*'|window\\.location\\.replace\\(['\"])(\\/(?!\\/|#))(?!" + bpNameEsc + ")"
     : "(location\\.href\\s*=\\s*'|window\\.location\\.replace\\(['\"])(\\/(?!\\/|#))";
   var jsRegex1 = new RegExp(jsPattern1, 'g');
   html = html.replace(jsRegex1, '$1' + bp + '$2');
 
   // 3. Patch inline JS: history.replaceState(null, '', '/path')
   var jsPattern2 = bpName
-    ? "(history\\.(?:push|replace)State\\([^,]*,\\s*[^,]*,\\s*')(" + bpName + ")"
+    ? "(history\\.(?:push|replace)State\\([^,]*,\\s*[^,]*,\\s*')(" + bpNameEsc + ")"
     : "(history\\.(?:push|replace)State\\([^,]*,\\s*[^,]*,\\s*')";
   var jsRegex2 = new RegExp(jsPattern2, 'g');
   html = html.replace(jsRegex2, '$1' + bp + '$2');

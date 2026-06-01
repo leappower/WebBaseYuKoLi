@@ -21,6 +21,18 @@
     return CATEGORY_SLUGS.indexOf(slug) >= 0;
   }
 
+  /**
+   * 检查当前 URL 是否为产品详情页路由
+   * @returns {boolean} 是否匹配 PDP 路径模式
+   */
+  function isPDPPath() {
+    // /products/<category>/<model>/
+    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(window.location.pathname)) return true;
+    // /products/detail/<model>/  (旧兼容路由)
+    if (/^\/products\/detail\//.test(window.location.pathname)) return true;
+    return false;
+  }
+
   function esc(str) {
     var d = document.createElement("div");
     d.textContent = str || "";
@@ -216,6 +228,12 @@
   }
 
   function renderPDP() {
+    // 非 PDP 路径不执行渲染
+    if (!isPDPPath()) {
+      console.log("[TRACE/pdp] renderPDP skipped: not a PDP path");
+      return;
+    }
+
     console.log("[TRACE/pdp] renderPDP called, path:", window.location.pathname);
     // Read model from path: /products/<category>/<model>/
     var path = window.location.pathname.replace(/\/$/, "");
@@ -553,10 +571,14 @@
     renderRelated(product);
   }
 
-  document.addEventListener("DOMContentLoaded", renderPDP);
+  document.addEventListener("DOMContentLoaded", function () {
+    if (isPDPPath()) { renderPDP(); }
+  });
   // Use EventManager to prevent duplicate product-data-ready listeners in SPA
   var _pdpEM = window.DomUtils && new DomUtils.EventManager();
-  (_pdpEM || {on:function(){}}).on(document, "product-data-ready", renderPDP);
+  (_pdpEM || {on:function(){}}).on(document, "product-data-ready", function () {
+    if (isPDPPath()) { renderPDP(); }
+  });
   // Multi-language helper: get product field for current language
   // Translate spec labels
   function tl(chinese) {
@@ -671,8 +693,12 @@
     if (callback) callback();
   };
 
-  _spaOn(window, "languageChanged", renderPDP);
-  document.addEventListener("productTranslationsLoaded", renderPDP);
+  _spaOn(window, "languageChanged", function () {
+    if (isPDPPath()) { renderPDP(); }
+  });
+  document.addEventListener("productTranslationsLoaded", function () {
+    if (isPDPPath()) { renderPDP(); }
+  });
   _spaOn(document, "spa:load", function () {
     console.log("[TRACE/pdp] spa:load received");
     var segs = location.pathname.split("/").filter(Boolean);
