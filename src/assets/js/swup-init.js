@@ -81,7 +81,8 @@
     overlay.setAttribute("hidden", "");
     overlay.style.opacity = "0";
     overlay.style.pointerEvents = "none";
-    container.parentNode.insertBefore(overlay, container);
+    // 插入到 main#spa-content 内部作为第一个子元素，相对定位
+    container.insertBefore(overlay, container.firstChild);
     return true;
   }
 

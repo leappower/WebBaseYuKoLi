@@ -323,6 +323,7 @@ html.dark ::-webkit-scrollbar-thumb {
  *   PC ≥ 1024px             → 109px fallback */
 
 main#spa-content {
+  position: relative;
   max-width: 1920px;
   margin-left: auto;
   margin-right: auto;
