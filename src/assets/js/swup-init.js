@@ -465,20 +465,14 @@
         // SPA 导航到产品分类页（非 PDP）：触发 ProductGrid 渲染
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
           console.log("[TRACE] product page detected, ProductGrid exists:", !!global.ProductGrid);
-          if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
+          if (global.ProductGrid && typeof global.ProductGrid.retryLoad === "function") {
+            console.log("[TRACE] calling ProductGrid.retryLoad");
+            global.ProductGrid.retryLoad();
+          } else if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
             setTimeout(function() { global.ProductGrid.autoRender(); }, 100);
           } else {
-            // product-grid.js not loaded yet — inject it dynamically
-            console.log("[TRACE] injecting product-grid.js dynamically");
-            var s = document.createElement("script");
-            s.src = "/assets/js/product-grid.js?v=" + (global.BUILD_VERSION || Date.now());
-            s.onload = function() {
-              console.log("[TRACE] product-grid.js loaded, calling autoRender");
-              if (global.ProductGrid && global.ProductGrid.autoRender) {
-                global.ProductGrid.autoRender();
-              }
-            };
-            document.head.appendChild(s);
+            // product-grid.js not loaded — wait for spa:load to handle it
+            console.log("[TRACE] ProductGrid not available, waiting for spa:load");
           }
         }
 
