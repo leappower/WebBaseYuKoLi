@@ -4081,5 +4081,6 @@
   "form_lead_company_placeholder": "Company name",
   "form_lead_email_label": "Email",
   "form_lead_email_placeholder": "you@company.com",
-  "form_lead_btn": "Get Download Link"
+  "form_lead_btn": "Get Download Link",
+  "error_404_badge": "Page Not Found"
 }

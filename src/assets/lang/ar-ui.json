@@ -4269,5 +4269,6 @@
   "wa_msg_trust": "أود التعرف على قدرات {brand} وشهاداتها. يرجى إرسال المزيد من المعلومات.",
   "whatsapp_default_msg": "مرحبًا، أود الاستفسار عن معلومات منتجات YuKoLi.",
   "whitepapers_meta_title": "الأوراق البيضاء والتقارير الصناعية - {brand}",
-  "whitepapers_meta_title_seg1": "Technology"
+  "whitepapers_meta_title_seg1": "Technology",
+  "error_404_badge": "Page Not Found"
 }

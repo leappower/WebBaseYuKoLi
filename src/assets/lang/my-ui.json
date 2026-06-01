@@ -4269,5 +4269,6 @@
   "wa_msg_trust": "{brand} ၏ စွမ်းဆောင်ရည်များနှင့် အသိအမှတ်ပြုလက်မှတ်များအကြောင်း လေ့လာလိုပါသည်။ နောက်ထပ် အချက်အလက်များ ပေးပို့ပါ။",
   "whatsapp_default_msg": "您好，我想咨询 YuKoLi 产品信息。",
   "whitepapers_meta_title": "စက်မှုလုပ်ငန်း အဖြူရောင်စာတမ်းများနှင့် အစီရင်ခံစာများ - {brand}",
-  "whitepapers_meta_title_seg1": "Technology"
+  "whitepapers_meta_title_seg1": "Technology",
+  "error_404_badge": "Page Not Found"
 }

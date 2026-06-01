@@ -4269,5 +4269,6 @@
   "wa_msg_trust": "{brand}の能力と認証について知りたいです。詳細情報を送ってください。",
   "whatsapp_default_msg": "您好，我想咨询 YuKoLi 产品信息。",
   "whitepapers_meta_title": "業界ホワイトペーパーとレポート - {brand}",
-  "whitepapers_meta_title_seg1": "技术"
+  "whitepapers_meta_title_seg1": "技术",
+  "error_404_badge": "Page Not Found"
 }

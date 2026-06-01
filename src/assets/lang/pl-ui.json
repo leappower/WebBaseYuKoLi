@@ -4269,5 +4269,6 @@
   "wa_msg_trust": "Chciałbym poznać możliwości i certyfikaty {brand}. Proszę o więcej informacji.",
   "whatsapp_default_msg": "您好，我想咨询 YuKoLi 产品信息。",
   "whitepapers_meta_title": "Białe księgi i raporty branżowe - {brand}",
-  "whitepapers_meta_title_seg1": "Technology"
+  "whitepapers_meta_title_seg1": "Technology",
+  "error_404_badge": "Page Not Found"
 }

@@ -4269,5 +4269,6 @@
   "wa_msg_trust": "Me gustaría conocer las capacidades y certificaciones de {brand}. Envíe más información.",
   "whatsapp_default_msg": "Hola, quisiera consultar información sobre los productos YuKoLi.",
   "whitepapers_meta_title": "Informes y documentos técnicos de la industria - {brand}",
-  "whitepapers_meta_title_seg1": "Technology"
+  "whitepapers_meta_title_seg1": "Technology",
+  "error_404_badge": "Page Not Found"
 }
