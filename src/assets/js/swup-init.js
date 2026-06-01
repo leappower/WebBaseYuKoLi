@@ -301,6 +301,8 @@
 
     // Solutions pages (all variants)
     if (path.indexOf("/solutions/") === 0) {
+      // 首页
+      if (path === "/solutions/") return "/pages/solutions/" + suffix;
       var solMatch = path.match(/^\/solutions\/(oem|odm|obm|rd|packaging)\/$/);
       if (solMatch) return "/pages/solutions/" + solMatch[1] + "/" + suffix;
     }
@@ -414,8 +416,7 @@
         var page = _a ? _a.page : null;
         if (!page) return;
 
-        // 临时调试：保留骨架 30 秒观察
-        setTimeout(function () { hideSkeleton(); }, 30000);
+        hideSkeleton();
 
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
         var container = document.getElementById("spa-content");
@@ -427,9 +428,12 @@
         }
         container.classList.add("swup-fade-in");
 
+        // Debug: 打印导航信息
+        var p = global.location.pathname;
+        console.log("[SWUP] content:replace path:", p, "fetchUrl:", visit.to ? visit.to.url : "?");
+
         // SPA 导航到品类页：触发 ProductGrid 渲染
         // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染
-        var p = global.location.pathname;
         if (/^\/products\/[a-z]+\/$/.test(p)) {
           if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
             setTimeout(function () { global.ProductGrid.autoRender(); }, 50);
