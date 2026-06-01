@@ -25,6 +25,15 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
   }
 
   function tl(key, fallback) {
+    if (typeof key !== "string") {
+      // If key is an object like {en: "...", "zh-CN": "..."}, resolve it
+      if (key && typeof key === "object") {
+        var lang = document.documentElement.lang || "zh-CN";
+        key = key[lang] || key.en || key["zh-CN"] || fallback || "";
+      } else {
+        return fallback || "";
+      }
+    }
     if (typeof window.t === "function") {
       var result = window.t(key);
       if (result && result !== key) return result;
