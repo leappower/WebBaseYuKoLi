@@ -32,6 +32,24 @@ npm run dev
 - webpack 入口：`src/index.js`（ESM，副作用导入 `src/assets/js/` 所有模块）
 - 默认首页（`/`）：`dist/index.html` → 响应式入口，自动重定向到对应屏幕版本
 
+**Express 静态服务（server.js）：**
+```bash
+# 本地直接访问（端口 3099，无 base path）
+PORT=3099 node server.js
+# http://localhost:3099/home/
+
+# 带 base path（通过 Caddy 反代时用 BASE_PATH 指定）
+PORT=3097 BASE_PATH=/brew node server.js
+# 通过 Caddy 反代后访问：https://192.168.3.181:3443/home/
+```
+
+| 端口 | 用途 | 协议 | 访问地址 |
+|------|------|------|------|
+| 3000 | Webpack Dev Server (HMR) | HTTP | http://localhost:3000 |
+| 3099 | Express 静态服务 (默认) | HTTP | http://localhost:3099 |
+| 3097 | Express 静态服务 (Brew 专用) | HTTP | http://localhost:3097 |
+| 3443 | Caddy HTTPS 反代 → 3097 | HTTPS | https://192.168.3.181:3443/home/ |
+
 ---
 
 ### 代码质量检查
