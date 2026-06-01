@@ -61,7 +61,7 @@
   ((r.prototype.getInitialLanguage = function () {
     var t;
     try { t = localStorage.getItem("userLanguage"); } catch(e) { t = null; }
-    return t && getO()[t] ? t : "en";
+    return t && getO()[t] ? t : "zh-CN";
   }),
     (r.prototype.loadTranslations = function (t) {
       if (

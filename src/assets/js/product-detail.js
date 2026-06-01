@@ -687,6 +687,10 @@
       if (segs[1] === "detail" && segs[2]) {
         if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (detail path)");
         renderPDP();
+      } else if (segs.length >= 3 && segs[1] && segs[2]) {
+        // New route: /products/<category>/<model>/ — always PDP
+        if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (new route)");
+        renderPDP();
       } else if (segs[1] && segs[1] !== "compare" && !isCategorySlug(segs[1])) {
         if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (legacy model path)");
         renderPDP();
@@ -699,6 +703,9 @@
     var segs = location.pathname.split("/").filter(Boolean);
     if (segs[0] === "products") {
       if (segs[1] === "detail" && segs[2]) {
+        renderPDP();
+      } else if (segs.length >= 3 && segs[1] && segs[2]) {
+        // New route: /products/<category>/<model>/
         renderPDP();
       } else if (segs[1] && segs[1] !== "compare" && !isCategorySlug(segs[1])) {
         renderPDP();
