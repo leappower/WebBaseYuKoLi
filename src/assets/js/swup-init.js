@@ -22,7 +22,6 @@
  *   <script defer src="/assets/js/vendor/swup-head-plugin.umd.js"></script>
  *   <script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js"></script>
  *   <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js"></script>
- *   <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js"></script>
  */
 
 (function (global) {
@@ -457,9 +456,7 @@
         }
         container.classList.add("swup-fade-in");
 
-        // Debug: 打印导航信息
         var p = global.location.pathname;
-        console.log("[SWUP] content:replace path:", p, "fetchUrl:", visit.to ? visit.to.url : "?");
 
         // SPA 导航到产品页：触发 ProductGrid 渲染
         // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染
@@ -497,7 +494,6 @@
 
       // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
       swup.hooks.on("visit:abort", function (visit) {
-        console.warn("[SWUP] visit aborted, falling back to native navigation:", visit.to.url);
         global.__spaNavigating = false;
         global.location.href = visit.to.url;
       });
@@ -513,7 +509,6 @@
       swup.hooks.replace("fetch:request", function (visit, _a, defaultFetch) {
         var originalUrl = _a.url;
         var deviceUrl = routeToFetchUrl(originalUrl);
-        console.log("[SWUP] fetch:request", originalUrl, "→", deviceUrl);
         return defaultFetch(visit, {
           url: deviceUrl,
           options: _a.options,
