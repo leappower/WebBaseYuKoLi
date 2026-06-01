@@ -3712,8 +3712,22 @@ html.dark .cs-popup-panel .cs-group-label {
   color: #25d366;
 }
 
-/* ─── Contact Form Builder Icons (三屏统一) ── */
-.builder-header .material-symbols-outlined { font-size: 1.125rem; }
-.builder-label .material-symbols-outlined { font-size: 0.875rem; }
-.builder-options .mode-icon { font-size: 1.25rem; }
+/* ─── Contact Form Builder Icons (三屏递减) ── */
+/* PC: builder-header icon 20px, label 16px, mode 24px */
+.builder-header .material-symbols-outlined { font-size: 1.25rem; }
+.builder-label .material-symbols-outlined { font-size: 1rem; }
+.builder-options .mode-icon { font-size: 1.5rem; }
 .brief-panel-title .material-symbols-outlined { font-size: 0.875rem; }
+/* Tablet: slightly smaller */
+@media (max-width: 1279px) {
+  .builder-header .material-symbols-outlined { font-size: 1.125rem; }
+  .builder-label .material-symbols-outlined { font-size: 0.875rem; }
+  .builder-options .mode-icon { font-size: 1.25rem; }
+  .brief-panel-title .material-symbols-outlined { font-size: 0.8125rem; }
+}
+/* Mobile: compact */
+@media (max-width: 767px) {
+  .builder-header .material-symbols-outlined { font-size: 1rem; }
+  .builder-label .material-symbols-outlined { font-size: 0.75rem; }
+  .builder-options .mode-icon { font-size: 1.125rem; }
+}
