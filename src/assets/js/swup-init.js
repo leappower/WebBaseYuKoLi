@@ -477,18 +477,32 @@
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
 
-        // 解决方案页面 SPA 导航后强制重绘（解决跳转后卡片内容不显示的问题）
+        // ─── 解决方案页面 debug 诊断 ───
         if (/^\/solutions\/$/.test(global.location.pathname)) {
+          // IMMEDIATE
+          console.log("[DEBUG/sol] IMMEDIATE");
+          document.querySelectorAll('a[href^="/solutions/"]').forEach(function(card, i) {
+            console.log("[DEBUG/sol] IMM card", i, "innerHTML:", card.innerHTML.length, "txt:", card.textContent.substring(0, 30));
+          });
+          // 500ms
           setTimeout(function () {
+            console.log("[DEBUG/sol] 500MS");
             var c = document.getElementById("spa-content");
             if (c) {
-              void c.offsetWidth;
-              var cards = c.querySelectorAll(".grid > a");
-              if (cards.length > 1) {
-                // grid 已正确渲染
+              var allCards = c.querySelectorAll('a[href^="/solutions/"]');
+              allCards.forEach(function(card, i) {
+                var r = card.getBoundingClientRect();
+                console.log("[DEBUG/sol] 500MS card", i, "h:", r.bottom - r.top, "html:", card.innerHTML.length);
+              });
+              var gc = document.querySelector(".solutions-grid");
+              if (gc) {
+                var cs = getComputedStyle(gc);
+                console.log("[DEBUG/sol] grid w:", gc.offsetWidth, "cols:", cs.gridTemplateColumns);
+                var sc = gc.closest('.section-content');
+                if (sc) console.log("[DEBUG/sol] section-content w:", sc.offsetWidth);
               }
             }
-          }, 50);
+          }, 500);
         }
       });
 
