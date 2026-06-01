@@ -477,6 +477,15 @@
         }
       });
 
+      // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
+      swup.hooks.on("visit:abort", function (visit) {
+        console.warn("[SWUP] visit aborted, falling back to native navigation:", visit.to.url);
+        setTimeout(function () {
+          global.__spaNavigating = false;
+          global.location.href = visit.to.url;
+        }, 100);
+      });
+
       // ─── visit:end — 清除导航标志 ───
       swup.hooks.on("visit:end", function () {
         setTimeout(function () {
