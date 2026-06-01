@@ -503,13 +503,6 @@
       ' border-2 border-slate-300 dark:border-slate-600 hover:border-primary hover:text-primary transition-all text-sm">' +
       '<span class="material-symbols-outlined text-lg">chat</span> ' +
       tl("联系销售") +
-      "</a>" +
-      '<a id="pdp-download-spec" href="#"' +
-      ' class="flex-1 bg-[#2E7D32] text-white px-6 py-3 rounded-xl font-bold' +
-      ' flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-[#2E7D32]/20 transition-all text-sm">' +
-      '<span class="material-symbols-outlined text-lg">download</span> ' +
-      '<span class="hidden sm:inline">Download Specification Sheet</span>' +
-      '<span class="sm:hidden">Download Spec</span>' +
       "</a></div></div></div>" +
       '<section class="mt-8"><h2 class="text-xl font-bold mb-4 flex items-center gap-2">' +
       '<span class="material-symbols-outlined text-primary">specifications</span> ' +
@@ -536,15 +529,6 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     if (ce) ce.innerHTML = html;
-
-    // Set mailto href for download spec button
-    (function () {
-      var btn = document.getElementById("pdp-download-spec");
-      if (!btn) return;
-      var title = document.getElementById("detail-title");
-      var productName = title ? title.textContent : (document.title.split("|")[0] || "Product");
-      btn.href = "mailto:info@yukoli.com?subject=" + encodeURIComponent("Spec Request - " + productName);
-    })();
 
     // Static specs grid
     var sg = document.getElementById("specs-grid");
