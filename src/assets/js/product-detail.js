@@ -710,4 +710,6 @@
       }
     }
   });
+
+  window.ProductDetail = { init: renderPDP };
 })();
