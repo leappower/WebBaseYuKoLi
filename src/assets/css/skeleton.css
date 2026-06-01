@@ -25,7 +25,6 @@
   top: 0;
   left: 0;
   right: 0;
-  padding-top: var(--nav-height, 65px);
   z-index: 1;
   background: var(--color-bg, #fff);
   opacity: 1;
@@ -34,11 +33,6 @@
   /* 对齐 main#spa-content 的宽度 */
   max-width: 1920px;
   margin: 0 auto;
-}
-@media (min-width: 1024px) {
-  #skeleton-overlay {
-    padding-top: var(--nav-height, 109px);
-  }
 }
 #skeleton-overlay[hidden] {
   display: none;
@@ -50,25 +44,25 @@
   max-width: 1280px;
   margin: 0 auto;
   min-height: 50vh;
-  padding: 2rem var(--container-px, 0.75rem); /* mobile: aligned with section-content */
+  padding: 0 var(--container-px, 0.75rem); /* mobile: aligned with section-content */
   animation: sk-fadeIn 0.15s ease-out;
 }
 
 @media (min-width: 768px) {
   .skeleton-container {
-    padding: 2.5rem var(--container-px, 1.25rem);
+    padding: 0 var(--container-px, 1.25rem);
   } /* tablet: aligned */
 }
 @media (min-width: 1024px) {
   .skeleton-container {
-    padding: 2.5rem var(--container-px, 1.25rem);
+    padding: 0 var(--container-px, 1.25rem);
   } /* lg: aligned */
 }
 @media (min-width: 1280px) {
   /* PC: main#spa-content already has padding-top from --nav-height CSS variable;
    skeleton-container just needs content padding */
   .skeleton-container {
-    padding: 2.5rem var(--container-px, 2.5rem);
+    padding: 0 var(--container-px, 2.5rem);
   }
 }
 
