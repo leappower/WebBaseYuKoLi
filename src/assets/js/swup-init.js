@@ -477,56 +477,23 @@
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
 
-        // ─── 解决方案页面 debug 诊断 ───
+        // ─── 解决方案页面：强制加载卡片图片（修复 SPA 导航首次渲染失效）───
         if (/^\/solutions\/$/.test(global.location.pathname)) {
-          // 500ms 后检查
           setTimeout(function () {
             var gc = document.querySelector(".solutions-grid");
-            if (!gc) { console.warn("[DEBUG/sol] .solutions-grid NOT FOUND"); return; }
-
-            // 只选 grid 容器内的直接 a 标签
-            var cards = gc.querySelectorAll(':scope > a[href^="/solutions/"]');
-            console.log("[DEBUG/sol] grid-direct cards:", cards.length);
-            cards.forEach(function(card, i) {
-              var r = card.getBoundingClientRect();
-              var cs = getComputedStyle(card);
-              console.log("[DEBUG/sol] card", i,
-                "h:", r.bottom - r.top,
-                "overflow:", cs.overflow,
-                "height:", cs.height,
-                "min-height:", cs.minHeight,
-                "innerChildren:", card.children.length,
-                "firstChild:", card.children[0] ? card.children[0].tagName : "NONE");
+            if (!gc) return;
+            // 移除后重设图片 src 强制触发 load
+            var imgs = gc.querySelectorAll('img');
+            imgs.forEach(function(img) {
+              var src = img.getAttribute('src');
+              if (src) {
+                img.removeAttribute('src');
+                void img.offsetWidth;
+                img.setAttribute('src', src);
+              }
             });
-
-            // 检查所有 children（含文本节点）
-            var children = gc.children;
-            console.log("[DEBUG/sol] grid.children count:", children.length);
-            for (var ci = 0; ci < Math.min(children.length, 8); ci++) {
-              var ch = children[ci];
-              console.log("[DEBUG/sol] grid.child", ci, "tag:", ch.tagName, "href:", ch.getAttribute ? ch.getAttribute("href") : "N/A", "offsetH:", ch.offsetHeight);
-            }
-
-            var cs = getComputedStyle(gc);
-            console.log("[DEBUG/sol] grid w:", gc.offsetWidth, "cols:", cs.gridTemplateColumns, "gap:", cs.gap, "auto-rows:", cs.gridAutoRows);
-          }, 500);
+          }, 100);
         }     });
-
-      // ─── page:view — spa:load 兼容事件 ───
-      swup.hooks.on("page:view", function () {
-        dispatchSpaLoad();
-      });
-
-      // ─── visit:start — 显示骨架屏 ───
-      swup.hooks.on("visit:start", function () {
-        global.__spaNavigating = true;
-        showSkeleton();
-
-        var container = document.getElementById("spa-content");
-        if (container) {
-          container.classList.remove("swup-fade-in");
-        }
-      });
 
       // ─── visit:abort — 容器不匹配 / fetch 失败时 fallback ───
       swup.hooks.on("visit:abort", function (visit) {
