@@ -479,32 +479,38 @@
 
         // ─── 解决方案页面 debug 诊断 ───
         if (/^\/solutions\/$/.test(global.location.pathname)) {
-          // IMMEDIATE
-          console.log("[DEBUG/sol] IMMEDIATE");
-          document.querySelectorAll('a[href^="/solutions/"]').forEach(function(card, i) {
-            console.log("[DEBUG/sol] IMM card", i, "innerHTML:", card.innerHTML.length, "txt:", card.textContent.substring(0, 30));
-          });
-          // 500ms
+          // 500ms 后检查
           setTimeout(function () {
-            console.log("[DEBUG/sol] 500MS");
-            var c = document.getElementById("spa-content");
-            if (c) {
-              var allCards = c.querySelectorAll('a[href^="/solutions/"]');
-              allCards.forEach(function(card, i) {
-                var r = card.getBoundingClientRect();
-                console.log("[DEBUG/sol] 500MS card", i, "h:", r.bottom - r.top, "html:", card.innerHTML.length);
-              });
-              var gc = document.querySelector(".solutions-grid");
-              if (gc) {
-                var cs = getComputedStyle(gc);
-                console.log("[DEBUG/sol] grid w:", gc.offsetWidth, "cols:", cs.gridTemplateColumns);
-                var sc = gc.closest('.section-content');
-                if (sc) console.log("[DEBUG/sol] section-content w:", sc.offsetWidth);
-              }
+            var gc = document.querySelector(".solutions-grid");
+            if (!gc) { console.warn("[DEBUG/sol] .solutions-grid NOT FOUND"); return; }
+
+            // 只选 grid 容器内的直接 a 标签
+            var cards = gc.querySelectorAll(':scope > a[href^="/solutions/"]');
+            console.log("[DEBUG/sol] grid-direct cards:", cards.length);
+            cards.forEach(function(card, i) {
+              var r = card.getBoundingClientRect();
+              var cs = getComputedStyle(card);
+              console.log("[DEBUG/sol] card", i,
+                "h:", r.bottom - r.top,
+                "overflow:", cs.overflow,
+                "height:", cs.height,
+                "min-height:", cs.minHeight,
+                "innerChildren:", card.children.length,
+                "firstChild:", card.children[0] ? card.children[0].tagName : "NONE");
+            });
+
+            // 检查所有 children（含文本节点）
+            var children = gc.children;
+            console.log("[DEBUG/sol] grid.children count:", children.length);
+            for (var ci = 0; ci < Math.min(children.length, 8); ci++) {
+              var ch = children[ci];
+              console.log("[DEBUG/sol] grid.child", ci, "tag:", ch.tagName, "href:", ch.getAttribute ? ch.getAttribute("href") : "N/A", "offsetH:", ch.offsetHeight);
             }
+
+            var cs = getComputedStyle(gc);
+            console.log("[DEBUG/sol] grid w:", gc.offsetWidth, "cols:", cs.gridTemplateColumns, "gap:", cs.gap, "auto-rows:", cs.gridAutoRows);
           }, 500);
-        }
-      });
+        }     });
 
       // ─── page:view — spa:load 兼容事件 ───
       swup.hooks.on("page:view", function () {
