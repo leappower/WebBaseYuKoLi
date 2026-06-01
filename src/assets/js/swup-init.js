@@ -389,9 +389,9 @@
         linkSelector:
           'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
-          // PDP 模板文件 /pages/pdp/ 是内部分配路径，只在 fetch 时使用
-          // 不应通过 resolveUrl 映射到地址栏。返回当前地址栏 URL 保留原始路径
-          if (url.indexOf("/pages/pdp/") !== -1) return window.location.pathname;
+          // PDP 模板 /pages/pdp/ 和 cases detail /pages/cases/detail/ 是内部分配路径
+          // 不应通过 resolveUrl 映射到地址栏
+          if (url.indexOf("/pages/pdp/") !== -1 || url.indexOf("/pages/cases/detail/") !== -1) return window.location.pathname;
 
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);

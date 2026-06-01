@@ -679,21 +679,21 @@
   _spaOn(document, "spa:load", function () {
     console.log("[TRACE/pdp] spa:load received");
     var segs = location.pathname.split("/").filter(Boolean);
-    if (__DEVELOPMENT__) console.log("[ProductDetail] spa:load fired, pathname:", location.pathname, "segs:", segs);
+    console.log("[ProductDetail] spa:load fired, pathname:", location.pathname, "segs:", segs);
     // Only render PDP on /products/<category>/<model>/ or /products/<model>/ (non-category)
     if (segs[0] === "products") {
       if (segs[1] === "detail" && segs[2]) {
-        if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (detail path)");
+        console.log("[ProductDetail] Rendering PDP (detail path)");
         renderPDP();
       } else if (segs.length >= 3 && segs[1] && segs[2]) {
         // New route: /products/<category>/<model>/ — always PDP
-        if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (new route)");
+        console.log("[ProductDetail] Rendering PDP (new route)");
         renderPDP();
       } else if (segs[1] && segs[1] !== "compare" && !isCategorySlug(segs[1])) {
-        if (__DEVELOPMENT__) console.log("[ProductDetail] Rendering PDP (legacy model path)");
+        console.log("[ProductDetail] Rendering PDP (legacy model path)");
         renderPDP();
       } else {
-        if (__DEVELOPMENT__) console.log("[ProductDetail] Skipping PDP (category/listing page):", segs[1]);
+        console.log("[ProductDetail] Skipping PDP (category/listing page):", segs[1]);
       }
     }
   });
