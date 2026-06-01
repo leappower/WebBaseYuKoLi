@@ -120,7 +120,7 @@
       nav_case_studies: PAGES.cases,
       footer_support_title: PAGES.support,
       nav_support: PAGES.support,
-      nav_contact: PAGES.quote,
+      nav_contact: PAGES.contact,
       footer_cases: PAGES.cases,
       quote_equipment: PAGES.products,
     };
@@ -171,7 +171,7 @@
         var key = btn.getAttribute("data-i18n");
         if (quoteI18nKeys.indexOf(key) !== -1) {
           btn.addEventListener("click", function () {
-            navigate(PAGES.quote);
+            navigate(PAGES.contact);
           });
         }
       })(btns[i]);
