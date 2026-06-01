@@ -233,36 +233,17 @@
 
 /* ───────── 响应式：PC ───────── */
 @media (min-width: 1280px) {
-  /* PC: align with hero section content (w-1/2 left-aligned) */
-  .sk-hero {
-    width: 50%;
-    align-items: flex-start;
-    text-align: left;
-    padding-left: 0;
-  }
+  /* PC: skeleton elements centered */
   .sk-hero .sk-line {
-    margin-left: 0;
-    margin-right: 0;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 650px;
   }
-  .sk-hero .sk-line--h2 { margin-left: 0; margin-right: 0; }
   .sk-grid {
     grid-template-columns: repeat(3, 1fr);
   }
   .sk-card {
     height: 240px;
-  }
-  .sk-cta-group {
-    max-width: 400px;
-  }
-  .sk-cta {
-    max-width: 190px;
-  }
-  .sk-cta--outline {
-    max-width: 170px;
-  }
-  .sk-hero .sk-line {
-    max-width: 600px;
   }
 }
 

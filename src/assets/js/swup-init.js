@@ -446,7 +446,8 @@
 
         console.log("[TRACE] content:replace START, path:", global.location.pathname);
 
-        hideSkeleton();
+        // TEMP DEBUG: keep skeleton visible 60s
+        setTimeout(function() { hideSkeleton(); }, 60000);
 
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
         var container = document.getElementById("spa-content");

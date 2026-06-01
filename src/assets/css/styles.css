@@ -1822,36 +1822,17 @@ function endAnimation(element) {
 
 /* ───────── 响应式：PC ───────── */
 @media (min-width: 1280px) {
-  /* PC: align with hero section content (w-1/2 left-aligned) */
-  .sk-hero {
-    width: 50%;
-    align-items: flex-start;
-    text-align: left;
-    padding-left: 0;
-  }
+  /* PC: skeleton elements centered */
   .sk-hero .sk-line {
-    margin-left: 0;
-    margin-right: 0;
+    margin-left: auto;
+    margin-right: auto;
     max-width: 650px;
   }
-  .sk-hero .sk-line--h2 { margin-left: 0; margin-right: 0; }
   .sk-grid {
     grid-template-columns: repeat(3, 1fr);
   }
   .sk-card {
     height: 240px;
-  }
-  .sk-cta-group {
-    max-width: 400px;
-  }
-  .sk-cta {
-    max-width: 190px;
-  }
-  .sk-cta--outline {
-    max-width: 170px;
-  }
-  .sk-hero .sk-line {
-    max-width: 600px;
   }
 }
 
@@ -1875,6 +1856,50 @@ function endAnimation(element) {
 }
 
 /* ───────── Dark Mode ───────── */
+/* ───────── Product grid skeleton cards ───────── */
+.sk-product-card {
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #f1f5f9;
+}
+.dark .sk-product-card {
+  background: #0f172a;
+  border-color: #1e293b;
+}
+.sk-product-img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-product-img {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-product-text {
+  height: 16px;
+  width: 60%;
+  margin: 12px auto 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-product-text {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+.dark .sk-badge,
+.dark .sk-line,
+.dark .sk-cta,
+.dark .sk-card {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
 /* ───────── Product grid skeleton cards ───────── */
 .sk-product-card {
   border-radius: 12px;
