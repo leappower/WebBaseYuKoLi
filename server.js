@@ -371,6 +371,9 @@ function resolvePage(reqPath) {
   var clean = reqPath.replace(/\/+$/, '');
   if (!clean) clean = '/';
 
+  // 0. Root path → home
+  if (clean === '/') return path.join(__dirname, 'dist', 'pages', 'home', 'index-pc.html');
+
   // 1. Exact file: dist/<reqPath>  (assets, fonts, images)
   var f = path.join(__dirname, 'dist', reqPath);
   if (isFile(f)) return f;
@@ -409,7 +412,7 @@ function resolvePage(reqPath) {
   var spaPatterns = [
     /^\/home\//, /^\/products\//, /^\/solutions\//, /^\/contact\//,
     /^\/cases\//, /^\/support\//, /^\/quote\//, /^\/thank-you\//,
-    /^\/about\//, /^\/news\//
+    /^\/about\//, /^\/news\//, /^\/profit-calculator\//, /^\/resources\//
   ];
   var isSpaRoute = spaPatterns.some(function (p) { return p.test(clean + '/'); });
   if (isSpaRoute) {
