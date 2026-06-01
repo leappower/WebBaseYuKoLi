@@ -174,7 +174,7 @@ app.post('/api/submit-lead', express.json({ limit: '100kb' }), async (req, res) 
     const response = await fetch(GOOGLE_FORM_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ formType: 'lead', name: body.name, company: body.company, email: body.email, url: body.pageUrl || '', language: body.language || (body.browserLanguage || 'en'), message: 'Whitepaper: ' + (body.pdf || '') }),,
+      body: JSON.stringify({ formType: 'lead', name: body.name, company: body.company, email: body.email, url: body.pageUrl || '', language: body.language || (body.browserLanguage || 'en'), message: 'Whitepaper: ' + (body.pdf || '') }),
     });
     if (!response.ok) {
       console.error('[submit-lead] upstream error:', response.status);
