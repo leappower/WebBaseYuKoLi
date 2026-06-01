@@ -410,6 +410,18 @@
         var page = _a ? _a.page : null;
         if (!page) return;
 
+        // PDP 路由修复：resolveUrl 把 /pages/products/detail/index-{dev}.html → /products/detail/
+        // 但地址栏应保留原始的 /products/detail/<model>/ 或 /products/<category>/<model>/
+        // 如果当前 URL 被截断成 /products/detail/，恢复为 visit.to.url
+        if (
+          global.location.pathname === "/products/detail/" &&
+          visit.to.url &&
+          visit.to.url !== "/products/detail/" &&
+          /^\/products\//.test(visit.to.url)
+        ) {
+          history.replaceState(null, "", visit.to.url);
+        }
+
         hideSkeleton();
 
         var container = document.getElementById("spa-content");
