@@ -5,13 +5,8 @@
  */
 (function (global) {
   "use strict";
-
-  var _spaRegs = {};
-  function _spaOn(tgt, evt, fn, key) {
-    if (_spaRegs[key]) _spaRegs[key].abort();
-    var ac = new AbortController();
-    _spaRegs[key] = ac;
-    tgt.addEventListener(evt, fn, { signal: ac.signal });
+  function _spaOn(tgt, evt, fn) {
+    tgt.addEventListener(evt, fn);
   }
 
   var STORE_KEY = "PRODUCT_DATA_TABLE";
