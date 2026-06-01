@@ -111,12 +111,20 @@
     // PDP pages: /products/DLB-TBS30/ or /products/detail/?model=DLB-TBS30
     var pdpMatch = path.match(/^\/products\/(detail\/?(?:\?model=([^&]+))?|([^/]+))$/);
     if (pdpMatch) {
-      var model = pdpMatch[2] || pdpMatch[3] || "";
-      var referrer;
-      try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
-      referrer = referrer || "";
-      var refSlug = referrer.replace(/\/$/, "").split("/").pop();
-      if (!PRODUCT_SLUGS[refSlug]) refSlug = "";
+      var model = (pdpMatch && (pdpMatch[3] || pdpMatch[1])) || "";
+      // Extract category slug from URL: /products/coffee/WT-009/ → coffee
+      // Fallback: sessionStorage pdp_referrer
+      var refSlug = "";
+      var catMatch = path.match(/^\/products\/([a-zA-Z0-9_-]+)\/[a-zA-Z0-9_-]+\/?$/);
+      if (catMatch && PRODUCT_SLUGS[catMatch[1]]) {
+        refSlug = catMatch[1];
+      } else {
+        var referrer;
+        try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
+        referrer = referrer || "";
+        refSlug = referrer.replace(/\/$/, "").split("/").pop();
+        if (!PRODUCT_SLUGS[refSlug]) refSlug = "";
+      }
 
       // Try to detect category from product data (async — will update after)
       result.type = "pdp";
