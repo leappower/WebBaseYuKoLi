@@ -50,7 +50,7 @@
     // Forms — 表单提交直连 Google Apps Script
     // ═══════════════════════════════════════════════════════════
     forms: {
-      gasUrl: "https://script.google.com/macros/s/AKfycbymllbA_mL_l3muQN9QaU04FEGpXbmvzuGmZvYvDntjxK1QMF6BK8NZBrdqc1E22rBa5w/exec",
+      gasUrl: "https://script.google.com/macros/s/AKfycbyvtCAQYrK6GDMCiYcT70NQjVITwDk9w_gMAhS9qbN9WyCwxAz2YiaemR4Mbtn1tmkb/exec",
     },
 
     // ═══════════════════════════════════════════════════════════

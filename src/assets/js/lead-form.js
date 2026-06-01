@@ -9,6 +9,7 @@
   var STORAGE_KEY = "yukoli_leads";
   var BRAND_COLOR = "#2E7D32";
   var GAS_FORM_URL =
+    (window.SITE_CONFIG && window.SITE_CONFIG.forms && window.SITE_CONFIG.forms.gasUrl) ||
     "https://script.google.com/macros/s/AKfycbyUy-DdV0eqNfbzHWXhf5XbSMtyJMIL--Hx_AfMOrBqUYl7PgVD7vX7uhIhXy_DZIXr/exec";
 
   /* ---- helpers ---- */
