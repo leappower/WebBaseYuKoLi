@@ -335,11 +335,6 @@
       return "/pages/products/detail/" + suffix;
     }
 
-    // Fallback: 如果是 products 路径未匹配上述规则，保持原路径
-    if (/^\/products\/.*\/$/.test(path)) {
-      return "/pages/products/detail" + suffix;
-    }
-
     // 旧路由兼容: /beauty/ → /products/beauty/
     var redirectMatch = path.match(/^\/(coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
     if (redirectMatch) return "/pages/products/" + redirectMatch[1] + "/" + suffix;
@@ -364,9 +359,8 @@
         linkSelector:
           'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
-          // PDP: /pages/products/detail/index-pc.html → 保留原始 URL（地址栏不改变）
-          // 因为 resolveUrl 会把 /pages/products/detail/index-{dev}.html 映射成 /products/detail/
-          // 但用户实际访问的是 /products/<cat>/<model>/，不应改变地址栏
+          // /pages/products/detail/ 是 PDP 内部分配路径，不是公开 URL
+          // 不应通过 resolveUrl 将其映射到地址栏。返回 false 保留原始 URL
           if (url.indexOf("/pages/products/detail/") !== -1) return false;
 
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
@@ -419,17 +413,6 @@
       swup.hooks.on("content:replace", function (visit, _a) {
         var page = _a ? _a.page : null;
         if (!page) return;
-
-        // PDP 路由保护：resolveUrl 现在跳过 PDP 路径，但如果仍有
-        // 旧路由截断 /products/detail/ 的情况，恢复为 visit.to.url
-        if (
-          global.location.pathname === "/products/detail/" &&
-          visit.to.url &&
-          visit.to.url !== "/products/detail/" &&
-          /^\/products\//.test(visit.to.url)
-        ) {
-          history.replaceState(null, "", visit.to.url);
-        }
 
         hideSkeleton();
 
