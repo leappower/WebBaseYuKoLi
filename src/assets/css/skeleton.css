@@ -25,12 +25,14 @@
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  bottom: 0;
+  z-index: 10;
   background: var(--color-bg, #fff);
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
   padding-top: var(--nav-height, 65px);
+  overflow: hidden;
 }
 @media (min-width: 1024px) {
   #skeleton-overlay {
