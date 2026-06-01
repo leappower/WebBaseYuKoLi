@@ -388,8 +388,8 @@
           'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
           // PDP 模板文件 /pages/pdp/ 是内部分配路径，只在 fetch 时使用
-          // 不应通过 resolveUrl 映射到地址栏。返回 false 保留原始点击 URL
-          if (url.indexOf("/pages/pdp/") !== -1) return false;
+          // 不应通过 resolveUrl 映射到地址栏。返回当前地址栏 URL 保留原始路径
+          if (url.indexOf("/pages/pdp/") !== -1) return window.location.pathname;
 
           // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
@@ -459,12 +459,13 @@
         var p = global.location.pathname;
 
         // SPA 导航到产品页：触发 ProductGrid 渲染
-        // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染
+        // product-grid.js 已在 SPA shell 中加载，但不会自动重渲染。
+        // 等 200ms 确保 swup 完成 DOM 替换 + product-data-table 就绪
         if (/^\/products\/(all|[a-z]+)\/$/.test(p)) {
           if (global.ProductGrid && typeof global.ProductGrid.autoRender === "function") {
             setTimeout(function () {
               global.ProductGrid.autoRender();
-            }, 50);
+            }, 200);
           }
         }
 
