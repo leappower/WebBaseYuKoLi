@@ -38,6 +38,17 @@
       .replace(/^_|_$/g, "");
   }
 
+  // Resolve i18n label object to current language string
+  function resolveLabel(label) {
+    if (!label) return "";
+    if (typeof label === "string") return label;
+    if (typeof label === "object") {
+      var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
+      return label[lang] || label["en"] || label["zh-CN"] || Object.values(label)[0] || "";
+    }
+    return String(label);
+  }
+
   function getAllProducts() {
     var table = window.PRODUCT_DATA_TABLE || [];
     if (!table.length) return [];
@@ -100,7 +111,7 @@
       esc(rp.model) +
       '</h4><p class="text-xs text-slate-500 dark:text-slate-400 mb-2">' +
       esc(getCategoryName(rp)) +
-      '</p><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">' +
+      '</span><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">' +
       '查看详情<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>'
     );
   }
@@ -284,7 +295,7 @@
           '<li><a href="/products/' +
           slug +
           '/" class="hover:text-primary transition-colors">' +
-          catLabel +
+          resolveLabel(catLabel) +
           "</a></li>" +
           '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
       }
@@ -297,7 +308,7 @@
         '<button onclick="window.Breadcrumb&&window.Breadcrumb.goBack()" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="返回">' +
         '<span class="material-symbols-outlined text-xl">arrow_back</span></button>' +
         '<div><div class="text-xs text-slate-500 dark:text-slate-400">' +
-        (catLabel || "产品中心") +
+        (resolveLabel(catLabel) || "产品中心") +
         "</div>" +
         '<div class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">' +
         model +
@@ -406,7 +417,7 @@
           "';f.className='absolute inset-0 w-full h-full';f.allow='autoplay;encrypted-media';f.allowFullscreen=true;f.style.border='none';el.querySelector('.pdp-play-btn').style.display='none';el.querySelector('img').style.display='none';el.appendChild(f);})(this)\">" +
           '<img loading="eager" alt="' +
           esc(product.model) +
-          '" class="w-full h-[360px] object-cover" src="' +
+          '" class="w-full h-full object-cover" src="' +
           imgSrc +
           '"' +
           " onerror=\"this.src='/assets/images/default.webp'\">" +
@@ -421,7 +432,7 @@
           "';v.className='absolute inset-0 w-full h-full object-cover';v.controls=true;v.autoplay=true;v.playsInline=true;el.querySelector('.pdp-play-btn').style.display='none';el.querySelector('img').style.display='none';el.appendChild(v);v.play();})(this)\">" +
           '<img loading="eager" alt="' +
           esc(product.model) +
-          '" class="w-full h-[360px] object-cover" src="' +
+          '" class="w-full h-full object-cover" src="' +
           imgSrc +
           '"' +
           " onerror=\"this.src='/assets/images/default.webp'\">" +
@@ -432,10 +443,10 @@
       }
     } else {
       mediaHtml =
-        '<div class="relative"><img loading="eager" alt="' +
+        '<img loading="eager" alt="' +
         esc(product.model) +
         '"' +
-        ' class="w-full h-[360px] object-cover" src="' +
+        ' class="w-full h-full object-cover" src="' +
         imgSrc +
         '"' +
         " onerror=\"this.src='/assets/images/default.webp'\">";
@@ -448,15 +459,18 @@
         }
         mediaHtml += "</div>";
       }
-      mediaHtml += "</div>";
     }
 
     var html =
-      '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex flex-col lg:flex-row gap-8 lg:items-start">' +
-      '<div class="lg:w-1/2"><div class="rounded-xl overflow-hidden bg-white dark:bg-slate-800 shadow-lg">' +
+      // Section 1: Hero — 产品图片 + 基本信息
+      '<section class="w-full bg-white dark:bg-slate-950">' +
+      '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">' +
+      '<div class="flex flex-col lg:flex-row gap-6 lg:gap-12 lg:items-center">' +
+      '<div class="w-full lg:w-1/2 relative">' +
+      '<div class="relative w-full h-[220px] md:h-[400px] lg:h-[600px] bg-slate-100 dark:bg-slate-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl border border-white/10">' +
       mediaHtml +
-      "</div></div>" +
-      '<div class="lg:w-1/2 flex flex-col gap-5"><div>' +
+      '</div></div>' +
+      '<div class="w-full lg:w-1/2 flex flex-col gap-4 lg:gap-5 py-2"><div>' +
       '<div class="flex items-center gap-3 mb-2">' +
       '<span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">' +
       esc(product.subCategory || getCategoryName(product)) +
@@ -499,16 +513,19 @@
       ' border-2 border-slate-300 dark:border-slate-600 hover:border-primary hover:text-primary transition-all text-sm">' +
       '<span class="material-symbols-outlined text-lg">chat</span> ' +
       tl("联系销售") +
-      "</a></div></div></div>" +
-      '<section class="mt-8"><h2 class="text-xl font-bold mb-4 flex items-center gap-2">' +
+      "</a></div></div></div></div></section>" +
+      // Section 2: Specifications
+      '<section class="w-full py-8 lg:py-12 bg-slate-50 dark:bg-slate-900/30">' +
+      '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">' +
+      '<h2 class="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 flex items-center gap-2">' +
       '<span class="material-symbols-outlined text-primary">specifications</span> ' +
-      tl("产品规格") +
-      "</h2>" +
+      tl("产品规格") + '</h2>' +
       '<div class="grid grid-cols-1 md:grid-cols-2 gap-3">' +
       specCards +
-      "</div></section>" +
-      "</div></div>" +
-      '<section class="mt-12"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-primary rounded-xl p-8 text-center">' +
+      '</div></div></section>' +
+      // Section 3: CTA
+      '<section class="w-full py-8 lg:py-12 bg-primary">' +
+      '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 rounded-xl p-8 text-center">' +
       '<h2 class="text-xl font-black text-white mb-3">' +
       tl("需要定制方案？") +
       "</h2>" +

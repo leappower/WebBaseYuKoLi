@@ -93,71 +93,46 @@ const SRC_PAGES_DIR = path.resolve(__dirname, '..', 'src', 'pages');
 // Route definitions: URL path → source directory name
 // Each entry has a source page directory under src/pages/
 // Core routes (always generated):
-const CORE_ROUTES = [
-  { slug: 'home',         navId: 'home' },
-  { slug: 'products',     navId: 'products' },
-  { slug: 'cases',        navId: 'cases' },
-  { slug: 'profit-calculator', navId: 'profit-calculator' },
-  { slug: 'products/compare', navId: 'products' },
-  { slug: 'catalog',      navId: 'catalog' },
-  { slug: 'quote',        navId: 'quote' },
-  { slug: 'news',         navId: 'news' },
-  { slug: 'about',        navId: 'about' },
-  { slug: 'contact',      navId: 'contact' },
-  { slug: 'pdp', navId: 'products' },
-  { slug: 'thank-you',    navId: 'thank-you' },
-];
+// Route definitions — Adding a new page directory under src/pages/ is all that's needed.
+// Excludes: news/detail (dynamic SPA template, not a static route).
+function discoverRoutes() {
+  var routes = [];
+  var excludeDirs = ["node_modules", ".git", "assets"];
+  var excludeSlugs = ["news/detail"]; // dynamic SPA template, not a static route
 
-// Auto-discover additional page directories from src/pages/
-// Any directory with an index-pc.html that is not already in CORE_ROUTES
-// gets added automatically. Also scans one level of sub-directories (e.g. solutions/oem).
-// No need to manually maintain this list.
-function discoverPageRoutes() {
-  var discovered = [];
-  if (!fs.existsSync(SRC_PAGES_DIR)) return discovered;
-  var existingSlugs = {};
-  CORE_ROUTES.forEach(function(r) { existingSlugs[r.slug] = true; });
-  var entries = fs.readdirSync(SRC_PAGES_DIR).filter(function(e) {
-    return fs.statSync(path.join(SRC_PAGES_DIR, e)).isDirectory();
-  });
-  entries.forEach(function(dirName) {
-    if (existingSlugs[dirName]) return;
-    var hasIndexPc = fs.existsSync(path.join(SRC_PAGES_DIR, dirName, 'index-pc.html'));
-    if (hasIndexPc) {
-      discovered.push({ slug: dirName, navId: dirName });
-    }
-    // Also scan sub-directories one level deep
-    var subDir = path.join(SRC_PAGES_DIR, dirName);
-    var subEntries = fs.readdirSync(subDir).filter(function(e) {
-      return fs.statSync(path.join(subDir, e)).isDirectory();
-    });
-    subEntries.forEach(function(subName) {
-      var subPath = dirName + '/' + subName;
-      if (existingSlugs[subPath]) return;
-      var hasSubIndexPc = fs.existsSync(path.join(subDir, subName, 'index-pc.html'));
-      if (hasSubIndexPc) {
-        discovered.push({ slug: subPath, navId: dirName });
+  function walk(dir, prefix) {
+    if (!fs.existsSync(dir)) return;
+    var entries = fs.readdirSync(dir, { withFileTypes: true });
+    for (var i = 0; i < entries.length; i++) {
+      if (!entries[i].isDirectory()) continue;
+      if (excludeDirs.indexOf(entries[i].name) !== -1) continue;
+      var fullPath = path.join(dir, entries[i].name);
+      var slug = prefix ? prefix + "/" + entries[i].name : entries[i].name;
+      if (excludeSlugs.indexOf(slug) !== -1) {
+        walk(fullPath, slug);
+        continue;
       }
-    });
+      var htmlFiles = fs.readdirSync(fullPath).filter(function (f) {
+        return f.endsWith(".html");
+      });
+      if (htmlFiles.length > 0) {
+        var topSection = slug.split("/")[0];
+        routes.push({ slug: slug, navId: topSection });
+      }
+      walk(fullPath, slug);
+    }
+  }
+
+  walk(SRC_PAGES_DIR, "");
+  routes.sort(function (a, b) {
+    var aParts = a.slug.split("/"), bParts = b.slug.split("/");
+    if (aParts.length !== bParts.length) return aParts.length - bParts.length;
+    return a.slug.localeCompare(b.slug);
   });
-  return discovered;
+  return routes;
 }
 
-// Final merged ROUTES: core + auto-discovered
-var discovered = discoverPageRoutes();
-if (discovered.length > 0) {
-  log('Auto-discovered ' + discovered.length + ' page route(s): ' + discovered.map(function(r) { return r.slug; }).join(', '));
-}
-var ROUTES = CORE_ROUTES.concat(discovered);
-// Also include product category sub-routes
-ROUTES = ROUTES.concat([
-  { slug: 'products/stirfry',  navId: 'products' },
-  { slug: 'products/cutting',  navId: 'products' },
-  { slug: 'products/frying',   navId: 'products' },
-  { slug: 'products/stewing',  navId: 'products' },
-  { slug: 'products/steaming', navId: 'products' },
-  { slug: 'products/other',    navId: 'products' },
-]);
+const ROUTES = discoverRoutes();
 
 // Case detail slugs — each is a dynamic route sharing the same detail template
 const CASE_DETAIL_SLUGS = [
