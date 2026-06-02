@@ -329,14 +329,14 @@
                       <input type="text" name="fullname" required placeholder="John Doe" />
                     </div>
                     <div class="contact-field">
-                      <label data-i18n="product_builder_contact_company">
-                        公司名称
-                        <span style="color: #ef4444">*</span>
-                      </label>
-                      <input type="text" name="company" required placeholder="Your Company" />
+                      <label data-i18n="product_builder_contact_company">公司名称</label>
+                      <input type="text" name="company" placeholder="Your Company" />
                     </div>
                     <div class="contact-field">
-                      <label data-i18n="product_builder_contact_country">国家/地区</label>
+                      <label data-i18n="product_builder_contact_country">
+                        国家/地区
+                        <span style="color: #ef4444">*</span>
+                      </label>
                       <select name="country">
                         <option value="" data-i18n="product_builder_contact_select">选择国家…</option>
                         <option value="CN" data-i18n="country_china">🇨🇳 中国</option>
@@ -368,11 +368,8 @@
                   </div>
                   <div class="contact-row-2" style="margin-top: 0.625rem">
                     <div class="contact-field">
-                      <label data-i18n="product_builder_contact_email">
-                        邮箱
-                        <span style="color: #ef4444">*</span>
-                      </label>
-                      <input type="email" name="email" required placeholder="you@company.com" />
+                      <label data-i18n="product_builder_contact_email">邮箱</label>
+                      <input type="email" name="email" placeholder="you@company.com" />
                     </div>
                     <div class="contact-field">
                       <label data-i18n="product_builder_contact_phone">
@@ -441,7 +438,10 @@
                   <!-- Contact Method -->
                   <div class="contact-row-2" style="margin-top: 0.625rem">
                     <div class="contact-field">
-                      <label data-i18n="product_builder_contact_method">希望我们通过什么社交软件联系您</label>
+                      <label data-i18n="product_builder_contact_method">
+                        希望我们通过什么社交软件联系您
+                        <span style="color: #ef4444">*</span>
+                      </label>
                       <select
                         name="contactMethod"
                         style="
@@ -464,7 +464,10 @@
                       </select>
                     </div>
                     <div class="contact-field">
-                      <label data-i18n="product_builder_contact_account">账号/ID</label>
+                      <label data-i18n="product_builder_contact_account">
+                        账号/ID
+                        <span style="color: #ef4444">*</span>
+                      </label>
                       <input
                         type="text"
                         name="contactAccount"
