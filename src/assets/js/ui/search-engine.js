@@ -592,72 +592,77 @@
    */
   function init() {
     // Support unified search bar input (.ios-search-input)
-    var input = document.querySelector(".ios-search-bar .ios-search-input");
-    if (!input) {
+    var inputs = document.querySelectorAll(".ios-search-bar .ios-search-input");
+    if (!inputs || inputs.length === 0) {
       return;
     }
 
-    // Input event
-    input.addEventListener("input", function () {
-      debouncedSearch(input.value.trim());
-    });
+    inputs.forEach(function (input) {
+      // Skip if already bound (idempotent reinit)
+      if (input._searchEngineBound) return;
+      input._searchEngineBound = true;
 
-    // Focus — show results panel + is-focused style
-    input.addEventListener("focus", function () {
-      var bar = input.closest && input.closest(".ios-search-bar");
-      if (bar) bar.classList.add("is-focused");
-      if (currentQuery && currentQuery.length >= 1) {
-        showPanel();
-      }
-    });
+      // Input event
+      input.addEventListener("input", function () {
+        debouncedSearch(input.value.trim());
+      });
 
-    // Blur — remove is-focused
-    input.addEventListener("blur", function () {
-      var bar = input.closest && input.closest(".ios-search-bar");
-      if (bar) bar.classList.remove("is-focused");
-    });
+      // Focus — show results panel + is-focused style
+      input.addEventListener("focus", function () {
+        var bar = input.closest && input.closest(".ios-search-bar");
+        if (bar) bar.classList.add("is-focused");
+        if (currentQuery && currentQuery.length >= 1) {
+          showPanel();
+        }
+      });
 
-    // Keyboard navigation
-    input.addEventListener("keydown", function (e) {
-      var maxIndex = resultItems.length - 1;
+      // Blur — remove is-focused
+      input.addEventListener("blur", function () {
+        var bar = input.closest && input.closest(".ios-search-bar");
+        if (bar) bar.classList.remove("is-focused");
+      });
 
-      switch (e.key) {
-        case "ArrowDown":
-          e.preventDefault();
-          if (!isOpen) {
-            debouncedSearch(input.value.trim());
-            return;
-          }
-          if (highlightedIndex < maxIndex) {
-            highlightItem(highlightedIndex + 1);
-          }
-          break;
+      // Keyboard navigation
+      input.addEventListener("keydown", function (e) {
+        var maxIndex = resultItems.length - 1;
 
-        case "ArrowUp":
-          e.preventDefault();
-          if (highlightedIndex > 0) {
-            highlightItem(highlightedIndex - 1);
-          }
-          break;
-
-        case "Enter":
-          if (isOpen && highlightedIndex >= 0 && resultItems[highlightedIndex]) {
+        switch (e.key) {
+          case "ArrowDown":
             e.preventDefault();
-            hidePanel();
-            // Navigate to products page
-            if (window.SpaRouter && window.SpaRouter.navigate) {
-              window.SpaRouter.navigate("/products/");
-            } else {
-              window.location.href = "/products/";
+            if (!isOpen) {
+              debouncedSearch(input.value.trim());
+              return;
             }
-          }
-          break;
+            if (highlightedIndex < maxIndex) {
+              highlightItem(highlightedIndex + 1);
+            }
+            break;
 
-        case "Escape":
-          hidePanel();
-          input.blur();
-          break;
-      }
+          case "ArrowUp":
+            e.preventDefault();
+            if (highlightedIndex > 0) {
+              highlightItem(highlightedIndex - 1);
+            }
+            break;
+
+          case "Enter":
+            if (isOpen && highlightedIndex >= 0 && resultItems[highlightedIndex]) {
+              e.preventDefault();
+              hidePanel();
+              if (window.SpaRouter && window.SpaRouter.navigate) {
+                window.SpaRouter.navigate("/products/");
+              } else {
+                window.location.href = "/products/";
+              }
+            }
+            break;
+
+          case "Escape":
+            hidePanel();
+            input.blur();
+            break;
+        }
+      });
     });
   }
 
