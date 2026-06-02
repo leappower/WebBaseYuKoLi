@@ -106,10 +106,10 @@
         },
       ],
       metrics: [
-        { value: "7天", label: "极速打样", label_en: "Fast Sampling" },
-        { value: "80万条/月", label: "稳定产能", label_en: "Monthly Output" },
-        { value: "500起", label: "低门槛MOQ", label_en: "Low MOQ" },
-        { value: "30+国", label: "合规出口", label_en: "Compliant Export" },
+        { value: "7天", value_en: "7 Days", label: "极速打样", label_en: "Fast Sampling" },
+        { value: "80万条/月", value_en: "800K Sachets/Month", label: "稳定产能", label_en: "Monthly Output" },
+        { value: "500起", value_en: "From 500", label: "低门槛MOQ", label_en: "Low MOQ" },
+        { value: "30+国", value_en: "30+ Countries", label: "合规出口", label_en: "Compliant Export" },
       ],
       results: [
         {
@@ -239,10 +239,10 @@
         },
       ],
       metrics: [
-        { value: "5天", label: "极速打样", label_en: "Fast Sampling" },
-        { value: "60万杯/月", label: "稳定产能", label_en: "Monthly Output" },
-        { value: "300起", label: "灵活MOQ", label_en: "Flexible MOQ" },
-        { value: "Halal", label: "权威认证", label_en: "Halal Certified" },
+        { value: "5天", value_en: "5 Days", label: "极速打样", label_en: "Fast Sampling" },
+        { value: "60万杯/月", value_en: "600K Cups/Month", label: "稳定产能", label_en: "Monthly Output" },
+        { value: "300起", value_en: "From 300", label: "灵活MOQ", label_en: "Flexible MOQ" },
+        { value: "Halal", value_en: "Halal", label: "权威认证", label_en: "Halal Certified" },
       ],
       results: [
         {
@@ -372,10 +372,10 @@
         },
       ],
       metrics: [
-        { value: "40万瓶/月", label: "稳定产能", label_en: "Monthly Output" },
-        { value: "ISO 22000", label: "国际认证", label_en: "ISO Certified" },
-        { value: "多规格", label: "灵活定制", label_en: "Multi-Spec" },
-        { value: "EU合规", label: "欧盟准入", label_en: "EU Compliant" },
+        { value: "40万瓶/月", value_en: "400K Bottles/Month", label: "稳定产能", label_en: "Monthly Output" },
+        { value: "ISO 22000", value_en: "ISO 22000", label: "国际认证", label_en: "ISO Certified" },
+        { value: "多规格", value_en: "Multi-Spec", label: "灵活定制", label_en: "Multi-Spec" },
+        { value: "EU合规", value_en: "EU Compliant", label: "欧盟准入", label_en: "EU Compliant" },
       ],
       results: [
         {
@@ -505,9 +505,9 @@
         },
       ],
       metrics: [
-        { value: "6天", label: "极速打样", label_en: "Fast Sampling" },
-        { value: "90万支/月", label: "高产能力", label_en: "High Output" },
-        { value: "100起", label: "超低MOQ", label_en: "Ultra Low MOQ" },
+        { value: "6天", value_en: "6 Days", label: "极速打样", label_en: "Fast Sampling" },
+        { value: "90万支/月", value_en: "900K sticks/Month", label: "高产能力", label_en: "High Output" },
+        { value: "100起", value_en: "From 100", label: "超低MOQ", label_en: "Ultra Low MOQ" },
         { value: "日标", label: "日本合规", label_en: "Japan Compliant" },
       ],
       results: [
@@ -766,10 +766,10 @@
         },
       ],
       metrics: [
-        { value: "120万包/月", label: "稳定产能", label_en: "Monthly Output" },
-        { value: "100+门店", label: "覆盖规模", label_en: "Store Coverage" },
-        { value: "零差异", label: "批次一致", label_en: "Zero Variation" },
-        { value: "FSANZ", label: "澳洲合规", label_en: "FSANZ Compliant" },
+        { value: "120万包/月", value_en: "1.2M Packs/Month", label: "稳定产能", label_en: "Monthly Output" },
+        { value: "100+门店", value_en: "100+ Stores", label: "覆盖规模", label_en: "Store Coverage" },
+        { value: "零差异", value_en: "Zero Variation", label: "批次一致", label_en: "Zero Variation" },
+        { value: "FSANZ", value_en: "FSANZ", label: "澳洲合规", label_en: "FSANZ Compliant" },
       ],
       results: [
         {
@@ -899,10 +899,10 @@
         },
       ],
       metrics: [
-        { value: "100起", label: "超低MOQ", label_en: "Ultra Low MOQ" },
-        { value: "5天", label: "极速打样", label_en: "Fast Sampling" },
+        { value: "100起", value_en: "From 100", label: "超低MOQ", label_en: "Ultra Low MOQ" },
+        { value: "5天", value_en: "5 Days", label: "极速打样", label_en: "Fast Sampling" },
         { value: "30万瓶/月", label: "产能灵活", label_en: "Flexible Output" },
-        { value: "Halal", label: "合规保障", label_en: "Halal Certified" },
+        { value: "Halal", value_en: "Halal", label: "合规保障", label_en: "Halal Certified" },
       ],
       results: [
         {
@@ -1033,7 +1033,7 @@
       ],
       metrics: [
         { value: "200万瓶/月", label: "爆款产能", label_en: "Peak Output" },
-        { value: "6天", label: "快速打样", label_en: "Fast Sampling" },
+        { value: "6天", value_en: "6 Days", label: "快速打样", label_en: "Fast Sampling" },
         { value: "48h", label: "加急响应", label_en: "Rush Response" },
         { value: "T+2", label: "极速到货", label_en: "Fast Delivery" },
       ],
@@ -1143,6 +1143,13 @@
     if (window.translationManager && window.translationManager.currentLanguage) {
       return window.translationManager.currentLanguage;
     }
+    var stored;
+    try {
+      stored = localStorage.getItem("userLanguage");
+    } catch (e) {}
+    if (stored) return stored;
+    var htmlLang = document.documentElement && document.documentElement.lang;
+    if (htmlLang) return htmlLang;
     return "zh-CN";
   }
 
@@ -1277,10 +1284,11 @@
     for (var i = 0; i < metrics.length; i++) {
       var m = metrics[i];
       var label = isZh() ? m.label || "" : m.label_en || m.label || "";
+      var value = isZh() ? m.value : m.value_en || m.value;
       html +=
         '<div class="text-center bg-white/10 rounded-xl p-4 backdrop-blur-sm">' +
         '<div class="text-2xl font-black mb-1">' +
-        esc(m.value) +
+        esc(value) +
         "</div>" +
         '<div class="text-sm text-white/70">' +
         esc(label) +
