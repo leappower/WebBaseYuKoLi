@@ -16,7 +16,17 @@
 /* global SlideMenu */
 (function (global) {
   "use strict";
-  function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
+  function _t(k) {
+    if (
+      typeof window !== "undefined" &&
+      window.translationManager &&
+      typeof window.translationManager.translate === "function"
+    ) {
+      var r = window.translationManager.translate(k);
+      return r && r !== k ? r : k;
+    }
+    return k;
+  }
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
   var _primary = (_theme.colors || {}).primary || "#2E7D32";
   var _primaryHover = (_theme.colors || {}).primaryHover || "#1B5E20";
@@ -170,10 +180,28 @@
               id: "solutions",
               icon: "lightbulb",
               children: [
-                { key: "nav_oem", label: _t("nav_oem") || "OEM", icon: "precision_manufacturing", emoji: "", href: "/solutions/oem/" },
-                { key: "nav_odm", label: _t("nav_odm") || "ODM", icon: "design_services", emoji: "", href: "/solutions/odm/" },
+                {
+                  key: "nav_oem",
+                  label: _t("nav_oem") || "OEM",
+                  icon: "precision_manufacturing",
+                  emoji: "",
+                  href: "/solutions/oem/",
+                },
+                {
+                  key: "nav_odm",
+                  label: _t("nav_odm") || "ODM",
+                  icon: "design_services",
+                  emoji: "",
+                  href: "/solutions/odm/",
+                },
                 { key: "nav_obm", label: _t("nav_obm") || "OBM", icon: "verified", emoji: "", href: "/solutions/obm/" },
-                { key: "nav_rd", label: _t("nav_rd") || "R&D & Flavor Lab", icon: "science", emoji: "", href: "/solutions/rd/" },
+                {
+                  key: "nav_rd",
+                  label: _t("nav_rd") || "R&D & Flavor Lab",
+                  icon: "science",
+                  emoji: "",
+                  href: "/solutions/rd/",
+                },
                 {
                   key: "nav_packaging",
                   label: _t("nav_packaging") || "Packaging & Labeling",
@@ -279,7 +307,13 @@
                   emoji: "",
                   href: "/resources/whitepapers/",
                 },
-                { key: "nav_cases", label: _t("nav_cases") || "Case Studies", icon: "analytics", emoji: "", href: "/cases/" },
+                {
+                  key: "nav_cases",
+                  label: _t("nav_cases") || "Case Studies",
+                  icon: "analytics",
+                  emoji: "",
+                  href: "/cases/",
+                },
                 {
                   key: "nav_videos",
                   label: _t("nav_videos") || "Video Library",
@@ -296,9 +330,27 @@
               id: "contact",
               icon: "mail",
               children: [
-                { key: "nav_quote", label: _t("nav_quote") || "Get a Quote", icon: "request_quote", emoji: "", href: "/contact/#quote" },
-                { key: "nav_samples", label: _t("nav_samples") || "Free Samples", icon: "redeem", emoji: "", href: "/contact/#samples" },
-                { key: "nav_visit", label: _t("nav_visit") || "Visit Our Factory", icon: "tour", emoji: "", href: "/contact/#visit" },
+                {
+                  key: "nav_quote",
+                  label: _t("nav_quote") || "Get a Quote",
+                  icon: "request_quote",
+                  emoji: "",
+                  href: "/contact/#quote",
+                },
+                {
+                  key: "nav_samples",
+                  label: _t("nav_samples") || "Free Samples",
+                  icon: "redeem",
+                  emoji: "",
+                  href: "/contact/#samples",
+                },
+                {
+                  key: "nav_visit",
+                  label: _t("nav_visit") || "Visit Our Factory",
+                  icon: "tour",
+                  emoji: "",
+                  href: "/contact/#visit",
+                },
                 {
                   key: "nav_network",
                   label: _t("nav_network") || "Global Sales Network",
@@ -1066,8 +1118,13 @@
             "</div>"
           : '<span class="material-symbols-outlined">inventory_2</span>';
 
+        var itemHref = item.model
+          ? "/products/" + encodeURIComponent(item.category || "") + "/" + encodeURIComponent(item.model) + "/"
+          : "/products/";
         html +=
-          '<a class="mobile-search-result-item" href="/products/">' +
+          '<a class="mobile-search-result-item" href="' +
+          itemHref +
+          '">' +
           '<div class="mobile-search-result-img">' +
           imageHtml +
           "</div>" +
