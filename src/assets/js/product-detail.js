@@ -316,7 +316,7 @@
         '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-0 hidden md:block">' +
         '<nav class="text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">' +
         '<ol class="flex items-center gap-1 flex-wrap">' +
-        '<li><a href="/products/" class="hover:text-primary transition-colors">产品中心</a></li>' +
+        '<li><a href="/products/" class="hover:text-primary transition-colors" data-i18n="nav_product_center">产品中心</a></li>' +
         '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
       if (catLabel && slug) {
         html +=
@@ -336,7 +336,7 @@
         '<button onclick="window.Breadcrumb&&window.Breadcrumb.goBack()" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="返回">' +
         '<span class="material-symbols-outlined text-xl">arrow_back</span></button>' +
         '<div><div class="text-xs text-slate-500 dark:text-slate-400">' +
-        (resolveLabel(catLabel) || "产品中心") +
+        (tl("nav_product_center") || resolveLabel(catLabel) || "产品中心") +
         "</div>" +
         '<div class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">' +
         model +

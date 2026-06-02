@@ -1045,5 +1045,13 @@
   "popup_input_country": "Country / Region",
   "popup_input_requirements": "Describe your requirements…",
   "products_card_inquire": "Solicitar presupuesto",
-  "products_card_view_detail": "Ver detalles"
+  "products_card_view_detail": "Ver detalles",
+  "coffee": "Coffee",
+  "tea": "Tea & Milk Tea",
+  "meal": "Meal Replacement",
+  "beauty": "Beauty & Collagen",
+  "weight": "Weight Management",
+  "gut": "Gut Health",
+  "lifestyle": "Lifestyle Functional",
+  "legacy": "Legacy Classics"
 }

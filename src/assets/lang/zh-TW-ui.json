@@ -1045,5 +1045,13 @@
   "popup_input_country": "Country / Region",
   "popup_input_requirements": "Describe your requirements…",
   "products_card_inquire": "詢價",
-  "products_card_view_detail": "查看詳情"
+  "products_card_view_detail": "查看詳情",
+  "coffee": "咖啡系列",
+  "tea": "茶飲系列",
+  "meal": "代餐系列",
+  "beauty": "美容膠原系列",
+  "weight": "體重管理",
+  "gut": "腸道健康",
+  "lifestyle": "功能沖飲",
+  "legacy": "經典沖飲"
 }

@@ -1044,5 +1044,13 @@
   "error_404_badge": "Page Not Found",
   "case_count": "real-world cases",
   "products_card_inquire": "Inquire",
-  "products_card_view_detail": "View Details"
+  "products_card_view_detail": "View Details",
+  "coffee": "Coffee",
+  "tea": "Tea & Milk Tea",
+  "meal": "Meal Replacement",
+  "beauty": "Beauty & Collagen",
+  "weight": "Weight Management",
+  "gut": "Gut Health",
+  "lifestyle": "Lifestyle Functional",
+  "legacy": "Legacy Classics"
 }
