@@ -152,11 +152,20 @@
             </div>
             <div class="relative">
               <!-- Breadcrumb -->
-              <div class="flex items-center gap-1 text-xs text-slate-500 mb-3">
-                <a href="/products/" class="hover:text-primary" data-i18n="nav_products">Products</a>
-                <span class="material-symbols-outlined text-[10px]">chevron_right</span>
-                <span class="text-primary font-medium" data-i18n="products_all_hero_badge">All Products</span>
+              <div class="flex items-center gap-3 md:hidden">
+                <a href="/products/" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="返回">
+                  <span class="material-symbols-outlined text-xl">arrow_back</span>
+                </a>
+                <div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="nav_products">Products</div>
+                  <div class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]" data-i18n="products_all_hero_badge">All Products</div>
+                </div>
               </div>
+              <nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 items-center gap-2 flex-wrap hidden md:flex" aria-label="Breadcrumb">
+                <a href="/products/" class="hover:text-primary transition-colors" data-i18n="nav_products">Products</a>
+                <span class="material-symbols-outlined text-sm text-slate-300">chevron_right</span>
+                <span class="text-slate-900 dark:text-white font-medium" data-i18n="products_all_hero_badge">All Products</span>
+              </nav>
               <div
                 class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4"
               >

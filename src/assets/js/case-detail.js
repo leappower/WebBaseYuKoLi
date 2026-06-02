@@ -1384,6 +1384,7 @@
 
     // Breadcrumb
     setTextOrAttr("breadcrumb-current", "innerText", isZh() ? c.title : c.title_en);
+    setTextOrAttr("breadcrumb-current-mobile", "innerText", isZh() ? c.title : c.title_en);
 
     // Background
     setTextOrAttr("case-background-content", "innerText", (isZh() ? c.background : c.background_en) || "");
