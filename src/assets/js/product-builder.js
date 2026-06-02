@@ -621,6 +621,9 @@
     // Send directly to Google Apps Script (works on GitHub Pages, no server required)
     showBuilderSuccess();
     state.submitted = false;
+    // Scroll back to #quote anchor so success message is visible
+    var quoteEl = document.getElementById("quote");
+    if (quoteEl) quoteEl.scrollIntoView({ behavior: "smooth", block: "start" });
     try {
       var gasUrl = (global.SITE_CONFIG && global.SITE_CONFIG.forms && global.SITE_CONFIG.forms.gasUrl) || "";
       if (gasUrl) {
