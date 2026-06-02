@@ -449,6 +449,7 @@ function copyDeviceFiles(route) {
     fs.writeFileSync(destFile, content, 'utf-8');
     copied++;
   }
+  }
 
   return copied;
 }
