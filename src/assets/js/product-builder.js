@@ -566,14 +566,8 @@
 
   // ─── Submit State ───────────────────────────────────────────────
   function updateSubmitState() {
-    if (!dom.submitBtn) return;
-    var hasContact = false;
-    var nameEl = dom.builder && dom.builder.querySelector('[name="fullname"]');
-    var emailEl = dom.builder && dom.builder.querySelector('[name="email"]');
-    if (nameEl && nameEl.value.trim().length > 0) hasContact = true;
-
-    // Only require contact fields for enabling submit
-    dom.submitBtn.disabled = !hasContact;
+    // Button always enabled; validation happens on submit
+    if (dom.submitBtn) dom.submitBtn.disabled = false;
   }
 
   // ─── Form Submission ────────────────────────────────────────────
@@ -590,28 +584,30 @@
     var contactMethodEl = dom.builder.querySelector('[name="contactMethod"]');
     var contactAccountEl = dom.builder.querySelector('[name="contactAccount"]');
 
-    // Inline validation
-    var valid = true;
-    if (!nameEl || !nameEl.value.trim()) {
-      valid = false;
-      if (nameEl) nameEl.classList.add("field-error");
-    }
-    if (!emailEl || !emailEl.value.trim()) {
-      valid = false;
-      if (emailEl) emailEl.classList.add("field-error");
-    }
-    if (valid && emailEl && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value.trim())) {
-      valid = false;
-      emailEl.classList.add("field-error");
-    }
+    // Inline validation — required fields
+    var requiredChecks = [
+      { ok: !!state.mode, label: "product_builder_mode" },
+      { ok: state.categories && state.categories.length > 0, label: "product_builder_categories" },
+      { ok: state.quantity > 0, label: "product_builder_quantity" },
+      { ok: state.timeline, label: "product_builder_timeline" },
+      { ok: nameEl && nameEl.value.trim(), el: nameEl },
+      { ok: countryEl && countryEl.value, el: countryEl },
+      { ok: phoneEl && phoneEl.value.trim(), el: phoneEl },
+      { ok: contactMethodEl && contactMethodEl.value, el: contactMethodEl },
+      { ok: contactAccountEl && contactAccountEl.value.trim(), el: contactAccountEl },
+    ];
+    var firstMissing = null;
+    requiredChecks.forEach(function (c) {
+      if (!c.ok) {
+        if (c.el) c.el.classList.add("field-error");
+        if (!firstMissing) firstMissing = c.label || c.el.name;
+      }
+    });
 
-    if (!valid) {
+    if (firstMissing) {
       state.submitted = false;
       if (global.showNotification)
-        global.showNotification(
-          _t("product_builder_validation_required") || "Please fill in the required fields.",
-          "error"
-        );
+        global.showNotification(_t("product_builder_validation_required") || "请填写所有必填项", "error");
       return;
     }
 
@@ -684,18 +680,18 @@
     bindCountryCode();
     bindContactSync();
 
-    // Bind contact field change to update submit state
+    // Clear field-error on user interaction
     var fields = dom.builder.querySelectorAll(".contact-field input, .contact-field select");
     for (var i = 0; i < fields.length; i++) {
       (function (f) {
-        f.addEventListener("input", updateSubmitState);
-        f.addEventListener("change", updateSubmitState);
+        f.addEventListener("input", function () {
+          f.classList.remove("field-error");
+        });
       })(fields[i]);
     }
 
     // Initial render
     renderBrief();
-    updateSubmitState();
   }
 
   function reset() {
