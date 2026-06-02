@@ -3,7 +3,11 @@
   function _extend(target) {
     for (var i = 1; i < arguments.length; i++) {
       var src = arguments[i];
-      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+      if (src) {
+        for (var k in src) {
+          if (src.hasOwnProperty(k)) target[k] = src[k];
+        }
+      }
     }
     return target;
   }
@@ -60,7 +64,11 @@
   }
   ((r.prototype.getInitialLanguage = function () {
     var t;
-    try { t = localStorage.getItem("userLanguage"); } catch(e) { t = null; }
+    try {
+      t = localStorage.getItem("userLanguage");
+    } catch (e) {
+      t = null;
+    }
     return t && getO()[t] ? t : "zh-CN";
   }),
     (r.prototype.loadTranslations = function (t) {
@@ -108,8 +116,16 @@
             if (s && "object" == typeof s && s.data && "object" == typeof s.data) {
               if (s.timestamp && Date.now() - s.timestamp < 864e5 && s._v === 3)
                 return ((o = s.data), this.translationsCache.set(e, o), Promise.resolve(o));
-              try { localStorage.removeItem(n); } catch(e) {}
-            } else (console.warn("[i18n] Invalid cache structure for " + t + ", clearing"), (function(){ try { localStorage.removeItem(n); } catch(e) {} })());
+              try {
+                localStorage.removeItem(n);
+              } catch (e) {}
+            } else
+              (console.warn("[i18n] Invalid cache structure for " + t + ", clearing"),
+                (function () {
+                  try {
+                    localStorage.removeItem(n);
+                  } catch (e) {}
+                })());
           }
         } catch (e) {
           console.warn("[i18n] Failed to read localStorage cache for " + t + ":", e.message);
@@ -245,8 +261,9 @@
       } else t.placeholder !== e && (t.placeholder = e);
     }),
     (r.prototype.interpolate = function (t) {
-      if (typeof t !== 'string') return t;
-      var brand = this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || 'Brand');
+      if (typeof t !== "string") return t;
+      var brand =
+        this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || "Brand");
       return t.replace(/\{brand\}/g, brand);
     }),
     (r.prototype.translate = function (t) {
@@ -294,8 +311,9 @@
                 u = function (e) {
                   var n = t.resolveTranslationValue(l, e);
                   // If not found, try with current language prefix (e.g. 'en_nav_products_coffee')
+                  // But guard against literal "lang_key" returns when prefix_key doesn't exist
                   if ((!n || n === e) && t.currentLanguage) {
-                    var prefixed = t.currentLanguage + '_' + e;
+                    var prefixed = t.currentLanguage + "_" + e;
                     n = t.resolveTranslationValue(l, prefixed);
                     // resolveTranslationValue 在 key 不存在时返回 key 本身，排除伪命中
                     if (n === prefixed) n = void 0;
@@ -435,7 +453,11 @@
                     var a = n.currentLanguage;
                     return (
                       (n.currentLanguage = e),
-                      (function(){ try { localStorage.setItem("userLanguage", e); } catch(e) {} })(),
+                      (function () {
+                        try {
+                          localStorage.setItem("userLanguage", e);
+                        } catch (e) {}
+                      })(),
                       n.applyTranslations().then(function () {
                         if (
                           ((document.documentElement.lang = e),
@@ -668,7 +690,11 @@
     (r.prototype.initialize = function () {
       var e = this;
       if (e.isInitialized) return Promise.resolve(e);
-      (function(){ try { if (!localStorage.getItem("browserLang")) localStorage.setItem("browserLang", this.detectBrowserLanguage()); } catch(e) {} }).call(this);
+      (function () {
+        try {
+          if (!localStorage.getItem("browserLang")) localStorage.setItem("browserLang", this.detectBrowserLanguage());
+        } catch (e) {}
+      }).call(this);
       var n = this.getInitialLanguage();
       return (
         (this.currentLanguage = n),
