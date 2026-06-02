@@ -210,7 +210,9 @@
           });
         });
         if (Object.keys(map).length === 0 && lang !== "zh-CN") {
-          console.warn("[i18n] loadProductTranslations: no embedded translations for " + lang);
+          // No embedded product translations — this is normal when PRODUCT_DATA_TABLE
+          // doesn't contain suffixed fields (nameEn, etc.). Product translations
+          // are handled separately via product-<lang>.json or the UI bundle.
         }
         n.translationsCache.set(e, map);
         window._productTranslations = map;
