@@ -118,13 +118,13 @@
       return result;
     }
 
-    // PDP pages: /products/<category>/<model>/
-    var pdpMatch = path.match(/^\/products\/(detail\/?(?:\?model=([^&]+))?|([^/]+))$/);
+    // PDP pages: /products/<category>/<model>/ 或 /products/<model>/
+    var pdpMatch = path.match(/^\/products\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/);
     if (pdpMatch) {
-      var model = pdpMatch ? pdpMatch[2] : "";
-      var categoryFromUrl = pdpMatch ? pdpMatch[1] : "";
-      // Extract category slug from URL: /products/coffee/WT-009/ → coffee
-      var refSlug = categoryFromUrl && PRODUCT_SLUGS[categoryFromUrl] ? categoryFromUrl : "";
+      var categoryFromUrl = pdpMatch[1];
+      var model = pdpMatch[2];
+      // Extract category slug from URL: /products/coffee/CF-001/ → coffee
+      var refSlug = PRODUCT_SLUGS[categoryFromUrl] ? categoryFromUrl : "";
 
       // Try to detect category from product data (async — will update after)
       result.type = "pdp";
@@ -133,7 +133,7 @@
       result.parentLabel = tl("产品中心", "产品中心");
       result.currentLabel = model;
       result.refSlug = refSlug;
-      result.refCategoryLabel = refSlug ? PRODUCT_SLUGS[refSlug].label : "";
+      result.refCategoryLabel = refSlug ? getProductLabel(refSlug) : "";
       return result;
     }
 
