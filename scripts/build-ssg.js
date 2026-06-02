@@ -278,38 +278,46 @@ function injectThemeAndNavScripts(html, deviceType) {
   // 1. theme-init.js — always injected (fonts + CSS tokens)
   tags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
 
-  // 2. Device-specific nav script
-  //    Determine device type from filename if not explicitly provided
-  if (!deviceType) {
-    // This function is called on HTML content, not a filename;
-    // caller should detect from filename and pass deviceType.
-    deviceType = 'mobile'; // safe default
-  }
-
+  // 2. Device-specific nav script (skip if already present in source)
   if (deviceType === 'pc') {
-    tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+    if (html.indexOf('mega-menu.js') === -1) {
+      tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+    }
   } else if (deviceType === 'mobile' || deviceType === 'tablet') {
-    tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+    if (html.indexOf('nav-footer.js') === -1) {
+      tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+    }
   } else {
-    // responsive: inject both — each checks features + device width at runtime
-    tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
-    tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+    if (html.indexOf('mega-menu.js') === -1) {
+      tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+    }
+    if (html.indexOf('nav-footer.js') === -1) {
+      tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+    }
   }
 
-  // 3. Search engine — always inject after navigator (needed for header search bar)
-  //    Placed after navigator.js so init() runs after mountNavigator()
-  //    Skip if already present in source (e.g. home page)
-  var searchEngineTag = '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n';
-  var slideMenuTag = '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n';
-  var searchIndexTag = '<script defer src="' + bp + '/assets/js/search-index.js"></script>';
+  // 3. Search scripts — inject after navigator.js (needed for header search bar)
+  //    Only inject scripts not already present in source HTML
+  var searchTags = '';
+  if (html.indexOf('slide-menu.js') === -1) {
+    searchTags += '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n    ';
+  }
+  if (html.indexOf('search-engine.js') === -1) {
+    searchTags += '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n    ';
+  }
+  if (html.indexOf('search-index.js') === -1) {
+    searchTags += '<script defer src="' + bp + '/assets/js/search-index.js"></script>';
+  }
 
-  // Insert search scripts after navigator.js (skip if already present)
-  var navAfterPattern = new RegExp(
-    '(<script[^>]*src=["\'][^"\']*assets\\/js\\/ui\\/navigator\\.js[^>]*>[^<]*<\/script>)',
-    'i'
-  );
-  if (navAfterPattern.test(html) && html.indexOf('search-engine.js') === -1) {
-    html = html.replace(navAfterPattern, '$1\n    ' + slideMenuTag + '    ' + searchEngineTag + '    ' + searchIndexTag);
+  // Insert search scripts after navigator.js
+  if (searchTags) {
+    var navAfterPattern = new RegExp(
+      '(<script[^>]*src=["\'][^"\']*assets\/js\/ui\/navigator\.js[^>]*>[^<]*<\/script>)',
+      'i'
+    );
+    if (navAfterPattern.test(html)) {
+      html = html.replace(navAfterPattern, '$1\n    ' + searchTags);
+    }
   }
 
   // Insert before the first <script tag that references navigator.js
