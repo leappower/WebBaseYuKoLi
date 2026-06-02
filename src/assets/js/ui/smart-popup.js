@@ -892,13 +892,13 @@
    */
   function collectFormData(form, formType) {
     return {
-      formType: formType,
+      source: formType, // ⚠️ GAS 脚本读 data.source
       name: (form.querySelector('input[name="name"]') || {}).value || "",
       company: (form.querySelector('input[name="company"]') || {}).value || "",
       email: (form.querySelector('input[name="email"]') || {}).value || "",
       phone: (form.querySelector('input[name="phone"]') || {}).value || "",
       country: (form.querySelector('input[name="country"]') || {}).value || "",
-      message: (form.querySelector('textarea[name="message"]') || {}).value || "",
+      description: (form.querySelector('textarea[name="message"]') || {}).value || "", // ⚠️ GAS 脚本读 data.description
       language: getCurrentLanguage(),
       browserLanguage: navigator.language,
       screenWidth:
