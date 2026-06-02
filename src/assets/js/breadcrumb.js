@@ -247,17 +247,18 @@
   function renderBreadcrumb(page) {
     if (page.type === "none") return "";
 
-    // PC/Tablet breadcrumb
+    // PC/Tablet breadcrumb (hidden md:block, wrapped in section)
     var bc =
-      '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 py-4 mb-0 hidden md:block" aria-label="Breadcrumb">';
-    bc += '<ol class="flex items-center gap-1 flex-wrap">';
-    bc +=
+      '<section class="fullwidth-bg border-b border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50">' +
+      '<div class="section-content py-3">' +
+      '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 hidden md:block" aria-label="Breadcrumb">' +
+      '<ol class="flex items-center gap-1 flex-wrap">' +
       '<li><a href="' +
       page.parentPath +
       '" class="hover:text-primary transition-colors">' +
       esc(page.parentLabel) +
-      "</a></li>";
-    bc += '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
+      "</a></li>" +
+      '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
 
     if (page.type === "pdp" && page.refCategoryLabel) {
       bc +=
@@ -265,12 +266,17 @@
         page.refSlug +
         '/" class="hover:text-primary transition-colors">' +
         esc(page.refCategoryLabel) +
-        "</a></li>";
-      bc += '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
+        "</a></li>" +
+        '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
     }
 
-    bc += '<li><span class="text-slate-900 dark:text-white font-medium">' + esc(page.currentLabel) + "</span></li>";
-    bc += "</ol></nav>";
+    bc +=
+      '<li><span class="text-slate-900 dark:text-white font-medium">' +
+      esc(page.currentLabel) +
+      "</span></li>" +
+      "</ol></nav>" +
+      "</div>" +
+      "</section>";
 
     // Mobile back bar
     var backBar = '<div class="breadcrumb-back flex items-center gap-3 mb-4 md:hidden">';
