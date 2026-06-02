@@ -296,6 +296,22 @@ function injectThemeAndNavScripts(html, deviceType) {
     tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
   }
 
+  // 3. Search engine — always inject after navigator (needed for header search bar)
+  //    Placed after navigator.js so init() runs after mountNavigator()
+  //    Skip if already present in source (e.g. home page)
+  var searchEngineTag = '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n';
+  var slideMenuTag = '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n';
+  var searchIndexTag = '<script defer src="' + bp + '/assets/js/search-index.js"></script>';
+
+  // Insert search scripts after navigator.js (skip if already present)
+  var navAfterPattern = new RegExp(
+    '(<script[^>]*src=["\'][^"\']*assets\\/js\\/ui\\/navigator\\.js[^>]*>[^<]*<\/script>)',
+    'i'
+  );
+  if (navAfterPattern.test(html) && html.indexOf('search-engine.js') === -1) {
+    html = html.replace(navAfterPattern, '$1\n    ' + slideMenuTag + '    ' + searchEngineTag + '    ' + searchIndexTag);
+  }
+
   // Insert before the first <script tag that references navigator.js
   // This ensures our scripts load before navigator initializes
   var navigatorPattern = new RegExp('(\\s*)(<script[^>]*src=["\'][^"\']*assets\\/js\\/ui\\/navigator\\.js[^>]*>)', 'i');
@@ -420,6 +436,7 @@ function generateRouteIndex(route) {
 function copyDeviceFiles(route) {
   const srcDir = path.join(DIST_DIR, route.sourceDir || route.slug);
   const destRouteDir = path.join(DIST_DIR, route.slug);
+  var copied = 0;
 
   if (!fs.existsSync(srcDir)) {
     log('WARN: No dist/' + (route.sourceDir || route.slug) + '/ directory found');
@@ -428,7 +445,6 @@ function copyDeviceFiles(route) {
 
   if (srcDir === destRouteDir) {
     // Same directory (flat build) — just process files in place
-    let copied = 0;
     const files = fs.readdirSync(srcDir);
     for (const file of files) {
       if (!file.endsWith('.html')) continue;
@@ -449,6 +465,29 @@ function copyDeviceFiles(route) {
     fs.writeFileSync(destFile, content, 'utf-8');
     copied++;
   }
+  } else {
+    // Cross-directory copy (e.g. case-detail sourceDir → slug directory)
+    if (!fs.existsSync(destRouteDir)) {
+      fs.mkdirSync(destRouteDir, { recursive: true });
+    }
+    const files = fs.readdirSync(srcDir);
+    for (const file of files) {
+      if (!file.endsWith('.html')) continue;
+      if (file === 'index.html') continue;
+
+      const srcFile = path.join(srcDir, file);
+      const destFile = path.join(destRouteDir, file);
+
+      let content = fs.readFileSync(srcFile, 'utf-8');
+      content = injectLangRegistry(content);
+      if (BASE_PATH) {
+        content = patchHtmlPaths(content);
+      }
+      var deviceType = detectDeviceType(file);
+      content = injectThemeAndNavScripts(content, deviceType);
+      fs.writeFileSync(destFile, content, 'utf-8');
+      copied++;
+    }
   }
 
   return copied;
