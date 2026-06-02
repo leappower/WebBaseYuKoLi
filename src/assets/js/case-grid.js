@@ -281,7 +281,7 @@
       var i18nKey = "cases_detail_" + c.slug + "_" + field;
       try {
         var bundleId = "ui-" + lang;
-        var val = window.translationManager.resolveTranslationValue(i18nKey, bundleId);
+        var val = window.translationManager.resolveTranslationValue(bundleId, i18nKey);
         if (val && val !== i18nKey && val !== bundleId && val.indexOf("ui-") !== 0) return val;
       } catch (e) {
         /* fall through */

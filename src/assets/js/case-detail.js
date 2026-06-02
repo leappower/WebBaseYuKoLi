@@ -1174,7 +1174,7 @@
       if (field === "title") i18nKey = "cases_detail_" + slug;
       try {
         var bundleId = "ui-" + (getLang() || "zh-CN");
-        var val = window.translationManager.resolveTranslationValue(i18nKey, bundleId);
+        var val = window.translationManager.resolveTranslationValue(bundleId, i18nKey);
         // val is the resolved value, or bundleId if key not found — reject bundleId
         if (val && val !== i18nKey && val !== bundleId && val.indexOf("ui-") !== 0) {
           // Parse array fields (solutions/results/pain_points)
