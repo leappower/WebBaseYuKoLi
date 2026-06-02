@@ -1159,13 +1159,31 @@
   }
 
   /**
-   * Get localized property from case object
-   * e.g. getProp(c, 'title') → c.title (zh) or c.title_en (en)
+   * Get localized text for a case field.
+   * Priority:
+   *   1. TranslationManager i18n key: cases_detail_<slug>_<field>
+   *   2. English suffix: c[field + "_en"]
+   *   3. Original field: c[field]
    */
-  function getProp(c, key) {
+  function getLocalizedText(c, field) {
     if (!c) return "";
-    if (isZh()) return c[key] || c[key + "_en"] || "";
-    return c[key + "_en"] || c[key] || "";
+    var slug = c.slug || "";
+    // Try TranslationManager first
+    if (window.translationManager && window.translationManager.resolveTranslationValue) {
+      var i18nKey = "cases_detail_" + slug + "_" + field;
+      if (field === "title") i18nKey = "cases_detail_" + slug;
+      try {
+        var val = window.translationManager.resolveTranslationValue(i18nKey, "ui-" + (getLang() || "zh-CN"));
+        if (val && val !== i18nKey) return val;
+      } catch (e) {
+        // fall through
+      }
+    }
+    // Fallback: _en for non-Chinese, original for Chinese
+    var lang = getLang();
+    var isZhLang = lang === "zh-CN" || lang === "zh-TW" || lang === "zh";
+    if (isZhLang) return c[field] || c[field + "_en"] || "";
+    return c[field + "_en"] || c[field] || "";
   }
 
   /* ── Rendering ──────────────────────────────────── */
@@ -1191,10 +1209,10 @@
    */
   function renderHeroMetrics(c) {
     var items = [
-      { icon: "schedule", text: isZh() ? c.lead_time : c.lead_time_en },
-      { icon: "inventory_2", text: isZh() ? c.moq_label : c.moq_label_en },
-      { icon: "verified", text: isZh() ? c.cert_label : c.cert_label_en },
-      { icon: "bar_chart", text: isZh() ? c.monthly_volume : c.monthly_volume_en },
+      { icon: "schedule", text: getLocalizedText(c, "lead_time") },
+      { icon: "inventory_2", text: getLocalizedText(c, "moq_label") },
+      { icon: "verified", text: getLocalizedText(c, "cert_label") },
+      { icon: "bar_chart", text: getLocalizedText(c, "monthly_volume") },
     ];
     var html = "";
     for (var i = 0; i < items.length; i++) {
@@ -1215,7 +1233,8 @@
    * Render pain point cards
    */
   function renderPainPoints(c) {
-    var pains = isZh() ? c.pain_points || [] : c.pain_points_en || c.pain_points || [];
+    var pains = getLocalizedText(c, "pain_points") || [];
+    if (typeof pains === "string") pains = [pains];
     if (!pains.length) return '<p class="text-slate-500">No data available.</p>';
     var html = "";
     for (var i = 0; i < pains.length; i++) {
@@ -1237,7 +1256,8 @@
    * Render solution cards (4-column)
    */
   function renderSolutions(c) {
-    var sols = isZh() ? c.solutions || [] : c.solutions_en || c.solutions || [];
+    var sols = getLocalizedText(c, "solutions") || [];
+    if (typeof sols === "string") sols = [sols];
     if (!sols.length) return '<p class="text-slate-500">No data available.</p>';
     var html = "";
     for (var i = 0; i < sols.length; i++) {
@@ -1249,7 +1269,7 @@
         esc(s.icon || "check_circle") +
         "</span></div>" +
         '<h3 class="font-bold text-sm mb-1">' +
-        esc(isZh() ? s.title : s.title_en) +
+        esc(getLocalizedText(s, "title")) +
         "</h3>" +
         '<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">' +
         esc(s.desc || "") +
@@ -1266,15 +1286,15 @@
     var metrics = c.metrics || [];
     if (!metrics.length) {
       metrics = [
-        { value: isZh() ? c.lead_time : c.lead_time_en, label: isZh() ? "打样周期" : "Sampling", label_en: "Sampling" },
+        { value: getLocalizedText(c, "lead_time"), label: isZh() ? "打样周期" : "Sampling", label_en: "Sampling" },
         {
-          value: isZh() ? c.monthly_volume : c.monthly_volume_en,
+          value: getLocalizedText(c, "monthly_volume"),
           label: isZh() ? "月产能" : "Monthly Output",
           label_en: "Monthly Output",
         },
-        { value: isZh() ? c.moq_label : c.moq_label_en, label: isZh() ? "起订量" : "MOQ", label_en: "MOQ" },
+        { value: getLocalizedText(c, "moq_label"), label: isZh() ? "起订量" : "MOQ", label_en: "MOQ" },
         {
-          value: isZh() ? c.cert_label : c.cert_label_en,
+          value: getLocalizedText(c, "cert_label"),
           label: isZh() ? "认证" : "Certification",
           label_en: "Certification",
         },
@@ -1302,7 +1322,8 @@
    * Render results cards (3-column)
    */
   function renderResults(c) {
-    var results = isZh() ? c.results || [] : c.results_en || c.results || [];
+    var results = getLocalizedText(c, "results") || [];
+    if (typeof results === "string") results = [results];
     if (!results.length) return '<p class="text-slate-500">No data available.</p>';
     var html = "";
     for (var i = 0; i < results.length; i++) {
@@ -1314,7 +1335,7 @@
         esc(r.icon || "check") +
         "</span></div>" +
         '<h3 class="font-bold text-sm mb-1">' +
-        esc(isZh() ? r.title : r.title_en) +
+        esc(getLocalizedText(r, "title")) +
         "</h3>" +
         '<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">' +
         esc(r.desc || "") +
@@ -1327,10 +1348,10 @@
   /* ── SEO / Metadata ───────────────────────────── */
 
   function updateSEO(c) {
-    var title = (isZh() ? c.title : c.title_en) + " | " + t("seo_yukoli");
+    var title = getLocalizedText(c, "title") + " | " + t("seo_yukoli");
     setTextOrAttr("page-title", "innerText", title);
     document.title = title;
-    setTextOrAttr("meta-description", "content", isZh() ? c.quote || c.title : c.quote_en || c.title_en);
+    setTextOrAttr("meta-description", "content", getLocalizedText(c, "quote") || getLocalizedText(c, "title"));
 
     var slug = c.slug;
     var baseUrl = "https://brew.yukoli.com/cases/" + slug + "/";
@@ -1340,9 +1361,9 @@
     setTextOrAttr("hreflang-x-default", "href", baseUrl);
     setTextOrAttr("og-url", "content", baseUrl);
 
-    var ogTitle = (isZh() ? c.title : c.title_en) + " | YuKoLi Case Study";
+    var ogTitle = getLocalizedText(c, "title") + " | YuKoLi Case Study";
     setTextOrAttr("og-title", "content", ogTitle);
-    setTextOrAttr("og-description", "content", isZh() ? c.quote || c.title : c.quote_en || c.title_en);
+    setTextOrAttr("og-description", "content", getLocalizedText(c, "quote") || getLocalizedText(c, "title"));
 
     // Device alt links
     var altPc = "/cases/" + slug + "/index-pc.html";
@@ -1377,17 +1398,17 @@
     }
 
     // Hero
-    setTextOrAttr("case-hero-title", "innerText", isZh() ? c.title : c.title_en);
-    setTextOrAttr("case-hero-quote", "innerText", (isZh() ? c.quote : c.quote_en) || "");
+    setTextOrAttr("case-hero-title", "innerText", getLocalizedText(c, "title"));
+    setTextOrAttr("case-hero-quote", "innerText", getLocalizedText(c, "quote") || "");
     setInnerHTML("case-hero-badges", renderBadges(c));
     setInnerHTML("case-hero-metrics", renderHeroMetrics(c));
 
     // Breadcrumb — 由 breadcrumb.js 渲染骨架，只需更新当前案例标题
-    setTextOrAttr("breadcrumb-current", "innerText", isZh() ? c.title : c.title_en);
-    setTextOrAttr("breadcrumb-current-mobile", "innerText", isZh() ? c.title : c.title_en);
+    setTextOrAttr("breadcrumb-current", "innerText", getLocalizedText(c, "title"));
+    setTextOrAttr("breadcrumb-current-mobile", "innerText", getLocalizedText(c, "title"));
 
     // Background
-    setTextOrAttr("case-background-content", "innerText", (isZh() ? c.background : c.background_en) || "");
+    setTextOrAttr("case-background-content", "innerText", getLocalizedText(c, "background") || "");
 
     // Pain Points
     setInnerHTML("case-pain-points-grid", renderPainPoints(c));
@@ -1402,7 +1423,7 @@
     setInnerHTML("case-results-grid", renderResults(c));
 
     // Testimonial
-    setTextOrAttr("case-testimonial-text", "innerText", (isZh() ? c.quote : c.quote_en) || "");
+    setTextOrAttr("case-testimonial-text", "innerText", getLocalizedText(c, "quote") || "");
     setTextOrAttr("case-testimonial-author", "innerText", c.country || "");
 
     // SEO

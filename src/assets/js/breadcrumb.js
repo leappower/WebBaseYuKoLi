@@ -27,6 +27,8 @@
   // ─── Category slug ↔ key ↔ label maps ──────────────────────────
 
   function tl(key, fallback) {
+    if (typeof key === "object") key = key.en || key["zh-CN"] || "";
+    if (typeof fallback === "object") fallback = key;
     if (typeof window.t === "function") {
       var result = window.t(key);
       if (result && result !== key) return result;
@@ -348,7 +350,7 @@
           var slug = CATEGORY_KEY_TO_SLUG[catKey] || "";
           if (slug && PRODUCT_SLUGS[slug]) {
             page.refSlug = slug;
-            page.refCategoryLabel = PRODUCT_SLUGS[slug].label;
+            page.refCategoryLabel = getProductLabel(slug);
             page.parentPath = "/products/" + slug + "/";
             reRender(page);
           }
