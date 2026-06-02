@@ -523,7 +523,7 @@ function generate404() {
   // Inject redirect script after <head> (handles trailing-slash redirects)
   var redirectScript =
     '<script src="' + bp + '/site.config.js"></script>' +
-    '<script>(function(){if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.add('dark')})()</script>' +
+    '<script>(function(){if(localStorage.getItem("darkMode")==="true")document.documentElement.classList.add("dark")})()</script>' +
     '<script>' +
     '(function(){' +
     'var base="' + (bp || '') + '";' +
