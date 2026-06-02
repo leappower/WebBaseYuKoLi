@@ -294,8 +294,12 @@
                 u = function (e) {
                   var n = t.resolveTranslationValue(l, e);
                   // If not found, try with current language prefix (e.g. 'en_nav_products_coffee')
+                  // But guard against literal "lang_key" returns when prefix_key doesn't exist
                   if ((!n || n === e) && t.currentLanguage) {
-                    n = t.resolveTranslationValue(l, t.currentLanguage + '_' + e);
+                    var prefixed = t.resolveTranslationValue(l, t.currentLanguage + '_' + e);
+                    if (prefixed && prefixed !== e && prefixed !== t.currentLanguage + '_' + e) {
+                      n = prefixed;
+                    }
                   }
                   return n && n !== e ? t.interpolate(n) : t.interpolate(t.getFallbackTranslation(e));
                 },
@@ -386,7 +390,11 @@
         if (en) {
           var v = this.resolveTranslationValue(en, t);
           if (!v || v === t) v = this.resolveTranslationValue(en, "en_" + t);
-          if (v && v !== t) return v;
+          // Only accept if the resolved value doesn't start with a known prefix pattern
+          // (e.g. "en_key" literal when key doesn't exist)
+          if (v && v !== t && !/^(en|zh|ja|ko|ar|de|fr|es|pt|ru|it|nl|th|vi|id|ms|tl|tr|pl|cs|hu|sv|da|fi|km|lo|my|he|hi)_/.test(v)) {
+            return v;
+          }
         }
       }
       // 2. 返回 key 本身

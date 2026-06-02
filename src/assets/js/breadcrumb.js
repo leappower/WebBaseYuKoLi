@@ -114,7 +114,7 @@
       result.type = "category";
       result.slug = slug;
       result.parentPath = "/products/";
-      result.parentLabel = tl("产品中心", "产品中心");
+      result.parentLabel = tl("nav_product_center", "产品中心");
       result.currentLabel = info.label;
       // No siblings — product grid has its own category tabs
       return result;
@@ -132,7 +132,7 @@
       result.type = "pdp";
       result.slug = "pdp";
       result.parentPath = refSlug ? "/products/" + refSlug + "/" : "/products/";
-      result.parentLabel = tl("产品中心", "产品中心");
+      result.parentLabel = tl("nav_product_center", "产品中心");
       result.currentLabel = model;
       result.refSlug = refSlug;
       result.refCategoryLabel = refSlug ? getProductLabel(refSlug) : "";
@@ -143,8 +143,8 @@
     if (path === "/products/compare" || path === "/products/compare/") {
       result.type = "compare";
       result.parentPath = "/products/";
-      result.parentLabel = tl("产品中心", "产品中心");
-      result.currentLabel = tl("产品对比", "产品对比");
+      result.parentLabel = tl("nav_product_center", "产品中心");
+      result.currentLabel = tl("products_compare", "产品对比");
       return result;
     }
 
@@ -155,7 +155,7 @@
       result.type = "application";
       result.slug = appSlug;
       result.parentPath = "/applications/";
-      result.parentLabel = tl("行业场景", "行业场景");
+      result.parentLabel = tl("nav_applications", "行业场景");
       result.currentLabel = APP_SLUGS[appSlug].label;
       result.siblings = buildSiblingLinks("applications", appSlug); // keep for now
       return result;
@@ -168,7 +168,7 @@
       result.type = "support";
       result.slug = supSlug;
       result.parentPath = "/support/";
-      result.parentLabel = tl("服务支持", "服务支持");
+      result.parentLabel = tl("nav_support", "服务支持");
       result.currentLabel = SUPPORT_SLUGS[supSlug].label;
       result.siblings = buildSiblingLinks("support", supSlug); // keep for now
       return result;
@@ -179,7 +179,7 @@
     if (newsMatch) {
       result.type = "news-detail";
       result.parentPath = "/news/";
-      result.parentLabel = tl("新闻动态", "新闻动态");
+      result.parentLabel = tl("nav_news", "新闻动态");
       result.currentLabel = "";
       return result;
     }
@@ -327,9 +327,9 @@
     var siblings = page.siblings;
 
     // PC/Tablet
-    var siblingLabel = tl("其他品类", "其他品类");
-    if (page.type === "application") siblingLabel = tl("其他场景", "其他场景");
-    if (page.type === "support") siblingLabel = tl("其他服务", "其他服务");
+    var siblingLabel = tl("cross_sell_other_category", "其他品类");
+    if (page.type === "application") siblingLabel = tl("cross_sell_other_scenario", "其他场景");
+    if (page.type === "support") siblingLabel = tl("cross_sell_other_service", "其他服务");
     var pc = '<div class="sibling-nav hidden md:block mb-8">';
     pc +=
       '<div class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mb-3">' +
