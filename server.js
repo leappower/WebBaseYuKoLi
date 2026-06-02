@@ -64,7 +64,7 @@ app.use(helmet({
       styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
       fontSrc: ["'self'", "fonts.gstatic.com"],
-      connectSrc: ["'self'", "wa.me", "*.googleapis.com"],
+      connectSrc: ["'self'", "wa.me", "*.googleapis.com", "script.google.com", "script.googleusercontent.com"],
       frameSrc: ["'self'"],
       frameAncestors: ["'none'"],
       // Disable upgrade-insecure-requests — Express runs HTTP-only behind Caddy.
