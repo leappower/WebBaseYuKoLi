@@ -1195,7 +1195,7 @@
       active: placeholder.getAttribute("data-active") || "",
       showSearch: parseBooleanAttr(placeholder.getAttribute("data-search"), false),
       searchI18n: placeholder.getAttribute("data-search-i18n") || "search_placeholder",
-      searchBp: placeholder.getAttribute("data-search-bp") || "xl",
+      searchBp: placeholder.getAttribute("data-search-bp") || "lg",
       showLang: parseBooleanAttr(placeholder.getAttribute("data-lang"), true),
       showCta: parseBooleanAttr(placeholder.getAttribute("data-cta"), true),
       ctaTextKey: placeholder.getAttribute("data-cta-text-key") || "nav_contact_us",

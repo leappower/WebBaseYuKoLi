@@ -102,7 +102,7 @@
       result.parentPath = "/products/";
       result.parentLabel = tl("nav_products", "产品中心");
       result.currentLabel = tl("nav_products_all", "全部产品");
-      result.siblings = buildSiblingLinks("products", "all");
+      // No siblings — product grid has its own category tabs
       return result;
     }
 
@@ -116,7 +116,7 @@
       result.parentPath = "/products/";
       result.parentLabel = tl("产品中心", "产品中心");
       result.currentLabel = info.label;
-      result.siblings = buildSiblingLinks("products", slug);
+      // No siblings — product grid has its own category tabs
       return result;
     }
 
@@ -157,7 +157,7 @@
       result.parentPath = "/applications/";
       result.parentLabel = tl("行业场景", "行业场景");
       result.currentLabel = APP_SLUGS[appSlug].label;
-      result.siblings = buildSiblingLinks("applications", appSlug);
+      result.siblings = buildSiblingLinks("applications", appSlug); // keep for now
       return result;
     }
 
@@ -170,7 +170,7 @@
       result.parentPath = "/support/";
       result.parentLabel = tl("服务支持", "服务支持");
       result.currentLabel = SUPPORT_SLUGS[supSlug].label;
-      result.siblings = buildSiblingLinks("support", supSlug);
+      result.siblings = buildSiblingLinks("support", supSlug); // keep for now
       return result;
     }
 
