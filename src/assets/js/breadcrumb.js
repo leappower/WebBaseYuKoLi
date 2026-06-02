@@ -505,7 +505,10 @@
         if (newPage.type !== "case-detail" && newPage.type !== "news-detail") {
           reRender(newPage);
         } else {
-          // Only render the breadcrumb skeleton (skip currentLabel which is empty)
+          // Case-detail: breadcrumb is fully handled by case-detail.js renderAll().
+          // Do NOT re-render skeleton here — renderBreadcrumb() uses currentLabel=""
+          // which would overwrite the case title set by case-detail.js.
+          // Only ensure the container exists for case-detail.js to populate.
           var container = document.getElementById("breadcrumb-container");
           if (!container) {
             var spa = document.getElementById("spa-content") || document.querySelector("main");
@@ -514,9 +517,6 @@
               container.id = "breadcrumb-container";
               spa.insertBefore(container, spa.firstChild);
             }
-          }
-          if (container) {
-            container.innerHTML = renderBreadcrumb(newPage);
           }
         }
       }
@@ -543,7 +543,20 @@
     init: init,
     refresh: function () {
       var newPage = detectPage();
-      if (newPage.type !== "none") reRender(newPage);
+      if (newPage.type !== "none") {
+        // Preserve current label from DOM for case-detail/news-detail
+        if (newPage.type === "case-detail" || newPage.type === "news-detail") {
+          var bcEl = document.getElementById("breadcrumb-current");
+          if (bcEl && bcEl.textContent.trim()) {
+            newPage.currentLabel = bcEl.textContent.trim();
+          }
+          var bcMobEl = document.getElementById("breadcrumb-current-mobile");
+          if (bcMobEl && bcMobEl.textContent.trim()) {
+            newPage.currentLabelMobile = bcMobEl.textContent.trim();
+          }
+        }
+        reRender(newPage);
+      }
     },
     goBack: function () {
       var referrer;
