@@ -1042,5 +1042,7 @@
   "case_detail_cta_desc": "Contact the YuKoLi team now for a custom OEM/ODM solution",
   "case_detail_cta_button": "Contact YuKoLi Team",
   "error_404_badge": "Page Not Found",
-  "case_count": "real-world cases"
+  "case_count": "real-world cases",
+  "products_card_inquire": "Inquire",
+  "products_card_view_detail": "View Details"
 }

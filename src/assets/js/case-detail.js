@@ -1174,7 +1174,7 @@
       "</span>";
     html +=
       '<span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold">' +
-      esc(c.industry) +
+      esc(getProp(c, "industry")) +
       "</span>";
     return html;
   }
@@ -1259,10 +1259,18 @@
     var metrics = c.metrics || [];
     if (!metrics.length) {
       metrics = [
-        { value: c.lead_time, label: isZh() ? "打样周期" : "Sampling", label_en: "Sampling" },
-        { value: c.monthly_volume, label: isZh() ? "月产能" : "Monthly Output", label_en: "Monthly Output" },
-        { value: c.moq_label, label: isZh() ? "起订量" : "MOQ", label_en: "MOQ" },
-        { value: c.cert_label, label: isZh() ? "认证" : "Certification", label_en: "Certification" },
+        { value: isZh() ? c.lead_time : c.lead_time_en, label: isZh() ? "打样周期" : "Sampling", label_en: "Sampling" },
+        {
+          value: isZh() ? c.monthly_volume : c.monthly_volume_en,
+          label: isZh() ? "月产能" : "Monthly Output",
+          label_en: "Monthly Output",
+        },
+        { value: isZh() ? c.moq_label : c.moq_label_en, label: isZh() ? "起订量" : "MOQ", label_en: "MOQ" },
+        {
+          value: isZh() ? c.cert_label : c.cert_label_en,
+          label: isZh() ? "认证" : "Certification",
+          label_en: "Certification",
+        },
       ];
     }
     var html = "";

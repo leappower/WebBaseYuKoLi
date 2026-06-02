@@ -354,7 +354,9 @@
   function renderCardPc(c) {
     var barColor = benefitColor(c.benefit);
     return (
-      '<div class="case-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all group border border-slate-200 dark:border-slate-700 hover:border-primary/50 flex flex-col">' +
+      '<a href="/cases/' +
+      esc(c.slug) +
+      '/" class="case-card bg-white dark:bg-slate-800 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all group border border-slate-200 dark:border-slate-700 hover:border-primary/50 flex flex-col block no-underline">' +
       "<!-- 顶部色条 -->" +
       '<div class="w-full h-1 flex-shrink-0" style="background:' +
       esc(barColor) +
@@ -416,14 +418,12 @@
       "</div>" +
       "</div>" +
       "</div>" +
-      '<a href="/cases/' +
-      esc(c.slug) +
-      '/" target="_self" class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all mt-auto pt-1">' +
+      '<div class="inline-flex items-center gap-1 text-primary font-bold text-sm group-hover:gap-2 transition-all mt-auto pt-1">' +
       '<span data-i18n="cases_read_story">查看详情</span>' +
       '<span class="material-symbols-outlined text-base">arrow_forward</span>' +
-      "</a>" +
       "</div>" +
-      "</div>"
+      "</div>" +
+      "</a>"
     );
   }
 
@@ -433,7 +433,9 @@
   function renderCardMobile(c) {
     var barColor = benefitColor(c.benefit);
     return (
-      '<div class="case-card bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700">' +
+      '<a href="/cases/' +
+      esc(c.slug) +
+      '/" class="case-card bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md border border-slate-200 dark:border-slate-700 block no-underline">' +
       "<!-- 顶部色条 -->" +
       '<div class="w-full h-1 flex-shrink-0" style="background:' +
       esc(barColor) +
@@ -485,14 +487,12 @@
       '">' +
       esc(l10n(c, "quote")) +
       "</p>" +
-      '<a href="/cases/' +
-      esc(c.slug) +
-      '/" target="_self" class="inline-flex items-center gap-1 text-primary font-bold text-sm mt-1">' +
+      '<div class="inline-flex items-center gap-1 text-primary font-bold text-sm mt-1">' +
       '<span data-i18n="cases_read_more">Read More</span>' +
       '<span class="material-symbols-outlined text-base">arrow_forward</span>' +
-      "</a>" +
       "</div>" +
-      "</div>"
+      "</div>" +
+      "</a>"
     );
   }
 

@@ -1811,7 +1811,11 @@ function endAnimation(element) {
 
 /* ───────── 响应式：Tablet ───────── */
 @media (min-width: 768px) and (max-width: 1279px) {
-  .sk-hero .sk-line { max-width: 600px; margin-left: auto; margin-right: auto; }
+  .sk-hero .sk-line {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .sk-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -2606,6 +2610,7 @@ html.dark .ios-search-clear .material-symbols-outlined {
   display: flex;
   flex-direction: column;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.08);
+  overflow-x: hidden;
 }
 .mobile-menu-panel.is-open {
   transform: translateX(0);
@@ -2899,6 +2904,11 @@ html.dark .mobile-menu-l2-item.is-active .mobile-menu-l2-icon {
   flex: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.mobile-menu-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 /* ---------- 底部 CTA 栏 ---------- */
@@ -4092,20 +4102,42 @@ html.dark .cs-popup-panel .cs-group-label {
 
 /* ─── Contact Form Builder Icons (三屏递减) ── */
 /* PC: builder-header icon 20px, label 16px, mode 24px */
-.builder-header .material-symbols-outlined { font-size: 1.25rem; }
-.builder-label .material-symbols-outlined { font-size: 1rem; }
-.builder-options .mode-icon { font-size: 1.5rem; }
-.brief-panel-title .material-symbols-outlined { font-size: 0.875rem; }
+.builder-header .material-symbols-outlined {
+  font-size: 1.25rem;
+}
+.builder-label .material-symbols-outlined {
+  font-size: 1rem;
+}
+.builder-options .mode-icon {
+  font-size: 1.5rem;
+}
+.brief-panel-title .material-symbols-outlined {
+  font-size: 0.875rem;
+}
 /* Tablet: slightly smaller */
 @media (max-width: 1279px) {
-  .builder-header .material-symbols-outlined { font-size: 1.125rem; }
-  .builder-label .material-symbols-outlined { font-size: 0.875rem; }
-  .builder-options .mode-icon { font-size: 1.25rem; }
-  .brief-panel-title .material-symbols-outlined { font-size: 0.8125rem; }
+  .builder-header .material-symbols-outlined {
+    font-size: 1.125rem;
+  }
+  .builder-label .material-symbols-outlined {
+    font-size: 0.875rem;
+  }
+  .builder-options .mode-icon {
+    font-size: 1.25rem;
+  }
+  .brief-panel-title .material-symbols-outlined {
+    font-size: 0.8125rem;
+  }
 }
 /* Mobile: compact */
 @media (max-width: 767px) {
-  .builder-header .material-symbols-outlined { font-size: 1rem; }
-  .builder-label .material-symbols-outlined { font-size: 0.75rem; }
-  .builder-options .mode-icon { font-size: 1.125rem; }
+  .builder-header .material-symbols-outlined {
+    font-size: 1rem;
+  }
+  .builder-label .material-symbols-outlined {
+    font-size: 0.75rem;
+  }
+  .builder-options .mode-icon {
+    font-size: 1.125rem;
+  }
 }

@@ -625,11 +625,11 @@
       desc +
       "</p>" +
       '<div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">' +
-      '<span class="text-base font-black text-primary">询价</span>' +
+      '<span class="text-base font-black text-primary" data-i18n="products_card_inquire">询价</span>' +
       '<div class="flex items-center gap-2">' +
       '<a href="' +
       link +
-      '" class="flex items-center gap-1 text-primary text-sm font-bold hover:underline"><span>查看详情</span><span class="material-symbols-outlined text-xs">arrow_forward</span></a>' +
+      '" class="flex items-center gap-1 text-primary text-sm font-bold hover:underline"><span data-i18n="products_card_view_detail">查看详情</span><span class="material-symbols-outlined text-xs">arrow_forward</span></a>' +
       buildCompareBtnHTML(model) +
       "</div>" +
       "</div>" +
@@ -683,7 +683,7 @@
       desc +
       "</p>" +
       '<div class="mt-auto flex items-center justify-between">' +
-      '<span class="text-sm font-black text-primary">询价</span>' +
+      '<span class="text-sm font-black text-primary" data-i18n="products_card_inquire">询价</span>' +
       '<span class="material-symbols-outlined text-slate-400 text-sm">arrow_forward</span>' +
       "</div>" +
       "</div>" +

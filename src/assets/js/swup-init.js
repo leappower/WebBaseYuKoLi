@@ -164,6 +164,13 @@
         pd.src = "/assets/js/product-detail.js?v=" + (global.SW_VERSION || Date.now());
         pd.async = true;
         pd.setAttribute("data-force-product-detail", "1");
+        pd.onload = function () {
+          try {
+            global.ProductDetail && global.ProductDetail.init();
+          } catch (e) {
+            console.warn("[SWUP] ProductDetail.init after inject error:", e);
+          }
+        };
         document.head.appendChild(pd);
       }
     }
@@ -187,6 +194,13 @@
           cs.src = "/assets/js/case-detail.js?v=" + (global.SW_VERSION || Date.now());
           cs.async = true;
           cs.setAttribute("data-force-case-detail", "1");
+          cs.onload = function () {
+            try {
+              global.CaseDetail && global.CaseDetail.init();
+            } catch (e) {
+              console.warn("[SWUP] CaseDetail.init after inject error:", e);
+            }
+          };
           document.head.appendChild(cs);
         }
       } else {
@@ -202,6 +216,13 @@
           cg.src = "/assets/js/case-grid.js?v=" + (global.SW_VERSION || Date.now());
           cg.async = true;
           cg.setAttribute("data-force-case-grid", "1");
+          cg.onload = function () {
+            try {
+              global.CaseGrid && global.CaseGrid.init();
+            } catch (e) {
+              console.warn("[SWUP] CaseGrid.init after inject error:", e);
+            }
+          };
           document.head.appendChild(cg);
         }
       }
@@ -332,7 +353,7 @@
   function routeToFetchUrl(path) {
     var suffix = getDeviceSuffix();
 
-    // 所有 fetch URL 统一加 /pages/ 前缀，以确保:
+    // 所有 fetch URL 直接映射到 dist 根目录（已去掉 /pages/ 前缀）
     // 1. swup resolveUrl 能反向映射回干净的目录 URL (如 /products/coffee/)
     // 2. 防止 swup 从 response.url 提取的 /products/coffee/index-mobile.html 污染地址栏
 
@@ -509,17 +530,17 @@
           // PDP 模板 /pdp/ — 保持当前地址栏路径
           if (url.indexOf("/pdp/") !== -1) return window.location.pathname;
           // Cases detail /cases/detail/index-pc.html?slug=xxx → /cases/xxx/
-          var cm = url.match(/^(\/pages\/cases\/detail\/index(?:-[a-z0-9-]+)?\.html)\?slug=([a-z0-9-]+)$/i);
+          var cm = url.match(/^(\/cases\/detail\/index(?:-[a-z0-9-]+)?\.html)\?slug=([a-z0-9-]+)$/i);
           if (cm) return "/cases/" + cm[2] + "/";
 
           // 将 /<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
           if (m && m[1]) return m[1] + "/";
-          // 无 /pages/ 前缀的响应 URL: /products/index-mobile.html → /products/
+          // 响应 URL: /products/index-mobile.html → /products/
           var dm = url.match(/^\/([^/].*)\/index(?:-[a-z0-9-]+)?\.html$/i);
           if (dm && dm[1]) return "/" + dm[1] + "/";
           // flat-file: /news/detail-pc.html → /news/detail/
-          var fm = url.match(/^\/pages\/news\/detail(?:-[a-z0-9-]+)?\.html$/i);
+          var fm = url.match(/^\/news\/detail(?:-[a-z0-9-]+)?\.html$/i);
           if (fm) return "/news/detail/";
           return url;
         },
@@ -597,6 +618,13 @@
               s.src = "/assets/js/product-grid.js?v=" + (global.SW_VERSION || Date.now());
               s.async = true;
               s.setAttribute("data-force-grid", "1");
+              s.onload = function () {
+                try {
+                  global.ProductGrid && (global.ProductGrid.autoRender || global.ProductGrid.init)();
+                } catch (e) {
+                  console.warn("[SWUP] ProductGrid init after inject error:", e);
+                }
+              };
               document.head.appendChild(s);
             }
           }

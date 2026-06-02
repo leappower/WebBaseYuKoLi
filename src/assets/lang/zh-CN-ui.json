@@ -1042,5 +1042,7 @@
   "popup_input_requirements": "需求描述",
   "popup_tell_us": "告诉我们您的需求",
   "popup_privacy_note": "提交即表示您同意我们的隐私政策",
-  "noscript_message": "您的浏览器未启用 JavaScript，部分功能可能无法正常使用。"
+  "noscript_message": "您的浏览器未启用 JavaScript，部分功能可能无法正常使用。",
+  "products_card_inquire": "询价",
+  "products_card_view_detail": "查看详情"
 }

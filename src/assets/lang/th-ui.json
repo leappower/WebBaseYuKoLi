@@ -1043,5 +1043,7 @@
   "popup_input_biz_email": "Business Email *",
   "popup_input_phone_wa": "Phone / WhatsApp",
   "popup_input_country": "Country / Region",
-  "popup_input_requirements": "Describe your requirements…"
+  "popup_input_requirements": "Describe your requirements…",
+  "products_card_inquire": "สอบถามราคา",
+  "products_card_view_detail": "ดูรายละเอียด"
 }
