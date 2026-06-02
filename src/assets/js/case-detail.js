@@ -1173,8 +1173,16 @@
       var i18nKey = "cases_detail_" + slug + "_" + field;
       if (field === "title") i18nKey = "cases_detail_" + slug;
       try {
-        var val = window.translationManager.resolveTranslationValue(i18nKey, "ui-" + (getLang() || "zh-CN"));
-        if (val && val !== i18nKey) return val;
+        var bundleId = "ui-" + (getLang() || "zh-CN");
+        var val = window.translationManager.resolveTranslationValue(i18nKey, bundleId);
+        // val is the resolved value, or bundleId if key not found — reject bundleId
+        if (val && val !== i18nKey && val !== bundleId && val.indexOf("ui-") !== 0) {
+          // Parse array fields (solutions/results/pain_points)
+          if (field === "solutions" || field === "results" || field === "pain_points") {
+            return parseTranslatedArray(val, field);
+          }
+          return val;
+        }
       } catch (e) {
         // fall through
       }
@@ -1182,8 +1190,50 @@
     // Fallback: _en for non-Chinese, original for Chinese
     var lang = getLang();
     var isZhLang = lang === "zh-CN" || lang === "zh-TW" || lang === "zh";
-    if (isZhLang) return c[field] || c[field + "_en"] || "";
-    return c[field + "_en"] || c[field] || "";
+    var fallback = isZhLang ? c[field] || c[field + "_en"] : c[field + "_en"] || c[field];
+    // If fallback is an array/object (from original data), return as-is
+    if (Array.isArray(fallback)) return fallback;
+    if (fallback && typeof fallback === "object") return fallback;
+    return fallback || "";
+  }
+
+  /**
+   * Parse pipe-separated translated string back into array objects
+   * solutions: "icon_name:desc|icon_name:desc|..."
+   * results:    "icon_name:title:desc|icon_name:title:desc|..."
+   * pain_points: "item1|item2|item3"
+   */
+  function parseTranslatedArray(val, field) {
+    if (!val || typeof val !== "string") return val;
+    var parts = val.split("|");
+    if (field === "pain_points") {
+      return parts.map(function (p) {
+        return p.trim();
+      });
+    }
+    if (field === "solutions") {
+      return parts.map(function (p) {
+        var idx = p.indexOf(":");
+        return idx > 0
+          ? { icon: p.substring(0, idx).trim(), title: "", desc: p.substring(idx + 1).trim() }
+          : { icon: "check_circle", title: "", desc: p.trim() };
+      });
+    }
+    if (field === "results") {
+      return parts.map(function (p) {
+        var idx1 = p.indexOf(":");
+        var idx2 = idx1 > 0 ? p.indexOf(":", idx1 + 1) : -1;
+        if (idx2 > idx1) {
+          return {
+            icon: p.substring(0, idx1).trim(),
+            title: p.substring(idx1 + 1, idx2).trim(),
+            desc: p.substring(idx2 + 1).trim(),
+          };
+        }
+        return { icon: "check", title: "", desc: p.trim() };
+      });
+    }
+    return parts;
   }
 
   /* ── Rendering ──────────────────────────────────── */
@@ -1199,7 +1249,7 @@
       "</span>";
     html +=
       '<span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-semibold">' +
-      esc(getProp(c, "industry")) +
+      esc(getLocalizedText(c, "industry")) +
       "</span>";
     return html;
   }
@@ -1260,19 +1310,27 @@
     if (typeof sols === "string") sols = [sols];
     if (!sols.length) return '<p class="text-slate-500">No data available.</p>';
     var html = "";
+    var lang = getLang();
+    var isZhLang = lang === "zh-CN" || lang === "zh-TW" || lang === "zh";
     for (var i = 0; i < sols.length; i++) {
       var s = sols[i];
+      // Parsed from TranslationManager: title already empty, desc is translated
+      // Original data: use title/title_en, desc as-is (desc is already locale-specific)
+      var title = "",
+        desc = "";
+      if (s.title !== undefined && s.title !== "") {
+        title = isZhLang ? s.title : s.title_en || s.title;
+      }
+      desc = s.desc || "";
       html +=
         '<div class="bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md transition-all">' +
         '<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">' +
         '<span class="material-symbols-outlined text-primary">' +
         esc(s.icon || "check_circle") +
         "</span></div>" +
-        '<h3 class="font-bold text-sm mb-1">' +
-        esc(getLocalizedText(s, "title")) +
-        "</h3>" +
+        (title ? '<h3 class="font-bold text-sm mb-1">' + esc(title) + "</h3>" : "") +
         '<p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">' +
-        esc(s.desc || "") +
+        esc(desc) +
         "</p>" +
         "</div>";
     }
@@ -1326,19 +1384,25 @@
     if (typeof results === "string") results = [results];
     if (!results.length) return '<p class="text-slate-500">No data available.</p>';
     var html = "";
+    var lang = getLang();
+    var isZhLang = lang === "zh-CN" || lang === "zh-TW" || lang === "zh";
     for (var i = 0; i < results.length; i++) {
       var r = results[i];
+      var title = "",
+        desc = "";
+      if (r.title !== undefined && r.title !== "") {
+        title = isZhLang ? r.title : r.title_en || r.title;
+      }
+      desc = r.desc || "";
       html +=
         '<div class="bg-white dark:bg-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm">' +
         '<div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-3">' +
         '<span class="material-symbols-outlined text-green-600">' +
         esc(r.icon || "check") +
         "</span></div>" +
-        '<h3 class="font-bold text-sm mb-1">' +
-        esc(getLocalizedText(r, "title")) +
-        "</h3>" +
+        (title ? '<h3 class="font-bold text-sm mb-1">' + esc(title) + "</h3>" : "") +
         '<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">' +
-        esc(r.desc || "") +
+        esc(desc) +
         "</p>" +
         "</div>";
     }
@@ -1388,12 +1452,11 @@
 
   function renderAll(c) {
     if (!c) {
-      // Show "not found" message
-      var main = document.querySelector("#spa-content") || document.querySelector("main");
-      if (main) {
-        main.innerHTML =
-          '<div class="py-20 text-center"><h2 class="text-2xl font-bold mb-4">Case Not Found</h2><p class="text-slate-500 mb-6">The case study you\'re looking for could not be found.</p><a href="/cases/" class="text-primary font-bold">&larr; Back to Cases</a></div>';
-      }
+      // Show "not found" message inside breadcrumb-container, don't destroy #spa-content
+      var bc = document.getElementById("breadcrumb-container");
+      if (bc)
+        bc.innerHTML =
+          '<div class="py-20 text-center"><h2 class="text-2xl font-bold mb-4">Case Not Found</h2><p class="text-slate-500 mb-6">The case study you are looking for could not be found.</p><a href="/cases/" data-no-swup class="text-primary font-bold">&larr; Back to Cases</a></div>';
       return;
     }
 
@@ -1455,6 +1518,11 @@
     }
 
     renderAll(_currentCase);
+
+    // 触发 breadcrumb 重新渲染（确保 SPA 导航后面包屑可见）
+    if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
+      window.Breadcrumb.refresh();
+    }
 
     // Listen for language changes
     if (!_langListenerBound && window.translationManager) {

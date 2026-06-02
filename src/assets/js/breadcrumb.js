@@ -247,51 +247,68 @@
   function renderBreadcrumb(page) {
     if (page.type === "none") return "";
 
-    // PC/Tablet breadcrumb (hidden md:block, wrapped in section)
+    var chevron = '<span class="mx-1.5 text-slate-300 dark:text-slate-600">/</span>';
+    var mChevron = '<span class="mx-1 text-slate-300 text-xs">/</span>';
+
+    // PC/Tablet breadcrumb — aligned with KitchenYuKoLi PDP style
     var bc =
-      '<section class="fullwidth-bg border-b border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 hidden md:block">' +
-      '<div class="section-content py-3">' +
-      '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 hidden md:block" aria-label="Breadcrumb">' +
+      '<div class="pt-4 pb-0 hidden md:block" style="max-width:1280px;margin-inline:auto;padding-inline:var(--container-px,0.75rem);position:relative;z-index:1">' +
+      '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 py-4" aria-label="Breadcrumb">' +
       '<ol class="flex items-center gap-1 flex-wrap">' +
       '<li><a href="' +
       page.parentPath +
-      '" class="hover:text-primary transition-colors">' +
+      '" data-no-swup class="hover:text-primary transition-colors">' +
       esc(page.parentLabel) +
-      "</a></li>" +
-      '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
+      "</a></li>";
 
     if (page.type === "pdp" && page.refCategoryLabel) {
       bc +=
+        chevron +
         '<li><a href="/products/' +
         page.refSlug +
-        '/" class="hover:text-primary transition-colors">' +
+        '/" data-no-swup class="hover:text-primary transition-colors">' +
         esc(page.refCategoryLabel) +
-        "</a></li>" +
-        '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
+        "</a></li>";
     }
 
     bc +=
+      chevron +
       '<li><span id="breadcrumb-current" class="text-slate-900 dark:text-white font-medium">' +
       esc(page.currentLabel) +
       "</span></li>" +
-      "</ol></nav>" +
-      "</div>" +
-      "</section>";
+      "</ol></nav></div>";
 
-    // Mobile back bar
-    var backBar = '<div class="breadcrumb-back flex items-center gap-3 mb-4 md:hidden">';
+    // Mobile back bar — aligned with KitchenYuKoLi PDP style
+    var backBar =
+      '<div class="pt-4 pb-2 md:hidden" style="max-width:1280px;margin-inline:auto;padding-inline:var(--container-px,0.75rem);position:relative;z-index:1">' +
+      '<div class="flex items-center gap-2">' +
+      '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all flex-shrink-0" aria-label="' +
+      tl("pd_back", "返回") +
+      '">' +
+      '<span class="material-symbols-outlined text-lg">arrow_back</span></button>' +
+      '<div class="flex items-center gap-1 flex-wrap">' +
+      '<a href="' +
+      page.parentPath +
+      '" data-no-swup class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">' +
+      esc(page.parentLabel) +
+      "</a>";
+
+    if (page.type === "pdp" && page.refCategoryLabel) {
+      backBar +=
+        mChevron +
+        '<a href="/products/' +
+        page.refSlug +
+        '/" data-no-swup class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">' +
+        esc(page.refCategoryLabel) +
+        "</a>";
+    }
+
     backBar +=
-      '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="返回">';
-    backBar += '<span class="material-symbols-outlined text-xl">arrow_back</span>';
-    backBar += "</button>";
-    backBar += "<div>";
-    backBar += '<div class="text-xs text-slate-500 dark:text-slate-400">' + esc(page.parentLabel) + "</div>";
-    backBar +=
-      '<div id="breadcrumb-current-mobile" class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">' +
+      mChevron +
+      '<span id="breadcrumb-current-mobile" class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[160px]">' +
       esc(page.currentLabel) +
-      "</div>";
-    backBar += "</div>";
-    backBar += "</div>";
+      "</span>" +
+      "</div></div></div>";
 
     return bc + backBar;
   }
@@ -385,7 +402,17 @@
 
   function reRender(page) {
     var container = document.getElementById("breadcrumb-container");
-    if (!container) return;
+    if (!container) {
+      // Auto-create if missing (e.g. SWUP replaced #spa-content)
+      var spa = document.getElementById("spa-content") || document.querySelector("main");
+      if (spa) {
+        container = document.createElement("div");
+        container.id = "breadcrumb-container";
+        spa.insertBefore(container, spa.firstChild);
+      } else {
+        return;
+      }
+    }
 
     var html = renderBreadcrumb(page);
     /* @audit-safe: config-driven-render */
@@ -430,13 +457,31 @@
 
     updatePdpCategory(page);
 
-    // Wait for DOM
+    // Wait for translations to be ready before first render
+    function doRender() {
+      // Re-detect to pick up translated labels
+      var freshPage = detectPage();
+      if (freshPage.type !== "none") {
+        page = freshPage;
+        reRender(page);
+      }
+    }
+
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", function () {
-        reRender(page);
+        if (document.querySelector('[data-swup-persist="nav"]') && !window.translationManager) {
+          // Wait for spa:ready (translations loaded)
+          document.addEventListener("spa:ready", doRender, { once: true });
+        } else {
+          doRender();
+        }
       });
     } else {
-      reRender(page);
+      if (!window.translationManager) {
+        document.addEventListener("spa:ready", doRender, { once: true });
+      } else {
+        doRender();
+      }
     }
 
     // Re-render on SPA navigation
@@ -448,12 +493,24 @@
         reRender(newPage);
       }
     });
+
+    // Re-render on language change (re-detect to get translated labels)
+    _spaOn(window, "languageChanged", function () {
+      var newPage = detectPage();
+      if (newPage.type !== "none") {
+        reRender(newPage);
+      }
+    });
   }
 
   // ─── Public API ────────────────────────────────────────────────
 
   window.Breadcrumb = {
     init: init,
+    refresh: function () {
+      var newPage = detectPage();
+      if (newPage.type !== "none") reRender(newPage);
+    },
     goBack: function () {
       var referrer;
       try {

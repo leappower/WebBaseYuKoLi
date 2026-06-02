@@ -736,6 +736,11 @@
     renderGrid(variant);
     bindFilterButtons();
 
+    // 触发 breadcrumb 重新渲染（确保 SPA 导航后面包屑可见）
+    if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
+      window.Breadcrumb.refresh();
+    }
+
     // Listen for language changes to re-translate dynamic content
     if (!_langListenerBound && window.translationManager) {
       _langListenerBound = true;
