@@ -1046,12 +1046,12 @@
   "popup_input_requirements": "Describe your requirements…",
   "products_card_inquire": "문의하기",
   "products_card_view_detail": "상세 보기",
-  "coffee": "Coffee",
-  "tea": "Tea & Milk Tea",
-  "meal": "Meal Replacement",
-  "beauty": "Beauty & Collagen",
-  "weight": "Weight Management",
-  "gut": "Gut Health",
-  "lifestyle": "Lifestyle Functional",
-  "legacy": "Legacy Classics"
+  "coffee": "커피",
+  "tea": "차/밀크티",
+  "meal": "식사대용",
+  "beauty": "뷰티&콜라겐",
+  "weight": "체중관리",
+  "gut": "장 건강",
+  "lifestyle": "기능성 음료",
+  "legacy": "클래식 음료"
 }
