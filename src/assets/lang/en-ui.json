@@ -404,7 +404,7 @@
   "nav_visit": "Visit Our Factory",
   "nav_whitepapers": "Whitepapers",
   "news_detail_published": "Published",
-  "no_image": "暂无图片",
+  "no_image": "No image available",
   "no_products_available": "No products available yet.",
   "noscript_message": "Please enable JavaScript or click here to visit our site.",
   "pdp_page_title": "Product Details | {brand} Smart products manufacturing",
@@ -512,10 +512,10 @@
   "product_builder_mode_obm_desc": "全方位品牌孵化：策略、研发、包装和上市支持。",
   "product_builder_mode_obm_sub": "Build my brand",
   "product_builder_mode_obm_title": "OBM",
-  "product_builder_mode_odm_desc": "我们根据您的目标市场研发配方。您只需贴上品牌。",
+  "product_builder_mode_odm_desc": "We develop formulas based on your target market. You only need to apply your brand.",
   "product_builder_mode_odm_sub": "We create the recipe",
   "product_builder_mode_odm_title": "ODM",
-  "product_builder_mode_oem_desc": "您提供配方和原料，我们规模化生产。配方保密性有保障。",
+  "product_builder_mode_oem_desc": "You provide the formula and raw materials, and we handle large-scale production. Formula confidentiality is guaranteed.",
   "product_builder_mode_oem_sub": "I have a formula",
   "product_builder_mode_oem_title": "OEM",
   "product_builder_quantity_10k_50k": "10,000–50,000 units/mo",
@@ -1042,5 +1042,5 @@
   "case_detail_cta_desc": "Contact the YuKoLi team now for a custom OEM/ODM solution",
   "case_detail_cta_button": "Contact YuKoLi Team",
   "error_404_badge": "Page Not Found",
-  "case_count": "个实战案例"
+  "case_count": "real-world cases"
 }
