@@ -80,7 +80,7 @@ sync_assets "data"     "*.json"
 sync_assets "images"   "*"
 sync_assets "video"    "*"
 sync_assets "pdf"      "*.pdf"
-
+sync_assets "files"    "*.pdf"
 # ─── 4. site.config.js → dist/ ─────────────────────────────────
 # Must be at /site.config.js for SPA shell (after webpack so not cleaned)
 cp "$SRC/site.config.js" "$DIST/site.config.js"
