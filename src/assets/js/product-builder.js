@@ -284,18 +284,17 @@
   function renderBrief() {
     if (!dom.briefPanel) return;
 
-    var modeLabel = "";
     var modeIcon = "";
     var modeTitle = "";
     if (state.mode) {
       for (var i = 0; i < MODES.length; i++) {
         if (MODES[i].id === state.mode) {
-          modeLabel = MODES[i].title;
           modeIcon = MODES[i].icon;
+          // Re-translate at render time — i18n may not have been ready at script load
           modeTitle =
-            MODES[i].title +
+            _t(MODES[i].title) +
             " " +
-            (MODES[i].subtitle ? MODES[i].subtitle : _t("product_builder_mode_fallback") || "Manufacturing");
+            (MODES[i].subtitle ? _t(MODES[i].subtitle) : _t("product_builder_mode_fallback") || "Manufacturing");
           break;
         }
       }
@@ -312,11 +311,14 @@
     }
 
     var qtyText = state.quantity > 0 ? formatQuantity(state.quantity) : "";
+    var tlIcon = "";
     var tlText = "";
     if (state.timeline) {
       for (var l = 0; l < TIMELINES.length; l++) {
         if (TIMELINES[l].id === state.timeline) {
-          tlText = TIMELINES[l].icon + " " + TIMELINES[l].label;
+          tlIcon = TIMELINES[l].icon;
+          // Re-translate at render time
+          tlText = tlIcon + " " + _t(TIMELINES[l].label);
           break;
         }
       }
@@ -348,7 +350,7 @@
     for (var m = 0; m < catLabels.length; m++) {
       html +=
         '<div class="brief-summary-item"><span class="bs-icon">' +
-        catLabels[m].charAt(0) +
+        catLabels[m].slice(0, 2) +
         "</span><span>" +
         catLabels[m] +
         "</span></div>";
@@ -362,7 +364,7 @@
     if (tlText) {
       html +=
         '<div class="brief-summary-item"><span class="bs-icon" style="font-size:0.875rem;">' +
-        tlText.charAt(0) +
+        tlIcon +
         "</span><span>" +
         tlText +
         "</span></div>";
