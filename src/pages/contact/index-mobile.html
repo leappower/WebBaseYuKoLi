@@ -411,12 +411,31 @@
                   </div>
                 </div>
               </div>
+              <!-- Contact Method -->
+              <div class="contact-row" style="margin-top:0.375rem">
+                <div class="contact-field">
+                  <label style="font-size:0.6875rem" data-i18n="product_builder_contact_method">希望我们通过什么社交软件联系您</label>
+                  <select name="contactMethod" style="width:100%;padding:0.4rem 0.3rem;border:1px solid #e2e8f0;border-radius:8px;font-size:0.75rem;background:var(--bg-card,#fff);color:var(--text,#1e293b);">
+                    <option value="">选择…</option>
+                    <option value="WhatsApp">WhatsApp</option>
+                    <option value="WeChat">微信 WeChat</option>
+                    <option value="Telegram">Telegram</option>
+                    <option value="Signal">Signal</option>
+                    <option value="LINE">LINE</option>
+                  </select>
+                </div>
+                <div class="contact-field">
+                  <label style="font-size:0.6875rem" data-i18n="product_builder_contact_account">账号/ID</label>
+                  <input type="text" name="contactAccount" placeholder="WhatsApp/微信/Telegram 账号" style="width:100%;padding:0.4rem 0.5rem;border:1px solid #e2e8f0;border-radius:8px;font-size:0.75rem;background:var(--bg-card,#fff);color:var(--text,#1e293b);" />
+                </div>
+              </div>
+            </div>
 
-              <hr class="contact-divider" style="margin: 0.75rem 0" />
+            <hr class="contact-divider" style="margin: 0.75rem 0" />
 
-              <!-- Message + Chips -->
-              <div>
-                <div class="prompt-chips" style="margin-bottom: 0.375rem">
+            <!-- Message + Chips -->
+            <div>
+              <div class="prompt-chips" style="margin-bottom: 0.375rem">
                   <span
                     class="prompt-chip"
                     style="font-size: 0.625rem; padding: 0.15rem 0.5rem"

@@ -437,6 +437,8 @@
   "product_builder_contact_email": "邮箱",
   "product_builder_contact_name": "姓名",
   "product_builder_contact_phone": "电话",
+  "product_builder_contact_method": "希望我们通过什么社交软件联系您",
+  "product_builder_contact_account": "账号/ID",
   "product_builder_contact_select": "选择出口目的国…",
   "product_builder_contact_title": "联系方式（签署NDA保障商业机密）",
   "product_builder_extra_desc": "（选填，如特定FDA/SGS认证需求）",

@@ -548,6 +548,22 @@
     if (initCode) phoneCodeEl.value = initCode;
   }
 
+  function bindContactSync() {
+    var phoneCodeEl = dom.builder && dom.builder.querySelector('[name="phoneCode"]');
+    var phoneEl = dom.builder && dom.builder.querySelector('[name="phone"]');
+    var contactAccountEl = dom.builder && dom.builder.querySelector('[name="contactAccount"]');
+    if (!phoneCodeEl || !phoneEl || !contactAccountEl) return;
+    function syncAccount() {
+      var code = phoneCodeEl.value.trim();
+      var num = phoneEl.value.trim();
+      contactAccountEl.value = num ? code + " " + num : "";
+    }
+    phoneCodeEl.addEventListener("change", syncAccount);
+    phoneEl.addEventListener("input", syncAccount);
+    // Initial sync
+    syncAccount();
+  }
+
   // ─── Submit State ───────────────────────────────────────────────
   function updateSubmitState() {
     if (!dom.submitBtn) return;
@@ -613,6 +629,8 @@
         var num = phoneEl ? phoneEl.value.trim() : "";
         return num ? code + " " + num : "";
       })(),
+      contactMethod: contactMethodEl ? contactMethodEl.value : "",
+      contactAccount: contactAccountEl ? contactAccountEl.value.trim() : "",
       message: dom.messageInput ? dom.messageInput.value.trim() : "",
       score: calcScore(state),
       url: global.location ? global.location.href : "",
@@ -662,6 +680,7 @@
     bindMessageInput();
     bindSubmit();
     bindCountryCode();
+    bindContactSync();
 
     // Bind contact field change to update submit state
     var fields = dom.builder.querySelectorAll(".contact-field input, .contact-field select");
