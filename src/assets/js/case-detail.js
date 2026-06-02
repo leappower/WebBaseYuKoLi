@@ -1382,7 +1382,7 @@
     setInnerHTML("case-hero-badges", renderBadges(c));
     setInnerHTML("case-hero-metrics", renderHeroMetrics(c));
 
-    // Breadcrumb
+    // Breadcrumb — 由 breadcrumb.js 渲染骨架，只需更新当前案例标题
     setTextOrAttr("breadcrumb-current", "innerText", isZh() ? c.title : c.title_en);
     setTextOrAttr("breadcrumb-current-mobile", "innerText", isZh() ? c.title : c.title_en);
 

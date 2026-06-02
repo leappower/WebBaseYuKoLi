@@ -73,8 +73,6 @@
   var APP_SLUG_PATTERN = buildSlugPattern(APP_SLUGS);
   var SUPPORT_SLUG_PATTERN = buildSlugPattern(SUPPORT_SLUGS);
 
-
-
   // ─── Page route config ─────────────────────────────────────────
   // Each entry: { match: regex, parentPath, parentLabel, currentLabel, siblings }
 
@@ -169,6 +167,17 @@
       result.parentPath = "/news/";
       result.parentLabel = tl("新闻动态", "新闻动态");
       result.currentLabel = "";
+      return result;
+    }
+
+    // Case studies detail: /cases/<slug>/
+    var caseMatch = path.match(/^\/cases\/([a-z0-9-]+)$/);
+    if (caseMatch) {
+      result.type = "case-detail";
+      result.slug = caseMatch[1];
+      result.parentPath = "/cases/";
+      result.parentLabel = tl("nav_cases", "案例研究");
+      result.currentLabel = ""; // filled by updateCaseTitle
       return result;
     }
 
@@ -342,7 +351,9 @@
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     // Track category page → PDP transitions
     if (new RegExp("^/products/(" + PRODUCT_SLUG_PATTERN + ")$").test(path)) {
-      try { sessionStorage.setItem("pdp_referrer", path); } catch(e) {}
+      try {
+        sessionStorage.setItem("pdp_referrer", path);
+      } catch (e) {}
     }
     // Clear when navigating away from PDP
     if (!new RegExp("^/products/(?!(?:" + PRODUCT_SLUG_PATTERN + "|compare)(?:$|/))").test(path)) {
@@ -425,13 +436,15 @@
     init: init,
     goBack: function () {
       var referrer;
-      try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
+      try {
+        referrer = sessionStorage.getItem("pdp_referrer");
+      } catch (e) {
+        referrer = null;
+      }
       if (
         referrer &&
         window.location.pathname.indexOf("/products/") === 0 &&
-        !new RegExp("^(" + PRODUCT_SLUG_PATTERN + "|compare)$").test(
-          window.location.pathname.replace("/products/", "")
-        )
+        !new RegExp("^(" + PRODUCT_SLUG_PATTERN + "|compare)$").test(window.location.pathname.replace("/products/", ""))
       ) {
         if (window.SpaRouter && typeof window.SpaRouter.navigate === "function") {
           window.SpaRouter.navigate(referrer);
