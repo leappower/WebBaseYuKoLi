@@ -249,7 +249,7 @@
 
     // PC/Tablet breadcrumb (hidden md:block, wrapped in section)
     var bc =
-      '<section class="fullwidth-bg border-b border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50">' +
+      '<section class="fullwidth-bg border-b border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 hidden md:block">' +
       '<div class="section-content py-3">' +
       '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 hidden md:block" aria-label="Breadcrumb">' +
       '<ol class="flex items-center gap-1 flex-wrap">' +
@@ -271,7 +271,7 @@
     }
 
     bc +=
-      '<li><span class="text-slate-900 dark:text-white font-medium">' +
+      '<li><span id="breadcrumb-current" class="text-slate-900 dark:text-white font-medium">' +
       esc(page.currentLabel) +
       "</span></li>" +
       "</ol></nav>" +
@@ -287,7 +287,7 @@
     backBar += "<div>";
     backBar += '<div class="text-xs text-slate-500 dark:text-slate-400">' + esc(page.parentLabel) + "</div>";
     backBar +=
-      '<div class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">' +
+      '<div id="breadcrumb-current-mobile" class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">' +
       esc(page.currentLabel) +
       "</div>";
     backBar += "</div>";
