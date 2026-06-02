@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="light" lang="zh-CN">
   <head>
-  <script src="/site.config.js"></script>
-  <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script src="/site.config.js"></script>
+    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
     <!-- ═══ Responsive Redirect ═══ -->
     <link rel="canonical" href="" id="canonical-url" />
-  <link rel="alternate" hreflang="zh-CN" href="" id="hreflang-zh" />
-  <link rel="alternate" hreflang="en" href="" id="hreflang-en" />
-  <link rel="alternate" hreflang="x-default" href="" id="hreflang-x-default" />
+    <link rel="alternate" hreflang="zh-CN" href="" id="hreflang-zh" />
+    <link rel="alternate" hreflang="en" href="" id="hreflang-en" />
+    <link rel="alternate" hreflang="x-default" href="" id="hreflang-x-default" />
     <link rel="alternate" media="only screen and (max-width: 767px)" href="" id="alt-mobile" />
     <link rel="alternate" media="only screen and (min-width: 768px) and (max-width: 1279px)" href="" id="alt-tablet" />
     <link rel="alternate" media="only screen and (min-width: 1280px)" href="" id="alt-pc" />
@@ -17,13 +17,21 @@
         window.__redirectChecked = true;
         var urlParams = new URLSearchParams(location.search);
         var cleanUrl = urlParams.get("clean-url");
-        if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
+        if (cleanUrl) {
+          history.replaceState({}, "", cleanUrl);
+          return;
+        }
         if (window.__spaNavigating) return;
         var currentFile = location.pathname.split("/").pop();
         if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
         if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
           var deviceType = window.DeviceUtils.getDeviceType();
-          var targetFile = deviceType === window.DeviceUtils.DeviceType.MOBILE ? "index-mobile.html" : deviceType === window.DeviceUtils.DeviceType.TABLET ? "index-tablet.html" : "index-pc.html";
+          var targetFile =
+            deviceType === window.DeviceUtils.DeviceType.MOBILE
+              ? "index-mobile.html"
+              : deviceType === window.DeviceUtils.DeviceType.TABLET
+                ? "index-tablet.html"
+                : "index-pc.html";
           location.href = targetFile;
         }
       })();
@@ -43,8 +51,20 @@
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
@@ -55,21 +75,36 @@
     </script>
     <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
   </head>
-  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip" data-case-variant="tablet">
+  <body
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip"
+    data-case-variant="tablet"
+  >
     <!-- Top Navigation Bar -->
-    <navigator data-component="navigator" data-swup-persist="nav" data-variant="tablet" data-active="cases" data-cta-text-key="nav_get_quote" data-cta-href="/contact/"></navigator>
+    <navigator
+      data-component="navigator"
+      data-swup-persist="nav"
+      data-variant="tablet"
+      data-active="cases"
+      data-cta-text-key="nav_get_quote"
+      data-cta-href="/contact/"
+    ></navigator>
 
     <main id="spa-content">
       <!-- Breadcrumb rendered by breadcrumb.js -->
-      <div id="breadcrumb-container"></div>
-
       <!-- ═══ Hero ═══ -->
-      <section id="case-detail-hero" class="fullwidth-bg hero-overlap relative py-12 overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-orange-100/30 dark:from-primary/10 dark:to-orange-900/20">
+      <section
+        id="case-detail-hero"
+        class="fullwidth-bg hero-overlap relative py-12 overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-orange-100/30 dark:from-primary/10 dark:to-orange-900/20"
+      >
         <div class="section-content">
+          <div id="breadcrumb-container"></div>
           <div class="w-full">
             <div id="case-hero-badges" class="flex flex-wrap items-center gap-2 mb-3"></div>
             <h1 id="case-hero-title" class="text-3xl font-black leading-tight tracking-tight mb-3"></h1>
-            <blockquote id="case-hero-quote" class="text-base text-slate-600 dark:text-slate-400 italic border-l-4 border-primary pl-3"></blockquote>
+            <blockquote
+              id="case-hero-quote"
+              class="text-base text-slate-600 dark:text-slate-400 italic border-l-4 border-primary pl-3"
+            ></blockquote>
             <div id="case-hero-metrics" class="flex flex-wrap gap-3 mt-6"></div>
           </div>
         </div>
@@ -78,41 +113,44 @@
       <!-- ═══ Client Background ═══ -->
       <section id="case-section-background" class="fullwidth-bg py-12">
         <div class="section-content">
-            <h2 class="text-xl font-black mb-5" data-i18n="case_detail_background">客户背景</h2>
-            <div id="case-background-content" class="text-base text-slate-600 dark:text-slate-400 leading-relaxed space-y-3"></div>
-          </div>
+          <h2 class="text-xl font-black mb-5" data-i18n="case_detail_background">客户背景</h2>
+          <div
+            id="case-background-content"
+            class="text-base text-slate-600 dark:text-slate-400 leading-relaxed space-y-3"
+          ></div>
+        </div>
       </section>
 
       <!-- ═══ Pain Points ═══ -->
       <section id="case-section-pain-points" class="fullwidth-bg py-12 bg-slate-50 dark:bg-slate-800/50">
         <div class="section-content">
-            <h2 class="text-xl font-black mb-6 text-center" data-i18n="case_detail_pain_points">核心痛点</h2>
-            <div id="case-pain-points-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-          </div>
+          <h2 class="text-xl font-black mb-6 text-center" data-i18n="case_detail_pain_points">核心痛点</h2>
+          <div id="case-pain-points-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        </div>
       </section>
 
       <!-- ═══ Solution ═══ -->
       <section id="case-section-solution" class="fullwidth-bg py-12">
         <div class="section-content">
-            <h2 class="text-xl font-black mb-6 text-center" data-i18n="case_detail_solution">YuKoLi 方案</h2>
-            <div id="case-solution-grid" class="grid grid-cols-2 gap-3"></div>
-          </div>
+          <h2 class="text-xl font-black mb-6 text-center" data-i18n="case_detail_solution">YuKoLi 方案</h2>
+          <div id="case-solution-grid" class="grid grid-cols-2 gap-3"></div>
+        </div>
       </section>
 
       <!-- ═══ Metrics ═══ -->
       <section id="case-section-metrics" class="fullwidth-bg py-12 bg-primary text-white">
         <div class="section-content">
-            <h2 class="text-xl font-black mb-6 text-center text-white" data-i18n="case_detail_metrics">关键数据</h2>
-            <div id="case-metrics-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
-          </div>
+          <h2 class="text-xl font-black mb-6 text-center text-white" data-i18n="case_detail_metrics">关键数据</h2>
+          <div id="case-metrics-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+        </div>
       </section>
 
       <!-- ═══ Results ═══ -->
       <section id="case-section-results" class="fullwidth-bg py-12">
         <div class="section-content">
-            <h2 class="text-xl font-black mb-6 text-center" data-i18n="case_detail_results">客户成果</h2>
-            <div id="case-results-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
-          </div>
+          <h2 class="text-xl font-black mb-6 text-center" data-i18n="case_detail_results">客户成果</h2>
+          <div id="case-results-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+        </div>
       </section>
 
       <!-- ═══ Testimonial ═══ -->
@@ -120,7 +158,10 @@
         <div class="section-content">
           <div class="text-center">
             <span class="material-symbols-outlined text-4xl text-primary/30 mb-3">format_quote</span>
-            <blockquote id="case-testimonial-text" class="text-lg lg:text-xl font-semibold leading-relaxed text-slate-700 dark:text-slate-200 mb-3"></blockquote>
+            <blockquote
+              id="case-testimonial-text"
+              class="text-lg lg:text-xl font-semibold leading-relaxed text-slate-700 dark:text-slate-200 mb-3"
+            ></blockquote>
             <cite id="case-testimonial-author" class="not-italic text-sm text-slate-500 dark:text-slate-400"></cite>
           </div>
         </div>
@@ -132,7 +173,10 @@
           <div class="text-center">
             <h2 class="text-2xl font-black text-white mb-3" data-i18n="case_detail_cta_title">想要类似成果？</h2>
             <p class="text-base text-white/80 mb-6" data-i18n="case_detail_cta_desc">立即联系 YuKoLi 团队</p>
-            <a href="/contact/" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all">
+            <a
+              href="/contact/"
+              class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all"
+            >
               <span class="material-symbols-outlined">support_agent</span>
               <span data-i18n="case_detail_cta_button">联系 YuKoLi 团队</span>
               <span class="material-symbols-outlined">arrow_forward</span>
@@ -171,8 +215,8 @@
     <script src="/assets/js/breadcrumb.js?v=202605291142"></script>
     <script src="/assets/js/case-detail.js?v=202605291142" data-swup-script></script>
     <script data-swup-script>
-      document.addEventListener('DOMContentLoaded', function () {
-        if (window.CaseDetail) CaseDetail.init('tablet');
+      document.addEventListener("DOMContentLoaded", function () {
+        if (window.CaseDetail) CaseDetail.init("tablet");
       });
     </script>
     <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
