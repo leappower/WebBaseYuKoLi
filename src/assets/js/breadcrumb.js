@@ -247,6 +247,15 @@
   function renderBreadcrumb(page) {
     if (page.type === "none") return "";
 
+    // For pages where currentLabel is set by page-init scripts (case-detail, news-detail),
+    // preserve existing breadcrumb-current text instead of overwriting with empty.
+    var existingCurrent = "";
+    if (!page.currentLabel && (page.type === "case-detail" || page.type === "news-detail")) {
+      var existingEl = document.getElementById("breadcrumb-current");
+      if (existingEl) existingCurrent = existingEl.textContent.trim();
+    }
+    var displayLabel = page.currentLabel || existingCurrent || "";
+
     var chevron = '<span class="mx-1.5 text-slate-300 dark:text-slate-600">/</span>';
     var mChevron = '<span class="mx-1 text-slate-300 text-xs">/</span>';
 
@@ -274,7 +283,7 @@
     bc +=
       chevron +
       '<li><span id="breadcrumb-current" class="text-slate-900 dark:text-white font-medium">' +
-      esc(page.currentLabel) +
+      esc(displayLabel) +
       "</span></li>" +
       "</ol></nav></div>";
 
@@ -306,7 +315,7 @@
     backBar +=
       mChevron +
       '<span id="breadcrumb-current-mobile" class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[160px]">' +
-      esc(page.currentLabel) +
+      esc(displayLabel) +
       "</span>" +
       "</div></div></div>";
 
@@ -490,7 +499,26 @@
       var newPage = detectPage();
       if (newPage.type !== "none") {
         updatePdpCategory(newPage);
-        reRender(newPage);
+        // Don't reRender for case-detail — it's handled by case-detail.js renderAll
+        // which sets breadcrumb-current directly after init.
+        // SPA async script injection means spa:load may fire before page scripts execute.
+        if (newPage.type !== "case-detail" && newPage.type !== "news-detail") {
+          reRender(newPage);
+        } else {
+          // Only render the breadcrumb skeleton (skip currentLabel which is empty)
+          var container = document.getElementById("breadcrumb-container");
+          if (!container) {
+            var spa = document.getElementById("spa-content") || document.querySelector("main");
+            if (spa) {
+              container = document.createElement("div");
+              container.id = "breadcrumb-container";
+              spa.insertBefore(container, spa.firstChild);
+            }
+          }
+          if (container) {
+            container.innerHTML = renderBreadcrumb(newPage);
+          }
+        }
       }
     });
 

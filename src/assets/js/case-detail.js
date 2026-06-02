@@ -1519,9 +1519,13 @@
 
     renderAll(_currentCase);
 
-    // 触发 breadcrumb 重新渲染（确保 SPA 导航后面包屑可见）
+    // 触发面包屑重新渲染（仅在 breadcrumb-container 不存在时创建，
+    //    不覆盖已渲染的案例标题，避免 reRender 清空 breadcrumb-current）
     if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
-      window.Breadcrumb.refresh();
+      var bc = document.getElementById("breadcrumb-container");
+      if (!bc || !bc.innerHTML.trim()) {
+        window.Breadcrumb.refresh();
+      }
     }
 
     // Listen for language changes
