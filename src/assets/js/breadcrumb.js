@@ -92,6 +92,18 @@
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     var result = { type: "none", slug: "", parentPath: "", parentLabel: "", currentLabel: "", siblings: [] };
 
+    // Product "all" page: /products/all/
+    var allMatch = path.match(/^\/products\/all$/);
+    if (allMatch) {
+      result.type = "category";
+      result.slug = "all";
+      result.parentPath = "/products/";
+      result.parentLabel = tl("nav_products", "产品中心");
+      result.currentLabel = tl("nav_products_all", "全部产品");
+      result.siblings = buildSiblingLinks("products", "all");
+      return result;
+    }
+
     // Product category pages: /products/coffee/
     var catMatch = path.match(new RegExp("^/products/(" + PRODUCT_SLUG_PATTERN + ")$"));
     if (catMatch) {

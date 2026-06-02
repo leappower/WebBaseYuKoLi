@@ -151,21 +151,8 @@
               <div class="absolute top-10 right-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl"></div>
             </div>
             <div class="relative">
-              <!-- Breadcrumb -->
-              <div class="flex items-center gap-3 md:hidden">
-                <a href="/products/" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="返回">
-                  <span class="material-symbols-outlined text-xl">arrow_back</span>
-                </a>
-                <div>
-                  <div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="nav_products">Products</div>
-                  <div class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]" data-i18n="products_all_hero_badge">All Products</div>
-                </div>
-              </div>
-              <nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 items-center gap-2 flex-wrap hidden md:flex" aria-label="Breadcrumb">
-                <a href="/products/" class="hover:text-primary transition-colors" data-i18n="nav_products">Products</a>
-                <span class="material-symbols-outlined text-sm text-slate-300">chevron_right</span>
-                <span class="text-slate-900 dark:text-white font-medium" data-i18n="products_all_hero_badge">All Products</span>
-              </nav>
+              <!-- Breadcrumb rendered by breadcrumb.js -->
+              <div id="breadcrumb-container"></div>
               <div
                 class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4"
               >
@@ -266,6 +253,7 @@
 
     <script defer src="/assets/js/product-grid.js?v=202605291142"></script>
     <script defer src="/assets/js/cross-sell.js?v=202605291142"></script>
+    <script defer src="/assets/js/breadcrumb.js?v=202605291142"></script>
 
         <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
     <script defer src="/assets/js/product-data-table-translations.js?v=202605291142"></script>
