@@ -186,7 +186,8 @@
       var catLabel = CATEGORIES.filter(function (c) {
         return c.slug === cats[0];
       })[0];
-      var isZh = window.translationManager && window.translationManager.currentLanguage !== "en";
+      var curLang = window.translationManager ? window.translationManager.currentLanguage || "" : "";
+      var isZh = curLang.indexOf("zh") === 0;
       var catName = catLabel
         ? isZh && catLabel.labelCn
           ? catLabel.labelCn
@@ -300,11 +301,14 @@
       }
     }
 
+    var curLang = window.translationManager ? window.translationManager.currentLanguage || "" : "";
+    var isZh = curLang.indexOf("zh") === 0;
     var catLabels = [];
     for (var j = 0; j < state.categories.length; j++) {
       for (var k = 0; k < CATEGORIES.length; k++) {
         if (CATEGORIES[k].slug === state.categories[j]) {
-          catLabels.push(CATEGORIES[k].emoji + " " + CATEGORIES[k].labelCn);
+          var catName = isZh ? CATEGORIES[k].labelCn : CATEGORIES[k].label;
+          catLabels.push(CATEGORIES[k].emoji + " " + catName);
           break;
         }
       }
