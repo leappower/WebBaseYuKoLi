@@ -295,7 +295,10 @@
                   var n = t.resolveTranslationValue(l, e);
                   // If not found, try with current language prefix (e.g. 'en_nav_products_coffee')
                   if ((!n || n === e) && t.currentLanguage) {
-                    n = t.resolveTranslationValue(l, t.currentLanguage + '_' + e);
+                    var prefixed = t.currentLanguage + '_' + e;
+                    n = t.resolveTranslationValue(l, prefixed);
+                    // resolveTranslationValue 在 key 不存在时返回 key 本身，排除伪命中
+                    if (n === prefixed) n = void 0;
                   }
                   return n && n !== e ? t.interpolate(n) : t.interpolate(t.getFallbackTranslation(e));
                 },
@@ -385,7 +388,12 @@
         var en = this.translationsCache.get("ui-en");
         if (en) {
           var v = this.resolveTranslationValue(en, t);
-          if (!v || v === t) v = this.resolveTranslationValue(en, "en_" + t);
+          if (!v || v === t) {
+            var enPrefixed = "en_" + t;
+            v = this.resolveTranslationValue(en, enPrefixed);
+            // resolveTranslationValue 在 key 不存在时返回 key 本身，需排除这种伪命中
+            if (v === enPrefixed) v = void 0;
+          }
           if (v && v !== t) return v;
         }
       }
