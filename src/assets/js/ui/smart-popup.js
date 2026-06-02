@@ -924,26 +924,21 @@
   function sendFormData(formData, onSuccess, onFallback, submittingMsg) {
     showNotification(submittingMsg, "success");
 
-    fetch(FORM_ENDPOINT, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(formData),
-    })
-      .then(function (response) {
-        if (!response.ok) {
-          return response.json().then(function (err) {
-            throw new Error(err.error || "Submission failed");
-          });
-        }
-        return response.json();
-      })
-      .then(function () {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", FORM_ENDPOINT, true);
+    xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
         onSuccess();
-      })
-      .catch(function (error) {
-        console.error("提交失败:", error);
-        onFallback(error);
-      });
+      } else {
+        onFallback(xhr.statusText);
+      }
+    };
+    xhr.onerror = function () {
+      console.error("提交失败: network error");
+      onFallback("network error");
+    };
+    xhr.send(JSON.stringify(formData));
   }
 
   /**

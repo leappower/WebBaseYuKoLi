@@ -555,24 +555,16 @@
       url: global.location ? global.location.href : "",
     };
 
-    // Send directly to Google Apps Script (no-cors for static hosting)
+    // Send directly to Google Apps Script (works on GitHub Pages, no server required)
     showBuilderSuccess();
     state.submitted = false;
     try {
       var gasUrl = (global.SITE_CONFIG && global.SITE_CONFIG.forms && global.SITE_CONFIG.forms.gasUrl) || "";
       if (gasUrl) {
-        fetch(gasUrl, {
-          method: "POST",
-          mode: "no-cors",
-          body: JSON.stringify(data),
-        }).catch(function () {
-          if (global.showNotification) {
-            global.showNotification(
-              _t("product_builder_submit_backend_error") || "Submission received, confirmation may be delayed.",
-              "warning"
-            );
-          }
-        });
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", gasUrl, true);
+        xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+        xhr.send(JSON.stringify(data));
       }
     } catch (e) {}
   }
