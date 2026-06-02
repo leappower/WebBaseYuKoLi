@@ -290,6 +290,34 @@
     return c[field + "_en"] || c[field] || "";
   }
 
+  /* ── Filter option i18n key slugs for data-i18n ── */
+  var FILTER_OPT_I18N = {
+    industry: {
+      "品牌方": "brand_owner",
+      "连锁品牌": "chain_brand",
+      "跨境电商": "cross_border_e_commerce",
+      "大健康": "health_&_wellness",
+      "新消费品牌": "neo_consumer_brand"
+    },
+    region: {
+      "东南亚": "se_asia",
+      "中东": "middle_east",
+      "欧洲": "europe",
+      "东亚": "east_asia",
+      "北美": "north_america",
+      "大洋洲": "oceania",
+      "非洲": "africa",
+      "中国": "china"
+    },
+    benefit: {
+      "Fast Sampling": "fast_sampling",
+      "Halal Compliance": "halal_compliance",
+      "Multi-Certification": "multi_certification",
+      "R&D Strength": "randd_strength",
+      "Cold Chain": "cold_chain"
+    }
+  };
+
   function benefitColor(benefit) {
     var map = {
       "Fast Sampling": "#3b82f6",
@@ -388,21 +416,29 @@
       '">' +
       esc(c.title) +
       "</h3>" +
-      '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
+      '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap" data-i18n="cases_' +
+      esc(c.slug) +
+      '_highlight">' +
       esc(l10n(c, "highlight")) +
       "</span>" +
-      '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
+      '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap" data-i18n="cases_' +
+      esc(c.slug) +
+      '_country">' +
       esc(l10n(c, "country")) +
       "</span>" +
       "</div>" +
       '<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate-500 dark:text-slate-400">' +
-      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span>' +
+      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">storefront</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_industry">' +
       esc(l10n(c, "industry")) +
-      "</span>" +
+      "</span></span>" +
       '<span class="text-slate-300 dark:text-slate-600">·</span>' +
-      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">inventory_2</span>' +
+      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-base">inventory_2</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_monthly_volume">' +
       esc(l10n(c, "monthly_volume")) +
-      "</span>" +
+      "</span></span>" +
       "</div>" +
       '<p class="text-sm leading-relaxed text-slate-600 dark:text-slate-300 italic border-l-4 border-primary-400 pl-3" data-i18n="cases_quote_' +
       esc(c.slug) +
@@ -412,19 +448,25 @@
       '<div class="grid grid-cols-3 gap-2 mt-1">' +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-lg font-black text-primary"><span class="material-symbols-outlined text-xl align-middle">schedule</span></div>' +
-      '<div class="text-xs text-slate-500 dark:text-slate-400">' +
+      '<div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="cases_' +
+      esc(c.slug) +
+      '_lead_time">' +
       esc(l10n(c, "lead_time")) +
       "</div>" +
       "</div>" +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-lg font-black text-slate-700 dark:text-slate-200"><span class="material-symbols-outlined text-xl align-middle">inventory_2</span></div>' +
-      '<div class="text-xs text-slate-500 dark:text-slate-400">' +
+      '<div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="cases_' +
+      esc(c.slug) +
+      '_moq_label">' +
       esc(l10n(c, "moq_label")) +
       "</div>" +
       "</div>" +
       '<div class="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2.5 text-center">' +
       '<div class="text-base font-black text-primary"><span class="material-symbols-outlined text-xl align-middle">verified</span></div>' +
-      '<div class="text-xs text-slate-500 dark:text-slate-400">' +
+      '<div class="text-xs text-slate-500 dark:text-slate-400" data-i18n="cases_' +
+      esc(c.slug) +
+      '_cert_label">' +
       esc(l10n(c, "cert_label")) +
       "</div>" +
       "</div>" +
@@ -460,12 +502,16 @@
       "</div>" +
       '<div class="p-4 flex flex-col gap-2">' +
       '<div class="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">' +
-      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">storefront</span>' +
+      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">storefront</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_industry">' +
       esc(l10n(c, "industry")) +
-      "</span>" +
-      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">inventory_2</span>' +
+      "</span></span>" +
+      '<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">inventory_2</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_monthly_volume">' +
       esc(l10n(c, "monthly_volume")) +
-      "</span>" +
+      "</span></span>" +
       "</div>" +
       '<div class="flex flex-wrap items-center gap-1.5">' +
       '<h3 class="font-bold text-base leading-snug" data-i18n="cases_title_' +
@@ -473,25 +519,35 @@
       '">' +
       esc(c.title) +
       "</h3>" +
-      '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap">' +
+      '<span class="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold whitespace-nowrap" data-i18n="cases_' +
+      esc(c.slug) +
+      '_highlight">' +
       esc(l10n(c, "highlight")) +
       "</span>" +
-      '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap">' +
+      '<span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium whitespace-nowrap" data-i18n="cases_' +
+      esc(c.slug) +
+      '_country">' +
       esc(l10n(c, "country")) +
       "</span>" +
       "</div>" +
       '<div class="flex items-center gap-2 text-xs">' +
-      '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">schedule</span>' +
+      '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">schedule</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_lead_time">' +
       esc(l10n(c, "lead_time")) +
-      "</span>" +
+      "</span></span>" +
       '<span class="text-slate-300 dark:text-slate-600">|</span>' +
-      '<span class="inline-flex items-center gap-1 text-slate-700 dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-sm">inventory_2</span>' +
+      '<span class="inline-flex items-center gap-1 text-slate-700 dark:text-slate-200 font-semibold"><span class="material-symbols-outlined text-sm">inventory_2</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_moq_label">' +
       esc(l10n(c, "moq_label")) +
-      "</span>" +
+      "</span></span>" +
       '<span class="text-slate-300 dark:text-slate-600">|</span>' +
-      '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">verified</span>' +
+      '<span class="inline-flex items-center gap-1 text-primary font-semibold"><span class="material-symbols-outlined text-sm">verified</span><span data-i18n="cases_' +
+      esc(c.slug) +
+      '_cert_label">' +
       esc(l10n(c, "cert_label")) +
-      "</span>" +
+      "</span></span>" +
       "</div>" +
       '<p class="text-sm text-slate-600 dark:text-slate-400 italic" data-i18n="cases_quote_' +
       c.slug +
@@ -577,13 +633,21 @@
         key +
         '" data-value="" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>';
       for (var i = 0; i < f.options.length; i++) {
+        var optVal = f.options[i];
+        var optI18nKey = "";
+        if (key !== "volume") {
+          var slug = (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) || optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
+          optI18nKey = "cases_filter_opt_" + key + "_" + slug;
+        }
         html +=
           '<button data-filter="' +
           key +
           '" data-value="' +
-          f.options[i] +
-          '" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary">' +
-          f.options[i] +
+          optVal +
+          '"' +
+          (optI18nKey ? ' data-i18n="' + optI18nKey + '"' : "") +
+          ' class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary">' +
+          optVal +
           "</button>";
       }
       html += "</div></div>";
@@ -624,13 +688,21 @@
         key +
         '" data-value="" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>';
       for (var i = 0; i < f.options.length; i++) {
+        var optVal = f.options[i];
+        var optI18nKey = "";
+        if (key !== "volume") {
+          var slug = (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) || optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
+          optI18nKey = "cases_filter_opt_" + key + "_" + slug;
+        }
         html +=
           '<button data-filter="' +
           key +
           '" data-value="' +
-          f.options[i] +
-          '" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary">' +
-          f.options[i] +
+          optVal +
+          '"' +
+          (optI18nKey ? ' data-i18n="' + optI18nKey + '"' : "") +
+          ' class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300 hover:border-primary hover:text-primary">' +
+          optVal +
           "</button>";
       }
       html += "</div></div>";
@@ -676,7 +748,13 @@
         " background-repeat: no-repeat; background-position: right 8px center; padding-right: 28px;'>";
       html += '<option value="">' + esc(f.label) + "</option>";
       for (var i = 0; i < f.options.length; i++) {
-        html += '<option value="' + f.options[i] + '">' + f.options[i] + "</option>";
+        var optVal = f.options[i];
+        var optI18nKey = "";
+        if (key !== "volume") {
+          var slug = (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) || optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
+          optI18nKey = "cases_filter_opt_" + key + "_" + slug;
+        }
+        html += '<option value="' + optVal + '"' + (optI18nKey ? ' data-i18n="' + optI18nKey + '"' : "") + '>' + optVal + "</option>";
       }
       html += "</select>";
     }
