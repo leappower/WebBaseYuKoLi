@@ -317,7 +317,7 @@
         "Tell us about your kitchen needs — our team will respond within 24 hours.</p>" +
         "</div>" +
         // 联系表单
-        '<form id="smart-popup-form" action="/api/contact" method="POST" ' +
+        '<form id="smart-popup-form" action="#" method="POST" ' +
         'style="display:flex;flex-direction:column;gap:.75rem;">' +
         '<input name="name" type="text" placeholder="Full Name *" ' +
         'data-i18n-placeholder="popup_input_fullname" required ' +
@@ -879,10 +879,10 @@
    * 接收 JSON 格式的表单数据，通过服务端代理发送。
    * @constant {string}
    */
-  var FORM_ENDPOINT = '';
+  var FORM_ENDPOINT = "";
   try {
-    FORM_ENDPOINT = (window.SITE_CONFIG && window.SITE_CONFIG.forms && window.SITE_CONFIG.forms.gasUrl) || '';
-  } catch(e) {}
+    FORM_ENDPOINT = (window.SITE_CONFIG && window.SITE_CONFIG.forms && window.SITE_CONFIG.forms.gasUrl) || "";
+  } catch (e) {}
 
   /**
    * 从表单元素中收集提交数据，附加用户环境信息。

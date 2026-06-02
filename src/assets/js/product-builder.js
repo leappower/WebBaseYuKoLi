@@ -556,6 +556,7 @@
     };
 
     // Send directly to Google Apps Script (no-cors for static hosting)
+    showBuilderSuccess();
     state.submitted = false;
     try {
       var gasUrl = (global.SITE_CONFIG && global.SITE_CONFIG.forms && global.SITE_CONFIG.forms.gasUrl) || "";
@@ -564,10 +565,16 @@
           method: "POST",
           mode: "no-cors",
           body: JSON.stringify(data),
-        }).catch(function () {});
+        }).catch(function () {
+          if (global.showNotification) {
+            global.showNotification(
+              _t("product_builder_submit_backend_error") || "Submission received, confirmation may be delayed.",
+              "warning"
+            );
+          }
+        });
       }
     } catch (e) {}
-    showBuilderSuccess();
   }
 
   // ─── Success State ──────────────────────────────────────────────

@@ -547,6 +547,7 @@
   "product_builder_step_partnership": "1. Partnership Mode",
   "product_builder_step_scale": "3. Estimated Scale & Timeline",
   "product_builder_submit": "Submit My Product Brief",
+  "product_builder_submit_backend_error": "Submission received, confirmation may be delayed.",
   "product_builder_submit_btn": "Submit Brief",
   "product_builder_success_catalog": "📂 Product Catalog",
   "product_builder_success_desc": "Your inquiry has been received.",
