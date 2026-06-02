@@ -186,12 +186,8 @@
       var catLabel = CATEGORIES.filter(function (c) {
         return c.slug === cats[0];
       })[0];
-      var curLang = window.translationManager ? window.translationManager.currentLanguage || "" : "";
-      var isZh = curLang.indexOf("zh") === 0;
       var catName = catLabel
-        ? isZh && catLabel.labelCn
-          ? catLabel.labelCn
-          : catLabel.label
+        ? _t("product_builder_category_" + catLabel.slug) || catLabel.label
         : _t("product_builder_smartmatch_this_category") || "this category";
       return (
         "Your " +
@@ -301,13 +297,14 @@
       }
     }
 
-    var curLang = window.translationManager ? window.translationManager.currentLanguage || "" : "";
-    var isZh = curLang.indexOf("zh") === 0;
     var catLabels = [];
     for (var j = 0; j < state.categories.length; j++) {
       for (var k = 0; k < CATEGORIES.length; k++) {
         if (CATEGORIES[k].slug === state.categories[j]) {
-          var catName = isZh ? CATEGORIES[k].labelCn : CATEGORIES[k].label;
+          var catName = _t("product_builder_category_" + CATEGORIES[k].slug);
+          if (!catName || catName.indexOf("product_builder_") === 0) {
+            catName = CATEGORIES[k].label;
+          }
           catLabels.push(CATEGORIES[k].emoji + " " + catName);
           break;
         }
