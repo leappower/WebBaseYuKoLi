@@ -587,6 +587,8 @@
     var emailEl = dom.builder.querySelector('[name="email"]');
     var phoneEl = dom.builder.querySelector('[name="phone"]');
     var phoneCodeEl = dom.builder.querySelector('[name="phoneCode"]');
+    var contactMethodEl = dom.builder.querySelector('[name="contactMethod"]');
+    var contactAccountEl = dom.builder.querySelector('[name="contactAccount"]');
 
     // Inline validation
     var valid = true;
