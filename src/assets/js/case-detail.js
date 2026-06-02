@@ -1465,6 +1465,12 @@
     setInnerHTML("case-hero-metrics", renderHeroMetrics(c));
 
     // Breadcrumb — 由 breadcrumb.js 渲染骨架，只需更新当前案例标题
+    // 如果骨架不存在（SPA导航时breadcrumb-container为空），先创建骨架
+    var bcCurrent = document.getElementById("breadcrumb-current");
+    if (!bcCurrent && window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
+      window.Breadcrumb.refresh();
+      bcCurrent = document.getElementById("breadcrumb-current");
+    }
     setTextOrAttr("breadcrumb-current", "innerText", getLocalizedText(c, "title"));
     setTextOrAttr("breadcrumb-current-mobile", "innerText", getLocalizedText(c, "title"));
 
