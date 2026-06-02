@@ -51,6 +51,51 @@
     { slug: "legacy", emoji: "📖", label: "Legacy Classics", labelCn: "经典冲饮" },
   ];
 
+  // Country → phone prefix mapping
+  var COUNTRY_CODES = {
+    CN: "+86",
+    US: "+1",
+    CA: "+1",
+    GB: "+44",
+    DE: "+49",
+    FR: "+33",
+    AU: "+61",
+    JP: "+81",
+    KR: "+82",
+    SG: "+65",
+    MY: "+60",
+    ID: "+62",
+    TH: "+66",
+    VN: "+84",
+    PH: "+63",
+    IN: "+91",
+    AE: "+971",
+    SA: "+966",
+    NG: "+234",
+    ZA: "+27",
+    BR: "+55",
+    MX: "+52",
+    RU: "+7",
+    TR: "+90",
+    HK: "+852",
+    NZ: "+64",
+    IT: "+39",
+    ES: "+34",
+    NL: "+31",
+    SE: "+46",
+    CH: "+41",
+    PL: "+48",
+    BE: "+32",
+    AT: "+43",
+    IE: "+353",
+    PT: "+351",
+    DK: "+45",
+    FI: "+358",
+    NO: "+47",
+    MO: "+853",
+    TW: "+886",
+  };
+
   // Mode definitions
   var MODES = [
     {
@@ -490,6 +535,19 @@
     });
   }
 
+  function bindCountryCode() {
+    var countryEl = dom.builder && dom.builder.querySelector('[name="country"]');
+    var phoneCodeEl = dom.builder && dom.builder.querySelector('[name="phoneCode"]');
+    if (!countryEl || !phoneCodeEl) return;
+    countryEl.addEventListener("change", function () {
+      var code = COUNTRY_CODES[countryEl.value];
+      if (code) phoneCodeEl.value = code;
+    });
+    // Auto-select prefix on initial load if country already selected
+    var initCode = COUNTRY_CODES[countryEl.value];
+    if (initCode) phoneCodeEl.value = initCode;
+  }
+
   // ─── Submit State ───────────────────────────────────────────────
   function updateSubmitState() {
     if (!dom.submitBtn) return;
@@ -512,6 +570,7 @@
     var countryEl = dom.builder.querySelector('[name="country"]');
     var emailEl = dom.builder.querySelector('[name="email"]');
     var phoneEl = dom.builder.querySelector('[name="phone"]');
+    var phoneCodeEl = dom.builder.querySelector('[name="phoneCode"]');
 
     // Inline validation
     var valid = true;
@@ -549,7 +608,11 @@
       company: companyEl ? companyEl.value.trim() : "",
       country: countryEl ? countryEl.value : "",
       email: emailEl ? emailEl.value.trim() : "",
-      phone: phoneEl ? phoneEl.value.trim() : "",
+      phone: (function () {
+        var code = phoneCodeEl ? phoneCodeEl.value.trim() : "";
+        var num = phoneEl ? phoneEl.value.trim() : "";
+        return num ? code + " " + num : "";
+      })(),
       message: dom.messageInput ? dom.messageInput.value.trim() : "",
       score: calcScore(state),
       url: global.location ? global.location.href : "",
@@ -595,6 +658,7 @@
     bindPromptChips();
     bindMessageInput();
     bindSubmit();
+    bindCountryCode();
 
     // Bind contact field change to update submit state
     var fields = dom.builder.querySelectorAll(".contact-field input, .contact-field select");
