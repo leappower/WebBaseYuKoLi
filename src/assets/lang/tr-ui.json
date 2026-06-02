@@ -474,6 +474,8 @@
   "product_builder_contact_email": "E-posta",
   "product_builder_contact_name": "Ad Soyad",
   "product_builder_contact_phone": "Telefon/WhatsApp",
+  "product_builder_contact_method": "İletişim",
+  "product_builder_contact_account": "Hesap/ID",
   "product_builder_contact_select": "İhracat hedef ülkesini seçin…",
   "product_builder_contact_title": "İletişim Bilgileri (ticari sırların korunması için NDA imzalanır)",
   "product_builder_extra_desc": "(İsteğe bağlı, örn. belirli FDA/SGS sertifikasyon ihtiyaçları)",

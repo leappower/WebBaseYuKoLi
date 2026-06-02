@@ -474,6 +474,8 @@
   "product_builder_contact_email": "メールアドレス",
   "product_builder_contact_name": "氏名",
   "product_builder_contact_phone": "電話／WhatsApp",
+  "product_builder_contact_method": "連絡方法",
+  "product_builder_contact_account": "アカウント／ID",
   "product_builder_contact_select": "輸出先国を選択…",
   "product_builder_contact_title": "連絡先（NDA締結により商業機密を保護）",
   "product_builder_extra_desc": "（任意、例：特定のFDA/SGS認証要件）",

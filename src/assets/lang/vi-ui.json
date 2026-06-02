@@ -474,6 +474,8 @@
   "product_builder_contact_email": "Email",
   "product_builder_contact_name": "Họ tên",
   "product_builder_contact_phone": "Điện thoại/WhatsApp",
+  "product_builder_contact_method": "Liên hệ qua",
+  "product_builder_contact_account": "Tài khoản/ID",
   "product_builder_contact_select": "Chọn quốc gia xuất khẩu đích…",
   "product_builder_contact_title": "Thông tin liên hệ (ký NDA để bảo vệ bí mật kinh doanh)",
   "product_builder_extra_desc": "(Tùy chọn, ví dụ: nhu cầu chứng nhận FDA/SGS cụ thể)",

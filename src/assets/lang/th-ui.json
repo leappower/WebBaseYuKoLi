@@ -474,6 +474,8 @@
   "product_builder_contact_email": "อีเมล",
   "product_builder_contact_name": "ชื่อ",
   "product_builder_contact_phone": "โทรศัพท์/WhatsApp",
+  "product_builder_contact_method": "ช่องทางการติดต่อ",
+  "product_builder_contact_account": "บัญชี/ID",
   "product_builder_contact_select": "เลือกประเทศปลายทางส่งออก…",
   "product_builder_contact_title": "ข้อมูลติดต่อ (ลงนาม NDA เพื่อคุ้มครองความลับทางธุรกิจ)",
   "product_builder_extra_desc": "(ไม่บังคับ เช่น ความต้องการการรับรอง FDA/SGS เฉพาะ)",

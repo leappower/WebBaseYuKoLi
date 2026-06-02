@@ -474,6 +474,8 @@
   "product_builder_contact_email": "E-mail",
   "product_builder_contact_name": "Naam",
   "product_builder_contact_phone": "Telefoon/WhatsApp",
+  "product_builder_contact_method": "Contact via",
+  "product_builder_contact_account": "Account/ID",
   "product_builder_contact_select": "Selecteer exportbestemming…",
   "product_builder_contact_title": "Contactgegevens (NDA ondertekend ter bescherming van bedrijfsgeheimen)",
   "product_builder_extra_desc": "(optioneel, bijv. specifieke FDA/SGS-certificeringsvereisten)",

@@ -474,6 +474,8 @@
   "product_builder_contact_email": "אימייל",
   "product_builder_contact_name": "שם",
   "product_builder_contact_phone": "טלפון/WhatsApp",
+  "product_builder_contact_method": "ליצור קשר דרך",
+  "product_builder_contact_account": "חשבון/תעודת זהות",
   "product_builder_contact_select": "בחרו מדינת יעד לייצוא…",
   "product_builder_contact_title": "פרטי קשר (חתימה על NDA להגנה על סודות מסחריים)",
   "product_builder_extra_desc": "(אופציונלי, כגון דרישות ספציפיות לאישורי FDA/SGS)",

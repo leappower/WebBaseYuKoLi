@@ -474,6 +474,8 @@
   "product_builder_contact_email": "E-mail",
   "product_builder_contact_name": "Nome",
   "product_builder_contact_phone": "Telefone/WhatsApp",
+  "product_builder_contact_method": "Contatar via",
+  "product_builder_contact_account": "Conta/ID",
   "product_builder_contact_select": "Selecionar país de destino da exportação…",
   "product_builder_contact_title": "Dados de contacto (assinatura de NDA para proteger segredos comerciais)",
   "product_builder_extra_desc": "(Opcional, por exemplo, necessidades específicas de certificação FDA/SGS)",

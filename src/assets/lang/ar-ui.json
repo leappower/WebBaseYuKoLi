@@ -474,6 +474,8 @@
   "product_builder_contact_email": "البريد الإلكتروني",
   "product_builder_contact_name": "الاسم",
   "product_builder_contact_phone": "الهاتف/WhatsApp",
+  "product_builder_contact_method": "التواصل عبر",
+  "product_builder_contact_account": "حساب/معرّف",
   "product_builder_contact_select": "اختر بلد وجهة التصدير…",
   "product_builder_contact_title": "معلومات الاتصال (توقيع NDA لحماية الأسرار التجارية)",
   "product_builder_extra_desc": "(اختياري، مثل متطلبات اعتماد FDA/SGS محددة)",

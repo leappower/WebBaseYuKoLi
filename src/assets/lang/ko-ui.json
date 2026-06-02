@@ -474,6 +474,8 @@
   "product_builder_contact_email": "이메일",
   "product_builder_contact_name": "이름",
   "product_builder_contact_phone": "전화/WhatsApp",
+  "product_builder_contact_method": "연락 방법",
+  "product_builder_contact_account": "계정/ID",
   "product_builder_contact_select": "수출 목적국 선택…",
   "product_builder_contact_title": "연락처（NDA 체결로 영업 기밀 보호）",
   "product_builder_extra_desc": "（선택 입력, 예: 특정 FDA/SGS 인증 요구 사항）",

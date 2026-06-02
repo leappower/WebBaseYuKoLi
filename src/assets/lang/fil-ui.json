@@ -474,6 +474,8 @@
   "product_builder_contact_email": "Email",
   "product_builder_contact_name": "Pangalan",
   "product_builder_contact_phone": "Telepono/WhatsApp",
+  "product_builder_contact_method": "Makipag-ugnayan sa pamamagitan ng",
+  "product_builder_contact_account": "Account/ID",
   "product_builder_contact_select": "Pumili ng destinasyong bansa para sa export…",
   "product_builder_contact_title": "Impormasyon sa pakikipag-ugnayan (may NDA para protektahan ang mga lihim sa negosyo)",
   "product_builder_extra_desc": "(Opsyonal, tulad ng partikular na pangangailangan sa FDA/SGS certification)",

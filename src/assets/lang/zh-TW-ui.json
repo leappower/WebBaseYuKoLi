@@ -474,6 +474,8 @@
   "product_builder_contact_email": "電子郵件",
   "product_builder_contact_name": "姓名",
   "product_builder_contact_phone": "電話/WhatsApp",
+  "product_builder_contact_method": "主用社交軟體",
+  "product_builder_contact_account": "帳號/ID",
   "product_builder_contact_select": "選擇出口目的國…",
   "product_builder_contact_title": "聯絡方式（簽署NDA保障商業機密）",
   "product_builder_extra_desc": "（選填，如特定FDA/SGS認證需求）",
