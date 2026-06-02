@@ -539,18 +539,18 @@
     }
 
     var data = {
-      source: "product-builder",
+      type: "product-builder",
       mode: state.mode,
       categories: state.categories,
       quantity: state.quantity,
       quantityLabel: state.quantity > 0 ? formatQuantity(state.quantity) : "",
       timeline: state.timeline,
-      contact: nameEl ? nameEl.value.trim() : "", // ⚠️ GAS 脚本读 data.contact ∥ data.name
+      fullname: nameEl ? nameEl.value.trim() : "",
       company: companyEl ? companyEl.value.trim() : "",
       country: countryEl ? countryEl.value : "",
       email: emailEl ? emailEl.value.trim() : "",
       phone: phoneEl ? phoneEl.value.trim() : "",
-      description: dom.messageInput ? dom.messageInput.value.trim() : "", // ⚠️ GAS 脚本读 data.description
+      message: dom.messageInput ? dom.messageInput.value.trim() : "",
       score: calcScore(state),
       url: global.location ? global.location.href : "",
     };

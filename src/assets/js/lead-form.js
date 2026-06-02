@@ -36,11 +36,12 @@
       xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
       xhr.send(
         JSON.stringify({
-          source: "lead_whitepaper",
-          contact: lead.name,
+          type: "lead_whitepaper",
+          fullname: lead.name,
           company: lead.company,
           email: lead.email,
-          description: lead.pageUrl || "",
+          message: lead.pageUrl || "",
+          pageUrl: lead.pageUrl || "",
         })
       );
     } catch (_) {}
