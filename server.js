@@ -354,14 +354,14 @@ app.get('/', (req, res) => {
 // ─── Universal page resolver ─────────────────────────────────────────────
 //
 // Architecture: file-system as single source of truth.
-// No hardcoded route lists.  New pages?  Just drop the HTML into dist/pages/.
+// No hardcoded route lists.  New pages?  Just drop the HTML into dist/.
 //
 // Resolution order (first match wins):
 //   1. Exact file in dist/              (CSS, JS, images, fonts)
-//   2. Exact file in dist/pages/        (SPA router fetches like /products/index-pc.html)
-//   3. dist/pages/<path>/index.html     (SSG directory index)
-//   4. dist/pages/<path>/index-pc.html  (SSG device-specific index)
-//   5. dist/pages/<path>-pc.html        (flat-file pattern, e.g. news/detail-pc.html)
+//   2. Exact file in dist/        (SPA router fetches like /products/index-pc.html)
+//   3. dist/<path>/index.html     (SSG directory index)
+//   4. dist/<path>/index-pc.html  (SSG device-specific index)
+//   5. dist/<path>-pc.html        (flat-file pattern, e.g. news/detail-pc.html)
 //   6. SPA shell (dist/index.html)      (catch-all — SPA router handles the rest)
 //
 // Security: only serves files under dist/ (and src/ in dev mode).
@@ -372,22 +372,22 @@ function resolvePage(reqPath) {
   if (!clean) clean = '/';
 
   // 0. Root path → home
-  if (clean === '/') return path.join(__dirname, 'dist', 'pages', 'home', 'index-pc.html');
+  if (clean === '/') return path.join(__dirname, 'dist', 'home', 'index-pc.html');
 
   // 1. Exact file: dist/<reqPath>  (assets, fonts, images)
   var f = path.join(__dirname, 'dist', reqPath);
   if (isFile(f)) return f;
 
-  // 2. Exact file: dist/pages/<reqPath>  (SPA router fetches)
-  f = path.join(__dirname, 'dist', 'pages', reqPath);
+  // 2. Exact file: dist/<reqPath>  (SPA router fetches)
+  f = path.join(__dirname, 'dist', reqPath);
   if (isFile(f)) return f;
 
-  // 3–5. Page resolution under dist/pages/
+  // 3–5. Page resolution under dist/
   //    Try index.html → index-pc.html → <clean>-pc.html
   var candidates = [
-    path.join(__dirname, 'dist', 'pages', clean, 'index.html'),
-    path.join(__dirname, 'dist', 'pages', clean, 'index-pc.html'),
-    path.join(__dirname, 'dist', 'pages', clean + '-pc.html'),
+    path.join(__dirname, 'dist', clean, 'index.html'),
+    path.join(__dirname, 'dist', clean, 'index-pc.html'),
+    path.join(__dirname, 'dist', clean + '-pc.html'),
   ];
   for (var i = 0; i < candidates.length; i++) {
     if (isFile(candidates[i])) return candidates[i];
@@ -397,7 +397,7 @@ function resolvePage(reqPath) {
   var pdpMatch = clean.match(/^\/products\/[a-z]+\/[A-Z0-9]+(?:-[a-zA-Z0-9]+)*$/);
   if (pdpMatch) {
     // Serve the PC detail template directly (SPA handles device detection client-side)
-    var pdpFile = path.join(__dirname, 'dist', 'pages', 'pdp', 'index-pc.html');
+    var pdpFile = path.join(__dirname, 'dist', 'pdp', 'index-pc.html');
     if (isFile(pdpFile)) {
       return pdpFile;
     }
@@ -407,6 +407,16 @@ function resolvePage(reqPath) {
   // This caused SPA navigation to /products/detail/ to load the SSG detail
   // page as a full-page refresh instead of routing to the correct PDP.
   // PDP is now exclusively /products/<category>/<model>/
+
+  // 6c. Case detail page: /cases/<slug>/ → detail template (PC)
+  //    e.g. /cases/sea-coffee-brand/ → dist/cases/detail/index-pc.html
+  var caseDetailMatch = clean.match(/^\/cases\/([a-z0-9-]+)$/);
+  if (caseDetailMatch) {
+    var caseDetailFile = path.join(__dirname, 'dist', 'cases', 'detail', 'index-pc.html');
+    if (isFile(caseDetailFile)) {
+      return caseDetailFile;
+    }
+  }
 
   // 7. SPA shell — for known SPA routes (exclude PDP format)
   // PDP format /products/<cat>/<model>/ must NOT match SPA shell

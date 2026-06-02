@@ -85,10 +85,11 @@ sync_assets "pdf"      "*.pdf"
 # Must be at /site.config.js for SPA shell (after webpack so not cleaned)
 cp "$SRC/site.config.js" "$DIST/site.config.js"
 
-# ─── 5. HTML pages ─────────────────────────────────────────────
+# ─── 5. HTML pages (平铺到 dist/，去掉 /pages/ 前缀) ──────────
 echo "📦 Syncing HTML pages..."
 find "$SRC/pages" -name '*.html' -print0 | while IFS= read -r -d '' f; do
-  rel="${f#$SRC/}"
+  # src/pages/home/index-pc.html → dist/home/index-pc.html (去掉 /pages/)
+  rel="${f#$SRC/pages/}"
   mkdir -p "$DIST/$(dirname "$rel")"
   cp "$f" "$DIST/$rel"
 done

@@ -321,7 +321,7 @@
    * /home/         → /home/index-pc.html
    * /products/     → /products/index-pc.html
    * /products/coffee/ → /products/coffee/index-pc.html
-   * /products/<category>/<model>/ → /pages/pdp/index-pc.html  (PDP)
+   * /products/<category>/<model>/ → /pdp/index-pc.html  (PDP)
    * /solutions/oem/ → /solutions/oem/index-pc.html
    * /manufacturing/ → /manufacturing/index-pc.html
    * /compliance/   → /compliance/index-pc.html
@@ -337,39 +337,39 @@
     // 2. 防止 swup 从 response.url 提取的 /products/coffee/index-mobile.html 污染地址栏
 
     // Aliases / redirects
-    if (path === "/" || path === "/home/") return "/pages/home/" + suffix;
+    if (path === "/" || path === "/home/") return "/home/" + suffix;
 
     // Flat-file pattern (no directory)
-    if (path === "/news/detail/") return "/pages/news/detail-" + suffix.replace("index-", "");
+    if (path === "/news/detail/") return "/news/detail-" + suffix.replace("index-", "");
 
     // Solutions pages (all variants)
     if (path.indexOf("/solutions/") === 0) {
       // 首页
-      if (path === "/solutions/") return "/pages/solutions/" + suffix;
+      if (path === "/solutions/") return "/solutions/" + suffix;
       var solMatch = path.match(/^\/solutions\/(oem|odm|obm|rd|packaging)\/$/);
-      if (solMatch) return "/pages/solutions/" + solMatch[1] + "/" + suffix;
+      if (solMatch) return "/solutions/" + solMatch[1] + "/" + suffix;
     }
 
     // Resources pages
     if (path.indexOf("/resources/") === 0) {
       var resMatch = path.match(/^\/resources\/(catalog|videos|whitepapers)\/$/);
-      if (resMatch) return "/pages/resources/" + resMatch[1] + "/" + suffix;
+      if (resMatch) return "/resources/" + resMatch[1] + "/" + suffix;
     }
 
     // Manufacturing & Compliance
-    if (path === "/manufacturing/") return "/pages/manufacturing/" + suffix;
-    if (path === "/compliance/") return "/pages/compliance/" + suffix;
+    if (path === "/manufacturing/") return "/manufacturing/" + suffix;
+    if (path === "/compliance/") return "/compliance/" + suffix;
 
     // 动态产品分类页: /products/<slug>/
     var prodMatch = path.match(/^\/(products\/)?(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
     if (prodMatch) {
       var slug = prodMatch[2];
-      return "/pages/products/" + slug + "/" + suffix;
+      return "/products/" + slug + "/" + suffix;
     }
 
     // 产品详情 PDP: /products/<category>/<model>/
     if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path)) {
-      return "/pages/pdp/" + suffix;
+      return "/pdp/" + suffix;
     }
 
     // 产品详情 PDP: /products/<model>/
@@ -377,21 +377,23 @@
       /^\/products\/[^/]+\/$/.test(path) &&
       !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)
     ) {
-      return "/pages/pdp/" + suffix;
+      return "/pdp/" + suffix;
     }
 
-    // 案例详情页: /cases/<slug>/ → 共享模板 /pages/cases/detail/
-    if (/^\/cases\/[a-z-]+/.test(path)) {
-      return "/pages/cases/detail/" + suffix;
+    // 案例详情页: /cases/<slug>/ → 共享模板 /pages/cases/detail/?slug=<slug>
+    // slug 通过 query 传递，服务器忽略 query 返回同一模板
+    if (/^\/cases\/([a-z0-9-]+)\//.test(path)) {
+      var slug = path.match(/^\/cases\/([a-z0-9-]+)\//)[1];
+      return "/cases/detail/" + suffix + "?slug=" + slug;
     }
 
     // 旧路由兼容: /beauty/ → /products/beauty/
     var redirectMatch = path.match(/^\/(coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
-    if (redirectMatch) return "/pages/products/" + redirectMatch[1] + "/" + suffix;
+    if (redirectMatch) return "/products/" + redirectMatch[1] + "/" + suffix;
 
     // 通用约定: /<path>/ → /pages/<path>/index-{device}.html
     var clean = path.replace(/\/+$/, "");
-    return "/pages" + clean + "/" + suffix;
+    return clean + "/" + suffix;
   }
 
   // ═══════════════════════════════════════════════════════════════════
@@ -504,18 +506,19 @@
         linkSelector:
           'a[href]:not([href^="http"]):not([href^="#"]):not([href^="mailto:"]):not([href^="tel:"]):not([href^="javascript:"])',
         resolveUrl: function (url) {
-          // PDP 模板 /pages/pdp/ 和 cases detail /pages/cases/detail/ 是内部分配路径
-          // 不应通过 resolveUrl 映射到地址栏
-          if (url.indexOf("/pages/pdp/") !== -1 || url.indexOf("/pages/cases/detail/") !== -1)
-            return window.location.pathname;
+          // PDP 模板 /pdp/ — 保持当前地址栏路径
+          if (url.indexOf("/pdp/") !== -1) return window.location.pathname;
+          // Cases detail /cases/detail/index-pc.html?slug=xxx → /cases/xxx/
+          var cm = url.match(/^(\/pages\/cases\/detail\/index(?:-[a-z0-9-]+)?\.html)\?slug=([a-z0-9-]+)$/i);
+          if (cm) return "/cases/" + cm[2] + "/";
 
-          // 将 /pages/<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
+          // 将 /<section>/<sub>/.../index-mobile.html → /<section>/<sub>/.../
           var m = url.match(/^\/pages(.+)\/index(?:-[a-z0-9-]+)?\.html$/i);
           if (m && m[1]) return m[1] + "/";
           // 无 /pages/ 前缀的响应 URL: /products/index-mobile.html → /products/
           var dm = url.match(/^\/([^/].*)\/index(?:-[a-z0-9-]+)?\.html$/i);
           if (dm && dm[1]) return "/" + dm[1] + "/";
-          // flat-file: /pages/news/detail-pc.html → /news/detail/
+          // flat-file: /news/detail-pc.html → /news/detail/
           var fm = url.match(/^\/pages\/news\/detail(?:-[a-z0-9-]+)?\.html$/i);
           if (fm) return "/news/detail/";
           return url;

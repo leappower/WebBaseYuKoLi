@@ -1439,12 +1439,19 @@
     data: _casesData,
   };
 
-  /* ── Auto-init on DOMContentLoaded (full page load) ── */
-  document.addEventListener("DOMContentLoaded", function () {
+  /* ── Auto-init (works for both full page load & swup script injection) ── */
+  function tryInit() {
     var path = window.location.pathname.replace(/\/+$/, "");
-    if (/^\/cases\/[a-z0-9-]+$/.test(path)) {
+    if (/^\/cases\/[a-z0-9-]+(\/index-(pc|mobile|tablet)\.html)?$/.test(path)) {
       var variant = document.body.getAttribute("data-case-variant") || "pc";
       init(variant);
+      return true;
     }
-  });
+    return false;
+  }
+  if (!tryInit()) {
+    document.addEventListener("DOMContentLoaded", function () {
+      tryInit();
+    });
+  }
 })();

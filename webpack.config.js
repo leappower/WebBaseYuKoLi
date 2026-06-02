@@ -33,7 +33,7 @@ function buildHtmlPlugins() {
         scanDir(entryPath, entryRelativePath);
       } else if (entry.endsWith('.html')) {
         const template = `./src/pages/${entryRelativePath}`;
-        const filename = `pages/${entryRelativePath}`;
+        const filename = entryRelativePath;
         plugins.push(new HtmlWebpackPlugin({ template, filename, inject: false }));
       }
     }
@@ -282,7 +282,7 @@ module.exports = (env = {}, argv = {}) => {
           publicPath: '/',
         },
         // SPA router fetches /home/index-pc.html, /catalog/index-pc.html etc.
-        // (no /pages/ prefix). Map src/pages/ → / so these resolve without a build.
+        // Pages are now at dist root (no /pages/ prefix).
         // staticOptions.index:false prevents directory URLs like /home/ from serving
         // index.html (the Responsive Entry), which would cause a full-page redirect
         // instead of falling through to historyApiFallback → src/index.html (SPA shell).

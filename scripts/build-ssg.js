@@ -415,30 +415,26 @@ function generateRouteIndex(route) {
 
 /**
  * Copy device-specific files (index-pc.html, index-mobile.html, index-tablet.html)
- * from dist/pages/<route>/ to dist/<route>/
- *
- * Webpack already outputs these to dist/pages/<route>/
- * We copy them to dist/<route>/ so the directory URL structure works
+ * within dist/<route>/ (already flat — build.sh outputs directly to dist/)
  */
 function copyDeviceFiles(route) {
-  const srcPagesDir = path.join(DIST_DIR, 'pages', route.sourceDir || route.slug);
+  const srcDir = path.join(DIST_DIR, route.sourceDir || route.slug);
   const destRouteDir = path.join(DIST_DIR, route.slug);
 
-  if (!fs.existsSync(srcPagesDir)) {
-    log('WARN: No dist/pages/' + route.slug + '/ directory found');
+  if (!fs.existsSync(srcDir)) {
+    log('WARN: No dist/' + (route.sourceDir || route.slug) + '/ directory found');
     return 0;
   }
 
-  ensureDir(destRouteDir);
+  if (srcDir === destRouteDir) {
+    // Same directory (flat build) — just process files in place
+    let copied = 0;
+    const files = fs.readdirSync(srcDir);
+    for (const file of files) {
+      if (!file.endsWith('.html')) continue;
+      if (file === 'index.html') continue;
 
-  let copied = 0;
-  const files = fs.readdirSync(srcPagesDir);
-  for (const file of files) {
-    if (!file.endsWith('.html')) continue;
-    // Skip index.html — we generate our own with updated URLs
-    if (file === 'index.html') continue;
-
-    const srcFile = path.join(srcPagesDir, file);
+    const srcFile = path.join(srcDir, file);
     const destFile = path.join(destRouteDir, file);
 
     let content = fs.readFileSync(srcFile, 'utf-8');

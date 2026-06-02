@@ -748,7 +748,7 @@
   /* ── Auto-init on DOMContentLoaded (full page load) ── */
   document.addEventListener("DOMContentLoaded", function () {
     var path = window.location.pathname;
-    if (/^\/cases\/$/.test(path) || /^\/cases$/.test(path)) {
+    if (/^\/cases(\/|\/index-pc\.html|\/index-mobile\.html|\/index-tablet\.html)?$/.test(path)) {
       var variant = document.body.getAttribute("data-case-variant") || "pc";
       init(variant);
     }
@@ -759,7 +759,7 @@
   /* ── SPA navigation: re-init after swup content:replace ── */
   document.addEventListener("spa:load", function () {
     var path = window.location.pathname;
-    if (/^\/cases\//.test(path) && !/^\/cases\/[a-z0-9-]+\/$/.test(path)) {
+    if (/^\/cases(\/|\/index-pc\.html|\/index-mobile\.html|\/index-tablet\.html)?$/.test(path)) {
       // Only re-init on the listing page, not detail pages
       var variant = document.body.getAttribute("data-case-variant") || "pc";
       setTimeout(function () {
