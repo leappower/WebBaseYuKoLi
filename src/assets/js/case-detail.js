@@ -1502,7 +1502,6 @@
     // Extract slug
     var slug = _currentSlug || extractSlug();
     if (!slug) {
-      // Try URL hash or data attribute
       slug = window.location.hash.replace("#", "") || "";
     }
     _currentSlug = slug;
@@ -1515,15 +1514,28 @@
       return;
     }
 
-    renderAll(_currentCase);
-
-    // 触发面包屑重新渲染（仅在 breadcrumb-container 不存在时创建，
-    //    不覆盖已渲染的案例标题，避免 reRender 清空 breadcrumb-current）
-    if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
-      var bc = document.getElementById("breadcrumb-container");
-      if (!bc || !bc.innerHTML.trim()) {
-        window.Breadcrumb.refresh();
+    // Wait for translations to be ready before rendering i18n content
+    var doRender = function () {
+      renderAll(_currentCase);
+      // 触发面包屑重新渲染（仅在 breadcrumb-container 不存在时创建）
+      if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
+        var bc = document.getElementById("breadcrumb-container");
+        if (!bc || !bc.innerHTML.trim()) {
+          window.Breadcrumb.refresh();
+        }
       }
+    };
+
+    if (window.translationManager && window.translationManager.translationsCache &&
+        window.translationManager.translationsCache.has("ui-" + (window.translationManager.currentLanguage || "zh-CN"))) {
+      // Translations already loaded, render immediately
+      doRender();
+    } else if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
+      // Translations not loaded yet — applyTranslations returns a Promise
+      window.translationManager.applyTranslations().then(function () { doRender(); }).catch(function () { doRender(); });
+    } else {
+      // translationManager not available (e.g. static page), render now
+      doRender();
     }
 
     // Listen for language changes

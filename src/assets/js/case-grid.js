@@ -821,20 +821,30 @@
     else if (variant === "tablet") buildFiltersTablet();
     else buildFiltersMobile();
 
-    renderGrid(variant);
-    bindFilterButtons();
+    // Wait for translations to be ready before rendering i18n content
+    var doRender = function () {
+      renderGrid(variant);
+      bindFilterButtons();
+      // 触发面包屑重新渲染（确保 SPA 导航后面包屑可见）
+      if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
+        window.Breadcrumb.refresh();
+      }
+      // Listen for language changes to re-translate dynamic content
+      if (!_langListenerBound && window.translationManager) {
+        _langListenerBound = true;
+        window.translationManager.on("languageChanged", function () {
+          translateAllDynamic();
+        });
+      }
+    };
 
-    // 触发 breadcrumb 重新渲染（确保 SPA 导航后面包屑可见）
-    if (window.Breadcrumb && typeof window.Breadcrumb.refresh === "function") {
-      window.Breadcrumb.refresh();
-    }
-
-    // Listen for language changes to re-translate dynamic content
-    if (!_langListenerBound && window.translationManager) {
-      _langListenerBound = true;
-      window.translationManager.on("languageChanged", function () {
-        translateAllDynamic();
-      });
+    if (window.translationManager && window.translationManager.translationsCache &&
+        window.translationManager.translationsCache.has("ui-" + (window.translationManager.currentLanguage || "zh-CN"))) {
+      doRender();
+    } else if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
+      window.translationManager.applyTranslations().then(function () { doRender(); }).catch(function () { doRender(); });
+    } else {
+      doRender();
     }
   }
 
