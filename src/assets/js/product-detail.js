@@ -120,7 +120,7 @@
       encodeURIComponent(rp.category || "all") +
       "/" +
       encodeURIComponent(rp.model) +
-      '" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700">' +
+      '/" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all border border-slate-100 dark:border-slate-700">' +
       '<div class="h-36 bg-gradient-to-br ' +
       grad +
       ' relative overflow-hidden">' +
@@ -494,13 +494,18 @@
       }
     }
 
+    var isMobile = window.innerWidth < 768;
+    var isTablet = !isMobile && window.innerWidth < 1280;
+    var heroH = isMobile ? 220 : isTablet ? 400 : 600;
     var html =
       // Section 1: Hero — 产品图片 + 基本信息
       '<section class="w-full bg-white dark:bg-slate-950">' +
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">' +
       '<div class="flex flex-col lg:flex-row gap-6 lg:gap-12 lg:items-center">' +
       '<div class="w-full lg:w-1/2 relative">' +
-      '<div class="relative w-full h-[220px] md:h-[400px] lg:h-[600px] bg-slate-100 dark:bg-slate-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl border border-white/10">' +
+      '<div class="relative w-full bg-slate-100 dark:bg-slate-800 rounded-2xl lg:rounded-3xl overflow-hidden shadow-xl lg:shadow-2xl border border-white/10" style="height:' +
+      heroH +
+      'px">' +
       mediaHtml +
       "</div></div>" +
       '<div class="w-full lg:w-1/2 flex flex-col gap-4 lg:gap-5 py-2"><div>' +
@@ -602,9 +607,12 @@
   // Multi-language helper: get product field for current language
   // Translate spec labels
   function tl(chinese) {
-    if (typeof window.t !== "function") return chinese;
     var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
-    if (lang === "zh-CN" || lang === "zh") return chinese;
+    if (lang === "zh-CN" || lang === "zh") {
+      // 如果传入的是 nav product key，中文直接返回"产品中心"
+      if (chinese.indexOf("nav_") === 0) return "产品中心";
+      return chinese;
+    }
     var map = {
       型号: "Model",
       分类: "Category",
@@ -627,6 +635,7 @@
       产品未找到: "Product Not Found",
       "抱歉，未找到该产品。": "Sorry, this product was not found.",
       返回产品中心: "Back to Products",
+      nav_product_center: "Products",
     };
     return map[chinese] || chinese;
   }
@@ -753,4 +762,20 @@
   });
 
   window.ProductDetail = { init: renderPDP };
+
+  /**
+   * Get translated value from TranslationManager for a key
+   */
+  function getTranslation(key) {
+    try {
+      if (window.TranslationManager) {
+        var val = new window.TranslationManager().resolveTranslationValue(
+          key,
+          "ui-" + (document.documentElement.lang || "zh-CN")
+        );
+        if (val && val !== key) return val;
+      }
+    } catch (e) {}
+    return "";
+  }
 })();

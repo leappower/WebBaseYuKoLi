@@ -587,7 +587,8 @@
       currentLang = null;
     }
     currentLang = currentLang || "zh-CN";
-    var currentLangName = currentLang;
+    var currentLangName = "简体中文";
+    if (currentLang === "en") currentLangName = "English";
     var reg = window.LANG_REGISTRY;
     if (reg && reg.LANGUAGES) {
       var found = reg.LANGUAGES.find(function (l) {

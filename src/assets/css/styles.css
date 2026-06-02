@@ -328,6 +328,8 @@ main#spa-content {
   margin-left: auto;
   margin-right: auto;
   padding-top: var(--nav-height, 65px); /* fallback before JS; JS sets exact value */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Hero overlap: first section pulls up to overlap with fixed navigator.
@@ -1017,6 +1019,17 @@ button.bg-primary[class*="hover:"]:hover {
 
 :root {
   --trust-bar-height: 36px;
+}
+
+/* ── 全局布局溢出控制 ── */
+html {
+  overflow-x: hidden;
+  width: 100%;
+}
+body {
+  width: 100%;
+  max-width: 100vw !important;
+  overflow-x: clip;
 }
 
 .trust-bar {

@@ -313,6 +313,7 @@
   /* ── Public API ───────────────────────────────────────────── */
   window.BottomTab = {
     updateActive: updateActiveState,
+    inject: inject,
   };
 
   /* ── Bootstrap ─────────────────────────────────────────────── */

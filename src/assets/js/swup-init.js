@@ -643,6 +643,27 @@
         // 更新 nav/footer active 状态
         updateActiveState(page.html);
 
+        // SPA 导航后重新 mount footer（响应设备变化）
+        if (global.Footer && typeof global.Footer.mount === "function") {
+          global.Footer.mount();
+        }
+
+        // SPA 导航后重新 mount navigator（响应设备变化）
+        if (global.Navigator && typeof global.Navigator.mount === "function") {
+          global.Navigator.mount();
+        }
+
+        // SPA 导航后重新 inject bottom-tab（避免被 swup 清空）
+        if (
+          typeof global.BottomTab !== "undefined" &&
+          global.BottomTab &&
+          typeof global.BottomTab.inject === "function"
+        ) {
+          var existing = document.getElementById("bottom-tab-bar");
+          if (!existing || existing.parentNode !== document.body) {
+            global.BottomTab.inject();
+          }
+        }
         // ─── 全局：SPA 导航后重新触发所有 lazy 图片加载 ───
         // swup 通过 innerHTML 替换内容时，浏览器不会为
         // loading="lazy" 的图片重新触发 IntersectionObserver
