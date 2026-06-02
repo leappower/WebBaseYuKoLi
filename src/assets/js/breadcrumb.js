@@ -526,6 +526,12 @@
     _spaOn(window, "languageChanged", function () {
       var newPage = detectPage();
       if (newPage.type !== "none") {
+        // For case-detail, let case-detail.js handle re-render via its own language listener
+        if (newPage.type === "case-detail") {
+          // Only update parent labels, preserve current label from DOM
+          var bcEl = document.getElementById("breadcrumb-current");
+          if (bcEl && bcEl.textContent.trim()) newPage.currentLabel = bcEl.textContent.trim();
+        }
         reRender(newPage);
       }
     });

@@ -277,12 +277,11 @@
     var lang = currentLang();
     if (lang === "zh-CN" || lang === "zh-TW" || lang === "zh") return c[field] || c[field + "_en"] || "";
     // Try TranslationManager first
-    if (window.translationManager && window.translationManager.resolveTranslationValue) {
+    if (window.translationManager && window.translationManager.translate) {
       var i18nKey = "cases_detail_" + c.slug + "_" + field;
       try {
-        var bundleId = "ui-" + lang;
-        var val = window.translationManager.resolveTranslationValue(bundleId, i18nKey);
-        if (val && val !== i18nKey && val !== bundleId && val.indexOf("ui-") !== 0) return val;
+        var val = window.translationManager.translate(i18nKey);
+        if (val && val !== i18nKey) return val;
       } catch (e) {
         /* fall through */
       }

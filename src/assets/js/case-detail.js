@@ -1169,14 +1169,12 @@
     if (!c) return "";
     var slug = c.slug || "";
     // Try TranslationManager first
-    if (window.translationManager && window.translationManager.resolveTranslationValue) {
+    if (window.translationManager && window.translationManager.translate) {
       var i18nKey = "cases_detail_" + slug + "_" + field;
       if (field === "title") i18nKey = "cases_detail_" + slug;
       try {
-        var bundleId = "ui-" + (getLang() || "zh-CN");
-        var val = window.translationManager.resolveTranslationValue(bundleId, i18nKey);
-        // val is the resolved value, or bundleId if key not found — reject bundleId
-        if (val && val !== i18nKey && val !== bundleId && val.indexOf("ui-") !== 0) {
+        var val = window.translationManager.translate(i18nKey);
+        if (val && val !== i18nKey) {
           // Parse array fields (solutions/results/pain_points)
           if (field === "solutions" || field === "results" || field === "pain_points") {
             return parseTranslatedArray(val, field);
