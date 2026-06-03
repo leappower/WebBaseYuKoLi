@@ -305,7 +305,7 @@
     var backBar =
       '<div class="pt-4 pb-2 md:hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">' +
       '<div class="flex items-center gap-2">' +
-      '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all flex-shrink-0 shadow-sm" aria-label="' +
+      '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30 transition-all flex-shrink-0 shadow-sm" aria-label="' +
       tl("pd_back", "返回") +
       '">' +
       '<span class="material-symbols-outlined text-lg">arrow_back</span></button>' +

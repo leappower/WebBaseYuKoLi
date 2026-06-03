@@ -385,7 +385,7 @@ function injectThemeAndNavScripts(html, deviceType) {
   }
 
   // ── 3. Device-specific nav script (only if bundles not loaded) ──
-  if (html.indexOf('nav-bundle.js') === -1) {
+  if (html.indexOf('nav-bundle.js') === -1 && allTags.indexOf('nav-bundle.js') === -1) {
     if (deviceType === 'pc') {
       if (html.indexOf('mega-menu.js') === -1) {
         allTags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
@@ -406,7 +406,7 @@ function injectThemeAndNavScripts(html, deviceType) {
   }
 
   // ── 4. Search/slide-menu (only if bundles not loaded) ──
-  if (html.indexOf('nav-bundle.js') === -1) {
+  if (html.indexOf('nav-bundle.js') === -1 && allTags.indexOf('nav-bundle.js') === -1) {
     if (html.indexOf('slide-menu.js') === -1) {
       allTags += '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n    ';
     }

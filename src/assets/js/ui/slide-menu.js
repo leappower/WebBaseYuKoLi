@@ -586,6 +586,7 @@
    * - 支持翻译管理器自动翻译 data-i18n 元素
    */
   function openMenu() {
+    if (document.getElementById("mobile-menu-panel")) return; // DOM guard against duplicate calls
     if (panelEl) return; // 已打开，忽略重复调用
 
     injectStyles();
