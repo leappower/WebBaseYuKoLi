@@ -783,17 +783,37 @@ if (typeof window !== "undefined") {
       ((this._eventListenersSetup = !1), (this.dropdownEl = null));
     }),
     (r.prototype.detectBrowserLanguage = function () {
-      var t = navigator.language || navigator.userLanguage || "en",
-        e = {
-          zh: "en",
-          en: "en",
-          "zh-TW": "en",
-          "zh-HK": "en",
-          en: "en",
-          "en-US": "en",
-          "en-GB": "en",
-        };
-      return e[t] || e[t.split("-")[0]] || "en";
+      /* 优先级: localStorage > 浏览器语言 > 默认英文 */
+      var lang = (navigator.language || "en").substring(0, 2);
+      /* 映射浏览器语言到支持的语言代码 */
+      var map = {
+        zh: "zh-CN",
+        en: "en",
+        id: "id",
+        th: "th",
+        ms: "ms",
+        vi: "vi",
+        ko: "ko",
+        ja: "ja",
+        fr: "fr",
+        de: "de",
+        es: "es",
+        pt: "pt",
+        ar: "ar",
+        ru: "ru",
+        hi: "hi",
+        tr: "tr",
+        it: "it",
+        nl: "nl",
+        pl: "pl",
+        sv: "sv",
+        nb: "nb",
+        da: "da",
+        fi: "fi",
+        tl: "tl",
+        my: "my",
+      };
+      return map[lang] || "en";
     }),
     (r.prototype.debug = function () {}),
     (r.prototype.reloadTranslations = function () {

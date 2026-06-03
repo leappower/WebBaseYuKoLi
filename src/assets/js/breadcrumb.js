@@ -275,7 +275,7 @@
 
     // PC/Tablet breadcrumb — aligned with KitchenYuKoLi PDP style
     var bc =
-      '<div class="pt-4 pb-0 hidden md:block max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">' +
+      '<div class="pt-4 pb-0 hidden md:block max-w-[1920px] mx-auto px-3 sm:px-6 lg:px-8">' +
       '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 py-4" aria-label="Breadcrumb">' +
       '<ol class="flex items-center gap-1 flex-wrap">' +
       '<li><a href="' +
@@ -303,7 +303,7 @@
 
     // Mobile back bar — aligned with KitchenYuKoLi PDP style
     var backBar =
-      '<div class="pt-4 pb-2 md:hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">' +
+      '<div class="pt-4 pb-2 md:hidden max-w-[1920px] mx-auto px-3 sm:px-6 lg:px-8">' +
       '<div class="flex items-center gap-2">' +
       '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30 transition-all flex-shrink-0 shadow-sm" aria-label="' +
       tl("pd_back", "返回") +

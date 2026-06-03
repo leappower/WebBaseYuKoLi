@@ -683,24 +683,37 @@
       ((this._eventListenersSetup = !1), (this.dropdownEl = null));
     }),
     (r.prototype.detectBrowserLanguage = function () {
-      /* Build lookup from LANG_REGISTRY */
-      var raw = (navigator.language || navigator.userLanguage || "").toLowerCase();
-      var supported = {};
-      var langs = window.LANG_REGISTRY && window.LANG_REGISTRY.LANGUAGES ? window.LANG_REGISTRY.LANGUAGES : [];
-      for (var i = 0; i < langs.length; i++) {
-        supported[langs[i].code.toLowerCase()] = langs[i].code;
-        var short = langs[i].code.substring(0, 2).toLowerCase();
-        if (!supported[short]) supported[short] = langs[i].code;
-      }
-      /* Exact match (e.g. "zh-cn" -> "zh-CN") */
-      if (supported[raw]) return supported[raw];
-      /* First 2 chars (e.g. "id" -> "id", "th" -> "th") */
-      var short = raw.substring(0, 2);
-      if (supported[short]) return supported[short];
-      /* zh variants -> zh-CN */
-      if (short === "zh") return "zh-CN";
-      /* Fallback */
-      return "en";
+      /* 优先级: localStorage > 浏览器语言 > 默认英文 */
+      var lang = (navigator.language || "en").substring(0, 2);
+      /* 映射浏览器语言到支持的语言代码 */
+      var map = {
+        zh: "zh-CN",
+        en: "en",
+        id: "id",
+        th: "th",
+        ms: "ms",
+        vi: "vi",
+        ko: "ko",
+        ja: "ja",
+        fr: "fr",
+        de: "de",
+        es: "es",
+        pt: "pt",
+        ar: "ar",
+        ru: "ru",
+        hi: "hi",
+        tr: "tr",
+        it: "it",
+        nl: "nl",
+        pl: "pl",
+        sv: "sv",
+        nb: "nb",
+        da: "da",
+        fi: "fi",
+        tl: "tl",
+        my: "my",
+      };
+      return map[lang] || "en";
     }),
     (r.prototype.debug = function () {}),
     (r.prototype.reloadTranslations = function () {
