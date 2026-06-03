@@ -16,9 +16,9 @@
         var cleanUrl = urlParams.get("clean-url");
         if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
         if (window.__spaNavigating) return;
-        var currentFile = location.pathname.split("/").pop();
-        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
-        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
           var deviceType = window.DeviceUtils.getDeviceType();
           var targetFile;
           if (deviceType === window.DeviceUtils.DeviceType.MOBILE) targetFile = "index-mobile.html";
@@ -50,7 +50,7 @@
     <main id="spa-content">
       <!-- Hero -->
       <section class="fullwidth-bg hero-banner w-full h-[400px] relative overflow-hidden">
-        <img alt="Solutions" width="1920" height="500" class="w-full h-full object-cover" src="/assets/images/oem/hero/hero-pc.webp" loading="eager" />
+        <img alt="Solutions" width="1920" height="500" class="w-full h-full object-cover" src="/assets/images/oem/hero/hero-pc-1200w.webp" loading="eager"  srcset="/assets/images/oem/hero/hero-pc-828w.webp 828w, /assets/images/oem/hero/hero-pc-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
         <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
         <div class="absolute inset-0 flex items-center">
           <div class="section-content w-full">
@@ -72,7 +72,7 @@
           <div class="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
             <a href="/solutions/oem/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
               <div class="h-36 relative overflow-hidden">
-                <img src="/assets/images/oem/solutions/card-oem.webp" width="400" height="300" alt="OEM Custom Manufacturing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src="/assets/images/oem/solutions/card-oem-1200w.webp" width="400" height="300" alt="OEM Custom Manufacturing" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  srcset="/assets/images/oem/solutions/card-oem-828w.webp 828w, /assets/images/oem/solutions/card-oem-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
               </div>
               <div class="p-4">
                 <h3 class="text-lg font-bold mb-1" data-i18n="nav_oem">OEM</h3>
@@ -81,7 +81,7 @@
             </a>
             <a href="/solutions/odm/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
               <div class="h-36 relative overflow-hidden">
-                <img src="/assets/images/oem/solutions/card-odm.webp" width="400" height="300" alt="ODM Private Labeling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src="/assets/images/oem/solutions/card-odm-1200w.webp" width="400" height="300" alt="ODM Private Labeling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  srcset="/assets/images/oem/solutions/card-odm-828w.webp 828w, /assets/images/oem/solutions/card-odm-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
               </div>
               <div class="p-4">
                 <h3 class="text-lg font-bold mb-1" data-i18n="nav_odm">ODM</h3>
@@ -90,7 +90,7 @@
             </a>
             <a href="/solutions/obm/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
               <div class="h-36 relative overflow-hidden">
-                <img src="/assets/images/oem/solutions/card-obm.webp" width="400" height="300" alt="OBM Own Brand" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src="/assets/images/oem/solutions/card-obm-1200w.webp" width="400" height="300" alt="OBM Own Brand" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  srcset="/assets/images/oem/solutions/card-obm-828w.webp 828w, /assets/images/oem/solutions/card-obm-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
               </div>
               <div class="p-4">
                 <h3 class="text-lg font-bold mb-1" data-i18n="nav_obm">OBM</h3>
@@ -99,7 +99,7 @@
             </a>
             <a href="/solutions/rd/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
               <div class="h-36 relative overflow-hidden">
-                <img src="/assets/images/oem/solutions/card-rd.webp" width="400" height="300" alt="R&amp;D and Flavor Lab" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src="/assets/images/oem/solutions/card-rd-1200w.webp" width="400" height="300" alt="R&amp;D and Flavor Lab" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  srcset="/assets/images/oem/solutions/card-rd-828w.webp 828w, /assets/images/oem/solutions/card-rd-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
               </div>
               <div class="p-4">
                 <h3 class="text-lg font-bold mb-1" data-i18n="nav_rd">R&D Lab</h3>
@@ -108,7 +108,7 @@
             </a>
             <a href="/solutions/packaging/" class="group bg-white dark:bg-slate-800 rounded-xl overflow-hidden shadow-sm border border-slate-200/70 dark:border-slate-700 hover:shadow-lg transition-all">
               <div class="h-36 relative overflow-hidden">
-                <img src="/assets/images/oem/solutions/card-packaging.webp" width="400" height="300" alt="Packaging and Labeling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                <img src="/assets/images/oem/solutions/card-packaging-1200w.webp" width="400" height="300" alt="Packaging and Labeling" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"  srcset="/assets/images/oem/solutions/card-packaging-828w.webp 828w, /assets/images/oem/solutions/card-packaging-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
               </div>
               <div class="p-4">
                 <h3 class="text-lg font-bold mb-1" data-i18n="nav_packaging">Packaging</h3>
@@ -146,42 +146,17 @@
         </div>
       </section>
     </main>
-    <script defer src="/assets/js/ui/dropdown-styles.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/dropdown-base.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/solutions-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/products-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/support-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/about-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
-
-        <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-    <script defer src="/assets/js/product-data-table-translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>    <footer data-component="footer" data-swup-persist="footer"></footer>
+<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+<script defer src="/assets/js/search-index.js?v=202605291142"></script>
+<footer data-component="footer" data-swup-persist="footer"></footer>
     <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/swup-init.js?v=202605291142"></script>
-    <script defer src="/assets/js/main.js?v=202605291142"></script>
+    <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
+<script defer src="/assets/js/main.js?v=202605291142"></script>
     <script defer src="/assets/js/image-assets.js?v=202605291142"></script>
     <script defer src="/assets/js/analytics.js?v=202605291142"></script>
     <script defer src="/assets/js/contacts.js?v=202605291142"></script>
-    <script defer src="/assets/js/breadcrumb.js?v=202605291142"></script>
-    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
+<script defer src="/assets/js/page-init.js?v=202605291142"></script>
     <script defer src="/assets/js/page-interactions.js?v=202605291142"></script>
-    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/theme-init.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations-dropdown-template.js?v=202605291142"></script>
-  </body>
+<script defer src="/assets/js/theme-init.js?v=202605291142"></script>
+</body>
 </html>

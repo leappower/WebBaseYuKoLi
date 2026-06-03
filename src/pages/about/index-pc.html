@@ -33,13 +33,9 @@
           return;
         }
 
-        var currentFile = location.pathname.split("/").pop();
-
-        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) {
-          return;
-        }
-
-        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
           var deviceType = window.DeviceUtils.getDeviceType();
           var targetFile;
 
@@ -70,7 +66,7 @@
     <meta property="og:url" content="https://brew.yukoli.com/about/" />
     <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
- <meta name="description" content="YuKoLi Technology 佛山优科力科技 — 20年健康食品OEM/ODM制造经验，4座工厂7大产品线，HACCP/FDA/ISO认证，出口30+国家。" />
+ <meta data-i18n-meta="meta_about_description" name="description" content="YuKoLi Technology 佛山优科力科技 — 20年健康食品OEM/ODM制造经验，4座工厂7大产品线，HACCP/FDA/ISO认证，出口30+国家。" />
     <title><span data-i18n="seo_yukoli">YuKoLi</span> Technology | About Us - Health Food OEM/ODM Manufacturer</title>
 
     <!-- Organization JSON-LD -->
@@ -204,10 +200,10 @@
                 loading="lazy"
                 alt="YuKoLi Technology 工厂"
                 class="w-full h-full object-cover"
-                src="/assets/images/oem/about/about-1.webp"
+                src="/assets/images/oem/about/about-1-1920w.webp"
                 width="800"
                 height="600"
-              />
+               srcset="/assets/images/oem/about/about-1-1200w.webp 1200w, /assets/images/oem/about/about-1-1920w.webp 1920w" sizes="(min-width: 1280px) 25vw, 33vw" />
             </div>
           </div>
         </div>
@@ -322,10 +318,10 @@
                   loading="lazy"
                   alt="YuKoLi Technology 品牌故事"
                   class="w-full h-auto max-h-[420px] object-cover"
-                  src="/assets/images/oem/about/about-2.webp"
+                  src="/assets/images/oem/about/about-2-1920w.webp"
                   width="800"
                   height="500"
-                />
+                 srcset="/assets/images/oem/about/about-2-1200w.webp 1200w, /assets/images/oem/about/about-2-1920w.webp 1920w" sizes="(min-width: 1280px) 25vw, 33vw" />
               </div>
             </div>
             <div class="flex flex-col gap-6">
@@ -546,41 +542,16 @@
       </div>
 
     </main>
-
-    <script defer src="/assets/js/ui/dropdown-styles.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/dropdown-base.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/products-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/support-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/about-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605291142"></script>
-<script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
-
-        <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-    <script defer src="/assets/js/product-data-table-translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
-    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations-dropdown-template.js?v=202605291142"></script>
-    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
+<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+<script defer src="/assets/js/search-index.js?v=202605291142"></script>
+<script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-<script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/swup-init.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/page-init.js?v=202605291142"></script>
 
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
     <script defer src="/assets/js/page-interactions.js?v=202605291142"></script><script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
-          <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
-  <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
 </body>
 </html>

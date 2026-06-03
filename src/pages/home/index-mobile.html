@@ -39,13 +39,8 @@
         // 使用 DeviceUtils 统一管理设备判断
         var currentFile = location.pathname.split("/").pop();
 
-        // 当访问目录 URL(以 / 结尾)时,不要重定向(SPA 导航使用干净的目录 URL)
-        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) {
-          return;
-        }
-
-        // 使用 DeviceUtils 判断是否需要重定向
-        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+        // 使用 DeviceUtils 判断是否需要重定向（目录 URL 也需要检查）
+        if (window.DeviceUtils && (currentFile === '' && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile))) {
           var deviceType = window.DeviceUtils.getDeviceType();
           var targetFile;
 
@@ -207,9 +202,11 @@
             <img
               alt="YuKoLi 健康食品 OEM/ODM 工厂"
               class="w-full h-full object-cover"
-              src="/assets/images/oem/hero/hero-mobile.webp"
+              src="/assets/images/oem/hero/hero-mobile-828w.webp"
+              srcset="/assets/images/oem/hero/hero-mobile-375w.webp 375w, /assets/images/oem/hero/hero-mobile-828w.webp 828w"
+              sizes="calc(100vw - 32px)"
               loading="eager"
-            />
+/>
           </div>
 
           <div class="flex gap-3">
@@ -337,7 +334,7 @@
             <a href="/products/coffee/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Coffee Series" data-i18n="alt_coffee_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/coffee.webp" loading="lazy" />
+                  <img alt="Coffee Series" data-i18n="alt_coffee_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/coffee-828w.webp" srcset="/assets/images/oem/products/coffee-375w.webp 375w, /assets/images/oem/products/coffee-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_coffee_name">Coffee & Mixes</h3>
@@ -350,7 +347,7 @@
             <a href="/products/tea/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Tea & Milk Tea Series" data-i18n="alt_tea_&_milk_tea_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/tea.webp" loading="lazy" />
+                  <img alt="Tea & Milk Tea Series" data-i18n="alt_tea_&_milk_tea_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/tea-828w.webp" srcset="/assets/images/oem/products/tea-375w.webp 375w, /assets/images/oem/products/tea-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_tea_name">Tea & Milk Tea</h3>
@@ -363,7 +360,7 @@
             <a href="/products/meal/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Meal Replacement Series" data-i18n="alt_meal_replacement_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/meal.webp" loading="lazy" />
+                  <img alt="Meal Replacement Series" data-i18n="alt_meal_replacement_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/meal-828w.webp" srcset="/assets/images/oem/products/meal-375w.webp 375w, /assets/images/oem/products/meal-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_meal_name">Meal Replacement</h3>
@@ -376,7 +373,7 @@
             <a href="/products/beauty/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Beauty Collagen" data-i18n="alt_beauty_collagen" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/beauty.webp" loading="lazy" />
+                  <img alt="Beauty Collagen" data-i18n="alt_beauty_collagen" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/beauty-828w.webp" srcset="/assets/images/oem/products/beauty-375w.webp 375w, /assets/images/oem/products/beauty-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_beauty_name">Beauty Collagen</h3>
@@ -389,7 +386,7 @@
             <a href="/products/weight/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Weight Management" data-i18n="alt_weight_management" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/weight.webp" loading="lazy" />
+                  <img alt="Weight Management" data-i18n="alt_weight_management" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/weight-828w.webp" srcset="/assets/images/oem/products/weight-375w.webp 375w, /assets/images/oem/products/weight-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_weight_name">Weight Management</h3>
@@ -402,7 +399,7 @@
             <a href="/products/gut/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Gut Health" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/gut.webp" loading="lazy" />
+                  <img alt="Gut Health" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/gut-828w.webp" srcset="/assets/images/oem/products/gut-375w.webp 375w, /assets/images/oem/products/gut-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_gut_name">Gut Health</h3>
@@ -415,7 +412,7 @@
             <a href="/products/lifestyle/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Functional Beverages" data-i18n="alt_functional_beverages" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/lifestyle.webp" loading="lazy" />
+                  <img alt="Functional Beverages" data-i18n="alt_functional_beverages" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/lifestyle-828w.webp" srcset="/assets/images/oem/products/lifestyle-375w.webp 375w, /assets/images/oem/products/lifestyle-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_lifestyle_name">Functional Beverages</h3>
@@ -428,7 +425,7 @@
             <a href="/products/legacy/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Classic Drinks" data-i18n="alt_classic_drinks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/legacy.webp" loading="lazy" />
+                  <img alt="Classic Drinks" data-i18n="alt_classic_drinks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/legacy-828w.webp" srcset="/assets/images/oem/products/legacy-375w.webp 375w, /assets/images/oem/products/legacy-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_legacy_name">Classic Drinks</h3>
@@ -454,7 +451,7 @@
           <div class="grid grid-cols-2 gap-3">
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="GMP 洁净车间" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-1.webp" loading="lazy" />
+                <img alt="GMP 洁净车间" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-1-828w.webp" srcset="/assets/images/oem/factory/factory-1-375w.webp 375w, /assets/images/oem/factory/factory-1-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_gmp_title">GMP Clean Workshop</h3>
@@ -463,7 +460,7 @@
             </div>
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="自动化产线" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-2.webp" loading="lazy" />
+                <img alt="自动化产线" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-2-828w.webp" srcset="/assets/images/oem/factory/factory-2-375w.webp 375w, /assets/images/oem/factory/factory-2-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_auto_title">Automated Production Line</h3>
@@ -472,7 +469,7 @@
             </div>
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="质量实验室" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-3.webp" loading="lazy" />
+                <img alt="质量实验室" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-3-828w.webp" srcset="/assets/images/oem/factory/factory-3-375w.webp 375w, /assets/images/oem/factory/factory-3-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_qc_title">Quality Lab</h3>
@@ -481,7 +478,7 @@
             </div>
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="智能仓储" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-4.webp" loading="lazy" />
+                <img alt="智能仓储" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-4-828w.webp" srcset="/assets/images/oem/factory/factory-4-375w.webp 375w, /assets/images/oem/factory/factory-4-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_warehouse_title">Smart Warehouse</h3>
@@ -518,43 +515,16 @@
 
     <!-- ═══ Footer Component ═══ -->
     <footer data-component="footer" data-swup-persist="footer" data-variant="mobile" data-active="home"></footer>
-
-    <script defer src="/assets/js/ui/dropdown-styles.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/dropdown-base.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/products-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/support-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/about-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
-
-        <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-    <script defer src="/assets/js/product-data-table-translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
-    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations-dropdown-template.js?v=202605291142"></script>
-    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
+<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+<script defer src="/assets/js/search-index.js?v=202605291142"></script>
+<script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-<script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/swup-init.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/page-init.js?v=202605291142"></script>
 
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
     <script defer src="/assets/js/page-interactions.js?v=202605291142"></script>
-
-    
-        <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
-  <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
 </body>
 </html>

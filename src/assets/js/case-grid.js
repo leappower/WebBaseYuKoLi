@@ -292,29 +292,29 @@
   /* ── Filter option i18n key slugs for data-i18n ── */
   var FILTER_OPT_I18N = {
     industry: {
-      "品牌方": "brand_owner",
-      "连锁品牌": "chain_brand",
-      "跨境电商": "cross_border_e_commerce",
-      "大健康": "health_&_wellness",
-      "新消费品牌": "neo_consumer_brand"
+      品牌方: "brand_owner",
+      连锁品牌: "chain_brand",
+      跨境电商: "cross_border_e_commerce",
+      大健康: "health_&_wellness",
+      新消费品牌: "neo_consumer_brand",
     },
     region: {
-      "东南亚": "se_asia",
-      "中东": "middle_east",
-      "欧洲": "europe",
-      "东亚": "east_asia",
-      "北美": "north_america",
-      "大洋洲": "oceania",
-      "非洲": "africa",
-      "中国": "china"
+      东南亚: "se_asia",
+      中东: "middle_east",
+      欧洲: "europe",
+      东亚: "east_asia",
+      北美: "north_america",
+      大洋洲: "oceania",
+      非洲: "africa",
+      中国: "china",
     },
     benefit: {
       "Fast Sampling": "fast_sampling",
       "Halal Compliance": "halal_compliance",
       "Multi-Certification": "multi_certification",
       "R&D Strength": "randd_strength",
-      "Cold Chain": "cold_chain"
-    }
+      "Cold Chain": "cold_chain",
+    },
   };
 
   function benefitColor(benefit) {
@@ -630,12 +630,14 @@
       html +=
         '<button data-filter="' +
         key +
-        '" data-value="" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>';
+        '" data-value="" data-i18n="all" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>';
       for (var i = 0; i < f.options.length; i++) {
         var optVal = f.options[i];
         var optI18nKey = "";
         if (key !== "volume") {
-          var slug = (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) || optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
+          var slug =
+            (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) ||
+            optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
           optI18nKey = "cases_filter_opt_" + key + "_" + slug;
         }
         html +=
@@ -685,12 +687,14 @@
       html +=
         '<button data-filter="' +
         key +
-        '" data-value="" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>';
+        '" data-value="" data-i18n="all" class="case-filter-btn px-3 py-1.5 text-xs font-semibold rounded-full border transition-all border-primary bg-primary text-white">全部</button>';
       for (var i = 0; i < f.options.length; i++) {
         var optVal = f.options[i];
         var optI18nKey = "";
         if (key !== "volume") {
-          var slug = (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) || optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
+          var slug =
+            (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) ||
+            optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
           optI18nKey = "cases_filter_opt_" + key + "_" + slug;
         }
         html +=
@@ -750,10 +754,19 @@
         var optVal = f.options[i];
         var optI18nKey = "";
         if (key !== "volume") {
-          var slug = (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) || optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
+          var slug =
+            (FILTER_OPT_I18N[key] && FILTER_OPT_I18N[key][optVal]) ||
+            optVal.toLowerCase().replace(/ /g, "_").replace(/&/g, "and").replace(/-/g, "_");
           optI18nKey = "cases_filter_opt_" + key + "_" + slug;
         }
-        html += '<option value="' + optVal + '"' + (optI18nKey ? ' data-i18n="' + optI18nKey + '"' : "") + '>' + optVal + "</option>";
+        html +=
+          '<option value="' +
+          optVal +
+          '"' +
+          (optI18nKey ? ' data-i18n="' + optI18nKey + '"' : "") +
+          ">" +
+          optVal +
+          "</option>";
       }
       html += "</select>";
     }
@@ -838,11 +851,21 @@
       }
     };
 
-    if (window.translationManager && window.translationManager.translationsCache &&
-        window.translationManager.translationsCache.has("ui-" + (window.translationManager.currentLanguage || "zh-CN"))) {
+    if (
+      window.translationManager &&
+      window.translationManager.translationsCache &&
+      window.translationManager.translationsCache.has("ui-" + (window.translationManager.currentLanguage || "zh-CN"))
+    ) {
       doRender();
     } else if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
-      window.translationManager.applyTranslations().then(function () { doRender(); }).catch(function () { doRender(); });
+      window.translationManager
+        .applyTranslations()
+        .then(function () {
+          doRender();
+        })
+        .catch(function () {
+          doRender();
+        });
     } else {
       doRender();
     }

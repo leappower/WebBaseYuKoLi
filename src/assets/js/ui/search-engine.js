@@ -18,12 +18,16 @@
   function _extend(target) {
     for (var i = 1; i < arguments.length; i++) {
       var src = arguments[i];
-      if (src) { for (var k in src) { if (src.hasOwnProperty(k)) target[k] = src[k]; } }
+      if (src) {
+        for (var k in src) {
+          if (src.hasOwnProperty(k)) target[k] = src[k];
+        }
+      }
     }
     return target;
   }
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -98,11 +102,11 @@
     var table = window.PRODUCT_DATA_TABLE || [];
     var translations = window.PRODUCT_DATA_TRANSLATIONS || {};
     var tm = window.translationManager;
-    var lang = (tm && tm.currentLanguage) ? tm.currentLanguage : "en";
+    var lang = tm && tm.currentLanguage ? tm.currentLanguage : "en";
 
     return table.map(function (p) {
       var t = translations[p.model] || {};
-      var displayName = (lang === "zh-CN" && t.nameZh) ? t.nameZh : (t.nameEn || p.name);
+      var displayName = lang === "zh-CN" && t.nameZh ? t.nameZh : t.nameEn || p.name;
       var displayCategory = tr("filter_" + p.category, p.category);
       var displayDescription = t.descriptionEn || t.descriptionZh || p.description || "";
 
@@ -111,12 +115,14 @@
         _displayCategory: displayCategory,
         _displayBadge: "",
         _searchText: [
+          p.name,
           displayName,
           p.model,
           displayCategory,
           p.category,
           p.brand,
           displayDescription,
+          p.description,
           (p.diets || []).join(" "),
           (p.tags || []).join(" "),
           p.origin,
@@ -157,8 +163,8 @@
       seen[page.path] = true;
 
       // Use Chinese h1/h2s when language is zh-CN
-      var h1Text = (isZh && page.h1Zh) ? page.h1Zh : page.h1;
-      var h2sText = (isZh && page.h2sZh) ? page.h2sZh : page.h2s;
+      var h1Text = isZh && page.h1Zh ? page.h1Zh : page.h1;
+      var h2sText = isZh && page.h2sZh ? page.h2sZh : page.h2s;
       var text = [
         page.title,
         page.titleZh,
@@ -448,9 +454,7 @@
             '" role="option">' +
             '<div class="ios-search-result-img">' +
             (item.image
-              ? '<img src="' +
-                esc(item.image) +
-                '" alt="" loading="lazy" decoding="async">'
+              ? '<img src="' + esc(item.image) + '" alt="" loading="lazy" decoding="async">'
               : '<span class="material-symbols-outlined">language</span>') +
             "</div>" +
             '<div class="ios-search-result-info">' +
@@ -473,13 +477,11 @@
           var name = esc(item._displayName || item._displayCategory + " " + item.model);
           var model = esc(item.model || "");
           var category = esc(item._displayCategory || item.category || "");
-          var badge = item._displayBadge
-            ? '<span class="ios-search-badge">' + esc(item._displayBadge) + "</span>"
-            : "";
+          var badge = item._displayBadge ? '<span class="ios-search-badge">' + esc(item._displayBadge) + "</span>" : "";
           if (!item.image && !item.productImage && !item.imageUrl) {
-      console.warn("[search-engine] No image for", item.model, item.category);
-    }
-    var imgSrc = item.image || item.productImage || item.imageUrl || "";
+            console.warn("[search-engine] No image for", item.model, item.category);
+          }
+          var imgSrc = item.image || item.productImage || item.imageUrl || "";
           var cat = item.category || "";
           var detailHref = item.model ? "/products/" + encodeURIComponent(cat) + "/" + item.model + "/" : "/products/";
 
@@ -494,9 +496,7 @@
             '" role="option">' +
             '<div class="ios-search-result-img">' +
             (imgSrc
-              ? '<img src="' +
-                esc(imgSrc) +
-                '" alt="" loading="lazy" decoding="async">'
+              ? '<img src="' + esc(imgSrc) + '" alt="" loading="lazy" decoding="async">'
               : '<span class="material-symbols-outlined">inventory_2</span>') +
             "</div>" +
             '<div class="ios-search-result-info">' +
@@ -693,7 +693,7 @@
 
   // ─── Inject Styles (once) ────────────────────────────────────────────────
 
-    // ─── Inject Styles — 已迁移至 styles.css ──────────────
+  // ─── Inject Styles — 已迁移至 styles.css ──────────────
   // 搜索框 CSS 已统一在 styles.css 中定义，所有 SSG 页面
   // 从首次渲染就具有完整样式，不再依赖 JS 运行时注入。
   function injectStyles() {

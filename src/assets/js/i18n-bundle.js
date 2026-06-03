@@ -1,0 +1,1086 @@
+/**
+ * lang-registry.js — 语言注册表（config-driven）
+ *
+ * 优先从 site.config.js → window.SITE_CONFIG.i18n.languages 读取语言数据。
+ * 若 config 未加载，则使用内嵌 fallback 数组（与 site.config.js 保持同步）。
+ *
+ * 使用方式：
+ *   Node.js:  const { LANGUAGES, getLangs } = require('./lang-registry');
+ *   Browser:  window.LANG_REGISTRY.LANGUAGES
+ */
+
+"use strict";
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Fallback 语言数据（与 site.config.js i18n.languages 保持同步）
+// ─────────────────────────────────────────────────────────────────────────────
+var _FALLBACK_LANGUAGES = [
+  { code: "en", nativeName: "English", englishName: "English", sortOrder: 0, hasTranslation: true },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Config bridge: 优先读取 SITE_CONFIG，fallback 到内嵌数据
+// ─────────────────────────────────────────────────────────────────────────────
+function _resolveLanguages() {
+  var cfg = (typeof window !== "undefined" && (window.SITE_CONFIG || window._cfg)) || {};
+  if (cfg.i18n && cfg.i18n.languages && cfg.i18n.languages.length > 0) {
+    return cfg.i18n.languages;
+  }
+  return _FALLBACK_LANGUAGES;
+}
+
+// 防止重复加载
+if (typeof window !== "undefined" && window.LANG_REGISTRY && window.LANG_REGISTRY.LANGUAGES) {
+  var LANGUAGES = window.LANG_REGISTRY.LANGUAGES;
+} else {
+  var LANGUAGES = _resolveLanguages();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 工具函数
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * 筛选语言
+ * @param {{ group?: string, hasTranslation?: boolean }} [filter]
+ * @returns {Array} 符合条件的语言记录，按 sortOrder 升序
+ */
+function getLangs(filter) {
+  var result = LANGUAGES.slice().sort(function (a, b) {
+    return (a.sortOrder || 0) - (b.sortOrder || 0);
+  });
+  if (!filter) return result;
+  if (filter.group !== undefined) {
+    result = result.filter(function (l) {
+      return l.uiGroup === filter.group;
+    });
+  }
+  if (filter.hasTranslation !== undefined) {
+    result = result.filter(function (l) {
+      return l.hasTranslation === filter.hasTranslation;
+    });
+  }
+  return result;
+}
+
+/**
+ * 返回 { code: nativeName } 映射
+ */
+function getNativeNames(filter) {
+  return getLangs(filter).reduce(function (acc, l) {
+    acc[l.code] = l.nativeName;
+    return acc;
+  }, {});
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 导出
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Node.js 环境
+if (typeof module !== "undefined" && module.exports) {
+  function getSupportedCodes(filter) {
+    return getLangs(filter).map(function (l) {
+      return l.code;
+    });
+  }
+  function getAllCodes() {
+    return LANGUAGES.map(function (l) {
+      return l.code;
+    });
+  }
+  function getEnglishNames(filter) {
+    return getLangs(filter).reduce(function (acc, l) {
+      acc[l.code] = l.englishName;
+      return acc;
+    }, {});
+  }
+
+  module.exports = {
+    LANGUAGES: LANGUAGES,
+    getLangs: getLangs,
+    getNativeNames: getNativeNames,
+    getSupportedCodes: getSupportedCodes,
+    getAllCodes: getAllCodes,
+    getEnglishNames: getEnglishNames,
+    /** @deprecated Use SITE_CONFIG.i18n.languages directly */
+    _FALLBACK_LANGUAGES: _FALLBACK_LANGUAGES,
+  };
+}
+
+// 浏览器环境
+if (typeof window !== "undefined") {
+  window.LANG_REGISTRY = {
+    LANGUAGES: LANGUAGES,
+    getLangs: getLangs,
+    getNativeNames: getNativeNames,
+  };
+}
+!(function (t) {
+  "use strict";
+  function _extend(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var src = arguments[i];
+      if (src) {
+        for (var k in src) {
+          if (src.hasOwnProperty(k)) target[k] = src[k];
+        }
+      }
+    }
+    return target;
+  }
+  var _spaRegs = {};
+  function _spaOn(tgt, evt, fn, key) {
+    if (_spaRegs[key]) _spaRegs[key].abort();
+    var ac = new AbortController();
+    _spaRegs[key] = ac;
+    tgt.addEventListener(evt, fn, { signal: ac.signal });
+  }
+  var e,
+    n,
+    a =
+      ((e = (t.location && t.location.hostname) || ""),
+      (n = (t.location && t.location.port) || ""),
+      "localhost" === e ||
+        "127.0.0.1" === e ||
+        -1 !== ["8080", "3000", "3001", "5000", "9000"].indexOf(n) ||
+        !!/\b(test|staging|preview|dev|internal|local)\b/.test(e.toLowerCase())),
+    getO = function () {
+      return t.LANG_REGISTRY && t.LANG_REGISTRY.getNativeNames ? t.LANG_REGISTRY.getNativeNames() : {};
+    };
+
+  function r() {
+    ((this.currentLanguage = this.getInitialLanguage()),
+      (this.translationsCache = new Map()),
+      (this.pendingLoads = new Map()),
+      (this.keyPathCache = new Map()),
+      (this.isInitialized = !1),
+      (this.eventListeners = new Map()),
+      (this.dropdownEl = null));
+    var e = t.LANG_REGISTRY && t.LANG_REGISTRY.LANGUAGES ? t.LANG_REGISTRY.LANGUAGES : [];
+    this.languages = e.map(function (t) {
+      return {
+        code: t.code,
+        name: t.nativeName,
+      };
+    });
+  }
+
+  function i(t, e, n) {
+    return (
+      (e = e || 1e4),
+      (n = n || "Translation loading timeout"),
+      Promise.race([
+        t,
+        new Promise(function (t, a) {
+          setTimeout(function () {
+            a(new Error(n));
+          }, e);
+        }),
+      ])
+    );
+  }
+  ((r.prototype.getInitialLanguage = function () {
+    var t;
+    try {
+      t = localStorage.getItem("userLanguage");
+    } catch (e) {
+      t = null;
+    }
+    return t && getO()[t] ? t : "zh-CN";
+  }),
+    (r.prototype.loadTranslations = function (t) {
+      if (
+        this.translationsCache.has(t) &&
+        this.translationsCache.has("ui-" + t) &&
+        this.translationsCache.has("product-" + t)
+      )
+        return Promise.resolve(this.translationsCache.get(t));
+      if (this.pendingLoads.has(t)) return this.pendingLoads.get(t);
+      var e = this,
+        n = this.fetchTranslations(t);
+      return (
+        this.pendingLoads.set(t, n),
+        n.finally(function () {
+          e.pendingLoads.delete(t);
+        })
+      );
+    }),
+    (r.prototype.fetchTranslations = function (t) {
+      var e = this;
+      return this.loadUITranslations(t)
+        .then(function (n) {
+          return e.loadProductTranslations(t).then(function (a) {
+            var o = e.mergeTranslations(n, a);
+            return (e.translationsCache.set(t, o), o);
+          });
+        })
+        .catch(function (n) {
+          if ((console.error("Failed to load translations for " + t + ":", n), "en" !== t))
+            return e.loadTranslations("en");
+          throw n;
+        });
+    }),
+    (r.prototype.loadUITranslations = function (t) {
+      var e = "ui-" + t;
+      if (this.translationsCache.has(e)) return Promise.resolve(this.translationsCache.get(e));
+      var n = "yukoli-translations-" + e,
+        o = null;
+      if (!a)
+        try {
+          var r = localStorage.getItem(n);
+          if (r) {
+            var s = JSON.parse(r);
+            if (s && "object" == typeof s && s.data && "object" == typeof s.data) {
+              if (s.timestamp && Date.now() - s.timestamp < 864e5 && s._v === 3)
+                return ((o = s.data), this.translationsCache.set(e, o), Promise.resolve(o));
+              try {
+                localStorage.removeItem(n);
+              } catch (e) {}
+            } else
+              (console.warn("[i18n] Invalid cache structure for " + t + ", clearing"),
+                (function () {
+                  try {
+                    localStorage.removeItem(n);
+                  } catch (e) {}
+                })());
+          }
+        } catch (e) {
+          console.warn("[i18n] Failed to read localStorage cache for " + t + ":", e.message);
+          try {
+            localStorage.removeItem(n);
+          } catch (t) {}
+        }
+      var l = this;
+      if ("function" != typeof fetch)
+        return "en" !== t ? l.loadUITranslations("en") : Promise.reject(new Error("fetch not available"));
+      var u = ("undefined" != typeof window && window.BASE_PATH) || "";
+      return i(
+        fetch(u + "/assets/lang/" + t + "-ui.json", {
+          cache: a ? "no-store" : "default",
+        })
+          .then(function (t) {
+            if (!t.ok) throw new Error("HTTP " + t.status + ": " + t.statusText);
+            return t.json();
+          })
+          .then(function (t) {
+            var o = l.normalizeTranslationKeys(t);
+            if ((l.translationsCache.set(e, o), !a))
+              try {
+                localStorage.setItem(
+                  n,
+                  JSON.stringify({
+                    timestamp: Date.now(),
+                    _v: 2,
+                    data: o,
+                  })
+                );
+              } catch (t) {}
+            return o;
+          })
+          .catch(function (e) {
+            if ((console.error("[i18n] loadUITranslations: FAILED for " + t + ":", e), "en" !== t))
+              return l.loadUITranslations("en");
+            throw e;
+          }),
+        15e3,
+        "[i18n] loadUITranslations timeout for " + t
+      );
+    }),
+    (r.prototype.loadProductTranslations = function (lang) {
+      var e = "product-" + lang;
+      if (this.translationsCache.has(e)) return Promise.resolve(this.translationsCache.get(e));
+      var n = this;
+      // Extract product translations from the already-loaded PRODUCT_DATA_TABLE
+      // (translations are embedded as nameEn, specificationsEn, etc. on each product)
+      return Promise.resolve().then(function () {
+        var suffix =
+          lang.charAt(0).toUpperCase() +
+          lang.slice(1).replace(/-([a-z])/g, function (m, c) {
+            return c.toUpperCase();
+          });
+        var table = window.PRODUCT_DATA_TABLE || [];
+        var map = {};
+        var fields = [
+          "name",
+          "specifications",
+          "usage",
+          "throughput",
+          "material",
+          "sub_category",
+          "tier",
+          "badge",
+          "control_method",
+          "product_dimensions",
+          "color",
+        ];
+        table.forEach(function (cat) {
+          var prods = cat.products || [];
+          prods.forEach(function (p) {
+            var pid = p._productId || p.id;
+            if (!pid) return;
+            var entry = {};
+            fields.forEach(function (f) {
+              var val = p[f + suffix];
+              if (val) entry[f] = val;
+            });
+            if (Object.keys(entry).length > 0) map[pid] = entry;
+          });
+        });
+        if (Object.keys(map).length === 0 && lang !== "zh-CN") {
+          // No embedded product translations — this is normal when PRODUCT_DATA_TABLE
+          // doesn't contain suffixed fields (nameEn, etc.). Product translations
+          // are handled separately via product-<lang>.json or the UI bundle.
+        }
+        n.translationsCache.set(e, map);
+        window._productTranslations = map;
+        return map;
+      });
+    }),
+    (r.prototype.mergeTranslations = function (t, e) {
+      return _extend({}, t, e);
+    }),
+    (r.prototype.normalizeTranslationKeys = function (t) {
+      if (Array.isArray(t)) return t.map(this.normalizeTranslationKeys.bind(this));
+      if (!t || "object" != typeof t) return t;
+      var e = {},
+        n = this;
+      return (
+        Object.keys(t).forEach(function (a) {
+          var o = "string" == typeof a ? a.replace(/^\uFEFF/, "") : a;
+          e[o] = n.normalizeTranslationKeys(t[a]);
+        }),
+        e
+      );
+    }),
+    (r.prototype.resolveTranslationValue = function (t, e) {
+      if (!t || !e) return e;
+      for (var n = this.getKeyPath(e), a = t, o = 0; o < n.length; o++) a = a ? a[n[o]] : void 0;
+      // Return resolved value (including empty string for skeleton keys)
+      // so caller can distinguish "found but empty" from "key not found"
+      return a !== void 0 ? a : e;
+    }),
+    (r.prototype.getKeyPath = function (t) {
+      return (this.keyPathCache.has(t) || this.keyPathCache.set(t, t.split(".")), this.keyPathCache.get(t));
+    }),
+    (r.prototype.getDropdown = function () {
+      return (
+        (this.dropdownEl && document.contains(this.dropdownEl)) ||
+          (this.dropdownEl = document.getElementById("language-dropdown")),
+        this.dropdownEl
+      );
+    }),
+    (r.prototype.setElementTranslation = function (t, e) {
+      if ("INPUT" !== t.tagName && "TEXTAREA" !== t.tagName) {
+        for (var n = !1, a = 0; a < t.childNodes.length; a++)
+          if (3 === t.childNodes[a].nodeType && t.childNodes[a].textContent.trim()) {
+            ((t.childNodes[a].textContent = e), (n = !0));
+            break;
+          }
+        n || (t.textContent = e);
+      } else t.placeholder !== e && (t.placeholder = e);
+    }),
+    (r.prototype.interpolate = function (t) {
+      if (typeof t !== "string") return t;
+      var brand =
+        this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || "Brand");
+      return t.replace(/\{brand\}/g, brand);
+    }),
+    (r.prototype.translate = function (t) {
+      var e = this.translationsCache.get("ui-" + this.currentLanguage);
+      if (e) {
+        var n = this.resolveTranslationValue(e, t);
+        if (n && n !== t) return this.interpolate(n);
+      }
+      var a = this.translationsCache.get("product-" + this.currentLanguage);
+      if (a) {
+        var o = this.resolveTranslationValue(a, t);
+        if (o && o !== t) return this.interpolate(o);
+      }
+      var r = this.translationsCache.get(this.currentLanguage);
+      return this.interpolate(this.resolveTranslationValue(r, t));
+    }),
+    (r.prototype.uiText = function (t, e) {
+      var n = this.translate(t);
+      if (n && n !== t) return n;
+      var a = this.getFallbackTranslation(t);
+      return a && a !== t ? this.interpolate(a) : e;
+    }),
+    (r.prototype.applyTranslations = function () {
+      var t = this,
+        e = "ui-" + this.currentLanguage;
+      return (
+        this.translationsCache.has(e)
+          ? Promise.resolve(this.translationsCache.get(e))
+          : this.loadUITranslations(this.currentLanguage)
+      )
+        .then(function (e) {
+          // Ensure English is cached for fallback before processing
+          var ensureEn =
+            "en" !== t.currentLanguage && !t.translationsCache.has("ui-en")
+              ? t.loadUITranslations("en").catch(function () {})
+              : Promise.resolve();
+          return ensureEn.then(function () {
+            if (e) {
+              var n = document.querySelectorAll("[data-i18n]"),
+                a = document.querySelectorAll("[data-i18n-placeholder]"),
+                r = document.querySelectorAll("[data-i18n-aria]"),
+                i = document.getElementById("current-lang-label"),
+                s = t.translationsCache.get("product-" + t.currentLanguage) || {},
+                l = _extend({}, e, s),
+                u = function (e) {
+                  var n = t.resolveTranslationValue(l, e);
+                  // If not found, try with current language prefix (e.g. 'en_nav_products_coffee')
+                  // But guard against literal "lang_key" returns when prefix_key doesn't exist
+                  if ((!n || n === e) && t.currentLanguage) {
+                    var prefixed = t.currentLanguage + "_" + e;
+                    n = t.resolveTranslationValue(l, prefixed);
+                    // resolveTranslationValue 在 key 不存在时返回 key 本身，排除伪命中
+                    if (n === prefixed) n = void 0;
+                  }
+                  return n && n !== e ? t.interpolate(n) : t.interpolate(t.getFallbackTranslation(e));
+                },
+                c = [];
+              if (
+                (n.forEach(function (t) {
+                  var e = t.getAttribute("data-i18n");
+                  // Skip current-lang-label — managed by updateCurrentLanguageLabel
+                  if ("current-lang-label" === t.id) return;
+                  var n = u(e);
+                  n &&
+                    n !== e &&
+                    c.push({
+                      el: t,
+                      text: n,
+                    });
+                }),
+                a.forEach(function (t) {
+                  var e = t.getAttribute("data-i18n-placeholder"),
+                    n = u(e);
+                  n &&
+                    n !== e &&
+                    c.push({
+                      el: t,
+                      placeholder: n,
+                    });
+                }),
+                r.forEach(function (t) {
+                  var e = t.getAttribute("data-i18n-aria"),
+                    n = u(e);
+                  n &&
+                    n !== e &&
+                    c.push({
+                      el: t,
+                      ariaLabel: n,
+                    });
+                }),
+                c.length > 0 &&
+                  requestAnimationFrame(function () {
+                    c.forEach(function (e) {
+                      e.text
+                        ? t.setElementTranslation(e.el, e.text)
+                        : e.placeholder
+                          ? (e.el.placeholder = e.placeholder)
+                          : e.ariaLabel && e.el.setAttribute("aria-label", e.ariaLabel);
+                    });
+                  }),
+                i)
+              ) {
+                var g = getO()[t.currentLanguage] || t.currentLanguage.toUpperCase();
+                i.textContent !== g && (i.textContent = g);
+                var d = document.querySelector(".current-lang-btn-label");
+                d && d.textContent !== g && (d.textContent = g);
+              }
+              (t.updateCurrentLanguageLabel(t.currentLanguage),
+                t.refreshCompanyName(e),
+                t.refreshDocumentTitle(e),
+                t.emit("translationsApplied", {
+                  language: t.currentLanguage,
+                }));
+            } else console.warn("[i18n] applyTranslations: uiTranslations is null/undefined for", t.currentLanguage);
+          });
+        })
+        .catch(function (t) {
+          console.error("[i18n] applyTranslations: ERROR:", t);
+        });
+    }),
+    (r.prototype.refreshCompanyName = function (t) {
+      var e = (t && this.interpolate(t.company_name)) || this.interpolate(this.getFallbackTranslation("company_name"));
+      ((e && "company_name" !== e) || "zh-CN" !== this.currentLanguage || (e = "佛山市跃迁力科技有限公司"),
+        e &&
+          "company_name" !== e &&
+          document.querySelectorAll('[data-i18n="company_name"]').forEach(function (t) {
+            t.textContent !== e && (t.textContent = e);
+          }));
+    }),
+    (r.prototype.refreshDocumentTitle = function (t) {
+      if (document.getElementById("page-title")) {
+        var e = (t && t.page_title) || this.getFallbackTranslation("page_title");
+        e && "page_title" !== e && document.title !== e && (document.title = e);
+      }
+    }),
+    (r.prototype.getFallbackTranslation = function (t) {
+      // 1. 从 en 找（所有骨架语言的唯一 fallback）
+      if ("en" !== this.currentLanguage) {
+        var en = this.translationsCache.get("ui-en");
+        if (en) {
+          var v = this.resolveTranslationValue(en, t);
+          if (!v || v === t) {
+            var enPrefixed = "en_" + t;
+            v = this.resolveTranslationValue(en, enPrefixed);
+            // resolveTranslationValue 在 key 不存在时返回 key 本身，需排除这种伪命中
+            if (v === enPrefixed) v = void 0;
+          }
+          if (v && v !== t) return v;
+        }
+      }
+      // 2. 返回 key 本身
+      return t;
+    }),
+    (r.prototype.on = function (t, e) {
+      (this.eventListeners.has(t) || this.eventListeners.set(t, []), this.eventListeners.get(t).push(e));
+    }),
+    (r.prototype.emit = function (t, e) {
+      (this.eventListeners.get(t) || []).forEach(function (t) {
+        t(e);
+      });
+    }),
+    (r.prototype.setLanguage = function (e) {
+      var n = this;
+      // Idempotent lock: prevent duplicate calls from firing multiple toasts
+      if (n._switchingTo === e) return Promise.resolve();
+      n._switchingTo = e;
+      return (
+        getO()[e]
+          ? this.currentLanguage === e
+            ? ((n._switchingTo = null), this.closeLanguageDropdown(), Promise.resolve())
+            : Promise.all([
+                this.loadUITranslations(e),
+                this.loadProductTranslations(e).catch(function (t) {
+                  console.warn("[i18n] setLanguage: product translations for " + e + " failed: " + t.message);
+                }),
+              ])
+                .then(function () {
+                  // Ensure English is loaded for fallback (skeleton languages need it)
+                  var ensureEn =
+                    "en" !== e && !n.translationsCache.has("ui-en")
+                      ? n.loadUITranslations("en").catch(function (err) {
+                          console.warn("[i18n] en preload failed:", err);
+                        })
+                      : Promise.resolve();
+                  return ensureEn.then(function () {
+                    var a = n.currentLanguage;
+                    return (
+                      (n.currentLanguage = e),
+                      (function () {
+                        try {
+                          localStorage.setItem("userLanguage", e);
+                        } catch (e) {}
+                      })(),
+                      n.applyTranslations().then(function () {
+                        if (
+                          ((document.documentElement.lang = e),
+                          t.dispatchEvent(
+                            new CustomEvent("languageChanged", {
+                              detail: {
+                                language: e,
+                                previousLanguage: a,
+                              },
+                            })
+                          ),
+                          n.closeLanguageDropdown(),
+                          n.resetLanguageSearch(),
+                          t.showNotification)
+                        ) {
+                          var r = n.uiText("notify_language_changed", "Language changed to");
+                          t.showNotification(r + " " + (getO()[e] || e), "success");
+                        }
+                        n.emit("languageChanged", {
+                          language: e,
+                          previousLanguage: a,
+                        });
+                      })
+                    );
+                  });
+                })
+                .catch(function (t) {
+                  n._switchingTo = null;
+                  if ((console.error("[i18n] setLanguage: FAILED for", e, t), "en" !== e)) return n.setLanguage("en");
+                })
+          : ((n._switchingTo = null), Promise.reject(new Error("Unsupported language: " + e)))
+      ).finally(function () {
+        n._switchingTo = null;
+      });
+    }),
+    (r.prototype.toggleLanguageDropdown = function (t) {
+      t && t.stopPropagation();
+      var e = this.getDropdown();
+      if ((e || (this.initDropdownContainer(), (e = this.getDropdown())), e)) {
+        var n = e.style.display,
+          a = e.classList.contains("show");
+        "block" === n || a ? this.closeLanguageDropdown() : this.openLanguageDropdown();
+      }
+    }),
+    (r.prototype.initDropdownContainer = function () {
+      var t = this,
+        e = this.languages || [],
+        n = this.currentLanguage || "en";
+      if (!document.getElementById("language-dropdown")) {
+        if ("undefined" == typeof LanguageDropdownTemplate) {
+          console.warn("[i18n] LanguageDropdownTemplate not found, attempting to load dynamically");
+          var a = document.createElement("script");
+          return (
+            (a.src = "/assets/js/translations-dropdown-template.js"),
+            (a.onload = function () {
+              t.initDropdownContainer();
+            }),
+            (a.onerror = function () {
+              console.error("[i18n] Failed to load LanguageDropdownTemplate");
+            }),
+            void document.head.appendChild(a)
+          );
+        }
+        var o = LanguageDropdownTemplate.createDropdownHTML(e, n),
+          r = document.createElement("div");
+        /* @audit-safe: internal-data */
+        /* @audit-safe: internal-data */
+        r.innerHTML = o;
+        var i = r.firstChild;
+        (document.body.appendChild(i),
+          (this.dropdownEl = i),
+          this.bindDropdownEvents(),
+          this.updateCurrentLanguageLabel(n));
+      }
+    }),
+    (r.prototype.updateCurrentLanguageLabel = function (t) {
+      // Sync lang-selector <select> value
+      var sel = document.getElementById("lang-selector");
+      if (sel && sel.value !== t) sel.value = t;
+      // Sync lang-toggle-btn text label
+      var btn = document.getElementById("lang-toggle-btn");
+      if (btn) {
+        var labelEl = document.getElementById("current-lang-label");
+        if (labelEl) {
+          var langName = t;
+          if (this.languages && Array.isArray(this.languages)) {
+            var found = this.languages.find(function (l) {
+              return l.code === t;
+            });
+            if (found) langName = found.name;
+          }
+          labelEl.textContent = langName;
+        }
+      }
+    }),
+    (r.prototype.bindDropdownEvents = function () {
+      var t = this,
+        e = this.getDropdown();
+      if (e) {
+        (e.addEventListener("click", function (t) {
+          t.stopPropagation();
+        }),
+          e.addEventListener("click", function (e) {
+            var n = e.target.closest(".lang-option");
+            if (n) {
+              var a = n.getAttribute("data-code");
+              a && t.setLanguage(a);
+            }
+          }));
+        var n = e.querySelector('#lang-search-input, input[data-i18n-placeholder="lang_search_placeholder"]');
+        n &&
+          n.addEventListener("input", function (e) {
+            t.filterLanguages(e.target.value);
+          });
+      }
+    }),
+    (r.prototype.openLanguageDropdown = function () {
+      var t = this.getDropdown(),
+        e = document.getElementById("language-dropdown-anchor");
+      if ((t || (this.initDropdownContainer(), (t = this.getDropdown())), t)) {
+        if (
+          ((t.style.position = "fixed"),
+          (t.style.zIndex = "9999"),
+          (t.style.display = "block"),
+          t.classList.add("show"),
+          e)
+        ) {
+          var n = e.getBoundingClientRect();
+          t.style.top = n.bottom + 8 + "px";
+          /* On small screens, center the dropdown */
+          if (window.innerWidth < 768) {
+            t.style.left = "16px";
+            t.style.right = "16px";
+            t.style.width = "auto";
+          } else {
+            var a = t.offsetWidth || 240,
+              o = window.innerWidth - n.right;
+            o + a > window.innerWidth
+              ? (t.style.left = Math.max(8, window.innerWidth - a - 8) + "px")
+              : ((t.style.left = ""), (t.style.right = o + "px"));
+          }
+        }
+      } else console.error("[i18n] openLanguageDropdown: dropdown still null, returning");
+    }),
+    (r.prototype.closeLanguageDropdown = function () {
+      var t = this.getDropdown();
+      t &&
+        ((t.style.display = "none"),
+        (t.style.left = ""),
+        (t.style.right = ""),
+        (t.style.width = ""),
+        t.classList.remove("show"));
+    }),
+    (r.prototype.filterLanguages = function (t) {
+      var e = document.querySelectorAll(".lang-option"),
+        n = t.toLowerCase();
+      e.forEach(function (t) {
+        var e = t.getAttribute("data-code").toLowerCase(),
+          a = t.textContent.toLowerCase();
+        t.style.display = e.includes(n) || a.includes(n) ? "" : "none";
+      });
+    }),
+    (r.prototype.resetLanguageSearch = function () {
+      var t = this.getDropdown();
+      if (t) {
+        var e = t.querySelector('input[data-i18n-placeholder="lang_search_placeholder"]');
+        (e && (e.value = ""), this.filterLanguages(""));
+      }
+    }),
+    (r.prototype.setupEventListeners = function () {
+      if (!this._eventListenersSetup) {
+        this._eventListenersSetup = !0;
+        var t = this,
+          e = document.querySelector(".lang-dropdown-container"),
+          n = this.getDropdown();
+        if (
+          (document.addEventListener("click", function (n) {
+            e && !e.contains(n.target) && t.closeLanguageDropdown();
+          }),
+          n)
+        ) {
+          (n.addEventListener("click", function (t) {
+            t.stopPropagation();
+          }),
+            n.addEventListener("click", function (e) {
+              var n = e.target.closest(".lang-option");
+              if (n) {
+                var a = n.getAttribute("data-code");
+                a && t.setLanguage(a);
+              }
+            }));
+          var a = n.querySelector('#lang-search-input, input[data-i18n-placeholder="lang_search_placeholder"]');
+          a &&
+            a.addEventListener("input", function (e) {
+              t.filterLanguages(e.target.value);
+            });
+        }
+        // lang-selector change event is handled by navigator.js _onLangChange().
+        // Removed duplicate binding here — it caused double setLanguage() calls
+        // and consequently double toasts on every language switch.
+      }
+    }),
+    (r.prototype.resetEventListeners = function () {
+      ((this._eventListenersSetup = !1), (this.dropdownEl = null));
+    }),
+    (r.prototype.detectBrowserLanguage = function () {
+      var t = navigator.language || navigator.userLanguage || "en",
+        e = {
+          zh: "en",
+          en: "en",
+          "zh-TW": "en",
+          "zh-HK": "en",
+          en: "en",
+          "en-US": "en",
+          "en-GB": "en",
+        };
+      return e[t] || e[t.split("-")[0]] || "en";
+    }),
+    (r.prototype.debug = function () {}),
+    (r.prototype.reloadTranslations = function () {
+      var t = this.currentLanguage;
+      (this.translationsCache.delete(t),
+        this.translationsCache.delete("ui-" + t),
+        this.translationsCache.delete("product-" + t));
+      var e = this;
+      return this.loadTranslations(t).then(function () {
+        return e.applyTranslations();
+      });
+    }),
+    (r.prototype.initialize = function () {
+      var e = this;
+      if (e.isInitialized) return Promise.resolve(e);
+      (function () {
+        try {
+          if (!localStorage.getItem("browserLang")) localStorage.setItem("browserLang", this.detectBrowserLanguage());
+        } catch (e) {}
+      }).call(this);
+      var n = this.getInitialLanguage();
+      return (
+        (this.currentLanguage = n),
+        e.setupEventListeners(),
+        Promise.all([
+          this.loadUITranslations(n),
+          this.loadProductTranslations(n).catch(function (t) {
+            console.warn("[i18n] initialize: product translations for " + n + " failed: " + t.message);
+          }),
+          "en" !== n && !this.translationsCache.has("ui-en")
+            ? this.loadUITranslations("en").catch(function () {})
+            : Promise.resolve(),
+        ])
+          .then(function () {
+            return e.applyTranslations();
+          })
+          .then(function () {
+            ((document.documentElement.lang = e.currentLanguage),
+              (e.isInitialized = !0),
+              e.emit("initialized", {
+                language: e.currentLanguage,
+              }),
+              t.dispatchEvent(
+                new CustomEvent("productTranslationsLoaded", {
+                  detail: {
+                    language: n,
+                  },
+                })
+              ));
+          })
+          .catch(function (t) {
+            return (
+              console.error("[i18n] initialize: FAILED:", t),
+              (e.currentLanguage = "en"),
+              e
+                .loadTranslations("en")
+                .then(function () {
+                  return e.applyTranslations();
+                })
+                .then(function () {
+                  ((document.documentElement.lang = "en"),
+                    (e.isInitialized = !0),
+                    e.emit("initialized", {
+                      language: "en",
+                    }));
+                })
+                .catch(function (t) {
+                  console.error("[i18n] initialize: fallback also FAILED:", t);
+                })
+            );
+          })
+      );
+    }),
+    (r.prototype.recoverFromBfcache = function () {
+      var t = this;
+      return (
+        document.getElementById("language-dropdown") || (this.dropdownEl = null),
+        this.setupEventListeners(),
+        this.applyTranslations()
+          .then(function () {
+            t.emit("bfcacheRecovered", {
+              language: t.currentLanguage,
+            });
+          })
+          .catch(function (e) {
+            return (
+              console.error("[i18n] recoverFromBfcache: FAILED:", e),
+              t.loadTranslations("en").then(function () {
+                return t.applyTranslations();
+              })
+            );
+          })
+      );
+    }));
+  var s = new r();
+  (function autoInit() {
+    function tryInit() {
+      if (!s.isInitialized) s.initialize();
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", tryInit);
+    } else {
+      tryInit();
+    }
+  })();
+  ((t.t = function (t) {
+    return s.translate(t);
+  }),
+    (t.setLanguage = function (t) {
+      return s.setLanguage(t);
+    }),
+    (t.toggleLanguageDropdown = function (t) {
+      return s.toggleLanguageDropdown(t);
+    }),
+    (t.filterLanguages = function (t) {
+      return s.filterLanguages(t);
+    }),
+    (t.translationManager = s),
+    (t.TranslationManager = r),
+    (t.reloadTranslations = function () {
+      return s.reloadTranslations();
+    }),
+    (t.recoverTranslationsFromBfcache = function () {
+      return s.recoverFromBfcache();
+    }),
+    _spaOn(
+      document,
+      "spa:load",
+      function () {
+        (s.resetEventListeners(),
+          s
+            .applyTranslations()
+            .then(function () {
+              document.dispatchEvent(new Event("spa:ready"));
+            })
+            .catch(function (t) {
+              console.warn("[i18n] spa:load translation apply failed:", t);
+              document.dispatchEvent(new Event("spa:ready"));
+            }));
+      },
+      "spa:load:i18n"
+    ));
+})(window);
+/**
+ * 语言下拉框 HTML 模板
+ * 这个下拉框会被动态插入到 body 中，使用 fixed 定位
+ */
+("use strict");
+
+var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
+var _primary = (_theme.colors || {}).primary || "#2E7D32";
+
+window.LanguageDropdownTemplate = {
+  // 按地区分组的语言配置（从 LANG_REGISTRY 动态读取）
+  LANG_GROUPS: [
+    { id: "common", titleKey: "lang_group_common" },
+    { id: "southeast_asia", titleKey: "lang_group_southeast_asia" },
+    { id: "east_asia", titleKey: "lang_group_east_asia" },
+    { id: "middle_east", titleKey: "lang_group_middle_east" },
+    { id: "european", titleKey: "lang_group_europe" },
+    { id: "other", titleKey: "lang_group_other" },
+  ],
+
+  // 按分组存放语言列表：{ common: ['zh-CN','en'], southeast_asia: ['th','vi',...], ... }
+  _groupedLangs: {},
+
+  // 从 LANG_REGISTRY 初始化语言列表（在 DOMContentLoaded 后调用）
+  _initFromRegistry: function () {
+    var reg = window.LANG_REGISTRY;
+    if (!reg || !reg.LANGUAGES) return;
+    this._groupedLangs = {};
+    reg.LANGUAGES.forEach(
+      function (l) {
+        var group = l.uiGroup || "common";
+        if (!this._groupedLangs[group]) this._groupedLangs[group] = [];
+        this._groupedLangs[group].push(l.code);
+      }.bind(this)
+    );
+  },
+
+  // 创建单个语言选项按钮
+  createLangOption: function (code, currentLang, name) {
+    var isActive = code === currentLang ? "is-active" : "";
+    var checkIcon =
+      code === currentLang
+        ? '<span class="material-symbols-outlined text-sm" style="color:' + _primary + '">check</span>'
+        : '<span style="width:20px"></span>';
+    return (
+      '<button class="lang-option w-full flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ' +
+      isActive +
+      '" data-code="' +
+      code +
+      '">' +
+      checkIcon +
+      "<span>" +
+      name +
+      "</span>" +
+      '<span class="ml-auto text-[10px] opacity-40 font-normal">' +
+      code.toUpperCase() +
+      "</span>" +
+      "</button>"
+    );
+  },
+
+  // 创建分组标题
+  createGroupTitle: function (titleKey) {
+    return (
+      '<div class="px-3 py-1.5 text-[10px] font-semibold text-slate-400 uppercase tracking-wider" data-i18n="' +
+      titleKey +
+      '">' +
+      titleKey +
+      "</div>"
+    );
+  },
+
+  // Inject styles (idempotent)
+  _injectStyles: function () {
+    if (document.getElementById("lang-dropdown-styles")) return;
+    var s = document.createElement("style");
+    s.id = "lang-dropdown-styles";
+    s.textContent = [
+      ".lang-option.is-active { background: rgba(236,91,19,.08); color: " + _primary + "; }",
+      ".lang-option.is-active span { color: " + _primary + "; }",
+      "html.dark .lang-option.is-active { background: rgba(236,91,19,.14); color: #f97316; }",
+      "html.dark .lang-option.is-active span { color: #f97316; }",
+      "#language-dropdown { animation: langDropIn .2s cubic-bezier(.32,.72,0,1); }",
+      "@keyframes langDropIn { from { opacity:0; transform:translateY(-4px) scale(.97); } to { opacity:1; transform:translateY(0) scale(1); } }",
+    ].join("\n");
+    document.head.appendChild(s);
+  },
+
+  // 创建下拉框 HTML
+  createDropdownHTML: function (languages, currentLang) {
+    var self = this;
+    var langMap = {};
+
+    // 将 languages 数组转换为 code -> name 的映射
+    if (Array.isArray(languages)) {
+      languages.forEach(function (l) {
+        langMap[l.code] = l.name;
+      });
+    }
+
+    // 从 LANG_REGISTRY 获取名称
+    var getLangName = function (code) {
+      if (langMap[code]) return langMap[code];
+      var reg = window.LANG_REGISTRY;
+      if (reg && reg.LANGUAGES) {
+        var found = reg.LANGUAGES.find(function (l) {
+          return l.code === code;
+        });
+        if (found) return found.nativeName;
+      }
+      return code;
+    };
+
+    this._injectStyles();
+    this._initFromRegistry();
+
+    var groupHtml = "";
+
+    // 遍历所有分组，只渲染有语言条目的组
+    this.LANG_GROUPS.forEach(function (group) {
+      var codes = self._groupedLangs[group.id] || [];
+      if (codes.length === 0) return;
+      groupHtml += '<div class="lang-group">';
+      groupHtml += self.createGroupTitle(group.titleKey);
+      codes.forEach(function (code) {
+        groupHtml += self.createLangOption(code, currentLang, getLangName(code));
+      });
+      groupHtml += "</div>";
+    });
+
+    return (
+      '<div id="language-dropdown" class="fixed bg-white dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 rounded-[13px] p-1 z-[var(--z-language-dropdown)] overflow-hidden" style="display:none;width:260px;box-shadow:0 0 0 .5px rgba(0,0,0,.04),0 8px 40px rgba(0,0,0,.12),0 2px 12px rgba(0,0,0,.08)">' +
+      '<div class="px-2 pt-2 pb-1 border-b border-slate-100 dark:border-slate-700/50">' +
+      '<div class="relative">' +
+      '<span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>' +
+      '<input class="w-full text-sm pl-8 pr-2 py-2 rounded-lg bg-slate-50 dark:bg-slate-900/80 border border-slate-200/50 dark:border-slate-700/50 focus:ring-2 focus:ring-primary/30 focus:border-primary/40 outline-none transition-all placeholder:text-slate-400" ' +
+      ' data-i18n-placeholder="lang_search_placeholder" placeholder="Search language..." ' +
+      ' type="text" id="lang-search-input"/>' +
+      "</div>" +
+      "</div>" +
+      '<div class="overflow-y-auto max-h-72 py-1">' +
+      groupHtml +
+      "</div>" +
+      "</div>"
+    );
+  },
+};

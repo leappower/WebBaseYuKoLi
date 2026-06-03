@@ -16,8 +16,8 @@ BUILD_MODE="${1:-production}"
 
 echo "🏗️  Building ($BUILD_MODE)..."
 
-SRC="src"
-DIST="dist"
+export SRC="src"
+export DIST="dist"
 
 # ─── 版本号 (毫秒时间戳) ────────────────────────────────────
 VERSION=$(python3 -c "import time; print(int(time.time()*1000))")
@@ -34,11 +34,18 @@ if [ "$INDEX_SIZE" -lt 1000 ]; then
   exit 1
 fi
 
-# ─── 0. Clean dist ─────────────────────────────────────────────
+# ─── 0. 图片使用审计 (仅首次或 force) ─────────────────────────
+# 当 IMAGE_AUDIT_FORCE=1 时强制运行；否则仅当审计报告不存在时运行
+if [ "${IMAGE_AUDIT_FORCE:-0}" = "1" ] || [ ! -f "docs/analysis/image-usage-audit.md" ]; then
+  echo "📸 Running image usage audit..."
+  node scripts/audit-image-usage.js || echo "  ⚠️  Audit had warnings (continuing)"
+fi
+
+# ─── 1. Clean dist ─────────────────────────────────────────────
 rm -rf "$DIST"
 mkdir -p "$DIST"
 
-# ─── 1. Tailwind CSS + Webpack ──────────────────────────────────
+# ─── 2. Tailwind CSS + Webpack ──────────────────────────────────
 echo "📦 Building CSS + JS..."
 npm run build:css 2>&1 | tail -1
 if [ "$BUILD_MODE" = "dev" ]; then
@@ -47,7 +54,19 @@ else
   npx webpack --mode=production 2>&1 | tail -3 || echo "  ⚠️  Webpack had non-fatal errors"
 fi
 
-# ─── 2. i18n cache version ──────────────────────────────────────
+# ─── 2.5. Sharp 多尺寸图片 Pipeline ─────────────────────────────
+# SKIP_RESIZE=1 可跳过（用于快速开发构建）
+if [ "${SKIP_RESIZE:-0}" != "1" ]; then
+  echo "🖼️  Running sharp image resize pipeline..."
+  node scripts/resize-images.js
+  if [ $? -ne 0 ]; then
+    echo "  ⚠️  Image resize had errors (check .cache/resize-errors.log)"
+  fi
+else
+  echo "⏭️  SKIP_RESIZE=1 — skipping image resize"
+fi
+
+# ─── 3. i18n cache version ──────────────────────────────────────
 I18N_CACHE_TS=$(python3 -c "import time; print(int(time.time()))")
 python3 -c "
 import re, os
@@ -58,7 +77,7 @@ with open(fp, 'w') as f: f.write(c)
 " 2>/dev/null || echo "  ⚠️  i18n cache bump failed"
 echo "🔄 i18n cache version → $I18N_CACHE_TS"
 
-# ─── 3. Assets ──────────────────────────────────────────────────
+# ─── 4. Assets ──────────────────────────────────────────────────
 echo "📦 Syncing assets..."
 sync_assets() {
   local src_dir="$1"
@@ -81,11 +100,19 @@ sync_assets "images"   "*"
 sync_assets "video"    "*"
 sync_assets "pdf"      "*.pdf"
 sync_assets "files"    "*.pdf"
-# ─── 4. site.config.js → dist/ ─────────────────────────────────
+
+# ─── 4.5. 验证图片引用 ──────────────────────────────────────────
+echo "🔍 Verifying image references..."
+node scripts/verify-image-refs.js
+if [ $? -ne 0 ]; then
+  echo "  ⚠️  Image reference verification had issues (continuing)"
+fi
+
+# ─── 5. site.config.js → dist/ ─────────────────────────────────
 # Must be at /site.config.js for SPA shell (after webpack so not cleaned)
 cp "$SRC/site.config.js" "$DIST/site.config.js"
 
-# ─── 5. HTML pages (平铺到 dist/，去掉 /pages/ 前缀) ──────────
+# ─── 6. HTML pages (平铺到 dist/，去掉 /pages/ 前缀) ──────────
 echo "📦 Syncing HTML pages..."
 find "$SRC/pages" -name '*.html' -print0 | while IFS= read -r -d '' f; do
   # src/pages/home/index-pc.html → dist/home/index-pc.html (去掉 /pages/)
@@ -95,7 +122,7 @@ find "$SRC/pages" -name '*.html' -print0 | while IFS= read -r -d '' f; do
 done
 cp "$SRC/index.html" "$DIST/index.html"
 
-# ─── 5.5. Replace %DOMAIN% placeholder ──────────────────────────
+# ─── 6.5. Replace %DOMAIN% placeholder ──────────────────────────
 python3 -c "
 import os
 DOMAIN = 'https://brew.yukoli.com'
@@ -115,14 +142,14 @@ echo "🔧 Replaced %DOMAIN% placeholders"
 # CNAME must be a file (not directory) for GitHub Pages custom domain
 rm -rf "$DIST/CNAME"
 
-# ─── 6. Root files ──────────────────────────────────────────────
+# ─── 7. Root files ──────────────────────────────────────────────
 cp "CNAME"                       "$DIST/CNAME"             2>/dev/null || true
 cp "$SRC/404.html"               "$DIST/404.html"          2>/dev/null || true
 cp "$SRC/robots.txt"             "$DIST/robots.txt"        2>/dev/null || true
 cp "$SRC/manifest.json"          "$DIST/manifest.json"     2>/dev/null || true
 touch "$DIST/.nojekyll"
 
-# ─── 7. sw.js 版本号注入 ──────────────────────────────────────
+# ─── 8. sw.js 版本号注入 ──────────────────────────────────────
 SW_SRC=""
 [ -f "sw.js" ]      && SW_SRC="sw.js"
 [ -z "$SW_SRC" ] && [ -f "$SRC/sw.js" ] && SW_SRC="$SRC/sw.js"
@@ -139,14 +166,52 @@ with open('$DIST/sw.js', 'w') as f: f.write(c)
   fi
 fi
 
-# ─── 8. SSG: 生成路由 index.html ──────────────────────────────
+# ─── 9. SSG: 生成路由 index.html ──────────────────────────────
 echo "🔄 Running SSG..."
 node scripts/build-ssg.js 2>&1 | grep -E 'Step|✓|✅|WARN|ERROR' || echo "  (SSG completed)"
 
-# ─── 9. Sitemap ─────────────────────────────────────────────────
+# ─── 10. Sitemap ─────────────────────────────────────────────────
 node scripts/generate-sitemap.js 2>/dev/null || echo "  ⚠️  sitemap generation skipped"
 
-# ─── 10. 版本号注入 (dev + production) ──────────────────────────
+# ─── 10.5. Critical CSS 内联 (production only) ─────────────────
+if [ "$BUILD_MODE" != "dev" ] && [ -f "$SRC/assets/css/critical.css" ]; then
+  echo "🎨 Inlining critical CSS..."
+  CRITICAL=$(python3 -c "
+with open('$SRC/assets/css/critical.css') as f:
+    print(f.read().replace('\n', '\\n'))
+")
+  python3 -c "
+import os, re
+dist = os.environ['DIST']
+critical_path = os.path.join(os.environ['SRC'], 'assets/css/critical.css')
+with open(critical_path) as f:
+    critical_css = f.read()
+# Remove existing external critical.css link if present
+for root, dirs, files in os.walk(dist):
+    for f in files:
+        if not f.endswith('.html'): continue
+        fp = os.path.join(root, f)
+        with open(fp) as fh: c = fh.read()
+        if '<link rel=\"stylesheet\" href=\"/assets/css/critical.css\"' in c:
+            c = c.replace('<link rel=\"stylesheet\" href=\"/assets/css/critical.css\">', '')
+        # Inject critical CSS before </head>
+        if '</head>' in c and '<style id=\"critical-css\">' not in c:
+            c = c.replace('</head>', '<style id=\"critical-css\">' + critical_css + '</style></head>')
+            with open(fp, 'w') as fh: fh.write(c)
+        # Update existing critical style block if it exists
+        elif '<style id=\"critical-css\">' in c:
+            c = re.sub(
+                r'<style id=\"critical-css\">.*?</style>',
+                '<style id=\"critical-css\">' + critical_css + '</style>',
+                c,
+                flags=re.DOTALL
+            )
+            with open(fp, 'w') as fh: fh.write(c)
+  "
+  echo "  ✅ Critical CSS inlined"
+fi
+
+# ─── 11. 版本号注入 (dev + production) ──────────────────────────
 if true; then
   echo "🔄 Bumping version to $VERSION_TAG..."
   python3 -c "
@@ -166,6 +231,13 @@ for r, d, fs in os.walk(root):
                 fh.write(nc)
 "
   echo "  ✅ Version bump complete"
+fi
+
+# ─── 10.7. Blur-up LQIP 占位 (production only) ───────────────────
+if [ "$BUILD_MODE" != "dev" ] && ls "$SRC/assets/images/"*blur.webp 2>/dev/null | head -1 >/dev/null 2>&1; then
+  echo "🖼️  Injecting blur-up placeholders for hero images..."
+  node scripts/inject-blur-placeholders.js "$SRC" "$DIST" 2>&1 || echo "  ⚠️  Blur-up injection had non-fatal errors"
+  echo "  ✅ Hero blur-up placeholders injected"
 fi
 
 # ─── Fix permissions ──────────────────────────────────────────

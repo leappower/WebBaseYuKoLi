@@ -1088,7 +1088,7 @@
     html +=
       '<div class="cs-popup-search-wrap">' +
       '<span class="material-symbols-outlined cs-popup-search-icon">search</span>' +
-      '<input type="text" class="cs-popup-search" placeholder="搜索...">' +
+      '<input type="text" class="cs-popup-search" placeholder="搜索..." data-i18n-placeholder="search_placeholder">' +
       "</div>";
     html += '<div class="cs-popup-list">' + result.inst._buildItemsHTML(data) + "</div>";
     /* @audit-safe: config-driven-render */
@@ -1296,7 +1296,7 @@
       var existingHeader = placeholder.querySelector("header");
       if (existingHeader) {
         placeholder.parentNode.replaceChild(existingHeader, placeholder);
-        continue;
+        /* Don't 'continue' — let the loop finish placeholder setup */
       }
 
       /* 否则根据配置构建新 header */

@@ -438,6 +438,10 @@
       "</span>" +
       '<span class="material-symbols-outlined cs-trigger-chevron">expand_more</span>';
 
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
+
     // Build float panel
     this.panel = this._buildPanel();
 
@@ -477,7 +481,7 @@
       html +=
         '<div class="cs-search-wrap" style="position:relative;">' +
         '<span class="material-symbols-outlined cs-search-icon">search</span>' +
-        '<input type="text" class="cs-search" placeholder="搜索...">' +
+        '<input type="text" class="cs-search" placeholder="搜索..." data-i18n-placeholder="search_placeholder">' +
         "</div>";
     }
 
@@ -487,6 +491,10 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     panel.innerHTML = html;
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
 
     // Bind search
     if (this.searchable) {
@@ -768,7 +776,7 @@
       html +=
         '<div class="cs-popup-search-wrap">' +
         '<span class="material-symbols-outlined cs-popup-search-icon">search</span>' +
-        '<input type="text" class="cs-popup-search" placeholder="搜索...">' +
+        '<input type="text" class="cs-popup-search" placeholder="搜索..." data-i18n-placeholder="search_placeholder">' +
         "</div>";
     }
 
@@ -778,6 +786,10 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     this._popupPanel.innerHTML = html;
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
 
     // Insert
     document.body.appendChild(this._popupOverlay);

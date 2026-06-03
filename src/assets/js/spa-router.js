@@ -79,7 +79,7 @@
     PRODUCT_SLUG_PATTERN: "(?!x)x",
 
     _initCategorySlugs: function () {
-      var cats = ((_cfg.categories || {}).products || []);
+      var cats = (_cfg.categories || {}).products || [];
       var slugs = ["all"];
       for (var i = 0; i < cats.length; i++) {
         if (cats[i].slug) slugs.push(cats[i].slug);
@@ -126,7 +126,7 @@
     // 日志函数
     log: function () {
       var isDev = window.__DEVELOPMENT__ || location.hostname === "localhost" || location.hostname === "127.0.0.1";
-      if (isDev || window.SpaRouter && SpaRouter.debug) {
+      if (isDev || (window.SpaRouter && SpaRouter.debug)) {
         var args = Array.prototype.slice.call(arguments);
         args.unshift("[SPA]");
         console.log.apply(console, args);
@@ -237,9 +237,23 @@
           } else {
             // Debug: log parsed body structure
             var body = doc.body;
-            _self.log("extractContent: spa-content NOT found. body children: " + body.children.length + ", htmlLen=" + html.length);
+            _self.log(
+              "extractContent: spa-content NOT found. body children: " +
+                body.children.length +
+                ", htmlLen=" +
+                html.length
+            );
             for (var i = 0; i < Math.min(body.children.length, 5); i++) {
-              _self.log("  child[" + i + "]: " + body.children[i].tagName + "#" + body.children[i].id + "." + (body.children[i].className || "").substring(0, 40));
+              _self.log(
+                "  child[" +
+                  i +
+                  "]: " +
+                  body.children[i].tagName +
+                  "#" +
+                  body.children[i].id +
+                  "." +
+                  (body.children[i].className || "").substring(0, 40)
+              );
             }
           }
         }
@@ -364,14 +378,18 @@
       container.innerHTML =
         '<div class="flex flex-col items-center justify-center min-h-[60vh] px-4">' +
         '<span class="material-symbols-outlined text-8xl text-slate-300 dark:text-slate-600 mb-6">' +
-        'error_outline</span>' +
+        "error_outline</span>" +
         '<h1 class="text-4xl font-black text-slate-800 dark:text-slate-200 mb-2">404</h1>' +
         '<p class="text-lg text-slate-500 dark:text-slate-400 mb-8" data-i18n="page_not_found">' +
-        'Page not found</p>' +
+        "Page not found</p>" +
         '<a href="/home/" class="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">' +
         '<span class="material-symbols-outlined text-sm">home</span>' +
         '<span data-i18n="back_to_home">Back to Home</span></a>' +
-        '</div>';
+        "</div>";
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
       container.classList.add("transition-main");
       document.title = "404 - Page Not Found";
     },
@@ -502,7 +520,6 @@
           "/support": "support",
           "/about": "about",
           "/contact": "contact",
-
         };
         var best = "";
         for (var key in map) {
@@ -562,18 +579,27 @@
       // 不走 SSG 直链优化（跳过 fetch 会导致 page scripts 加载时序问题）
       // 即使 SSG 内容已存在，fetch 返回的内容和现有内容相同
       // renderContent 会检测相同内容并跳过 DOM 替换
-      fetch(devicePath, { cache: 'no-store' })
+      fetch(devicePath, { cache: "no-store" })
         .then(function (response) {
           if (!response.ok) throw new Error("HTTP " + response.status);
-          var contentLength = response.headers.get('content-length');
-          var contentEncoding = response.headers.get('content-encoding');
-          _self.log("loadRoute: fetch headers content-length=" + contentLength + " encoding=" + contentEncoding + " url=" + devicePath);
+          var contentLength = response.headers.get("content-length");
+          var contentEncoding = response.headers.get("content-encoding");
+          _self.log(
+            "loadRoute: fetch headers content-length=" +
+              contentLength +
+              " encoding=" +
+              contentEncoding +
+              " url=" +
+              devicePath
+          );
           return response.text();
         })
         .then(function (html) {
           // 竞态保护：丢弃过期导航的结果
           if (navVersion && navVersion !== _self._navVersion) {
-            _self.log("loadRoute: stale result discarded (navVersion=" + navVersion + " _navVersion=" + _self._navVersion + ")");
+            _self.log(
+              "loadRoute: stale result discarded (navVersion=" + navVersion + " _navVersion=" + _self._navVersion + ")"
+            );
             _self.hideSkeleton(); // 安全恢复：防止 display:none 残留
             return;
           }
@@ -639,10 +665,16 @@
       // Dispatch spa:beforeunload before replacing content
       container.dispatchEvent(new CustomEvent("spa:beforeunload", { bubbles: true }));
       container.style.opacity = "0";
-      this.log("renderContent: innerHTML replacing, oldLen=" + container.innerHTML.length + " newLen=" + content.length);
+      this.log(
+        "renderContent: innerHTML replacing, oldLen=" + container.innerHTML.length + " newLen=" + content.length
+      );
       /* @audit-safe: spa-parse-internal-html */
       /* @audit-safe: spa-parse-internal-html */
       container.innerHTML = content;
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
       this.log("renderContent: innerHTML set, container children=" + container.children.length);
 
       // 动态加载页面专属脚本（SPA 移除了 script 标签，需手动补充）
@@ -892,12 +924,12 @@
         scripts.push({ src: "/assets/js/ui/pi-maps.js", id: "spa-pi-maps" });
       }
 
-      if (/\/deploy-/.test(path)) { /* debug */ }
+      if (/\/deploy-/.test(path)) {
+        /* debug */
+      }
 
       // Support 页面需要 custom-select.js
-      if (
-        path.indexOf("/support/") !== -1
-      ) {
+      if (path.indexOf("/support/") !== -1) {
         if (!window.CustomSelect) {
           scripts.push({ src: "/assets/js/ui/dropdown-styles.js", id: "spa-dropdown-styles" });
           scripts.push({ src: "/assets/js/ui/custom-select.js", id: "spa-custom-select" });

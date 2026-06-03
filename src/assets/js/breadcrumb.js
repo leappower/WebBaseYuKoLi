@@ -36,6 +36,20 @@
     return fallback || key;
   }
 
+  /**
+   * Resolve a possibly-object label to a display string.
+   * Handles both string and {en, "zh-CN"} object labels.
+   */
+  function resolveLabel(label) {
+    if (typeof label === "string") return label;
+    if (label && typeof label === "object") {
+      // Try current language first, fall back to zh-CN or en
+      var currentLang = window.translationManager ? window.translationManager.currentLanguage : "zh-CN";
+      return label[currentLang] || label["zh-CN"] || label.en || "";
+    }
+    return String(label);
+  }
+
   // ── Config-driven category maps ──
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _categories = _cfg.categories || {};
@@ -115,7 +129,7 @@
       result.slug = slug;
       result.parentPath = "/products/";
       result.parentLabel = tl("nav_product_center", "产品中心");
-      result.currentLabel = info.label;
+      result.currentLabel = resolveLabel(info.label);
       // No siblings — product grid has its own category tabs
       return result;
     }
@@ -156,7 +170,7 @@
       result.slug = appSlug;
       result.parentPath = "/applications/";
       result.parentLabel = tl("nav_applications", "行业场景");
-      result.currentLabel = APP_SLUGS[appSlug].label;
+      result.currentLabel = resolveLabel(APP_SLUGS[appSlug].label);
       result.siblings = buildSiblingLinks("applications", appSlug); // keep for now
       return result;
     }
@@ -169,7 +183,7 @@
       result.slug = supSlug;
       result.parentPath = "/support/";
       result.parentLabel = tl("nav_support", "服务支持");
-      result.currentLabel = SUPPORT_SLUGS[supSlug].label;
+      result.currentLabel = resolveLabel(SUPPORT_SLUGS[supSlug].label);
       result.siblings = buildSiblingLinks("support", supSlug); // keep for now
       return result;
     }
@@ -291,7 +305,7 @@
     var backBar =
       '<div class="pt-4 pb-2 md:hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">' +
       '<div class="flex items-center gap-2">' +
-      '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all flex-shrink-0" aria-label="' +
+      '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-xl bg-primary/10 dark:bg-primary/20 text-primary hover:bg-primary/20 dark:hover:bg-primary/30 transition-all flex-shrink-0 shadow-sm" aria-label="' +
       tl("pd_back", "返回") +
       '">' +
       '<span class="material-symbols-outlined text-lg">arrow_back</span></button>' +
