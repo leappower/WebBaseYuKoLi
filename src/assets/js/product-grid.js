@@ -810,6 +810,10 @@
     container.innerHTML = pageItems.map(renderer).join("");
     renderGalleryPagination(containerId, products.length);
     updateCompareButtons();
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
   }
 
   function getFilteredProducts() {
@@ -860,6 +864,10 @@
     bindLoadMore(containerId, renderer, products);
     // Init floating bar after grid render
     createFloatingBar();
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
   }
 
   function updateLoadMoreBtn(containerId, total, shown) {
@@ -884,6 +892,10 @@
       updateLoadMoreBtn(containerId, products.length, next);
       // Re-sync compare button states for newly rendered cards
       updateCompareButtons();
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     });
   }
 
@@ -945,6 +957,10 @@
           '<span class="material-symbols-outlined text-4xl mb-4">inventory_2</span>' +
           '<p class="text-lg font-medium text-slate-500 dark:text-slate-400">' +
           '<span data-i18n="no_products_available">No products available yet.</span></p></div>';
+      }
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
       }
       var overlay = document.getElementById("skeleton-overlay");
       if (overlay) overlay.setAttribute("hidden", "");
@@ -1266,6 +1282,10 @@
         '<span class="material-symbols-outlined text-sm">refresh</span>' +
         retryText +
         "</button></div>";
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     }
     if (list && list.querySelector(".sk-product-card")) {
       console.warn("[ProductGrid] Skeleton still present in list after 5s — clearing");
@@ -1280,6 +1300,10 @@
         '<span class="material-symbols-outlined text-sm">refresh</span>' +
         retryText +
         "</button></div>";
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     }
   }, 5000);
 

@@ -58,13 +58,16 @@ def is_hero_image(src_path):
 
 
 def build_srcset(base_src, widths):
-    """Build a srcset string from an image source and list of widths."""
-    # Remove leading / for path construction
+    """Build a srcset string from an image source and list of widths.
+    Strips the extension and appends -{width}w before it.
+    E.g., /assets/images/hero-pc.webp with [1200, 1920]
+    => /assets/images/hero-pc-1200w.webp 1200w, /assets/images/hero-pc-1920w.webp 1920w
+    """
     clean_src = base_src.lstrip("/")
-    
+    root, ext = os.path.splitext(clean_src)
     parts = []
     for w in widths:
-        parts.append(f"/{clean_src} {w}w")
+        parts.append(f"/{root}-{w}w{ext} {w}w")
     return ", ".join(parts)
 
 

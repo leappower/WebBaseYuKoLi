@@ -165,7 +165,7 @@ function _t(k) {
 
       for (var i = 0; i < Math.min(products.length, 6); i++) {
         var p = products[i];
-        var img = p.image || "/assets/images/products/coffee/001.webp";
+        var img = p._imageUrl || "/assets/images/products/coffee/001.webp";
         var imgSrcset = buildImgSrcset(img, [1200, 1920]);
         var catLabel = p.category || "";
         var grad = gradients[i % gradients.length];
@@ -234,7 +234,7 @@ function _t(k) {
 
       for (var i = 0; i < Math.min(products.length, 6); i++) {
         var p = products[i];
-        var img = p.image || "/assets/images/products/coffee/001.webp";
+        var img = p._imageUrl || "/assets/images/products/coffee/001.webp";
         var imgSrcset = buildImgSrcset(img, [828, 1200]);
         var grad = gradients[i % gradients.length];
         html +=
@@ -299,7 +299,7 @@ function _t(k) {
 
       for (var i = 0; i < Math.min(products.length, 6); i++) {
         var p = products[i];
-        var img = p.image || "/assets/images/products/coffee/001.webp";
+        var img = p._imageUrl || "/assets/images/products/coffee/001.webp";
         var imgSrcset = buildImgSrcset(img, [375, 828]);
         var grad = gradients[i % gradients.length];
         html +=

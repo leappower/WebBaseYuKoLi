@@ -96,6 +96,18 @@
     return null;
   }
 
+  /**
+   * Build srcset for related product card images
+   */
+  function buildRelatedSrcset(imgSrc) {
+    var widths = [375, 828, 1200];
+    var parts = [];
+    widths.forEach(function (w) {
+      parts.push(imgSrc.replace(/\.webp$/i, "-" + w + "w.webp") + " " + w + "w");
+    });
+    return parts.join(", ");
+  }
+
   function buildRelatedCard(rp, idx) {
     var rImg =
       rp.images && rp.images.length > 0
@@ -128,7 +140,9 @@
       esc(rp.model) +
       '" class="w-full h-full object-cover group-hover:scale-105 transition-transform" src="' +
       rImg +
-      '" onerror="this.style.display=\'none\'">' +
+      '" srcset="' +
+      buildRelatedSrcset(rImg) +
+      '" sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 25vw" onerror="this.style.display=\'none\'">' +
       '</div><div class="p-4"><h4 class="font-bold text-sm mb-1">' +
       esc(rp.model) +
       '</h4><p class="text-xs text-slate-500 dark:text-slate-400 mb-2">' +
@@ -495,12 +509,24 @@
           "</div></div></div>";
       }
     } else {
+      var srcset_parts = [];
+      [375, 828, 1200, 1920].forEach(function (w) {
+        srcset_parts.push(imgSrc.replace(/\.webp$/i, "-" + w + "w.webp") + " " + w + "w");
+      });
+      var imgSrcset = srcset_parts.join(", ");
+      var imgSizes = "(max-width: 767px) 100vw, 50vw";
       mediaHtml =
         '<img loading="eager" alt="' +
         esc(product.model) +
         '"' +
         ' class="w-full h-full object-cover" src="' +
         imgSrc +
+        '"' +
+        ' srcset="' +
+        imgSrcset +
+        '"' +
+        ' sizes="' +
+        imgSizes +
         '"' +
         " onerror=\"this.src='/assets/images/default.webp'\">";
       // Check for additional images (gallery)

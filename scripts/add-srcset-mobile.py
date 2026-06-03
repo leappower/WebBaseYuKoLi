@@ -3,7 +3,7 @@
 BrewYuKoLi — add srcset to mobile HTML pages (supplementary pass).
 
 Targets only *-mobile.html / *_mobile.html files, adding:
-  srcset="... 375w, ... 828w"
+  srcset="...-375w.webp 375w, ...-828w.webp 828w"
   sizes="calc(100vw - 32px)"
 
 Skips images that already have srcset.
@@ -17,6 +17,16 @@ import re
 import sys
 
 IMAGE_EXTS = {".webp", ".jpg", ".jpeg", ".png", ".avif", ".gif"}
+
+
+def build_srcset(base_src, widths):
+    """Build a srcset string with -{width}w suffix before extension."""
+    clean_src = base_src.lstrip("/")
+    root, ext = os.path.splitext(clean_src)
+    parts = []
+    for w in widths:
+        parts.append(f"/{root}-{w}w{ext} {w}w")
+    return ", ".join(parts)
 
 
 def process_mobile(filepath):
@@ -59,7 +69,7 @@ def process_mobile(filepath):
             skipped += 1
             return tag_text
 
-        srcset = '/' + src_path.lstrip('/') + ' 375w, /' + src_path.lstrip('/') + ' 828w'
+        srcset = build_srcset(src_path, [375, 828])
         sizes = 'calc(100vw - 32px)'
 
         if tag_end == "/>":
