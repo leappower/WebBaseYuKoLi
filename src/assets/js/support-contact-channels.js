@@ -24,7 +24,7 @@
       title: "联系我们",
       wechat: "扫码添加，在线咨询",
       wa: "多国语言支持，工作日2小时回复",
-      email: ((_cfg.contacts || {}).supportEmail || "support@example.com"),
+      email: (_cfg.contacts || {}).supportEmail || "support@example.com",
       phone: "紧急故障 随时待命 极速响应",
     },
   };
@@ -36,7 +36,7 @@
       var cat = cats[i];
       var slug = cat.slug;
       if (!slug || CONFIG[slug]) continue;
-      var label = typeof cat.label === "object" ? (cat.label["zh-CN"] || cat.label.en || slug) : (cat.label || slug);
+      var label = typeof cat.label === "object" ? cat.label["zh-CN"] || cat.label.en || slug : cat.label || slug;
       CONFIG[slug] = {
         titleKey: "nav_support_" + slug + "_title",
         title: "联系我们",
@@ -148,7 +148,7 @@
 
   function renderWaCard(cfg, device) {
     if (device === "mobile") {
-      var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565718814";
+      var _wa = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814";
       return (
         '<a href="https://wa.me/' +
         _wa +
@@ -164,7 +164,7 @@
         "</a>"
       );
     }
-    var _wa = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565718814";
+    var _wa = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814";
     return (
       '<a href="https://wa.me/' +
       _wa +
@@ -208,7 +208,7 @@
 
   function renderPhoneCard(cfg, device) {
     if (device === "mobile") {
-      var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565718814";
+      var _tel = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814";
       return (
         '<a href="tel:+' +
         _tel +
@@ -223,7 +223,7 @@
     }
     var phoneKey = cfg.phoneKey || "support_contact_phone_label";
     var phoneDescKey = cfg.phoneDescKey || "support_contact_phone_desc";
-    var _tel = window.Contacts && window.Contacts.whatsapp || ((_cfg.contacts || {}).whatsapp) || "8618565718814";
+    var _tel = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814";
     return (
       '<a href="tel:+' +
       _tel +
@@ -255,6 +255,10 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     el.innerHTML = html;
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
   }
 
   // Run on DOM ready and SPA navigation
@@ -269,7 +273,7 @@
   var _lastDevice = getDevice();
   var _resizeTimer;
   var _resizeEM = window.DomUtils && new DomUtils.EventManager();
-  (_resizeEM || {on:function(){}}).on(window, "resize", function () {
+  (_resizeEM || { on: function () {} }).on(window, "resize", function () {
     clearTimeout(_resizeTimer);
     _resizeTimer = setTimeout(function () {
       var d = getDevice();

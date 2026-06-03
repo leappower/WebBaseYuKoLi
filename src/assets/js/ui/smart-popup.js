@@ -345,6 +345,10 @@
         "</form>" +
         "</div>" +
         "</div>";
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
       document.body.appendChild(container.firstElementChild);
 
       // 绑定表单提交事件

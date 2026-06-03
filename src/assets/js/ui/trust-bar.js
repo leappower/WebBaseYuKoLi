@@ -64,6 +64,10 @@
 
     var bar = document.createElement("div");
     bar.innerHTML = buildHTML();
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
     var trustEl = bar.firstElementChild;
 
     function doInject() {

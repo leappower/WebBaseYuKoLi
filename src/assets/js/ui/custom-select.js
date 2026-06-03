@@ -438,6 +438,10 @@
       "</span>" +
       '<span class="material-symbols-outlined cs-trigger-chevron">expand_more</span>';
 
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
+
     // Build float panel
     this.panel = this._buildPanel();
 
@@ -487,6 +491,10 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     panel.innerHTML = html;
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
 
     // Bind search
     if (this.searchable) {
@@ -778,6 +786,10 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     this._popupPanel.innerHTML = html;
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
 
     // Insert
     document.body.appendChild(this._popupOverlay);

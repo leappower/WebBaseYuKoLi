@@ -106,6 +106,10 @@ function _t(k) {
         /* @audit-safe: constant-html */
         container.innerHTML =
           '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+
+        if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+          window.i18nBundle.applyTranslations();
+        }
       }
       setTimeout(function () {
         callback([], "local");
@@ -141,6 +145,10 @@ function _t(k) {
         /* @audit-safe: constant-html */
         container.innerHTML =
           '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+
+        if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+          window.i18nBundle.applyTranslations();
+        }
         return;
       }
 
@@ -188,6 +196,10 @@ function _t(k) {
 
       /* @audit-safe: config-driven-render */
       container.innerHTML = html;
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     });
   };
 
@@ -203,6 +215,10 @@ function _t(k) {
         /* @audit-safe: constant-html */
         container.innerHTML =
           '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+
+        if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+          window.i18nBundle.applyTranslations();
+        }
         return;
       }
 
@@ -245,6 +261,10 @@ function _t(k) {
       html += "</div>";
       /* @audit-safe: config-driven-render */
       container.innerHTML = html;
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     });
   };
 
@@ -260,6 +280,10 @@ function _t(k) {
         /* @audit-safe: constant-html */
         container.innerHTML =
           '<div class="text-center text-slate-400 py-4"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+
+        if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+          window.i18nBundle.applyTranslations();
+        }
         return;
       }
 
@@ -300,6 +324,10 @@ function _t(k) {
       html += "</div>";
       /* @audit-safe: config-driven-render */
       container.innerHTML = html;
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     });
   };
 

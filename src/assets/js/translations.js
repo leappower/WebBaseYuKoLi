@@ -63,13 +63,16 @@
     );
   }
   ((r.prototype.getInitialLanguage = function () {
+    /* 1) Check localStorage for saved preference */
     var t;
     try {
       t = localStorage.getItem("userLanguage");
     } catch (e) {
       t = null;
     }
-    return t && getO()[t] ? t : "zh-CN";
+    if (t && getO()[t]) return t;
+    /* 2) Fall back to browser language detection */
+    return this.detectBrowserLanguage();
   }),
     (r.prototype.loadTranslations = function (t) {
       if (
@@ -680,17 +683,24 @@
       ((this._eventListenersSetup = !1), (this.dropdownEl = null));
     }),
     (r.prototype.detectBrowserLanguage = function () {
-      var t = navigator.language || navigator.userLanguage || "en",
-        e = {
-          zh: "en",
-          en: "en",
-          "zh-TW": "en",
-          "zh-HK": "en",
-          en: "en",
-          "en-US": "en",
-          "en-GB": "en",
-        };
-      return e[t] || e[t.split("-")[0]] || "en";
+      /* Build lookup from LANG_REGISTRY */
+      var raw = (navigator.language || navigator.userLanguage || "").toLowerCase();
+      var supported = {};
+      var langs = window.LANG_REGISTRY && window.LANG_REGISTRY.LANGUAGES ? window.LANG_REGISTRY.LANGUAGES : [];
+      for (var i = 0; i < langs.length; i++) {
+        supported[langs[i].code.toLowerCase()] = langs[i].code;
+        var short = langs[i].code.substring(0, 2).toLowerCase();
+        if (!supported[short]) supported[short] = langs[i].code;
+      }
+      /* Exact match (e.g. "zh-cn" -> "zh-CN") */
+      if (supported[raw]) return supported[raw];
+      /* First 2 chars (e.g. "id" -> "id", "th" -> "th") */
+      var short = raw.substring(0, 2);
+      if (supported[short]) return supported[short];
+      /* zh variants -> zh-CN */
+      if (short === "zh") return "zh-CN";
+      /* Fallback */
+      return "en";
     }),
     (r.prototype.debug = function () {}),
     (r.prototype.reloadTranslations = function () {

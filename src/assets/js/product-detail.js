@@ -192,7 +192,10 @@
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     if (cards) el.innerHTML = cards;
-    else el.parentElement.style.display = "none";
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    } else el.parentElement.style.display = "none";
   }
 
   function ensureContainers() {
@@ -233,6 +236,10 @@
           "</h2>" +
           '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6" id="related-products"></div>' +
           "</div>";
+
+        if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+          window.i18nBundle.applyTranslations();
+        }
         // Find the container's parent to append
         var target = ce.parentElement || container;
         target.appendChild(section);
@@ -281,6 +288,10 @@
           '<span class="material-symbols-outlined">arrow_back</span> ' +
           tl("pdp_back_to_products") +
           "</a></div>";
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
       return;
     }
 
@@ -350,6 +361,10 @@
       /* @audit-safe: config-driven-render */
       /* @audit-safe: config-driven-render */
       bcEl.innerHTML = html;
+
+      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+        window.i18nBundle.applyTranslations();
+      }
     })();
 
     // Image: CMS upload > static
@@ -587,11 +602,19 @@
     /* @audit-safe: config-driven-render */
     if (ce) ce.innerHTML = html;
 
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
+
     // Static specs grid
     var sg = document.getElementById("specs-grid");
     /* @audit-safe: config-driven-render */
     /* @audit-safe: config-driven-render */
     if (sg) sg.innerHTML = specCards;
+
+    if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+      window.i18nBundle.applyTranslations();
+    }
 
     // Related products
     renderRelated(product);
