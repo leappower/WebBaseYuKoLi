@@ -28,19 +28,30 @@
   function buildHTML() {
     var itemsHtml = "";
     for (var i = 0; i < ITEM_KEYS.length; i++) {
-      itemsHtml += '<span class="trust-bar__item">' +
+      itemsHtml +=
+        '<span class="trust-bar__item">' +
         '<span class="trust-bar__dot">●</span>' +
-        '<span data-i18n="' + ITEM_KEYS[i].key + '">' + ITEM_KEYS[i].label + '</span>' +
+        '<span data-i18n="' +
+        ITEM_KEYS[i].key +
+        '">' +
+        ITEM_KEYS[i].label +
+        "</span>" +
         "</span>";
     }
 
-    // Duplicate content for seamless infinite scroll
-    var trackHtml = itemsHtml + itemsHtml;
+    // PC (>=1280px): static layout, no duplication
+    // Mobile/Tablet: duplicate content for seamless infinite scroll animation
+    var isPC = typeof window !== "undefined" && window.innerWidth >= 1280;
+    var trackHtml = isPC ? itemsHtml : itemsHtml + itemsHtml;
 
     return (
-      '<div id="trust-bar" class="trust-bar" role="banner" aria-label="Trust indicators">' +
+      '<div id="trust-bar" class="trust-bar' +
+      (isPC ? " trust-bar--pc" : "") +
+      '" role="banner" aria-label="Trust indicators">' +
       '<div class="trust-bar__inner">' +
-      '<div class="trust-bar__track">' +
+      '<div class="trust-bar__track' +
+      (isPC ? " trust-bar__track--static" : "") +
+      '">' +
       trackHtml +
       "</div>" +
       "</div>" +

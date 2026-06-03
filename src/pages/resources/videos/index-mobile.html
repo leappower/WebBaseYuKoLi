@@ -17,9 +17,9 @@
         var cleanUrl = urlParams.get("clean-url");
         if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
         if (window.__spaNavigating) return;
-        var currentFile = location.pathname.split("/").pop();
-        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
-        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
           var deviceType = window.DeviceUtils.getDeviceType();
           var targetFile;
           if (deviceType === window.DeviceUtils.DeviceType.MOBILE) targetFile = "index-mobile.html";
@@ -56,7 +56,7 @@
       <!-- Hero -->
       <section class="fullwidth-bg hero-banner w-full relative">
         <div class="w-full h-[300px] relative overflow-hidden">
-          <img alt="Manufacturing Excellence" class="w-full h-full object-cover" src="/assets/images/oem/resources/videos-hero.webp" loading="eager" />
+          <img alt="Manufacturing Excellence" class="w-full h-full object-cover" src="/assets/images/oem/resources/videos-hero-828w.webp" srcset="/assets/images/oem/resources/videos-hero-375w.webp 375w, /assets/images/oem/resources/videos-hero-828w.webp 828w" sizes="calc(100vw - 32px)" loading="eager" />
           <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
           <div class="absolute inset-0 flex items-center">
             <div class="section-content w-full">
@@ -129,32 +129,13 @@
         </div>
       </section>
     </main>
-    <script src="/assets/js/ui/dropdown-styles.js?v=202605291142"></script>
-    <script src="/assets/js/ui/dropdown-base.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/products-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
-
-    <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
-    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
+<script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-<script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/swup-init.js?v=202605291142"></script>
+<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/page-init.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
     <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
-        <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
-  <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
 </body>
 </html>

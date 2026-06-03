@@ -26,9 +26,9 @@
           return;
         }
         if (window.__spaNavigating) return;
-        var currentFile = location.pathname.split("/").pop();
-        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
-        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
           var deviceType = window.DeviceUtils.getDeviceType();
           var targetFile =
             deviceType === window.DeviceUtils.DeviceType.MOBILE
@@ -233,7 +233,7 @@
                       <div class="scale-slider-wrap">
                         <input type="range" class="scale-slider" min="0" max="4" value="0" step="1" />
                         <div class="scale-value">
-                          <span class="scale-display" data-i18n="product_builder_scale_under_1k">
+                          <span class="scale-display" data-i18n="product_builder_quantity_under_1k">
                             每月 1,000 件以下
                           </span>
                         </div>
@@ -326,11 +326,11 @@
                         姓名
                         <span style="color: #ef4444">*</span>
                       </label>
-                      <input type="text" name="fullname" required placeholder="John Doe" />
+                      <input type="text" name="fullname" required placeholder="John Doe" data-i18n-placeholder="product_builder_contact_name_placeholder" />
                     </div>
                     <div class="contact-field">
                       <label data-i18n="product_builder_contact_company">公司名称</label>
-                      <input type="text" name="company" placeholder="Your Company" />
+                      <input type="text" name="company" placeholder="Your Company" data-i18n-placeholder="product_builder_contact_company_placeholder" />
                     </div>
                     <div class="contact-field">
                       <label data-i18n="product_builder_contact_country">
@@ -369,7 +369,7 @@
                   <div class="contact-row-2" style="margin-top: 0.625rem">
                     <div class="contact-field">
                       <label data-i18n="product_builder_contact_email">邮箱</label>
-                      <input type="email" name="email" placeholder="you@company.com" />
+                      <input type="email" name="email" placeholder="you@company.com" data-i18n-placeholder="product_builder_contact_email_placeholder" />
                     </div>
                     <div class="contact-field">
                       <label data-i18n="product_builder_contact_phone">
@@ -421,7 +421,7 @@
                           type="tel"
                           name="phone"
                           required
-                          placeholder="手机号"
+                          placeholder="手机号" data-i18n-placeholder="product_builder_contact_phone_placeholder"
                           style="
                             flex: 1;
                             padding: 8px 12px;
@@ -454,10 +454,10 @@
                           color: var(--text, #1e293b);
                         "
                       >
-                        <option value="">选择…</option>
+                        <option value="" data-i18n="product_builder_contact_method_select">选择…</option>
                         <option value="WhatsApp">WhatsApp</option>
                         <option value="LINE">LINE</option>
-                        <option value="WeChat">微信 WeChat</option>
+                        <option value="WeChat" data-i18n="product_builder_contact_method_wechat">微信 WeChat</option>
                         <option value="Telegram">Telegram</option>
                         <option value="Zalo">Zalo</option>
                         <option value="Messenger">Messenger</option>
@@ -471,7 +471,7 @@
                       <input
                         type="text"
                         name="contactAccount"
-                        placeholder="WhatsApp/微信/Telegram 账号"
+                        placeholder="WhatsApp/微信/Telegram 账号" data-i18n-placeholder="product_builder_contact_whatsapp_placeholder"
                         style="
                           width: 100%;
                           padding: 8px 12px;
@@ -627,35 +627,16 @@
                   <span class="text-2xl">🇨🇳</span>
                   <h3 class="text-xl font-bold" data-i18n="contact_office_hq">China Headquarters</h3>
                 </div>
-                <p class="text-slate-500 text-sm" data-i18n="contact_company_name">
-                  Foshan
-                  <span data-i18n="seo_yukoli">YuKoLi</span>
-                  <span data-i18n="contact_company_name_seg1">Technology Co., Ltd.</span>
-                </p>
+                <p class="text-slate-500 text-sm" data-i18n="contact_company_name">Foshan YuKoLi Technology Co., Ltd.</p>
               </div>
             </div>
             <div class="space-y-4">
               <div class="flex items-start gap-3">
                 <span class="material-symbols-outlined text-primary text-lg mt-0.5">apartment</span>
                 <div>
-                  <p class="text-sm font-bold mb-1" data-i18n="contact_china_address_label">China Address</p>
-                  <p
-                    class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed"
-                    data-i18n="contact_china_address"
-                  >
-                    Room 502-6, Building 12, Wanchuangyuan, No.83 Zhanlun Road, Honggang Community, Daliang Street,
-                    Shunde District, Foshan City, Guangdong Province, China
-                  </p>
-                </div>
-              </div>
-              <div class="border-t border-slate-100 dark:border-slate-800"></div>
-              <div class="flex items-start gap-3">
-                <span class="material-symbols-outlined text-primary text-lg mt-0.5">language</span>
-                <div>
-                  <p class="text-sm font-bold mb-1" data-i18n="contact_english_address_label">English Address</p>
+                  <p class="text-sm font-bold mb-1">地址</p>
                   <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                    Room 6, 502, Building 12, Wanchuangyuan, No. 83, Zhanlun Road, Honggang Community, Daliang
-                    Subdistrict, Shunde District, Foshan City, Guangdong Province, China
+                    广东省佛山市顺德区大良街道红岗社区展伦路83号万创园12栋502室之六
                   </p>
                 </div>
               </div>
@@ -674,8 +655,8 @@
                 alt="Partnership"
                 data-i18n="alt_partnership"
                 class="w-full h-full object-cover"
-                src="/assets/images/contact-partner-tour.webp"
-              />
+                src="/assets/images/contact-partner-tour-1920w.webp"
+               srcset="/assets/images/contact-partner-tour-1200w.webp 1200w, /assets/images/contact-partner-tour-1920w.webp 1920w" sizes="(min-width: 1280px) 25vw, 33vw" />
             </div>
             <div class="relative p-12 lg:p-20 text-center">
               <h2 class="text-3xl lg:text-4xl font-black mb-6" data-i18n="contact_partner_title">Become a Partner</h2>
@@ -736,34 +717,13 @@
         </div>
       </section>
     </main>
-
-    <script src="/assets/js/ui/dropdown-styles.js?v=202605291142"></script>
-    <script src="/assets/js/ui/dropdown-base.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/products-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/applications-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/support-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/about-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/nav-dropdown.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/navigator.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
-    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
+<script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/product-builder.js?v=20260601"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
     <script defer src="/assets/js/page-interactions.js?v=202605291142"></script>
     <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-    <script defer src="/assets/js/vendor/swup.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-head-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-scroll-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-scripts-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/vendor/swup-debug-plugin.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/swup-init.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
-  </body>
+    <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
+</body>
 </html>

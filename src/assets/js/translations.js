@@ -307,6 +307,7 @@
               var n = document.querySelectorAll("[data-i18n]"),
                 a = document.querySelectorAll("[data-i18n-placeholder]"),
                 r = document.querySelectorAll("[data-i18n-aria]"),
+                m = document.querySelectorAll("[data-i18n-meta]"),
                 i = document.getElementById("current-lang-label"),
                 s = t.translationsCache.get("product-" + t.currentLanguage) || {},
                 l = _extend({}, e, s),
@@ -357,6 +358,16 @@
                       ariaLabel: n,
                     });
                 }),
+                m.forEach(function (t) {
+                  var e = t.getAttribute("data-i18n-meta"),
+                    n = u(e);
+                  n &&
+                    n !== e &&
+                    c.push({
+                      el: t,
+                      metaContent: n,
+                    });
+                }),
                 c.length > 0 &&
                   requestAnimationFrame(function () {
                     c.forEach(function (e) {
@@ -365,6 +376,9 @@
                         : e.placeholder
                           ? (e.el.placeholder = e.placeholder)
                           : e.ariaLabel && e.el.setAttribute("aria-label", e.ariaLabel);
+                      e.metaContent &&
+                        e.el.getAttribute("content") !== e.metaContent &&
+                        e.el.setAttribute("content", e.metaContent);
                     });
                   }),
                 i)

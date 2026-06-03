@@ -134,7 +134,8 @@
       '</h4><p class="text-xs text-slate-500 dark:text-slate-400 mb-2">' +
       esc(getCategoryName(rp)) +
       '</span><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">' +
-      '查看详情<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>'
+      tl("pdp_view_detail") +
+      '<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>'
     );
   }
 
@@ -227,7 +228,9 @@
         section.innerHTML =
           '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">' +
           '<h2 class="text-xl font-bold mb-4 flex items-center gap-2">' +
-          '<span class="material-symbols-outlined text-primary">recommend</span> 推荐产品</h2>' +
+          '<span class="material-symbols-outlined text-primary">recommend</span> ' +
+          tl("pdp_recommend_products") +
+          "</h2>" +
           '<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6" id="related-products"></div>' +
           "</div>";
         // Find the container's parent to append
@@ -269,14 +272,14 @@
           '<div class="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6">' +
           '<span class="material-symbols-outlined text-3xl text-slate-400">search_off</span></div>' +
           '<h2 class="text-xl font-bold mb-3">' +
-          tl("产品未找到") +
+          tl("pdp_product_not_found") +
           "</h2>" +
           '<p class="text-slate-500 mb-6">' +
-          tl("抱歉，未找到该产品。") +
+          tl("pdp_not_found_desc") +
           "</p>" +
           '<a href="/products/" class="inline-flex items-center gap-2 bg-primary text-white px-5 py-3 rounded-xl font-bold hover:shadow-lg transition-all">' +
           '<span class="material-symbols-outlined">arrow_back</span> ' +
-          tl("返回产品中心") +
+          tl("pdp_back_to_products") +
           "</a></div>";
       return;
     }
@@ -333,7 +336,9 @@
       html +=
         '<div class="max-w-7xl mx-auto px-4 pt-3 pb-0 md:hidden">' +
         '<div class="flex items-center gap-3">' +
-        '<button onclick="window.Breadcrumb&&window.Breadcrumb.goBack()" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="返回">' +
+        '<button onclick="window.Breadcrumb&&window.Breadcrumb.goBack()" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="' +
+        esc(tl("pdp_back")) +
+        '">' +
         '<span class="material-symbols-outlined text-xl">arrow_back</span></button>' +
         '<div><div class="text-xs text-slate-500 dark:text-slate-400">' +
         (tl("nav_product_center") || resolveLabel(catLabel) || "产品中心") +
@@ -365,7 +370,7 @@
         }) || product.images[0];
       if (pi && pi.filePath) imgSrc = pi.filePath;
     }
-    document.title = product.model + " | Yukoli 健康冲调食品";
+    document.title = product.model + " | " + tl("pdp_site_suffix");
 
     // Highlight matching category in navigator dropdown
     if (product.category && window.Navigator && typeof window.Navigator.highlightCategory === "function") {
@@ -374,23 +379,23 @@
 
     // Spec fields — values use getProductField() for i18n
     var specs = [
-      { l: tl("型号"), v: product.model },
-      { l: tl("分类"), v: getCategoryName(product) },
-      { l: tl("子分类"), v: getProductField(product, "sub_category") || product.subCategory },
-      { l: tl("等级"), v: getProductField(product, "tier") || product.tier },
-      { l: tl("功率"), v: product.power },
-      { l: tl("容量"), v: getProductField(product, "throughput") || product.throughput },
-      { l: tl("电压"), v: product.voltage },
-      { l: tl("频率"), v: product.frequency },
-      { l: tl("材质"), v: getProductField(product, "material") || product.material },
-      { l: tl("尺寸"), v: getProductField(product, "product_dimensions") || product.productDimensions },
-      { l: tl("颜色"), v: getProductField(product, "color") || product.color },
-      { l: tl("控制方式"), v: getProductField(product, "control_method") || product.controlMethod },
+      { l: tl("pdp_spec_model"), v: product.model },
+      { l: tl("pdp_spec_category"), v: getCategoryName(product) },
+      { l: tl("pdp_spec_subcategory"), v: getProductField(product, "sub_category") || product.subCategory },
+      { l: tl("pdp_spec_tier"), v: getProductField(product, "tier") || product.tier },
+      { l: tl("pdp_spec_power"), v: product.power },
+      { l: tl("pdp_spec_capacity"), v: getProductField(product, "throughput") || product.throughput },
+      { l: tl("pdp_spec_voltage"), v: product.voltage },
+      { l: tl("pdp_spec_frequency"), v: product.frequency },
+      { l: tl("pdp_spec_material"), v: getProductField(product, "material") || product.material },
+      { l: tl("pdp_spec_dimensions"), v: getProductField(product, "product_dimensions") || product.productDimensions },
+      { l: tl("pdp_spec_color"), v: getProductField(product, "color") || product.color },
+      { l: tl("pdp_spec_control"), v: getProductField(product, "control_method") || product.controlMethod },
     ];
     // Add specifications as full-width description card if present
     if (product.specifications) {
       specs.unshift({
-        l: tl("配置"),
+        l: tl("pdp_spec_configuration"),
         v: getProductField(product, "specifications") || product.specifications,
         full: true,
       });
@@ -521,7 +526,7 @@
       "</h1>" +
       (product.model && product.name && product.name !== product.model
         ? '<p class="text-sm text-slate-500 dark:text-slate-400 mt-1">' +
-          tl("型号") +
+          tl("pdp_spec_model") +
           ": " +
           esc(product.model) +
           "</p>"
@@ -536,7 +541,7 @@
       ' class="flex-1 bg-primary text-white px-6 py-3 rounded-xl font-bold' +
       ' flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20 transition-all text-sm">' +
       '<span class="material-symbols-outlined text-lg">request_quote</span> ' +
-      tl("获取报价") +
+      tl("pdp_get_quote") +
       "</a>" +
       '<a href="https://wa.me/' +
       wa +
@@ -550,14 +555,14 @@
       ' class="flex-1 px-6 py-3 rounded-xl font-bold flex items-center justify-center gap-2' +
       ' border-2 border-slate-300 dark:border-slate-600 hover:border-primary hover:text-primary transition-all text-sm">' +
       '<span class="material-symbols-outlined text-lg">chat</span> ' +
-      tl("联系销售") +
+      tl("pdp_contact_sales") +
       "</a></div></div></div></div></section>" +
       // Section 2: Specifications
       '<section class="w-full py-8 lg:py-12 bg-slate-50 dark:bg-slate-900/30">' +
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">' +
       '<h2 class="text-xl lg:text-2xl font-bold mb-4 lg:mb-6 flex items-center gap-2">' +
       '<span class="material-symbols-outlined text-primary">specifications</span> ' +
-      tl("产品规格") +
+      tl("pdp_product_specs") +
       "</h2>" +
       '<div class="grid grid-cols-1 md:grid-cols-2 gap-3">' +
       specCards +
@@ -566,14 +571,14 @@
       '<section class="w-full py-8 lg:py-12 bg-primary">' +
       '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 rounded-xl p-8 text-center">' +
       '<h2 class="text-xl font-black text-white mb-3">' +
-      tl("需要定制方案？") +
+      tl("pdp_need_custom_solution") +
       "</h2>" +
       '<p class="text-white/80 mb-6 text-sm">' +
-      tl("告诉我们您的需求，我们为您提供专属解决方案。") +
+      tl("pdp_tell_us_needs") +
       "</p>" +
       '<a href="/contact/" class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all">' +
       '<span class="material-symbols-outlined">arrow_forward</span> ' +
-      tl("获取报价") +
+      tl("pdp_get_quote") +
       "</a></div></section>";
 
     var ce = document.getElementById("product-content");
@@ -606,38 +611,45 @@
   });
   // Multi-language helper: get product field for current language
   // Translate spec labels
-  function tl(chinese) {
-    var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
-    if (lang === "zh-CN" || lang === "zh") {
-      // 如果传入的是 nav product key，中文直接返回"产品中心"
-      if (chinese.indexOf("nav_") === 0) return "产品中心";
-      return chinese;
+  // Multi-language helper: translate spec labels and PDP text
+  // Uses window.t() (TranslationManager) for all languages,
+  // falls back to English map when TranslationManager not available.
+  function tl(key) {
+    // Try TranslationManager first (handles all UI json keys)
+    if (typeof window.t === "function") {
+      var translated = window.t(key);
+      if (translated && translated !== key) return translated;
     }
+    // Fallback: hardcoded English map
     var map = {
-      型号: "Model",
-      分类: "Category",
-      子分类: "Sub-Category",
-      等级: "Tier",
-      功率: "Power",
-      容量: "Capacity",
-      电压: "Voltage",
-      频率: "Frequency",
-      材质: "Material",
-      尺寸: "Dimensions",
-      颜色: "Color",
-      控制方式: "Control",
-      配置: "Specifications",
-      产品规格: "Product Specifications",
-      "需要定制方案？": "Need a Custom Solution?",
-      "告诉我们您的需求，我们为您提供专属解决方案。": "Tell us your needs and we'll provide a tailored solution.",
-      获取报价: "Get Quote",
-      联系销售: "Contact Sales",
-      产品未找到: "Product Not Found",
-      "抱歉，未找到该产品。": "Sorry, this product was not found.",
-      返回产品中心: "Back to Products",
+      pdp_spec_model: "Model",
+      pdp_spec_category: "Category",
+      pdp_spec_subcategory: "Sub-Category",
+      pdp_spec_tier: "Tier",
+      pdp_spec_power: "Power",
+      pdp_spec_capacity: "Capacity",
+      pdp_spec_voltage: "Voltage",
+      pdp_spec_frequency: "Frequency",
+      pdp_spec_material: "Material",
+      pdp_spec_dimensions: "Dimensions",
+      pdp_spec_color: "Color",
+      pdp_spec_control: "Control",
+      pdp_spec_configuration: "Specifications",
+      pdp_product_specs: "Product Specifications",
+      pdp_need_custom_solution: "Need a Custom Solution?",
+      pdp_tell_us_needs: "Tell us your needs and we'll provide a tailored solution.",
+      pdp_get_quote: "Get Quote",
+      pdp_contact_sales: "Contact Sales",
+      pdp_product_not_found: "Product Not Found",
+      pdp_not_found_desc: "Sorry, this product was not found.",
+      pdp_back_to_products: "Back to Products",
+      pdp_recommend_products: "Recommended Products",
+      pdp_view_detail: "View Details",
+      pdp_back: "Back",
+      pdp_site_suffix: "YuKoLi Health Food",
       nav_product_center: "Products",
     };
-    return map[chinese] || chinese;
+    return map[key] || key;
   }
 
   // Get translated category name (from UI i18n, not product_translations)

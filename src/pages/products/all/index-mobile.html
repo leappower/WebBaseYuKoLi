@@ -31,10 +31,9 @@
 
         if (window.__spaNavigating) return;
 
-        var currentFile = location.pathname.split("/").pop();
-        if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
-
-        if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
           var deviceType = window.DeviceUtils.getDeviceType();
           var targetFile =
             deviceType === window.DeviceUtils.DeviceType.MOBILE
@@ -49,7 +48,7 @@
     <!-- ═══ End Responsive Redirect ═══ -->
 
     <meta charset="utf-8" />
-    <meta name="description" content="Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business." />
+    <meta data-i18n-meta="meta_products_all_description" name="description" content="Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business." />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="All Products | {brand} Smart products manufacturing" />
     <meta
@@ -241,11 +240,7 @@
     </main>
 
     <!-- Bottom Navigation -->
-
-
-    <script defer src="/assets/js/lang-registry.js?v=202605291142"></script>
-    <script defer src="/assets/js/translations.js?v=202605291142"></script><script defer src="/assets/js/translations-dropdown-template.js?v=202605291142"></script>
-    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
+<script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
@@ -253,18 +248,8 @@
 
     <script defer src="/assets/js/product-grid.js?v=202605291142"></script>
     <script defer src="/assets/js/cross-sell.js?v=202605291142"></script>
-    <script defer src="/assets/js/breadcrumb.js?v=202605291142"></script>
-
-        <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-    <script defer src="/assets/js/product-data-table-translations.js?v=202605291142"></script>
-    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/search-engine.js?v=202605291142"></script>
-    <script defer src="/assets/js/product-detail.js?v=202605291142"></script>
-
-    <script defer src="/assets/js/ui/floating-actions.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/footer.js?v=202605291142"></script>
-        <script defer src="/assets/js/ui/slide-menu.js?v=202605291142"></script>
-    <script defer src="/assets/js/ui/trust-bar.js?v=202605291142"></script>
-  <script defer src="/assets/js/ui/bottom-tab.js?v=202605291142"></script>
+<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+<script defer src="/assets/js/search-index.js?v=202605291142"></script>
+<script defer src="/assets/js/product-detail.js?v=202605291142"></script>
 </body>
 </html>

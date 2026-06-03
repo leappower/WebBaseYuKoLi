@@ -1,4 +1,14 @@
-function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
+function _t(k) {
+  if (
+    typeof window !== "undefined" &&
+    window.translationManager &&
+    typeof window.translationManager.translate === "function"
+  ) {
+    var r = window.translationManager.translate(k);
+    return r && r !== k ? r : k;
+  }
+  return k;
+}
 /**
  * cross-sell.js — Cross-sell recommendations & scene entry links
  *
@@ -73,140 +83,339 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
   // ─── Cross-sell: read from site.config.js ────────────────
   var _fallbackCrossSell = {
     coffee: [
-      { slug: "tea", reason: "咖啡+茶饮，打造完整饮品线", highlight: "饮品线 +100%" },
-      { slug: "beauty", reason: "咖啡+美容食品，健康内调外养", highlight: "客单价 +50%" },
-      { slug: "meal", reason: "咖啡+代餐，轻食健康一站式", highlight: "场景拓展" },
-      { slug: "lifestyle", reason: "咖啡+生活方式，品牌差异化升级", highlight: "品牌升级" },
+      { slug: "tea", reason: "Coffee + Tea — complete beverage line", highlight: "+100% beverage line" },
+      { slug: "beauty", reason: "Coffee + Beauty — internal wellness", highlight: "+50% avg. ticket" },
+      { slug: "meal", reason: "Coffee + Meal — healthy one-stop", highlight: "Scene expansion" },
+      { slug: "lifestyle", reason: "Coffee + Lifestyle — brand upgrade", highlight: "Brand upgrade" },
     ],
     tea: [
-      { slug: "coffee", reason: "茶+咖啡，双饮品线覆盖更多客群", highlight: "客群 +80%" },
-      { slug: "weight", reason: "茶+体重管理，减肥茶饮热卖组合", highlight: "复购 +60%" },
-      { slug: "gut", reason: "茶+肠道健康，益生菌茶饮新趋势", highlight: "新趋势" },
+      { slug: "coffee", reason: "Tea + Coffee — dual beverage lines", highlight: "+80% audience" },
+      { slug: "weight", reason: "Tea + Weight — popular combo", highlight: "+60% repurchase" },
+      { slug: "gut", reason: "Tea + Gut — probiotic tea trend", highlight: "New trend" },
     ],
     meal: [
-      { slug: "coffee", reason: "代餐+咖啡，白领早餐首选组合", highlight: "早餐场景" },
-      { slug: "weight", reason: "代餐+减脂，体重管理核心产品线", highlight: "核心品类" },
-      { slug: "gut", reason: "代餐+益生菌，营养均衡肠道养护", highlight: "营养均衡" },
+      { slug: "coffee", reason: "Meal + Coffee — breakfast combo", highlight: "Breakfast scene" },
+      { slug: "weight", reason: "Meal + Weight — core line", highlight: "Core category" },
+      { slug: "gut", reason: "Meal + Probiotics — balanced nutrition", highlight: "Balanced nutrition" },
     ],
     beauty: [
-      { slug: "coffee", reason: "美容+咖啡，胶原蛋白咖啡热卖", highlight: "爆品组合" },
-      { slug: "tea", reason: "美容+花茶，天然植物美容新概念", highlight: "天然概念" },
-      { slug: "weight", reason: "美容+纤体，内调外养双效方案", highlight: "双效方案" },
-      { slug: "gut", reason: "美容+肠道，肠道健康改善肤质", highlight: "由内而外" },
+      { slug: "coffee", reason: "Beauty + Coffee — collagen coffee", highlight: "Hot combo" },
+      { slug: "tea", reason: "Beauty + Herbal — natural beauty", highlight: "Natural concept" },
+      { slug: "weight", reason: "Beauty + Slim — dual solution", highlight: "Dual effect" },
+      { slug: "gut", reason: "Beauty + Gut — skin from within", highlight: "Inside-out" },
     ],
     weight: [
-      { slug: "meal", reason: "减脂+代餐，体重管理黄金搭档", highlight: "黄金搭档" },
-      { slug: "coffee", reason: "减脂+黑咖啡，加速代谢燃脂组合", highlight: "加速代谢" },
-      { slug: "beauty", reason: "减脂+美容，瘦身美颜一站式", highlight: "瘦身美颜" },
-      { slug: "lifestyle", reason: "减脂+生活方式，健康减重可持续", highlight: "可持续" },
+      { slug: "meal", reason: "Weight + Meal — golden combo", highlight: "Gold pairing" },
+      { slug: "coffee", reason: "Weight + Black Coffee — boost metabolism", highlight: "Accelerate metabolism" },
+      { slug: "beauty", reason: "Weight + Beauty — slim & glow", highlight: "Slim & beauty" },
+      { slug: "lifestyle", reason: "Weight + Lifestyle — sustainable", highlight: "Sustainable" },
     ],
     gut: [
-      { slug: "meal", reason: "益生菌+代餐，肠道+营养双改善", highlight: "双改善" },
-      { slug: "tea", reason: "益生菌+茶，肠道养护清爽饮品", highlight: "清爽养肠" },
-      { slug: "beauty", reason: "益生菌+美容食品，肠道健康显现在肌肤", highlight: "肌肤改善" },
+      { slug: "meal", reason: "Gut + Meal — dual improvement", highlight: "Dual improvement" },
+      { slug: "tea", reason: "Gut + Tea — refreshing gut care", highlight: "Fresh gut care" },
+      { slug: "beauty", reason: "Gut + Beauty — skin health", highlight: "Skin improvement" },
     ],
     lifestyle: [
-      { slug: "coffee", reason: "生活方式+咖啡，日常健康饮品标配", highlight: "日常标配" },
-      { slug: "tea", reason: "生活方式+茶，慢生活健康理念", highlight: "慢生活" },
-      { slug: "weight", reason: "生活方式+体重管理，健康管理闭环", highlight: "健康闭环" },
+      { slug: "coffee", reason: "Lifestyle + Coffee — daily essential", highlight: "Daily essential" },
+      { slug: "tea", reason: "Lifestyle + Tea — slow living", highlight: "Slow living" },
+      { slug: "weight", reason: "Lifestyle + Weight — health loop", highlight: "Health loop" },
     ],
   };
 
   var _fallbackScenes = {
     coffee: [
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "从0到1打造咖啡品牌，OEM一站式交付" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁门店统一出品，品质标准化交付" },
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康食品品牌，功能性咖啡定制" },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Build your coffee brand from 0 to 1 with OEM one-stop delivery",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Chain store consistent quality, standardized delivery",
+      },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Health food brand, functional coffee customization",
+      },
     ],
     tea: [
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "茶饮品牌定制，从配方到包装全链路" },
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康茶饮系列，天然成分功能定制" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁茶饮标准化出品，稳定供应链" },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Tea brand from formula to packaging, full chain",
+      },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Healthy tea series with natural functional customization",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Chain tea standardized output with stable supply chain",
+      },
     ],
     meal: [
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康代餐定制，营养配比科学配方" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁便利店代餐产品，标准化量产" },
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "代餐品牌从配方到上市全流程" },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Healthy meal replacement with scientific nutrition formula",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Chain convenience store meal products, standardized mass production",
+      },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Meal replacement brand from formula to market launch",
+      },
     ],
     beauty: [
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "美容食品品牌定制，从概念到量产" },
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "口服美容产品线，胶原蛋白等功能食品" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "美容连锁品牌标准化供货" },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Beauty food brand customization from concept to mass production",
+      },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Oral beauty line with collagen and functional foods",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Beauty chain brand standardized supply",
+      },
     ],
     weight: [
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "体重管理食品定制，科学配比低卡配方" },
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "减脂品牌OEM定制，差异化配方" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "健身房/便利店渠道标准化产品" },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Weight management food with low-calorie scientific formula",
+      },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Fat loss brand OEM with differentiated formula",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Gym/convenience store standardized products",
+      },
     ],
     gut: [
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "益生菌食品定制，活性保障技术方案" },
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "肠道健康品牌定制，差异化菌种方案" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁药房/健康食品店供货" },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Probiotic food with viability assurance technology",
+      },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Gut health brand with differentiated strain solutions",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Chain pharmacy/health food store supply",
+      },
     ],
     lifestyle: [
-      { href: "/applications/brand-creation/", slug: "brand-creation", icon: "storefront", desc: "生活方式品牌定制，全品类健康食品" },
-      { href: "/applications/chain-retail/", slug: "chain-retail", icon: "store", desc: "连锁零售渠道健康食品标准化供货" },
-      { href: "/applications/healthy-food/", slug: "healthy-food", icon: "eco", desc: "健康生活食品系列，日常营养补充" },
+      {
+        href: "/applications/brand-creation/",
+        slug: "brand-creation",
+        icon: "storefront",
+        desc: "Lifestyle brand customization, full-category health foods",
+      },
+      {
+        href: "/applications/chain-retail/",
+        slug: "chain-retail",
+        icon: "store",
+        desc: "Chain retail health food standardized supply",
+      },
+      {
+        href: "/applications/healthy-food/",
+        slug: "healthy-food",
+        icon: "eco",
+        desc: "Healthy living food series, daily nutrition supplement",
+      },
     ],
   };
 
-  var CROSS_SELL_MAP = ((_cfg.crossSell || {}).map && Object.keys(_cfg.crossSell.map).length > 0) ? _cfg.crossSell.map : _fallbackCrossSell;
-  var SCENE_ENTRY_MAP = ((_cfg.crossSell || {}).scenes && Object.keys(_cfg.crossSell.scenes).length > 0) ? _cfg.crossSell.scenes : _fallbackScenes;
+  var CROSS_SELL_MAP =
+    (_cfg.crossSell || {}).map && Object.keys(_cfg.crossSell.map).length > 0 ? _cfg.crossSell.map : _fallbackCrossSell;
+  var SCENE_ENTRY_MAP =
+    (_cfg.crossSell || {}).scenes && Object.keys(_cfg.crossSell.scenes).length > 0
+      ? _cfg.crossSell.scenes
+      : _fallbackScenes;
 
   // ─── Solutions cross-sell data ─────────────────────────────────
   // Solutions pages recommend complementary services, NOT products
   var SOLUTIONS_CROSS_SELL = {
     oem: [
-      { slug: 'rd', label: 'R&D 研发', reason: 'OEM 配合专业研发，配方定制更精准', highlight: '研发赋能' },
-      { slug: 'packaging', label: _t("cross_sell_packaging") || "定制包装", reason: 'OEM + 定制包装，品牌视觉一体化', highlight: '品牌一体' },
-      { slug: 'obm', label: 'OBM 全案', reason: 'OEM 升级为 OBM，从代工到自有品牌', highlight: '品牌升级' }
+      { slug: "rd", label: "R&D Lab", reason: "OEM + R&D for precision formula development", highlight: "R&D enabled" },
+      {
+        slug: "packaging",
+        label: _t("cross_sell_packaging") || "Custom Packaging",
+        reason: "OEM + custom packaging for unified branding",
+        highlight: "Brand unity",
+      },
+      {
+        slug: "obm",
+        label: "OBM Full Service",
+        reason: "Upgrade OEM to OBM, from contract to own brand",
+        highlight: "Brand upgrade",
+      },
     ],
     odm: [
-      { slug: 'rd', label: 'R&D 研发', reason: 'ODM 深度研发合作，差异化产品设计', highlight: '深度定制' },
-      { slug: 'packaging', label: _t("cross_sell_packaging") || "定制包装", reason: 'ODM + 专属包装，产品差异化竞争', highlight: '差异化' },
-      { slug: 'oem', label: 'OEM 代工', reason: 'ODM 经典方案转 OEM 批量生产', highlight: '量产保障' }
+      {
+        slug: "rd",
+        label: "R&D Lab",
+        reason: "ODM deep R&D collaboration for differentiated design",
+        highlight: "Deep customization",
+      },
+      {
+        slug: "packaging",
+        label: _t("cross_sell_packaging") || "Custom Packaging",
+        reason: "ODM + exclusive packaging for competitive edge",
+        highlight: "Differentiation",
+      },
+      {
+        slug: "oem",
+        label: "OEM Manufacturing",
+        reason: "ODM to OEM mass production scale-up",
+        highlight: "Mass production guarantee",
+      },
     ],
     obm: [
-      { slug: 'rd', label: 'R&D 研发', reason: 'OBM 核心竞争力来自持续研发投入', highlight: '核心驱动' },
-      { slug: 'oem', label: 'OEM 代工', reason: 'OBM 品牌可灵活切换 OEM 产能补充', highlight: '产能弹性' },
-      { slug: 'odm', label: 'ODM 设计', reason: 'OBM 产品线扩充借助 ODM 成熟方案', highlight: '快速扩展' }
+      { slug: "rd", label: "R&D Lab", reason: "OBM core strength from continuous R&D", highlight: "Core driver" },
+      {
+        slug: "oem",
+        label: "OEM Manufacturing",
+        reason: "OBM + OEM flexible capacity supplement",
+        highlight: "Capacity flexibility",
+      },
+      {
+        slug: "odm",
+        label: "ODM Design",
+        reason: "OBM line expansion via ODM proven solutions",
+        highlight: "Fast expansion",
+      },
     ],
     rd: [
-      { slug: 'oem', label: 'OEM 代工', reason: '研发成果通过 OEM 高效量产落地', highlight: '研发落地' },
-      { slug: 'packaging', label: _t("cross_sell_packaging") || "定制包装", reason: '研发新品搭配创新包装设计', highlight: '产品创新' },
-      { slug: 'odm', label: 'ODM 设计', reason: '研发与设计协同，加速产品上市', highlight: '协同加速' }
+      {
+        slug: "oem",
+        label: "OEM Manufacturing",
+        reason: "R&D results scaled via OEM production",
+        highlight: "R&D realized",
+      },
+      {
+        slug: "packaging",
+        label: _t("cross_sell_packaging") || "Custom Packaging",
+        reason: "New R&D products with innovative packaging",
+        highlight: "Product innovation",
+      },
+      {
+        slug: "odm",
+        label: "ODM Design",
+        reason: "R&D + design synergy for faster launch",
+        highlight: "Synergy acceleration",
+      },
     ],
     packaging: [
-      { slug: 'oem', label: 'OEM 代工', reason: '包装设计配合 OEM 生产，全链路交付', highlight: '全链交付' },
-      { slug: 'odm', label: 'ODM 设计', reason: '包装方案融入产品设计语言', highlight: '设计统一' },
-      { slug: 'rd', label: 'R&D 研发', reason: '功能性包装需研发技术支撑', highlight: '技术支撑' }
-    ]
+      {
+        slug: "oem",
+        label: "OEM Manufacturing",
+        reason: "Packaging design + OEM for end-to-end delivery",
+        highlight: "End-to-end delivery",
+      },
+      {
+        slug: "odm",
+        label: "ODM Design",
+        reason: "Packaging integrated with product design",
+        highlight: "Design unity",
+      },
+      {
+        slug: "rd",
+        label: "R&D Lab",
+        reason: "Functional packaging requires R&D support",
+        highlight: "Technical support",
+      },
+    ],
   };
 
   // Solutions scene links (service deep-dives)
   var SOLUTIONS_SCENE_MAP = {
     oem: [
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'ISO/HACCP/ halal 多体系认证，品质全程可追溯' }
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "ISO/HACCP/Halal multi-certification, fully traceable quality",
+      },
     ],
     odm: [
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'ODM 出品经过严格质检流程，保障每一批次' }
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "ODM products pass strict QC, guaranteed every batch",
+      },
     ],
     obm: [
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'OBM 品牌品质背书，认证体系全面覆盖' }
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "OBM brand quality endorsement, full certification coverage",
+      },
     ],
     rd: [
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: '研发实验室符合国际标准，安全合规' }
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "R&D lab meets international standards, safe and compliant",
+      },
     ],
     packaging: [
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: '包装材料通过食品级安全检测' }
-    ]
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Packaging materials pass food-grade safety testing",
+      },
+    ],
   };
 
   // ─── Product Detail cross-sell data ───────────────────────────
   // PDP pages recommend same-category products, NOT services
   var PDP_CROSS_SELL = {};
   // Will be populated dynamically from PRODUCT_SLUGS — same category only
-  Object.keys(CROSS_SELL_MAP).forEach(function(catSlug) {
+  Object.keys(CROSS_SELL_MAP).forEach(function (catSlug) {
     PDP_CROSS_SELL[catSlug] = CROSS_SELL_MAP[catSlug];
   });
 
@@ -214,55 +423,160 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
   // Product category pages show service scene links
   var PRODUCTS_SERVICE_SCENE = {
     coffee: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 服务，咖啡品牌 OEM 一站式代工' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 咖啡专属包装定制设计' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM service for coffee brands",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom packaging design for coffee",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
     ],
     tea: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 茶饮品牌 OEM 定制代工' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 茶叶包装设计与打样' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM for tea brands",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom packaging design for tea",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
     ],
     meal: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 代餐品牌 OEM 定制生产' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 代餐包装便携设计方案' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM for meal replacement brands",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom portable packaging for meal replacement",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
     ],
     beauty: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 美容食品 OEM 配方定制' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 美容产品高端包装定制' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM for beauty food",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom premium packaging for beauty products",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
     ],
     weight: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 减脂食品 OEM 配方开发' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 减脂产品包装定制' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM for weight management",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom packaging for weight management",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
     ],
     gut: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 益生菌 OEM 菌种定制' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 益生菌活性包装方案' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM for probiotics",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom active packaging for probiotics",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
     ],
     lifestyle: [
-      { href: '/solutions/oem/', slug: 'oem', icon: 'precision_manufacturing', desc: 'Private Label 生活方式食品 OEM 定制' },
-      { href: '/solutions/packaging/', slug: 'packaging', icon: 'inventory_2', desc: 'Custom Packaging 生活方式品牌包装方案' },
-      { href: '/solutions/quality/', slug: 'quality', icon: 'verified', desc: 'Halal / ISO / HACCP 国际认证品质保障' }
-    ]
+      {
+        href: "/solutions/oem/",
+        slug: "oem",
+        icon: "precision_manufacturing",
+        desc: "Private Label OEM for lifestyle foods",
+      },
+      {
+        href: "/solutions/packaging/",
+        slug: "packaging",
+        icon: "inventory_2",
+        desc: "Custom packaging for lifestyle brands",
+      },
+      {
+        href: "/solutions/quality/",
+        slug: "quality",
+        icon: "verified",
+        desc: "Halal / ISO / HACCP international quality certification",
+      },
+    ],
   };
 
   // Service labels for solutions cross-sell
   var SOLUTION_LABELS = {
-    oem: 'OEM 代工',
-    odm: 'ODM 设计',
-    obm: 'OBM 全案',
-    rd: 'R&D 研发',
-    packaging: _t("cross_sell_packaging") || "定制包装",
-    quality: 'Quality 认证'
+    oem: "OEM Manufacturing",
+    odm: "ODM Design",
+    obm: "OBM Full Service",
+    rd: "R&D Lab",
+    packaging: _t("cross_sell_packaging") || "Custom Packaging",
+    quality: "Quality Certified",
   };
 
   // ─── Detect current page type ──────────────────────────────────
 
-  var PAGE_TYPE = { SOLUTIONS: 'solutions', PRODUCTS: 'products', DETAIL: 'detail', OTHER: 'other' };
+  var PAGE_TYPE = { SOLUTIONS: "solutions", PRODUCTS: "products", DETAIL: "detail", OTHER: "other" };
 
   function getPagePath() {
     return (window.location.pathname || "/").replace(/\/$/, "");
@@ -334,14 +648,16 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
 
     items.forEach(function (item) {
       var label = item.label || SOLUTION_LABELS[item.slug] || item.slug;
-      var icon = 'business_center';
-      var href = '/solutions/' + item.slug + '/';
+      var icon = "business_center";
+      var href = "/solutions/" + item.slug + "/";
 
       html +=
-        '<a href="' + href + '" class="group relative flex items-center gap-3 p-3 md:p-5 lg:p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">';
+        '<a href="' +
+        href +
+        '" class="group relative flex items-center gap-3 p-3 md:p-5 lg:p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/60 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all">';
 
       html += '<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">';
-      html += '<span class="material-symbols-outlined text-primary text-lg">' + icon + '</span>';
+      html += '<span class="material-symbols-outlined text-primary text-lg">' + icon + "</span>";
       html += "</div>";
 
       html += '<div class="flex-1 min-w-0">';
@@ -349,7 +665,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
         '<div class="flex items-center justify-between gap-2">' +
         '<span class="font-bold text-sm text-slate-900 dark:text-white group-hover:text-primary transition-colors">' +
         esc(label) +
-        '</span>';
+        "</span>";
       html +=
         '<span class="material-symbols-outlined text-slate-300 group-hover:text-primary group-hover:translate-x-1 transition-all text-lg shrink-0">arrow_forward</span>';
       html += "</div>";
@@ -383,9 +699,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       tl("scene_entry_title", "适用场景") +
       "</h3>";
     html +=
-      '<p class="text-sm text-slate-500 dark:text-slate-400">' +
-      tl("scene_entry_subtitle", "相关服务推荐") +
-      "</p>";
+      '<p class="text-sm text-slate-500 dark:text-slate-400">' + tl("scene_entry_subtitle", "相关服务推荐") + "</p>";
     html += "</div>";
 
     html += '<div class="grid grid-cols-1 md:grid-cols-1 gap-4 lg:gap-6">';
@@ -394,20 +708,23 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       var label = SOLUTION_LABELS[scene.slug] || getAppLabel(scene.slug);
 
       html +=
-        '<a href="' + scene.href + '" class="group relative block p-5 lg:p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/60 dark:to-slate-900/60 border border-slate-200 dark:border-slate-700/60 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all overflow-hidden">';
+        '<a href="' +
+        scene.href +
+        '" class="group relative block p-5 lg:p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/60 dark:to-slate-900/60 border border-slate-200 dark:border-slate-700/60 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all overflow-hidden">';
 
-      html += '<div class="absolute -top-8 -right-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>';
+      html +=
+        '<div class="absolute -top-8 -right-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>';
 
       html += '<div class="relative">';
 
       html += '<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">';
-      html += '<span class="material-symbols-outlined text-primary text-xl">' + scene.icon + '</span>';
+      html += '<span class="material-symbols-outlined text-primary text-xl">' + scene.icon + "</span>";
       html += "</div>";
 
       html +=
         '<h4 class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors mb-2">' +
         esc(label) +
-        '</h4>';
+        "</h4>";
 
       html += '<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">' + esc(scene.desc) + "</p>";
 
@@ -439,9 +756,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       tl("scene_entry_title", "配套服务") +
       "</h3>";
     html +=
-      '<p class="text-sm text-slate-500 dark:text-slate-400">' +
-      tl("scene_entry_subtitle", "全链路服务支持") +
-      "</p>";
+      '<p class="text-sm text-slate-500 dark:text-slate-400">' + tl("scene_entry_subtitle", "全链路服务支持") + "</p>";
     html += "</div>";
 
     html += '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">';
@@ -450,20 +765,23 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       var label = SOLUTION_LABELS[scene.slug] || getAppLabel(scene.slug);
 
       html +=
-        '<a href="' + scene.href + '" class="group relative block p-5 lg:p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/60 dark:to-slate-900/60 border border-slate-200 dark:border-slate-700/60 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all overflow-hidden">';
+        '<a href="' +
+        scene.href +
+        '" class="group relative block p-5 lg:p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-white dark:from-slate-800/60 dark:to-slate-900/60 border border-slate-200 dark:border-slate-700/60 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5 transition-all overflow-hidden">';
 
-      html += '<div class="absolute -top-8 -right-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>';
+      html +=
+        '<div class="absolute -top-8 -right-8 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors"></div>';
 
       html += '<div class="relative">';
 
       html += '<div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">';
-      html += '<span class="material-symbols-outlined text-primary text-xl">' + scene.icon + '</span>';
+      html += '<span class="material-symbols-outlined text-primary text-xl">' + scene.icon + "</span>";
       html += "</div>";
 
       html +=
         '<h4 class="font-bold text-slate-900 dark:text-white group-hover:text-primary transition-colors mb-2">' +
         esc(label) +
-        '</h4>';
+        "</h4>";
 
       html += '<p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">' + esc(scene.desc) + "</p>";
 
@@ -618,7 +936,11 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
     if (!nav) return;
 
     var referrer;
-    try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
+    try {
+      referrer = sessionStorage.getItem("pdp_referrer");
+    } catch (e) {
+      referrer = null;
+    }
     referrer = referrer || "";
     var refSlug = referrer.replace(/\/$/, "").split("/").pop();
     if (refSlug && PRODUCT_SLUGS[refSlug]) {
@@ -662,7 +984,9 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
   function trackPdpReferrer() {
     var path = (window.location.pathname || "/").replace(/\/$/, "");
     if (/^\/products\/(coffee|tea|meal|beauty|weight|gut|lifestyle)$/.test(path)) {
-      try { sessionStorage.setItem("pdp_referrer", path); } catch(e) {}
+      try {
+        sessionStorage.setItem("pdp_referrer", path);
+      } catch (e) {}
     }
   }
 
@@ -734,7 +1058,11 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
   function resolvePdpSlug() {
     // Try referrer first
     var referrer;
-    try { referrer = sessionStorage.getItem("pdp_referrer"); } catch(e) { referrer = null; }
+    try {
+      referrer = sessionStorage.getItem("pdp_referrer");
+    } catch (e) {
+      referrer = null;
+    }
     referrer = referrer || "";
     var refSlug = referrer.replace(/\/$/, "").split("/").pop();
     if (refSlug && PRODUCT_SLUGS[refSlug]) return refSlug;
@@ -743,9 +1071,11 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
     if (window.ProductGrid && window.ProductGrid.getAllProducts) {
       var path = getPagePath();
       var pdpMatch = path.match(/^\/products\/(detail\/?(?:\?model=([^&]+))?|([^/]+))$/);
-      var model = pdpMatch ? (pdpMatch[2] || pdpMatch[3] || "") : "";
+      var model = pdpMatch ? pdpMatch[2] || pdpMatch[3] || "" : "";
       var products = window.ProductGrid.getAllProducts();
-      var found = products.find(function (p) { return p.model === model; });
+      var found = products.find(function (p) {
+        return p.model === model;
+      });
       if (found && found._category) {
         var catSlug = CATEGORY_KEY_TO_SLUG[found._category] || "";
         if (catSlug) return catSlug;

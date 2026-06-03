@@ -140,11 +140,18 @@
    * @returns {string} 设备特定路径，如 '/pages/home/index-mobile.html'
    */
   function getDevicePagePath(basePath) {
-    // 如果不是标准的 index.html 路径，返回原值
-    if (!basePath || !basePath.endsWith("/index.html")) {
+    // 如果不是 index.html 相关路径，返回原值
+    if (!basePath) {
       return basePath;
     }
 
+    // 正则匹配所有 index.html / index-pc.html / index-tablet.html / index-mobile.html
+    var idxMatch = basePath.match(/^(.*\/)index(?:-(?:pc|tablet|mobile))?\.html$/);
+    if (!idxMatch) {
+      return basePath;
+    }
+
+    var baseDir = idxMatch[1]; // e.g. "/pages/home/" or "/solutions/" or ""
     var deviceType = getDeviceType();
     var suffix;
 
@@ -159,10 +166,10 @@
         suffix = "index-pc.html";
         break;
       default:
-        suffix = "index.html";
+        suffix = "index-mobile.html";
     }
 
-    return basePath.replace("index.html", suffix);
+    return baseDir + suffix;
   }
 
   /**

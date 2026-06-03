@@ -29,209 +29,290 @@
  *
  * This script runs AFTER webpack build. It:
  *
- * 1. For each route (home, catalog, case-studies, ...):
+ * 1. Scans routes from SITE_CONFIG.nav (in site.config.js)
+ * 2. For each route:
  *    - Reads src/pages/<route>/index.html (responsive entry)
- *    - Updates canonical URL and OG tags to directory format (/catalog/)
+ *    - Injects lang-registry.js + theme-init.js + nav scripts
  *    - Writes to dist/<route>/index.html
- *    - Copies device files from dist/pages/<route>/ to dist/<route>/
+ * 3. Generates dist/index.html (root entry):
+ *    - SPA shell with navigator, footer, spa-content
+ *    - Injects lang-registry.js, theme-init.js, nav scripts, skeleton
+ * 4. Generates dist/404.html:
+ *    - GitHub Pages SPA fallback with redirect logic
+ *    - Injects lang-registry.js, theme-init.js, nav scripts
+ * 5. Copies device-specific files and processes them:
+ *    - Injects lang-registry.js + nav scripts into each device file
+ *    - Patches BASE_PATH placeholder for subdirectory deployments
  *
- * 2. Generates dist/index.html (root entry):
- *    - Redirects to /home/ based on screen width
- *    - This is the page served when visiting yukoli.com/
+ * ── FILE STRUCTURE ───────────────────────────────────────────────
  *
- * 3. Generates dist/404.html:
- *    - Handles missing trailing slash (/home → /home/)
- *    - Redirects unknown routes to /home/
- *    - This is the page GitHub Pages uses for unmatched URLs
- *
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * OUTPUT DIRECTORY STRUCTURE
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- *
- *   dist/
+ * GitHub Pages:
+ *   dist/ (root)
  *     index.html          → / (redirects to /home/)
- *     404.html            → handles /home → /home/ redirect
+ *     404.html            → /home → /home/ redirect
  *     home/
- *       index.html        → /home/ (responsive redirect)
- *       index-pc.html     → /home/index-pc.html
- *       index-mobile.html → /home/index-mobile.html
- *       index-tablet.html → /home/index-tablet.html
+ *       index-pc.html      → /home/ (responsive redirect)
+ *       index-mobile.html  → /home/ (responsive redirect)
+ *       index-tablet.html  → /home/ (responsive redirect)
+ *       index.html         → /home/ (responsive redirect)
  *     catalog/
- *       index.html        → /catalog/
- *       ...
- *     assets/             → /assets/ (JS, CSS, images, lang files)
+ *       index-pc.html      → /catalog/ (responsive redirect)
+ *       index.html         → /catalog/ (responsive redirect)
  *
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- * URL CHANGES
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ── URL EXAMPLES (GitHub Pages) ──────────────────────────────────
  *
  *   Before (SPA):   yukoli.com/catalog     → 404 on GitHub Pages
- *   After (SSG):    yukoli.com/catalog/    → loads real HTML ✅
+ *   After (SSG):    yukoli.com/catalog/    → serves /catalog/index.html
  *
  *   Note: URLs without trailing slash (/home) are handled by 404.html,
- *   which automatically redirects to /home/.
+ *   which redirects to /home/ (with slash) using JavaScript.
+ *   This is a GitHub Pages limitation (no .htaccess rewrite).
  *
- * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ * ── DEPLOYMENT ───────────────────────────────────────────────────
+ *   Deploys to GitHub Pages via publish branch (see devops/github-pages.yml)
  *
- * Prerequisite: Run webpack build first (this works with the dist/ output)
- *
- * Usage:
- *   node scripts/build-ssg.js [--clean]
- *
- * Options:
- *   --clean  Remove old route directories from dist before generating
+ * @module build-ssg
  */
 
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
+var fs = require('fs');
+var path = require('path');
 
-const DIST_DIR = path.resolve(__dirname, '..', 'dist');
-const SRC_PAGES_DIR = path.resolve(__dirname, '..', 'src', 'pages');
+// ─── CONFIG ───────────────────────────────────────────────────────
+var DIST_DIR = path.join(__dirname, '..', 'dist');
+var SRC_DIR = path.join(__dirname, '..', 'src');
+var BASE_PATH = process.env.BASE_PATH || '';
+var LOG_PREFIX = process.env.SILENT ? '' : '';
 
-// Route definitions: URL path → source directory name
-// Each entry has a source page directory under src/pages/
-// Core routes (always generated):
-// Route definitions — Adding a new page directory under src/pages/ is all that's needed.
-// Excludes: news/detail (dynamic SPA template, not a static route).
-function discoverRoutes() {
-  var routes = [];
-  var excludeDirs = ["node_modules", ".git", "assets"];
-  var excludeSlugs = ["news/detail"]; // dynamic SPA template, not a static route
+var _routes = [];
+var _siteConfig = {};
 
-  function walk(dir, prefix) {
-    if (!fs.existsSync(dir)) return;
-    var entries = fs.readdirSync(dir, { withFileTypes: true });
-    for (var i = 0; i < entries.length; i++) {
-      if (!entries[i].isDirectory()) continue;
-      if (excludeDirs.indexOf(entries[i].name) !== -1) continue;
-      var fullPath = path.join(dir, entries[i].name);
-      var slug = prefix ? prefix + "/" + entries[i].name : entries[i].name;
-      if (excludeSlugs.indexOf(slug) !== -1) {
-        walk(fullPath, slug);
-        continue;
+// ─── HELPERS ──────────────────────────────────────────────────────
+
+function log(msg) {
+  if (typeof msg === 'string' && msg.indexOf('Step') === 0) {
+    console.log('  ' + msg);
+  } else if (msg.indexOf('✓') !== -1 || msg.indexOf('✅') !== -1) {
+    console.log('    ' + msg);
+  } else if (msg.indexOf('WARN') !== -1 || msg.indexOf('ERROR') !== -1) {
+    console.log('    ' + msg);
+  } else if (!process.env.SILENT) {
+    console.log('    ' + msg);
+  }
+}
+
+/**
+ * Safe read of nested property
+ * @param {Object} obj
+ * @param {string} path  e.g. "nav.items.0.label"
+ * @returns {*}
+ */
+function _get(obj, pathStr) {
+  var parts = pathStr.split('.');
+  var cur = obj;
+  for (var i = 0; i < parts.length; i++) {
+    if (cur == null) return undefined;
+    cur = cur[parts[i]];
+  }
+  return cur;
+}
+
+// ─── LOAD SITE CONFIG ─────────────────────────────────────────────
+
+function loadSiteConfig() {
+  // Try reading site.config.js directly from src/
+  var configPaths = [
+    path.join(__dirname, '..', 'src', 'site.config.js'),
+    path.join(__dirname, '..', 'dist', 'site.config.js'),
+    path.join(__dirname, '..', 'site.config.js'),
+  ];
+
+  for (var i = 0; i < configPaths.length; i++) {
+    if (fs.existsSync(configPaths[i])) {
+      try {
+        // Use a basic eval-safe approach — treat as CommonJS module
+        delete require.cache[require.resolve(configPaths[i])];
+        _siteConfig = require(configPaths[i]);
+        log('✅ Loaded site config: ' + configPaths[i]);
+        return;
+      } catch (e) {
+        // Try loading as JS file with window shim
+        try {
+          var content = fs.readFileSync(configPaths[i], 'utf-8');
+          var window = {};
+          // Remove 'use strict' to allow eval
+          content = content.replace('"use strict";', '').replace("'use strict';", '');
+          // Replace module.exports with assignment
+          content = content.replace('module.exports', '_siteConfig');
+          eval(content);
+          log('✅ Loaded site config (eval): ' + configPaths[i]);
+          return;
+        } catch (e2) {
+          log('WARN: Failed to load config: ' + configPaths[i] + ' — ' + e2.message);
+        }
       }
-      var htmlFiles = fs.readdirSync(fullPath).filter(function (f) {
-        return f.endsWith(".html");
-      });
-      if (htmlFiles.length > 0) {
-        var topSection = slug.split("/")[0];
-        routes.push({ slug: slug, navId: topSection });
-      }
-      walk(fullPath, slug);
     }
   }
 
-  walk(SRC_PAGES_DIR, "");
+  log('WARN: No site.config.js found, using defaults');
+}
+
+// ─── ROUTE DISCOVERY ──────────────────────────────────────────────
+
+function discoverRoutes() {
+  var routes = [];
+
+  // 1. From SITE_CONFIG.nav — prefer config-defined routes
+  var navItems = _get(_siteConfig, 'nav.items') || [];
+  for (var i = 0; i < navItems.length; i++) {
+    var item = navItems[i];
+    var slug = item.id || '';
+    if (!slug) continue;
+    routes.push({
+      slug: slug,
+      label: item.label,
+      sourceDir: slug,
+    });
+
+    // Add children as sub-routes
+    var children = item.children || [];
+    for (var j = 0; j < children.length; j++) {
+      var child = children[j];
+      var childSlug = child.slug || child.id || '';
+      if (!childSlug) continue;
+      // Check if this child has its own directory
+      var childDir = path.join(SRC_DIR, 'pages', slug, childSlug);
+      if (fs.existsSync(childDir)) {
+        routes.push({
+          slug: slug + '/' + childSlug,
+          label: child.label,
+          sourceDir: slug + '/' + childSlug,
+          parentSlug: slug,
+        });
+      }
+    }
+  }
+
+  // 2. Discover additional routes from src/pages/ directories
+  var pagesDir = path.join(SRC_DIR, 'pages');
+  if (fs.existsSync(pagesDir)) {
+    var dirs = fs.readdirSync(pagesDir);
+    for (var k = 0; k < dirs.length; k++) {
+      var dir = dirs[k];
+      // Skip hidden/internal directories
+      if (dir.startsWith('.')) continue;
+
+      // Check if already in route list
+      var exists = false;
+      for (var l = 0; l < routes.length; l++) {
+        if (routes[l].slug === dir) {
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        var pageDir = path.join(pagesDir, dir);
+        if (fs.statSync(pageDir).isDirectory()) {
+          // Check if it has HTML files
+          var hasHtml = false;
+          try {
+            var files = fs.readdirSync(pageDir);
+            for (var m = 0; m < files.length; m++) {
+              if (files[m].endsWith('.html')) {
+                hasHtml = true;
+                break;
+              }
+            }
+          } catch (e) {}
+          if (hasHtml) {
+            routes.push({
+              slug: dir,
+              label: dir,
+              sourceDir: dir,
+            });
+          }
+        }
+
+        // Check for subdirectories (PDP, case-detail, etc.)
+        try {
+          var subDir = path.join(pagesDir, dir);
+          if (fs.statSync(subDir).isDirectory()) {
+            var subItems = fs.readdirSync(subDir);
+            for (var n = 0; n < subItems.length; n++) {
+              var subEntry = subItems[n];
+              var subFull = path.join(subDir, subEntry);
+              if (fs.statSync(subFull).isDirectory() && !subEntry.startsWith('.')) {
+                var subSlug = dir + '/' + subEntry;
+                var inRoutes = false;
+                for (var o = 0; o < routes.length; o++) {
+                  if (routes[o].slug === subSlug) {
+                    inRoutes = true;
+                    break;
+                  }
+                }
+                if (!inRoutes) {
+                  routes.push({
+                    slug: subSlug,
+                    label: subEntry,
+                    sourceDir: subSlug,
+                    parentSlug: dir,
+                  });
+                }
+              }
+            }
+          }
+        } catch (e) {}
+      }
+    }
+  }
+
+  // Sort: parent routes first, then children
   routes.sort(function (a, b) {
-    var aParts = a.slug.split("/"), bParts = b.slug.split("/");
-    if (aParts.length !== bParts.length) return aParts.length - bParts.length;
     return a.slug.localeCompare(b.slug);
   });
+
+  // Filter out routes that have no HTML files in their source directory
+  routes = routes.filter(function (route) {
+    var sourceDir = path.join(DIST_DIR, route.sourceDir || route.slug);
+    if (fs.existsSync(sourceDir)) {
+      var files = fs.readdirSync(sourceDir);
+      for (var p = 0; p < files.length; p++) {
+        if (files[p].endsWith('.html')) return true;
+      }
+    }
+    return false;
+  });
+
+  _routes = routes;
   return routes;
 }
 
-const ROUTES = discoverRoutes();
-
-// Case detail slugs — each is a dynamic route sharing the same detail template
-const CASE_DETAIL_SLUGS = [
-  'sea-coffee-brand',
-  'mideast-meal-brand',
-  'eu-collagen-brand',
-  'jp-functional-drink',
-  'na-probiotic-brand',
-  'au-tea-chain',
-  'af-weight-brand',
-  'cn-new-consumer'
-];
-
-// Parse CLI args
-const args = process.argv.slice(2);
-const shouldClean = args.includes('--clean');
-// basePath: prefix for sub-directory deployments (e.g. /KitchenYuKoLi)
-// Affects all asset href/src paths and URL redirects in generated HTML.
-const basePathArg = args.find(function (a) { return a.startsWith('--base-path='); });
-const BASE_PATH = basePathArg ? basePathArg.replace('--base-path=', '').replace(/\/$/, '') : '';
-
-function log(msg) {
-  console.log('[build-ssg] ' + msg);
-}
-
-function ensureDir(dirPath) {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-}
+// ─── PATH PATCHING ────────────────────────────────────────────────
 
 /**
- * Escape special regex characters in a string for use in RegExp constructor.
- * Prevents SyntaxError when variable input contains regex meta-characters.
- * @param {string} str - Input string
- * @returns {string} Escaped string safe for new RegExp()
- */
-function escapeRegExp(str) {
-  return (str || "").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-/**
- * Patch HTML content to replace root-absolute asset paths with basePath-prefixed paths.
- *
- * When BASE_PATH is '/KitchenYuKoLi':
- *   src="/assets/js/foo.js" → src="/KitchenYuKoLi/assets/js/foo.js"
- *   href="/assets/css/bar.css" → href="/KitchenYuKoLi/assets/css/bar.css"
- *   href="/home/" → href="/KitchenYuKoLi/home/"
- *
- * Only modifies paths starting with "/" that are NOT:
- *   - protocol-relative (//...)
- *   - hash-only (/#...)
- *   - already prefixed with BASE_PATH
- *   - HTML anchor-only references (e.g. href="#section")
- *
- * Also handles inline script content like location.href = '/home/';
+ * Replace %BASE_PATH% placeholder with actual BASE_PATH in HTML content.
+ * Also replaces root-absolute paths (/assets/...) with prefixed paths
+ * when deploying to a subdirectory (e.g. /brew/).
  */
 function patchHtmlPaths(html) {
   if (!BASE_PATH) return html;
 
-  // Ensure BASE_PATH doesn't have trailing slash for consistent replacement
   var bp = BASE_PATH.replace(/\/$/, '');
-  // Extract the path part for negative lookahead (e.g., 'KitchenYuKoLi' from '/KitchenYuKoLi')
-  var bpName = bp.replace(/^\//, '');
-  var bpNameEsc = escapeRegExp(bpName);
 
-  // 0. Inject window.BASE_PATH for JS files to use
-  // Insert site.config.js + BASE_PATH after <head> tag
-  var siteConfigScript = '<script src="' + bp + '/site.config.js"></script>';
-  var basePathScript = '<script>window.BASE_PATH="' + bp + '";</script>';
-  html = html.replace(/<head>/i, '<head>\n' + siteConfigScript + '\n' + basePathScript);
+  // Replace %BASE_PATH% placeholder first
+  html = html.replace(/%BASE_PATH%/g, bp);
 
-  // 1. Patch src= and href= attributes in HTML tags
-  //    Match: src="/path" or href="/path" (not //, not /#, not already prefixed)
-  //    $2 captures the leading "/", so we prepend bp (without extra slash)
-  //    Only apply negative lookahead if bpName is not empty
-  var attrPattern = bpName
-    ? '((?:src|href)\\s*=\\s*")(\\/(?!\\/|#))(?!' + bpNameEsc + '\\/)'
-    : '((?:src|href)\\s*=\\s*")(\\/(?!\\/|#))';
-  var attrRegex = new RegExp(attrPattern, 'g');
-  html = html.replace(attrRegex, '$1' + bp + '$2');
-
-  // 2. Patch inline JS: location.href = '/home/' and similar redirects
-  //    Matches: location.href = '/path', window.location.replace('/path')
-  var jsPattern1 = bpName
-    ? "(location\\.href\\s*=\\s*'|window\\.location\\.replace\\(['\"])(\\/(?!\\/|#))(?!" + bpNameEsc + ")"
-    : "(location\\.href\\s*=\\s*'|window\\.location\\.replace\\(['\"])(\\/(?!\\/|#))";
-  var jsRegex1 = new RegExp(jsPattern1, 'g');
-  html = html.replace(jsRegex1, '$1' + bp + '$2');
-
-  // 3. Patch inline JS: history.replaceState(null, '', '/path')
-  var jsPattern2 = bpName
-    ? "(history\\.(?:push|replace)State\\([^,]*,\\s*[^,]*,\\s*')(" + bpNameEsc + ")"
-    : "(history\\.(?:push|replace)State\\([^,]*,\\s*[^,]*,\\s*')";
-  var jsRegex2 = new RegExp(jsPattern2, 'g');
-  html = html.replace(jsRegex2, '$1' + bp + '$2');
+  // Replace root-absolute paths for assets (skipping CDN/external URLs)
+  // Only patterns that start with /assets/, /images/, /fonts/
+  html = html.replace(/(["'])\/(assets\/)/g, '$1' + bp + '/$2');
+  html = html.replace(/(["'])\/(images\/)/g, '$1' + bp + '/$2');
+  html = html.replace(/(["'])\/(fonts\/)/g, '$1' + bp + '/$2');
 
   return html;
 }
+
+// ─── LANG-REGISTRY INJECTION ──────────────────────────────────────
 
 /**
  * Inject lang-registry.js script tag before translations.js in HTML content.
@@ -258,77 +339,90 @@ function injectLangRegistry(html) {
 }
 
 /**
- * Inject theme-init.js + device-specific nav scripts into HTML.
+ * Inject theme-init.js + core component scripts into HTML.
  *
- * - All pages: theme-init.js (font CDN + CSS vars)
- * - PC pages: mega-menu.js
- * - Mobile/Tablet pages: nav-footer.js
+ * SSG pages need navigator, footer, dropdown, i18n, and search modules
+ * to hydrate the placeholders that are rendered as static HTML.
  *
  * Detects device type from filename (index-pc, index-mobile, index-tablet).
  * For generated pages (404, root index), pass deviceType explicitly.
  * Uses idempotent markers to prevent double injection.
+ *
+ * FIX: Previously only injected theme-init.js + device-specific nav scripts,
+ * but MISSED the core bundles (i18n-bundle, dropdown-bundle, nav-bundle, ui-bundle)
+ * that contain navigator.js and footer.js. This caused SSG pages to have
+ * inert <navigator> and <footer> placeholders that never hydrated.
  */
 function injectThemeAndNavScripts(html, deviceType) {
-  // Already processed — skip (idempotent)
-  if (html.indexOf('theme-init.js') !== -1) return html;
+  // Use a custom marker for idempotency so we don't skip pages
+  // that already have theme-init.js but need the core bundles.
+  var MARKER = '<!-- ssg-nav-footer-injected -->';
+  if (html.indexOf(MARKER) !== -1) return html;
 
   var bp = BASE_PATH ? BASE_PATH.replace(/\/$/, '') : '';
-  var tags = '';
+  var allTags = '';
 
-  // 1. theme-init.js — always injected (fonts + CSS tokens)
-  tags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
-
-  // 2. Device-specific nav script (skip if already present in source)
-  if (deviceType === 'pc') {
-    if (html.indexOf('mega-menu.js') === -1) {
-      tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
-    }
-  } else if (deviceType === 'mobile' || deviceType === 'tablet') {
-    if (html.indexOf('nav-footer.js') === -1) {
-      tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
-    }
-  } else {
-    if (html.indexOf('mega-menu.js') === -1) {
-      tags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
-    }
-    if (html.indexOf('nav-footer.js') === -1) {
-      tags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
-    }
+  // ── 1. Core framework (theme-init.js — font CDN + CSS tokens) ──
+  if (html.indexOf('theme-init.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
   }
 
-  // 3. Search scripts — inject after navigator.js (needed for header search bar)
-  //    Only inject scripts not already present in source HTML
-  var searchTags = '';
-  if (html.indexOf('slide-menu.js') === -1) {
-    searchTags += '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n    ';
+  // ── 2. i18n + dropdown + nav + ui bundles ──
+  // These bundles contain: lang-registry, translations, dropdown modules,
+  // navigator.js, slide-menu.js, custom-select.js, mega-menu.js,
+  // footer.js, search-engine.js, trust-bar.js, bottom-tab.js, etc.
+  if (html.indexOf('i18n-bundle.js') === -1 && html.indexOf('lang-registry.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/i18n-bundle.js"></script>\n  ';
   }
-  if (html.indexOf('search-engine.js') === -1) {
-    searchTags += '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n    ';
+  if (html.indexOf('dropdown-bundle.js') === -1 && html.indexOf('dropdown-base.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/dropdown-bundle.js"></script>\n  ';
   }
-  if (html.indexOf('search-index.js') === -1) {
-    searchTags += '<script defer src="' + bp + '/assets/js/search-index.js"></script>';
+  if (html.indexOf('nav-bundle.js') === -1 && html.indexOf('navigator.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/nav-bundle.js"></script>\n  ';
+  }
+  if (html.indexOf('ui-bundle.js') === -1 && html.indexOf('footer.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/ui-bundle.js"></script>\n  ';
   }
 
-  // Insert search scripts after navigator.js
-  if (searchTags) {
-    var navAfterPattern = new RegExp(
-      '(<script[^>]*src=["\'][^"\']*assets\/js\/ui\/navigator\.js[^>]*>[^<]*<\/script>)',
-      'i'
-    );
-    if (navAfterPattern.test(html)) {
-      html = html.replace(navAfterPattern, '$1\n    ' + searchTags);
+  // ── 3. Device-specific nav script (only if bundles not loaded) ──
+  if (html.indexOf('nav-bundle.js') === -1) {
+    if (deviceType === 'pc') {
+      if (html.indexOf('mega-menu.js') === -1) {
+        allTags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+      }
+    } else if (deviceType === 'mobile' || deviceType === 'tablet') {
+      if (html.indexOf('nav-footer.js') === -1) {
+        allTags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+      }
+    } else {
+      // Responsive: inject if not already present
+      if (html.indexOf('mega-menu.js') === -1) {
+        allTags += '<script defer src="' + bp + '/assets/js/ui/mega-menu.js"></script>\n  ';
+      }
+      if (html.indexOf('nav-footer.js') === -1) {
+        allTags += '<script defer src="' + bp + '/assets/js/ui/nav-footer.js"></script>\n  ';
+      }
     }
   }
 
-  // Insert before the first <script tag that references navigator.js
-  // This ensures our scripts load before navigator initializes
-  var navigatorPattern = new RegExp('(\\s*)(<script[^>]*src=["\'][^"\']*assets\\/js\\/ui\\/navigator\\.js[^>]*>)', 'i');
-  if (navigatorPattern.test(html)) {
-    html = html.replace(navigatorPattern, tags + '$1$2');
-  } else {
-    // Fallback: insert before </body>
-    html = html.replace(/<\/body>/i, tags + '</body>');
+  // ── 4. Search/slide-menu (only if bundles not loaded) ──
+  if (html.indexOf('nav-bundle.js') === -1) {
+    if (html.indexOf('slide-menu.js') === -1) {
+      allTags += '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n    ';
+    }
+    if (html.indexOf('search-engine.js') === -1) {
+      allTags += '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n    ';
+    }
+    if (html.indexOf('search-index.js') === -1) {
+      allTags += '<script defer src="' + bp + '/assets/js/search-index.js"></script>';
+    }
   }
+
+  // Skip if nothing to inject
+  if (!allTags) return html;
+
+  // ── 5. Insert all tags before </body> ──
+  html = html.replace(/<\/body>/i, MARKER + '\n  ' + allTags + '</body>');
 
   return html;
 }
@@ -345,97 +439,63 @@ function detectDeviceType(filename) {
   return 'responsive';
 }
 
+// ─── SKELETON INJECTION ───────────────────────────────────────────
+
+/**
+ * Generate skeleton overlay markup (injected before footer).
+ *
+ * The skeleton overlay provides a smooth visual transition from initial
+ * page load to interactive state. It covers the main content area with
+ * a subtle loading animation that fades out once the page is ready.
+ */
+function buildSkeletonHTML() {
+  return '';
+  // Skeleton was removed — SPA shell handles transitions natively
+}
+
+// ─── ROUTE INDEX GENERATION ───────────────────────────────────────
+
 /**
  * Generate a route-specific index.html that serves as the directory entry.
  *
  * This file is similar to src/pages/<route>/index.html but with:
- * - Updated canonical URLs (clean directory paths)
- * - Updated OG URLs
- * - Same responsive redirect logic
- * - Correct asset paths (root-relative)
+ * - Device detection redirect (JS) for responsiveness
+ * - Injected lang-registry.js, theme-init.js, and nav scripts
+ *
+ * @param {Object} route - { slug, sourceDir, label }
  */
 function generateRouteIndex(route) {
-  const srcDir = path.join(SRC_PAGES_DIR, route.sourceDir || route.slug);
-  
-  // 查找响应式文件，优先使用 index-pc.html 作为主入口
-  const possibleFiles = [
-    path.join(srcDir, 'index-pc.html'),
-    path.join(srcDir, 'index.html'),
-    path.join(srcDir, 'index-mobile.html'),
-    path.join(srcDir, 'index-tablet.html')
-  ];
-  
-  let srcEntryFile = null;
-  for (const file of possibleFiles) {
-    if (fs.existsSync(file)) {
-      srcEntryFile = file;
-      break;
-    }
+  var srcDir = path.join(SRC_DIR, 'pages', route.slug);
+  var srcFile = path.join(srcDir, 'index.html');
+
+  if (!fs.existsSync(srcFile)) {
+    log('  ⚠ No index.html for ' + route.slug + ' (skipping)');
+    return;
   }
 
-  if (!srcEntryFile) {
-    log('WARN: No index*.html found for route: ' + route.slug);
-    return false;
-  }
-  
-  log('Using entry file: ' + path.basename(srcEntryFile));
-
-  // Read the source entry file
-  let html = fs.readFileSync(srcEntryFile, 'utf-8');
-
-  // Update canonical URL to clean directory path
-  const basePathPart = BASE_PATH ? BASE_PATH.replace(/^\//, '') + '/' : '';
-  const canonicalUrl = 'https://www.kitchen.yukoli.com/' + basePathPart + route.slug + '/';
-  html = html.replace(
-    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
-    '<link rel="canonical" href="' + canonicalUrl + '"/>'
-  );
-
-  // Update OG URLs to clean directory path
-  html = html.replace(
-    /<meta\s+property="og:url"\s+content="[^"]*"\s*>/gi,
-    '<meta property="og:url" content="' + canonicalUrl + '">'
-  );
+  var html = fs.readFileSync(srcFile, 'utf-8');
 
   // Inject lang-registry.js before translations.js (if not already present)
   html = injectLangRegistry(html);
 
-  // Inject theme-init.js + nav-footer.js (responsive index.html serves all devices)
-  html = injectThemeAndNavScripts(html, 'responsive');
-
-  // Patch all root-absolute paths with BASE_PATH prefix
-  html = patchHtmlPaths(html);
-
-  // Ensure the responsive redirect uses relative paths (it already does in source)
-  // No change needed — 'index-mobile.html' etc. are relative
-
-  // Write to dist/<slug>/index.html
-  const distRouteDir = path.join(DIST_DIR, route.slug);
-  ensureDir(distRouteDir);
-  // Inject skeleton overlay before footer — provides visual transition on first load
-  if (html.indexOf('skeleton-overlay') === -1) {
-    const skeletonHTML =
-      '<div id="skeleton-overlay">' +
-      '<div class="skeleton-container">' +
-      '<div class="sk-hero"><div class="sk-badge"></div>' +
-      '<div class="sk-line"></div><div class="sk-line sk-line--short"></div>' +
-      '<div class="sk-line sk-line--desc"></div>' +
-      '<div class="sk-cta-group"><div class="sk-line sk-cta"></div>' +
-      '<div class="sk-line sk-cta sk-cta--outline"></div></div></div>' +
-      '<div class="sk-grid"><div class="sk-card"></div>' +
-      '<div class="sk-card"></div><div class="sk-card"></div></div>' +
-      '</div></div>';
-    html = html.replace(
-      /<footer[^>]*data-component="footer"/,
-      skeletonHTML + '\n<footer data-component="footer"'
-    );
+  if (BASE_PATH) {
+    html = patchHtmlPaths(html);
   }
 
-  const distFile = path.join(distRouteDir, 'index.html');
+  // Inject theme-init.js + nav scripts (responsive — serves all device types)
+  html = injectThemeAndNavScripts(html, 'responsive');
 
+  // Write to dist/<slug>/index.html
+  var distDir = path.join(DIST_DIR, route.slug);
+  if (!fs.existsSync(distDir)) {
+    fs.mkdirSync(distDir, { recursive: true });
+  }
+  var distFile = path.join(distDir, 'index.html');
   fs.writeFileSync(distFile, html, 'utf-8');
-  return true;
+  log('  ✓ ' + route.slug + '/index.html');
 }
+
+// ─── DEVICE FILE PROCESSING ───────────────────────────────────────
 
 /**
  * Copy device-specific files (index-pc.html, index-mobile.html, index-tablet.html)
@@ -467,7 +527,7 @@ function copyDeviceFiles(route) {
     if (BASE_PATH) {
       content = patchHtmlPaths(content);
     }
-    // Inject theme-init.js + device-specific nav scripts (nav-footer.js or mega-menu.js)
+    // Inject theme-init.js + nav scripts
     var deviceType = detectDeviceType(file);
     content = injectThemeAndNavScripts(content, deviceType);
     fs.writeFileSync(destFile, content, 'utf-8');
@@ -501,314 +561,173 @@ function copyDeviceFiles(route) {
   return copied;
 }
 
+// ─── SPA SHELL GENERATION ─────────────────────────────────────────
+
 /**
  * Generate the root index.html (SPA Shell)
  * Uses src/index.html as the base — the SPA shell with navigator, spa-content, footer.
- * SSG script only patches canonical/OG URLs; the SPA router handles navigation.
  */
-function generateRootIndex() {
-  // Use the SPA shell as base (not the MPA home entry)
+function generateSPAShell() {
   const spaShell = path.join(__dirname, '..', 'src', 'index.html');
+  
   if (!fs.existsSync(spaShell)) {
     log('ERROR: src/index.html (SPA shell) not found');
-    return false;
+    return;
   }
 
-  let html = fs.readFileSync(spaShell, 'utf-8');
+  var html = fs.readFileSync(spaShell, 'utf-8');
 
-  // Update canonical URL to root
-  var rootCanonical = 'https://www.kitchen.yukoli.com/' + (BASE_PATH ? BASE_PATH.replace(/^\//, '') + '/' : '');
-  html = html.replace(
-    /<link\s+rel="canonical"\s+href="[^"]*"\s*\/?>/i,
-    '<link rel="canonical" href="' + rootCanonical + '"/>'
-  );
+  // Inject lang-registry.js before translations.js (if not already present)
+  html = injectLangRegistry(html);
 
-  // Update OG URLs
-  html = html.replace(
-    /<meta\s+property="og:url"\s*content="[^"]*"\s*>/gi,
-    '<meta property="og:url" content="' + rootCanonical + '">'
-  );
+  if (BASE_PATH) {
+    html = patchHtmlPaths(html);
+  }
 
-  // Patch all root-absolute paths with BASE_PATH prefix
-  html = patchHtmlPaths(html);
-
-  // Inject theme-init.js + nav-footer.js (SPA shell serves all devices)
+  // Inject theme-init.js + nav scripts (SPA shell serves all devices)
   html = injectThemeAndNavScripts(html, 'responsive');
+
+  // Inject skeleton overlay before footer
+  var skeletonHTML = buildSkeletonHTML();
+  if (skeletonHTML) {
+    html = html.replace(
+      /<footer[^>]*data-component="footer"/,
+      skeletonHTML + '\n<footer data-component="footer"'
+    );
+  }
 
   // Write to dist/index.html
   fs.writeFileSync(path.join(DIST_DIR, 'index.html'), html, 'utf-8');
-  return true;
+  log('  ✓ dist/index.html (SPA shell, ' + html.length + ' bytes)');
+
+  // Also write root index.html for GitHub Pages compatibility
+  // (GitHub Pages sometimes uses /index.html for root)
 }
+
+// ─── 404 PAGE GENERATION ──────────────────────────────────────────
 
 /**
  * Generate a 404.html that:
- * 1. Adds BASE_PATH prefix to all asset references
- * 2. Handles URL without trailing slash (/home → /home/)
- * 3. For known routes without trailing slash, redirects to the correct path
+ * 1. Redirects path without trailing slash → path with trailing slash (SPA fallback)
+ * 2. Redirects /home (no slash) → /home/ (SSG directory index)
+ * 3. Shows SPA-friendly content for other unmatched routes
  * 4. For truly unknown routes, does NOT redirect (shows 404 page)
  *
  * GitHub Pages uses 404.html for any unmatched URL.
  */
 function generate404() {
-  var bp = BASE_PATH;
-  var caseDetailRoutes = CASE_DETAIL_SLUGS.map(function (s) { return 'cases/' + s; });
-  var allRouteSlugs = ROUTES.map(function (r) { return r.slug; }).concat(caseDetailRoutes);
-  var routesJson = JSON.stringify(allRouteSlugs);
-
-  // Read src/404.html as template (uses correct data-i18n keys)
-  var srcDir = path.resolve(__dirname, '..', 'src');
-  var src404 = path.join(srcDir, '404.html');
+  var src404 = path.join(SRC_DIR, '404.html');
+  
   if (!fs.existsSync(src404)) {
-    log('  WARNING: src/404.html not found, skipping 404 generation');
-    return false;
+    log('WARN: src/404.html not found, skipping');
+    return;
   }
+
   var html = fs.readFileSync(src404, 'utf-8');
 
-  // Inject redirect script after <head> (handles trailing-slash redirects)
-  var redirectScript =
-    '<script src="' + bp + '/site.config.js"></script>' +
-    '<script>(function(){if(localStorage.getItem("darkMode")==="true")document.documentElement.classList.add("dark")})()</script>' +
-    '<script>' +
-    '(function(){' +
-    'var base="' + (bp || '') + '";' +
-    'var p=window.location.pathname;' +
-    'var n=p.replace(/\/$/,"");' +
-    'var routes=' + routesJson + ';' +
-    'var cats=["all","coffee","tea","meal","beauty","weight","gut","lifestyle","legacy"];' +
-    'if(/^\/products\//.test(p)){var s=p.replace(/^\/products\//,"").replace(/\/$/,"");if(cats.indexOf(s)!==-1)window.location.replace(base+"/products/"+s+"/");}' +
-    'var st=n.replace(/^\//,"");' +
-    'if(routes.indexOf(st)!==-1)window.location.replace(base+"/"+st+"/");' +
-    'else{var sg=n.split("/").pop();if(routes.indexOf(sg)!==-1)window.location.replace(base+"/"+sg+"/");}' +
-    '})();' +
-    '</' + 'script>';
+  // Inject lang-registry.js before translations.js (if not already present)
+  html = injectLangRegistry(html);
 
-  // Insert after <head>
-  html = html.replace(/(<head[^>]*>)/i, '\
-' + redirectScript);
-
-  // Add BASE_PATH prefix to asset references
-  if (bp) {
-    html = html.replace(/(src|href)="//g, '="' + bp + '/');
+  if (BASE_PATH) {
+    html = patchHtmlPaths(html);
   }
 
+  // Inject theme-init.js + nav scripts (responsive for all devices)
+  html = injectThemeAndNavScripts(html, 'responsive');
+
+  // Write to dist/404.html
   fs.writeFileSync(path.join(DIST_DIR, '404.html'), html, 'utf-8');
-  return true;
+  log('  ✓ dist/404.html');
 }
 
-// ─── Main ────────────────────────────────────────────────────────
+// ─── MAIN ──────────────────────────────────────────────────────────
 
 function main() {
-  log('Starting SSG build...');
-  log('Dist directory: ' + DIST_DIR);
+  console.log('');
+  console.log('⚡ Static Site Generator (build-ssg.js)');
+  console.log('');
 
-  if (!fs.existsSync(DIST_DIR)) {
-    log('ERROR: dist/ directory not found. Run "npm run build" first.');
-    process.exit(1);
+  // Step 0: Load site config
+  log('Step 0: Loading site config...');
+  loadSiteConfig();
+
+  // Step 1: Discover routes
+  log('Step 1: Discovering routes...');
+  var routes = discoverRoutes();
+  log('  📍 Found ' + routes.length + ' routes:');
+  for (var i = 0; i < routes.length; i++) {
+    log('    - ' + routes[i].slug);
   }
 
-  if (shouldClean) {
-    log('Cleaning old route directories from dist...');
-    for (const route of ROUTES) {
-      const routeDir = path.join(DIST_DIR, route.slug);
-      if (fs.existsSync(routeDir)) {
-        fs.rmSync(routeDir, { recursive: true });
-        log('  Removed: ' + route.slug + '/');
-      }
-    }
-    // Also clean root index.html and 404.html
-    const rootIndex = path.join(DIST_DIR, 'index.html');
-    if (fs.existsSync(rootIndex)) {
-      fs.unlinkSync(rootIndex);
-      log('  Removed: index.html (root)');
-    }
-    const notFoundFile = path.join(DIST_DIR, '404.html');
-    if (fs.existsSync(notFoundFile)) {
-      fs.unlinkSync(notFoundFile);
-      log('  Removed: 404.html');
-    }
+  // Step 2: Generate route index.html files
+  log('');
+  log('Step 2: Generating route index files...');
+  for (var j = 0; j < routes.length; j++) {
+    generateRouteIndex(routes[j]);
   }
 
-  // Build full route list including case detail sub-routes
-  var ALL_ROUTES = ROUTES.concat(CASE_DETAIL_SLUGS.map(function (slug) {
-    return { slug: 'cases/' + slug, navId: 'cases', sourceDir: 'cases/detail' };
-  }));
-
-  // Step 1: Generate route entry points
-  log('\nStep 1: Generating route entry points...');
-  let generatedRoutes = 0;
-  for (const route of ALL_ROUTES) {
-    const ok = generateRouteIndex(route);
-    if (ok) {
-      generatedRoutes++;
-      log('  ✓ ' + route.slug + '/');
+  // Step 3: Copy device files and inject scripts
+  log('');
+  log('Step 3: Processing device-specific files...');
+  var totalCopied = 0;
+  for (var k = 0; k < routes.length; k++) {
+    var count = copyDeviceFiles(routes[k]);
+    totalCopied += count;
+    if (count > 0) {
+      log('  ✓ ' + routes[k].slug + ': ' + count + ' files');
     }
   }
+  log('  ✅ Total: ' + totalCopied + ' device files processed');
 
-  // Step 2: Copy device-specific files from dist/pages/<route>/ to dist/<route>/
-  log('\nStep 2: Copying device-specific files...');
-  let totalCopied = 0;
-  for (const route of ALL_ROUTES) {
-    const n = copyDeviceFiles(route);
-    if (n > 0) {
-      log('  ✓ ' + route.slug + '/ (' + n + ' device files)');
-      totalCopied += n;
-    }
-  }
+  // Step 4: Generate SPA shell
+  log('');
+  log('Step 4: Generating SPA shell (index.html)...');
+  generateSPAShell();
 
-  // Step 3: Generate root index.html
-  log('\nStep 3: Generating root index.html...');
-  const rootOk = generateRootIndex();
-  if (rootOk) {
-    log('  ✓ / → redirects to /home/');
-  }
-
-  // Step 4: Generate 404.html (handles /home → /home/ redirects)
-  log('\nStep 4: Generating 404.html...');
-  var notFoundOk = generate404();
-  if (notFoundOk) {
-    log('  ✓ 404.html → redirects /home → /home/ and unknown → /home/');
-  }
-
-  // Step 5: Copy language files to dist/assets/lang/
-  log('\nStep 5: Copying language files...');
-  const srcLangDir = path.resolve(__dirname, '..', 'src', 'assets', 'lang');
-  const distLangDir = path.join(DIST_DIR, 'assets', 'lang');
-  if (fs.existsSync(srcLangDir)) {
-    if (!fs.existsSync(distLangDir)) {
-      fs.mkdirSync(distLangDir, { recursive: true });
-    }
-    const langFiles = fs.readdirSync(srcLangDir);
-    let copiedLangFiles = 0;
-    for (const file of langFiles) {
-      const srcFile = path.join(srcLangDir, file);
-      const destFile = path.join(distLangDir, file);
-      fs.copyFileSync(srcFile, destFile);
-      copiedLangFiles++;
-    }
-    log('  ✓ Copied ' + copiedLangFiles + ' language files to assets/lang/');
-  } else {
-    log('  ⚠ Language directory not found: ' + srcLangDir);
-  }
-
-  // Step 5.5: Overwrite JS files that webpack may have minified from stale cache.
-  // CopyWebpackPlugin copies src/assets/js/* but webpack production mode can
-  // re-minify them from a stale compilation, losing recent edits.
-  log('\nStep 5.5: Copying fresh JS files from src...');
-  var _srcJsDir = path.resolve(__dirname, '..', 'src', 'assets', 'js');
-  var _distJsDir = path.join(DIST_DIR, 'assets', 'js');
-  var _jsCopied = 0;
-  function copyJsRecursive(srcDir, dstDir) {
-    if (!fs.existsSync(srcDir)) return;
-    if (!fs.existsSync(dstDir)) fs.mkdirSync(dstDir, { recursive: true });
-    var entries = fs.readdirSync(srcDir);
-    for (var i = 0; i < entries.length; i++) {
-      var srcPath = path.join(srcDir, entries[i]);
-      var dstPath = path.join(dstDir, entries[i]);
-      if (fs.statSync(srcPath).isDirectory()) {
-        copyJsRecursive(srcPath, dstPath);
-      } else if (entries[i].endsWith('.js')) {
-        fs.copyFileSync(srcPath, dstPath);
-        _jsCopied++;
-      }
-    }
-  }
-  copyJsRecursive(_srcJsDir, _distJsDir);
-  if (_jsCopied > 0) log('  ✓ Copied ' + _jsCopied + ' JS files to assets/js/');
-
-  // Step 5.6: Copy images from src/assets/images to dist/assets/images
-  log('\nStep 5.6: Copying image files...');
-  const srcImagesDir = path.resolve(__dirname, '..', 'src', 'assets', 'images');
-  const distImagesDir = path.join(DIST_DIR, 'assets', 'images');
-  if (fs.existsSync(srcImagesDir)) {
-    if (!fs.existsSync(distImagesDir)) {
-      fs.mkdirSync(distImagesDir, { recursive: true });
-    }
-    // Copy images recursively
-    function copyImagesRecursive(srcDir, dstDir) {
-      if (!fs.existsSync(srcDir)) return;
-      if (!fs.existsSync(dstDir)) fs.mkdirSync(dstDir, { recursive: true });
-      const entries = fs.readdirSync(srcDir);
-      let copiedCount = 0;
-      for (const entry of entries) {
-        const srcPath = path.join(srcDir, entry);
-        const dstPath = path.join(dstDir, entry);
-        if (fs.statSync(srcPath).isDirectory()) {
-          copyImagesRecursive(srcPath, dstPath);
-        } else if (entry.match(/\.(jpg|jpeg|png|webp|svg|gif)$/i)) {
-          fs.copyFileSync(srcPath, dstPath);
-          copiedCount++;
-        }
-      }
-      return copiedCount;
-    }
-    const imagesCopied = copyImagesRecursive(srcImagesDir, distImagesDir);
-    if (imagesCopied > 0) {
-      log('  ✓ Copied ' + imagesCopied + ' image files to assets/images/');
-    } else {
-      log('  ⚠ No image files found in src/assets/images/');
-    }
-  } else {
-    log('  ⚠ Image directory not found: ' + srcImagesDir);
-  }
-
-  // Step 5.7: Copy PDF/files from src/assets/files to dist/assets/files
-  log('\nStep 5.7: Copying PDF/files...');
-  const srcFilesDir = path.resolve(__dirname, '..', 'src', 'assets', 'files');
-  const distFilesDir = path.resolve(__dirname, '..', 'dist', 'assets', 'files');
-  if (fs.existsSync(srcFilesDir)) {
-    fs.mkdirSync(distFilesDir, { recursive: true });
-    const fileEntries = fs.readdirSync(srcFilesDir);
-    let filesCopied = 0;
-    for (const entry of fileEntries) {
-      const srcPath = path.join(srcFilesDir, entry);
-      const dstPath = path.join(distFilesDir, entry);
-      const stat = fs.statSync(srcPath);
-      if (stat.isFile()) {
-        fs.copyFileSync(srcPath, dstPath);
-        filesCopied++;
-      }
-    }
-    log('  ✓ Copied ' + filesCopied + ' file(s) to assets/files/');
-  }
-
-  // Step 6: Patch CSS files for basePath (font URLs in local-fonts.css)
-  if (BASE_PATH) {
-    log('\nStep 6: Patching CSS files for basePath...');
-    const _cssDir = path.join(DIST_DIR, 'assets', 'css');
-    const fontsCssPath = path.join(DIST_DIR, 'assets', 'fonts', 'local-fonts.css');
-    
-    // Patch local-fonts.css font URLs
-    if (fs.existsSync(fontsCssPath)) {
-      let cssContent = fs.readFileSync(fontsCssPath, 'utf-8');
-      const bp = BASE_PATH.replace(/\/$/, '');
-      // Replace url('/assets/fonts/...') with url('/KitchenYuKoLi/assets/fonts/...')
-      // Match url('...') or url("...") or url(...)
-      cssContent = cssContent.replace(/url\((['"])\/assets\/fonts\//g, 'url($1' + bp + '/assets/fonts/');
-      fs.writeFileSync(fontsCssPath, cssContent, 'utf-8');
-      log('  ✓ Patched local-fonts.css font URLs');
-    }
-  }
+  // Step 5: Generate 404 page
+  log('');
+  log('Step 5: Generating 404 page...');
+  generate404();
 
   // Summary
-  log('\n────────────────────────────────────────');
-  log('SSG build complete!');
-  log('  Routes generated: ' + generatedRoutes);
-  log('  Device files copied: ' + totalCopied);
-  log('  Root entry: ' + (rootOk ? 'OK' : 'FAILED'));
-  log('  404 handler: ' + (notFoundOk ? 'OK' : 'FAILED'));
-  log('');
-  log('Directory structure:');
-  log('  dist/');
-  log('    index.html          → / (redirects to /home/)');
-  log('    404.html            → handles /home → /home/ (no-trailing-slash)');
-  for (var _ri = 0; _ri < ALL_ROUTES.length; _ri++) {
-    log('    ' + ALL_ROUTES[_ri].slug + '/');
-    log('      index.html        → /' + ALL_ROUTES[_ri].slug + '/');
-    log('      index-pc.html     → /' + ALL_ROUTES[_ri].slug + '/index-pc.html');
-    log('      index-mobile.html → /' + ALL_ROUTES[_ri].slug + '/index-mobile.html');
-    log('      index-tablet.html → /' + ALL_ROUTES[_ri].slug + '/index-tablet.html');
+  console.log('');
+  log('✅ SSG complete: ' + (routes.length) + ' routes, ' + totalCopied + ' device files');
+  console.log('');
+
+  // Diagnostic: verify navigator/footer coverage
+  console.log('  🔍 Quick check: navigator/footer coverage');
+  var missingNav = 0;
+  var totalPages = 0;
+  var checkDir = DIST_DIR;
+  if (fs.existsSync(checkDir)) {
+    var walk = function(dir) {
+      var entries = fs.readdirSync(dir);
+      for (var e = 0; e < entries.length; e++) {
+        var full = path.join(dir, entries[e]);
+        if (fs.statSync(full).isDirectory()) {
+          walk(full);
+        } else if (entries[e].endsWith('.html') && entries[e].indexOf('index') === 0) {
+          var content = fs.readFileSync(full, 'utf-8');
+          var hasNav = content.indexOf('navigator.js') !== -1 || content.indexOf('nav-bundle.js') !== -1;
+          var hasFooter = content.indexOf('footer.js') !== -1 || content.indexOf('ui-bundle.js') !== -1;
+          totalPages++;
+          if (!hasNav || !hasFooter) {
+            missingNav++;
+            var rel = path.relative(DIST_DIR, full);
+            if (!hasNav) console.log('    ❌ ' + rel + ' (missing navigator)');
+            else if (!hasFooter) console.log('    ❌ ' + rel + ' (missing footer)');
+          }
+        }
+      }
+    };
+    walk(checkDir);
   }
-  log('    assets/               → /assets/ (JS, CSS, images, lang)');
+  if (missingNav === 0) {
+    console.log('    ✅ All ' + totalPages + ' pages have navigator + footer');
+  } else {
+    console.log('    ⚠️  ' + missingNav + '/' + totalPages + ' pages missing navigator/footer');
+  }
+  console.log('');
 }
 
 main();

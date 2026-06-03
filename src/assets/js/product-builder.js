@@ -153,6 +153,15 @@
     { val: 50000, label: _t("product_builder_scale_50k_plus") },
   ];
 
+  // Scale value → i18n key mapping (for data-i18n sync on slider move)
+  var QUANTITY_KEYS = [
+    "product_builder_quantity_under_1k",
+    "product_builder_quantity_1k_5k",
+    "product_builder_quantity_5k_10k",
+    "product_builder_quantity_10k_50k",
+    "product_builder_quantity_50k_plus",
+  ];
+
   // Smart Match rules
   function getSmartMatch(state) {
     var mode = state.mode || "";
@@ -219,21 +228,14 @@
     var score = 0;
     if (state.mode) score += 25;
     if (state.categories.length > 0) score += 25;
-    if (state.quantity > 0) score += 20;
+    if (state.quantity >= 0) score += 20;
     if (state.timeline) score += 20;
     if (state.message && state.message.trim().length > 0) score += 10;
     return score;
   }
 
   function formatQuantity(val) {
-    var _t =
-      typeof window !== "undefined" && window.translationManager && window.translationManager.translate
-        ? function (k) {
-            return window.translationManager.translate(k);
-          }
-        : function (k) {
-            return k;
-          };
+    // Use module-level _t (no shadowing needed) — both do the same thing
     if (val === 0) return _t("product_builder_quantity_under_1k") || "Under 1,000 units/mo";
     if (val === 1000) return _t("product_builder_quantity_1k_5k") || "1,000–5,000 units/mo";
     if (val === 5000) return _t("product_builder_quantity_5k_10k") || "5,000–10,000 units/mo";
@@ -262,6 +264,7 @@
     dom.categoryTags = dom.builder.querySelectorAll(".category-tag");
     dom.scaleSlider = dom.builder.querySelector(".scale-slider");
     dom.scaleDisplay = dom.builder.querySelector(".scale-value");
+    dom.scaleDisplaySpan = dom.builder.querySelector(".scale-display");
     dom.scaleLabels = dom.builder.querySelectorAll(".scale-label");
     dom.timelineCards = dom.builder.querySelectorAll(".timeline-card");
     dom.briefPanel = dom.builder.querySelector(".brief-panel");
@@ -403,96 +406,96 @@
     }
   }
 
-  // ─── Bind Events ────────────────────────────────────────────────
-  function bindModeCards() {
-    for (var i = 0; i < dom.modeCards.length; i++) {
-      (function (card) {
-        card.addEventListener("click", function () {
-          var modeId = card.getAttribute("data-mode");
-          if (!modeId) return;
+  // ─── Bind Events (using event delegation on builder container) ───
+  function bindBuilderEvents() {
+    if (!dom.builder) return;
 
-          // Deselect all
-          for (var j = 0; j < dom.modeCards.length; j++) {
-            dom.modeCards[j].classList.remove("selected");
-          }
-          card.classList.add("selected");
+    // Mode cards via delegation
+    dom.builder.addEventListener("click", function (e) {
+      var card = e.target.closest(".mode-card");
+      if (!card) return;
 
-          state.mode = modeId;
-          renderBrief();
-          updateSubmitState();
-        });
-      })(dom.modeCards[i]);
-    }
-  }
+      var modeId = card.getAttribute("data-mode");
+      if (!modeId) return;
 
-  function bindCategoryTags() {
-    for (var i = 0; i < dom.categoryTags.length; i++) {
-      (function (tag) {
-        tag.addEventListener("click", function () {
-          var slug = tag.getAttribute("data-cat");
-          if (!slug) return;
-
-          tag.classList.toggle("selected");
-          var idx = state.categories.indexOf(slug);
-          if (idx !== -1) {
-            state.categories.splice(idx, 1);
-          } else {
-            state.categories.push(slug);
-          }
-          renderBrief();
-          updateSubmitState();
-        });
-      })(dom.categoryTags[i]);
-    }
-  }
-
-  function bindScaleSlider() {
-    if (!dom.scaleSlider) return;
-    dom.scaleSlider.addEventListener("input", function () {
-      var idx = parseInt(this.value, 10);
-      if (isNaN(idx)) idx = 0;
-      state.quantity = QUANTITY_STEPS[idx].val;
-
-      // Update label highlighting
-      for (var i = 0; i < dom.scaleLabels.length; i++) {
-        dom.scaleLabels[i].classList.toggle("active", i === idx);
+      for (var j = 0; j < dom.modeCards.length; j++) {
+        dom.modeCards[j].classList.remove("selected");
       }
-      if (dom.scaleDisplay) {
-        dom.scaleDisplay.textContent = formatQuantity(state.quantity);
+      card.classList.add("selected");
+
+      state.mode = modeId;
+      renderBrief();
+      updateSubmitState();
+    });
+
+    // Category tags via delegation
+    dom.builder.addEventListener("click", function (e) {
+      var tag = e.target.closest(".category-tag");
+      if (!tag) return;
+
+      var slug = tag.getAttribute("data-cat");
+      if (!slug) return;
+
+      tag.classList.toggle("selected");
+      var idx = state.categories.indexOf(slug);
+      if (idx !== -1) {
+        state.categories.splice(idx, 1);
+      } else {
+        state.categories.push(slug);
       }
       renderBrief();
       updateSubmitState();
     });
 
-    // Labels are clickable shortcuts
-    for (var j = 0; j < dom.scaleLabels.length; j++) {
-      (function (i, label) {
-        label.addEventListener("click", function () {
-          dom.scaleSlider.value = i.toString();
-          var evt = document.createEvent("Event");
-          evt.initEvent("input", true, true);
-          dom.scaleSlider.dispatchEvent(evt);
-        });
-      })(j, dom.scaleLabels[j]);
-    }
-  }
+    // Timeline cards via delegation
+    dom.builder.addEventListener("click", function (e) {
+      var card = e.target.closest(".timeline-card");
+      if (!card) return;
 
-  function bindTimelineCards() {
-    for (var i = 0; i < dom.timelineCards.length; i++) {
-      (function (card) {
-        card.addEventListener("click", function () {
-          var tlId = card.getAttribute("data-tl");
-          if (!tlId) return;
+      var tlId = card.getAttribute("data-tl");
+      if (!tlId) return;
 
-          for (var j = 0; j < dom.timelineCards.length; j++) {
-            dom.timelineCards[j].classList.remove("selected");
+      for (var j = 0; j < dom.timelineCards.length; j++) {
+        dom.timelineCards[j].classList.remove("selected");
+      }
+      card.classList.add("selected");
+      state.timeline = tlId;
+      renderBrief();
+      updateSubmitState();
+    });
+
+    // Scale slider
+    if (dom.scaleSlider) {
+      dom.scaleSlider.addEventListener("input", function () {
+        var idx = parseInt(this.value, 10);
+        if (isNaN(idx)) idx = 0;
+        state.quantity = QUANTITY_STEPS[idx].val;
+
+        for (var i = 0; i < dom.scaleLabels.length; i++) {
+          dom.scaleLabels[i].classList.toggle("active", i === idx);
+        }
+        if (dom.scaleDisplay) {
+          dom.scaleDisplay.textContent = formatQuantity(state.quantity);
+          // Sync data-i18n so applyTranslations picks up the correct key on language switch
+          if (dom.scaleDisplaySpan) {
+            dom.scaleDisplaySpan.setAttribute("data-i18n", QUANTITY_KEYS[idx]);
           }
-          card.classList.add("selected");
-          state.timeline = tlId;
-          renderBrief();
-          updateSubmitState();
-        });
-      })(dom.timelineCards[i]);
+        }
+        renderBrief();
+        updateSubmitState();
+      });
+
+      // Labels as clickable shortcuts
+      for (var j = 0; j < dom.scaleLabels.length; j++) {
+        (function (i, label) {
+          label.addEventListener("click", function () {
+            dom.scaleSlider.value = i.toString();
+            var evt = document.createEvent("Event");
+            evt.initEvent("input", true, true);
+            dom.scaleSlider.dispatchEvent(evt);
+          });
+        })(j, dom.scaleLabels[j]);
+      }
     }
   }
 
@@ -533,7 +536,7 @@
     if (!dom.submitBtn) return;
     dom.submitBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      if (state.submitted) return;
+      if (state.submitted || !dom.builder) return;
       submitBuilderForm();
     });
   }
@@ -591,7 +594,7 @@
     var requiredChecks = [
       { ok: !!state.mode, label: "product_builder_mode" },
       { ok: state.categories && state.categories.length > 0, label: "product_builder_categories" },
-      { ok: state.quantity > 0, label: "product_builder_quantity" },
+      { ok: state.quantity >= 0, label: "product_builder_quantity" },
       { ok: state.timeline, label: "product_builder_timeline" },
       { ok: nameEl && nameEl.value.trim(), el: nameEl },
       { ok: countryEl && countryEl.value, el: countryEl },
@@ -673,10 +676,7 @@
   // ─── Public API ─────────────────────────────────────────────────
   function init() {
     if (!cacheDom()) return;
-    bindModeCards();
-    bindCategoryTags();
-    bindScaleSlider();
-    bindTimelineCards();
+    bindBuilderEvents();
     bindPromptChips();
     bindMessageInput();
     bindSubmit();
@@ -705,6 +705,7 @@
     if (dom.successEl) dom.successEl.classList.remove("visible");
     if (dom.scaleSlider) dom.scaleSlider.value = "0";
     if (dom.scaleDisplay) dom.scaleDisplay.textContent = formatQuantity(0);
+    if (dom.scaleDisplaySpan) dom.scaleDisplaySpan.setAttribute("data-i18n", QUANTITY_KEYS[0]);
 
     // Unselect all
     if (dom.modeCards) for (var i = 0; i < dom.modeCards.length; i++) dom.modeCards[i].classList.remove("selected");

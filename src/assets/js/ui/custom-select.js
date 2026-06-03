@@ -477,7 +477,7 @@
       html +=
         '<div class="cs-search-wrap" style="position:relative;">' +
         '<span class="material-symbols-outlined cs-search-icon">search</span>' +
-        '<input type="text" class="cs-search" placeholder="搜索...">' +
+        '<input type="text" class="cs-search" placeholder="搜索..." data-i18n-placeholder="search_placeholder">' +
         "</div>";
     }
 
@@ -768,7 +768,7 @@
       html +=
         '<div class="cs-popup-search-wrap">' +
         '<span class="material-symbols-outlined cs-popup-search-icon">search</span>' +
-        '<input type="text" class="cs-popup-search" placeholder="搜索...">' +
+        '<input type="text" class="cs-popup-search" placeholder="搜索..." data-i18n-placeholder="search_placeholder">' +
         "</div>";
     }
 

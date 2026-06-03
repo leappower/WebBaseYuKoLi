@@ -1,4 +1,14 @@
-function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
+function _t(k) {
+  if (
+    typeof window !== "undefined" &&
+    window.translationManager &&
+    typeof window.translationManager.translate === "function"
+  ) {
+    var r = window.translationManager.translate(k);
+    return r && r !== k ? r : k;
+  }
+  return k;
+}
 /**
  * home-core-products.js — Dynamic Home Core Products renderer
  *
@@ -87,14 +97,19 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
         }
       }
       _saveCache(coreProducts);
-      setTimeout(function () { callback(coreProducts, "local"); }, 0);
+      setTimeout(function () {
+        callback(coreProducts, "local");
+      }, 0);
     } else {
       var container = document.querySelector('[id^="home-core-products"]');
       if (container) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+        container.innerHTML =
+          '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
       }
-      setTimeout(function () { callback([], "local"); }, 0);
+      setTimeout(function () {
+        callback([], "local");
+      }, 0);
     }
   }
 
@@ -121,11 +136,11 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       return;
     }
 
-
     loadCoreProducts(function (products) {
       if (!products || !products.length) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+        container.innerHTML =
+          '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
         return;
       }
 
@@ -143,6 +158,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       for (var i = 0; i < Math.min(products.length, 6); i++) {
         var p = products[i];
         var img = p.image || "/assets/images/products/coffee/001.webp";
+        var imgSrcset = buildImgSrcset(img, [1200, 1920]);
         var catLabel = p.category || "";
         var grad = gradients[i % gradients.length];
         html +=
@@ -156,12 +172,17 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
           (p.name || p.model || "Product") +
           '" class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500" src="' +
           img +
-          '" onerror="this.style.display=\'none\'">' +
+          '" srcset="' +
+          imgSrcset +
+          '" sizes="(min-width: 1280px) 25vw, 33vw"' +
+          "onerror=\"this.style.display='none'\">" +
           '</div><div class="p-5"><div class="text-xs text-primary font-bold mb-1 uppercase tracking-wider">' +
           catLabel +
           '</div><h3 class="font-bold text-sm leading-snug mb-2 line-clamp-2">' +
           (p.name || p.model || "") +
-          '</h3><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">' + (_t("cta_learn_more") || "Learn More") + '<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>';
+          '</h3><span class="inline-flex items-center gap-1 text-sm font-bold text-primary group-hover:gap-2 transition-all">' +
+          (_t("cta_learn_more") || "Learn More") +
+          '<span class="material-symbols-outlined text-sm">arrow_forward</span></span></div></a>';
       }
       html += "</div>";
 
@@ -180,7 +201,8 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
     loadCoreProducts(function (products) {
       if (!products || !products.length) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+        container.innerHTML =
+          '<div class="text-center text-slate-400 py-8"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
         return;
       }
 
@@ -197,6 +219,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       for (var i = 0; i < Math.min(products.length, 6); i++) {
         var p = products[i];
         var img = p.image || "/assets/images/products/coffee/001.webp";
+        var imgSrcset = buildImgSrcset(img, [828, 1200]);
         var grad = gradients[i % gradients.length];
         html +=
           '<a href="' +
@@ -209,10 +232,15 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
           (p.name || p.model || "") +
           '" class="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-500" src="' +
           img +
-          '" onerror="this.style.display=\'none\'">' +
+          '" srcset="' +
+          imgSrcset +
+          '" sizes="calc((100vw - 48px) / 2)"' +
+          "onerror=\"this.style.display='none'\">" +
           '</div><div class="p-4"><h3 class="font-bold text-sm mb-1 line-clamp-2">' +
           (p.name || p.model || "") +
-          '</h3><span class="text-xs text-primary font-bold">' + (_t("cta_learn_more") || "Learn More") + ' →</span></div></a>';
+          '</h3><span class="text-xs text-primary font-bold">' +
+          (_t("cta_learn_more") || "Learn More") +
+          " →</span></div></a>";
       }
       html += "</div>";
       /* @audit-safe: config-driven-render */
@@ -230,7 +258,8 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
     loadCoreProducts(function (products) {
       if (!products || !products.length) {
         /* @audit-safe: constant-html */
-        container.innerHTML = '<div class="text-center text-slate-400 py-4"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
+        container.innerHTML =
+          '<div class="text-center text-slate-400 py-4"><span data-i18n="home_no_core_products">暂无核心产品</span></div>';
         return;
       }
 
@@ -247,6 +276,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       for (var i = 0; i < Math.min(products.length, 6); i++) {
         var p = products[i];
         var img = p.image || "/assets/images/products/coffee/001.webp";
+        var imgSrcset = buildImgSrcset(img, [375, 828]);
         var grad = gradients[i % gradients.length];
         html +=
           '<a href="' +
@@ -259,7 +289,10 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
           (p.name || p.model || "") +
           '" class="w-full h-full object-contain p-2" src="' +
           img +
-          '" onerror="this.style.display=\'none\'">' +
+          '" srcset="' +
+          imgSrcset +
+          '" sizes="calc(100vw - 32px)"' +
+          "onerror=\"this.style.display='none'\">" +
           '</div><div class="p-3"><h3 class="font-bold text-xs mb-1 line-clamp-2">' +
           (p.name || p.model || "") +
           '</h3><span class="text-xs text-primary font-bold">→</span></div></a>';
@@ -274,28 +307,33 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
    * SPA re-render on navigation
    * Remove old event listeners for each container and add new ones
    */
-  _spaOn(document, "spa:load", function () {
-    var pc = document.getElementById("home-core-products-pc");
-    var tab = document.getElementById("home-core-products-tablet");
-    var mob = document.getElementById("home-core-products-mobile");
+  _spaOn(
+    document,
+    "spa:load",
+    function () {
+      var pc = document.getElementById("home-core-products-pc");
+      var tab = document.getElementById("home-core-products-tablet");
+      var mob = document.getElementById("home-core-products-mobile");
 
-    if (pc && pc.dataset.rendered !== "1") {
-      window.renderHomeCorePC("home-core-products-pc");
-      pc.dataset.rendered = "1";
-    }
-    if (tab && tab.dataset.rendered !== "1") {
-      window.renderHomeCoreTablet("home-core-products-tablet");
-      tab.dataset.rendered = "1";
-    }
-    if (mob && mob.dataset.rendered !== "1") {
-      window.renderHomeCoreMobile("home-core-products-mobile");
-      mob.dataset.rendered = "1";
-    }
-  }, "spa-home-core-products");
+      if (pc && pc.dataset.rendered !== "1") {
+        window.renderHomeCorePC("home-core-products-pc");
+        pc.dataset.rendered = "1";
+      }
+      if (tab && tab.dataset.rendered !== "1") {
+        window.renderHomeCoreTablet("home-core-products-tablet");
+        tab.dataset.rendered = "1";
+      }
+      if (mob && mob.dataset.rendered !== "1") {
+        window.renderHomeCoreMobile("home-core-products-mobile");
+        mob.dataset.rendered = "1";
+      }
+    },
+    "spa-home-core-products"
+  );
 
   // Allow manual re-render
   window.refreshHomeCoreProducts = function () {
-    ;["home-core-products-pc", "home-core-products-tablet", "home-core-products-mobile"].forEach(function (id) {
+    ["home-core-products-pc", "home-core-products-tablet", "home-core-products-mobile"].forEach(function (id) {
       var el = document.getElementById(id);
       if (el) el.dataset.rendered = "0";
     });

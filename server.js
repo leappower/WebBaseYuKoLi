@@ -351,6 +351,41 @@ app.get('/', (req, res) => {
   res.redirect(301, '/home/');
 });
 
+// ─── Device type detection from User-Agent ──────────────────────────
+//
+// Used by resolvePage() to serve the correct device-specific page
+// (index-mobile.html / index-tablet.html / index-pc.html) on initial load.
+//
+// Order: check Tablet first (iPad, Android Tablet) → Mobile → PC fallback.
+//
+function getDeviceTypeFromUA(userAgent) {
+  if (!userAgent) return 'pc';
+  var ua = userAgent.toLowerCase();
+
+  // Tablet check first: iPad, Android tablet (Android without "mobile"), etc.
+  // iPadOS 13+ sends desktop UA by default, so we check iPad specifically.
+  var isTablet = /ipad|tablet|playbook|silk|(?:android(?!.*mobile))/i.test(ua);
+  if (isTablet) return 'tablet';
+
+  // Mobile check
+  var isMobile = /mobile|iphone|ipod|blackberry|iemobile|opera mini|phone/i.test(ua);
+  if (isMobile) return 'mobile';
+
+  return 'pc';
+}
+
+/**
+ * Build the device-specific index filename for a given device type.
+ *
+ * @param {string} deviceType - 'mobile', 'tablet', or 'pc'
+ * @returns {string} e.g. 'index-mobile.html'
+ */
+function deviceIndexFile(deviceType) {
+  if (deviceType === 'mobile') return 'index-mobile.html';
+  if (deviceType === 'tablet') return 'index-tablet.html';
+  return 'index-pc.html';
+}
+
 // ─── Universal page resolver ─────────────────────────────────────────────
 //
 // Architecture: file-system as single source of truth.
@@ -360,19 +395,21 @@ app.get('/', (req, res) => {
 //   1. Exact file in dist/              (CSS, JS, images, fonts)
 //   2. Exact file in dist/        (SPA router fetches like /products/index-pc.html)
 //   3. dist/<path>/index.html     (SSG directory index)
-//   4. dist/<path>/index-pc.html  (SSG device-specific index)
+//   4. dist/<path>/index-{device}.html  (SSG device-specific index)
 //   5. dist/<path>-pc.html        (flat-file pattern, e.g. news/detail-pc.html)
 //   6. SPA shell (dist/index.html)      (catch-all — SPA router handles the rest)
 //
 // Security: only serves files under dist/ (and src/ in dev mode).
 //
 
-function resolvePage(reqPath) {
+function resolvePage(reqPath, deviceType) {
   var clean = reqPath.replace(/\/+$/, '');
   if (!clean) clean = '/';
 
+  var deviceFile = deviceIndexFile(deviceType || 'pc');
+
   // 0. Root path → home
-  if (clean === '/') return path.join(__dirname, 'dist', 'home', 'index-pc.html');
+  if (clean === '/') return path.join(__dirname, 'dist', 'home', deviceFile);
 
   // 1. Exact file: dist/<reqPath>  (assets, fonts, images)
   var f = path.join(__dirname, 'dist', reqPath);
@@ -383,36 +420,42 @@ function resolvePage(reqPath) {
   if (isFile(f)) return f;
 
   // 3–5. Page resolution under dist/
-  //    Try index.html → index-pc.html → <clean>-pc.html
+  //    Try index.html → index-{device}.html → <clean>-pc.html
   var candidates = [
     path.join(__dirname, 'dist', clean, 'index.html'),
-    path.join(__dirname, 'dist', clean, 'index-pc.html'),
+    path.join(__dirname, 'dist', clean, deviceFile),
+    path.join(__dirname, 'dist', clean, 'index-pc.html'),  // fallback
     path.join(__dirname, 'dist', clean + '-pc.html'),
   ];
   for (var i = 0; i < candidates.length; i++) {
     if (isFile(candidates[i])) return candidates[i];
   }
 
-  // 6. Product detail page (PDP): /products/<category>/<model>/ → detail template (PC)
+  // 6. Product detail page (PDP): /products/<category>/<model>/ → detail template
   var pdpMatch = clean.match(/^\/products\/[a-z]+\/[A-Z0-9]+(?:-[a-zA-Z0-9]+)*$/);
   if (pdpMatch) {
-    // Serve the PC detail template directly (SPA handles device detection client-side)
-    var pdpFile = path.join(__dirname, 'dist', 'pdp', 'index-pc.html');
+    // Serve the device-specific detail template
+    var pdpFile = path.join(__dirname, 'dist', 'pdp', deviceFile);
+    if (isFile(pdpFile)) {
+      return pdpFile;
+    }
+    // Fallback to PC
+    pdpFile = path.join(__dirname, 'dist', 'pdp', 'index-pc.html');
     if (isFile(pdpFile)) {
       return pdpFile;
     }
   }
 
-  // 6b. REMOVED: /products/detail/ → detail/index-pc.html fallback
-  // This caused SPA navigation to /products/detail/ to load the SSG detail
-  // page as a full-page refresh instead of routing to the correct PDP.
-  // PDP is now exclusively /products/<category>/<model>/
-
-  // 6c. Case detail page: /cases/<slug>/ → detail template (PC)
-  //    e.g. /cases/sea-coffee-brand/ → dist/cases/detail/index-pc.html
+  // 6c. Case detail page: /cases/<slug>/ → detail template
+  //    e.g. /cases/sea-coffee-brand/ → dist/cases/detail/index-{device}.html
   var caseDetailMatch = clean.match(/^\/cases\/([a-z0-9-]+)$/);
   if (caseDetailMatch) {
-    var caseDetailFile = path.join(__dirname, 'dist', 'cases', 'detail', 'index-pc.html');
+    var caseDetailFile = path.join(__dirname, 'dist', 'cases', 'detail', deviceFile);
+    if (isFile(caseDetailFile)) {
+      return caseDetailFile;
+    }
+    // Fallback to PC
+    caseDetailFile = path.join(__dirname, 'dist', 'cases', 'detail', 'index-pc.html');
     if (isFile(caseDetailFile)) {
       return caseDetailFile;
     }
@@ -449,7 +492,13 @@ function isFile(p) {
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api/')) return res.status(404).json({ error: 'Not found' });
 
-  var resolved = resolvePage(req.path);
+  // Detect device type from User-Agent for initial page loads.
+  // SPA fetches (fetch/XHR requests) also include User-Agent, but those
+  // go through the SPA router which handles device-specific paths itself.
+  // Serving device-appropriate HTML for fetches is harmless and correct.
+  var deviceType = getDeviceTypeFromUA(req.headers['user-agent']);
+
+  var resolved = resolvePage(req.path, deviceType);
   var isSpaShell = resolved.endsWith('index.html');
   var is404 = resolved.endsWith('404.html');
 
@@ -525,7 +574,7 @@ const server = app.listen(PORT, (err) => {
     const httpsServer = https.createServer(sslOptions, app);
     httpsServer.listen(SSL_PORT, (err) => {
       if (err) { console.error('Failed to start HTTPS server:', err); return; }
-      console.log(`🔒 HTTPS running on Open C la w:${SSL_PORT}`);
+      console.log(`🔒 HTTPS running on :${SSL_PORT}`);
     });
   }
 });

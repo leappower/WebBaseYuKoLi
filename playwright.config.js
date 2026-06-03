@@ -10,7 +10,8 @@ export default defineConfig({
   timeout: 30_000,
 
   use: {
-    baseURL: 'http://localhost:3000',
+    // Match the dev server port defined in webServer below
+    baseURL: 'http://localhost:3099',
     ignoreHTTPSErrors: true,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
