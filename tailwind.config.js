@@ -125,6 +125,11 @@ module.exports = {
     'border-2',
     // ── Common utility classes dynamically used ──────────────
     'bg-white',
+    // ── Grid dynamic classes (footer, product cards, etc.) ──
+    'grid-cols-1', 'grid-cols-2', 'grid-cols-3', 'grid-cols-4',
+    'md:grid-cols-2', 'md:grid-cols-3', 'md:grid-cols-4',
+    'lg:grid-cols-2', 'lg:grid-cols-3', 'lg:grid-cols-4',
+    'xl:grid-cols-4',
     // ── Case-grid dynamic classes ──────────────────────────
     'bg-blue-100','bg-blue-500','bg-blue-600',
     'bg-green-100','bg-green-500','bg-green-600',

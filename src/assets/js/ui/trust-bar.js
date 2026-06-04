@@ -39,9 +39,9 @@
         "</span>";
     }
 
-    // PC (>=1280px): static layout, no duplication
+    // PC (>=1024px): static layout, no duplication
     // Mobile/Tablet: duplicate content for seamless infinite scroll animation
-    var isPC = typeof window !== "undefined" && window.innerWidth >= 1280;
+    var isPC = typeof window !== "undefined" && window.innerWidth >= 1024;
     var trackHtml = isPC ? itemsHtml : itemsHtml + itemsHtml;
 
     return (
@@ -97,9 +97,24 @@
     }
   }
 
+  /**
+   * Safe inject with module-level guard to prevent duplicates.
+   * Both nav-bundle.js and ui-bundle.js load trust-bar.js, and
+   * setTimeout(0) alone doesn't prevent race conditions because
+   * both callbacks queue before either creates #trust-bar.
+   * Using window.__trustBarInjected as a synchronous guard.
+   */
+  function safeInject() {
+    if (window.__trustBarInjected) return;
+    window.__trustBarInjected = true;
+    setTimeout(function () {
+      inject();
+    }, 0);
+  }
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", inject);
+    document.addEventListener("DOMContentLoaded", safeInject);
   } else {
-    inject();
+    safeInject();
   }
 })();

@@ -51,8 +51,8 @@
     // NOTE: Only exceptions need listing here — everything else follows convention.
     routes: {
       // Aliases / redirects
-      "/": "/pages/home/index.html",
-      "/home/": "/pages/home/index.html",
+      "/": "/pages/home/index-pc.html",
+      "/home/": "/pages/home/index-pc.html",
       // Flat-file pattern (no directory, e.g. news/detail-pc.html)
       "/news/detail/": "/pages/news/detail-pc.html",
       // Solutions pages
@@ -69,6 +69,16 @@
       // Manufacturing & Compliance
       "/manufacturing/": "/pages/manufacturing/index-pc.html",
       "/compliance/": "/pages/compliance/index-pc.html",
+      // About page
+      "/about/": "/pages/about/index-pc.html",
+      // Contact page
+      "/contact/": "/pages/contact/index-pc.html",
+      // Privacy
+      "/privacy/": "/pages/privacy/index-pc.html",
+      // Terms
+      "/terms/": "/pages/terms/index-pc.html",
+      // Thank you
+      "/thank-you/": "/pages/thank-you/index-pc.html",
       // Cases
       "/cases/": "/pages/cases/index-pc.html",
     },

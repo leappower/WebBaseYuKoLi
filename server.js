@@ -362,8 +362,13 @@ function getDeviceTypeFromUA(userAgent) {
   if (!userAgent) return 'pc';
   var ua = userAgent.toLowerCase();
 
-  // Tablet check first: iPad, Android tablet (Android without "mobile"), etc.
-  // iPadOS 13+ sends desktop UA by default, so we check iPad specifically.
+  // Desktop browser check first — desktop Chrome/Firefox/Edge/Safari must
+  // never return 'tablet' even if the UA also contains tablet keywords.
+  // This prevents 2560px screens from getting tablet layout.
+  var isDesktop = /windows|macintosh|mac os x|linux x86_64|cros/i.test(ua);
+  if (isDesktop) return 'pc';
+
+  // Tablet check: iPad, Android tablet (Android without "mobile"), etc.
   var isTablet = /ipad|tablet|playbook|silk|(?:android(?!.*mobile))/i.test(ua);
   if (isTablet) return 'tablet';
 
