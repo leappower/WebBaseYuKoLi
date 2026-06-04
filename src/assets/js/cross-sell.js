@@ -1122,6 +1122,9 @@ function _t(k) {
   _spaOn(document, "spa:load", function () {
     trackPdpReferrer();
     updatePdpCategoryNav();
-    renderCrossSellForCurrentPage();
+    // Delay render slightly to ensure DOM is settled after content swap
+    setTimeout(function () {
+      renderCrossSellForCurrentPage();
+    }, 50);
   });
 })();

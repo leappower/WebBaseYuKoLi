@@ -545,7 +545,7 @@ navigator[data-component="navigator"] {
   }
 }
 html.dark navigator[data-component="navigator"] {
-  background: rgba(34, 22, 16, 0.8);
+  background: transparent;
   border-bottom-color: rgba(30, 41, 59, 1);
 }
 
@@ -1110,6 +1110,7 @@ body {
     font-size: 13px;
     overflow: visible;
     white-space: normal;
+    width: 100%;
   }
   .trust-bar__inner {
     text-align: center;
