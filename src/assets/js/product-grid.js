@@ -504,6 +504,9 @@
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || p.highlights || "");
     var img = esc(p._imageUrl);
+    var imgSrcset =
+      img.replace(/\.webp$/i, "-1200w.webp") + " 1200w" + ", " + img.replace(/\.webp$/i, "-1920w.webp") + " 1920w";
+    var imgSizes = "(min-width:1280px) 25vw, 33vw";
     var subCatRaw = p.subCategory || cat;
     var subCat = esc(subCatRaw);
     var subCatDataI18n = ' data-i18n="' + esc(subCatRaw) + '"';
@@ -545,7 +548,7 @@
       name +
       '" class="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105" src="' +
       img +
-      "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
+      "\" srcset=\"' + imgSrcset + '\" sizes=\"' + imgSizes + '\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       (badge ? '<div class="absolute top-4 left-4 flex gap-2">' + badge + "</div>" : "") +
       "</div>" +
       '<div class="p-6 flex-1 flex flex-col">' +
@@ -582,6 +585,9 @@
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || "");
     var img = esc(p._imageUrl);
+    var imgSrcset =
+      img.replace(/\.webp$/i, "-828w.webp") + " 828w" + ", " + img.replace(/\.webp$/i, "-1200w.webp") + " 1200w";
+    var imgSizes = "calc((100vw - 48px) / 2)";
     var subCatRaw = p.subCategory || cat;
     var subCat = esc(subCatRaw);
     var subCatDataI18n = ' data-i18n="' + esc(subCatRaw) + '"';
@@ -614,7 +620,7 @@
       name +
       '" class="w-full h-full object-contain p-2" src="' +
       img +
-      "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
+      "\" srcset=\"' + imgSrcset + '\" sizes=\"' + imgSizes + '\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       (badge ? '<div class="absolute top-3 left-3 flex gap-1.5">' + badge + "</div>" : "") +
       "</div>" +
       '<div class="p-4 flex-1 flex flex-col">' +
@@ -650,6 +656,9 @@
     var name = esc(p.name || model);
     var desc = esc(p.description || p.card_desc || "");
     var img = esc(p._imageUrl);
+    var imgSrcset =
+      img.replace(/\.webp$/i, "-375w.webp") + " 375w" + ", " + img.replace(/\.webp$/i, "-828w.webp") + " 828w";
+    var imgSizes = "calc(100vw - 32px)";
     var link = "/products/" + encodeURIComponent(cat) + "/" + encodeURIComponent(model) + "/";
     var isSelected = isProductCompared(p.model);
     var selectedClass = isSelected ? " compare-selected" : "";
@@ -678,7 +687,7 @@
       name +
       '" class="w-full h-full object-contain p-1" src="' +
       img +
-      "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
+      "\" srcset=\"' + imgSrcset + '\" sizes=\"' + imgSizes + '\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       "</div>" +
       '<div class="flex-1 min-w-0">' +
       '<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1 line-clamp-2">' +
