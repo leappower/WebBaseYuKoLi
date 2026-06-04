@@ -2652,6 +2652,7 @@ html.dark .mobile-menu-header {
   height: 36px;
   border-radius: 50%;
   border: none;
+  outline: none;
   background: rgba(60, 60, 67, 0.08);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -2683,9 +2684,15 @@ html.dark .mobile-menu-close .material-symbols-outlined {
   text-decoration: none;
   text-align: left;
   -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  outline: none;
   border-bottom: 0.5px solid rgba(60, 60, 67, 0.08);
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
 }
 .mobile-menu-l1 .mobile-menu-l1-arrow {
   margin-left: auto;

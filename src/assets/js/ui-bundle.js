@@ -893,7 +893,7 @@
       /* Products */
       '<div class="text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 text-center" data-i18n="footer_products_title">Products</h4>' +
-      '<ul class="space-y-1 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/products/all/" class="hover:text-white transition-colors" data-i18n="nav_products">All Products</a></li>' +
       '<li><a href="/products/coffee/" class="hover:text-white transition-colors" data-i18n="nav_products_coffee">Coffee</a></li>' +
       '<li><a href="/products/tea/" class="hover:text-white transition-colors" data-i18n="nav_products_tea">Tea &amp; Milk Tea</a></li>' +
@@ -906,7 +906,7 @@
       /* Solutions */
       '<div class="block text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 text-center" data-i18n="footer_solutions_title">Solutions</h4>' +
-      '<ul class="space-y-1 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/solutions/oem/" class="hover:text-white transition-colors" data-i18n="nav_solutions_oem">OEM</a></li>' +
       '<li><a href="/solutions/odm/" class="hover:text-white transition-colors" data-i18n="nav_solutions_odm">ODM</a></li>' +
       '<li><a href="/solutions/obm/" class="hover:text-white transition-colors" data-i18n="nav_solutions_obm">OBM</a></li>' +
@@ -916,7 +916,7 @@
       /* Support (shown on md+) */
       '<div class="hidden md:block">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2" data-i18n="footer_support_title">Support</h4>' +
-      '<ul class="space-y-1 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/cases/" class="hover:text-white transition-colors" data-i18n="nav_cases">Case Studies</a></li>' +
       '<li><a href="/resources/catalog/" class="hover:text-white transition-colors" data-i18n="nav_resources">Resources</a></li>' +
       '<li><a href="/contact/" class="hover:text-white transition-colors" data-i18n="nav_contact">Contact</a></li>' +
@@ -925,7 +925,7 @@
       /* Legal (shown on md+) */
       '<div class="hidden md:block">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2" data-i18n="footer_legal_title">Legal</h4>' +
-      '<ul class="space-y-1 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/privacy/" class="hover:text-white transition-colors" data-i18n="footer_legal_privacy_policy">Privacy Policy</a></li>' +
       '<li><a href="/terms/" class="hover:text-white transition-colors" data-i18n="footer_legal_user_agreement">User Agreement</a></li>' +
       "</ul></div>" +
@@ -952,7 +952,7 @@
       /* Products */
       '<div class="text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_products_title">Products</h4>' +
-      '<ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/products/all/" class="hover:text-white transition-colors" data-i18n="nav_products">All Products</a></li>' +
       '<li><a href="/products/coffee/" class="hover:text-white transition-colors" data-i18n="nav_products_coffee">Coffee Series</a></li>' +
       '<li><a href="/products/tea/" class="hover:text-white transition-colors" data-i18n="nav_products_tea">Tea &amp; Milk Tea</a></li>' +
@@ -966,7 +966,7 @@
       /* Solutions */
       '<div class="text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_solutions_title">Solutions</h4>' +
-      '<ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/solutions/oem/" class="hover:text-white transition-colors" data-i18n="nav_solutions_oem">OEM Services</a></li>' +
       '<li><a href="/solutions/odm/" class="hover:text-white transition-colors" data-i18n="nav_solutions_odm">ODM Services</a></li>' +
       '<li><a href="/solutions/obm/" class="hover:text-white transition-colors" data-i18n="nav_solutions_obm">OBM Services</a></li>' +
@@ -977,7 +977,7 @@
       /* Support */
       '<div class="text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_support_title">Support</h4>' +
-      '<ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/cases/" class="hover:text-white transition-colors" data-i18n="nav_cases">Case Studies</a></li>' +
       '<li><a href="/resources/catalog/" class="hover:text-white transition-colors" data-i18n="nav_resources">Resources</a></li>' +
       '<li><a href="/contact/" class="hover:text-white transition-colors" data-i18n="nav_contact">Contact Us</a></li>' +
@@ -987,7 +987,7 @@
       /* Legal */
       '<div class="text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_legal_title">Legal</h4>' +
-      '<ul class="space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
+      '<ul class="list-none space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/privacy/" class="hover:text-white transition-colors" data-i18n="footer_legal_privacy_policy">Privacy Policy</a></li>' +
       '<li><a href="/terms/" class="hover:text-white transition-colors" data-i18n="footer_legal_user_agreement">User Agreement</a></li>' +
       "</ul>" +

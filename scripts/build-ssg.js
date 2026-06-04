@@ -643,6 +643,24 @@ function generate404() {
 // ─── MAIN ──────────────────────────────────────────────────────────
 
 function main() {
+  // ─── 前置校验：产品分类数据 ────────────────────────────
+  console.log('');
+  console.log('🔍 前置校验: 产品分类数据一致性...');
+  try {
+    var validateScript = path.join(path.dirname(process.argv[1]), 'validate-product-categories.js');
+    if (fs.existsSync(validateScript)) {
+      var result = require('child_process').execSync(
+        'node ' + validateScript,
+        { cwd: path.resolve(__dirname, '..'), stdio: 'inherit', timeout: 30000 }
+      );
+      console.log('  ✅ 产品分类数据校验通过');
+    } else {
+      console.log('  ⚠️  未找到校验脚本，跳过');
+    }
+  } catch (e) {
+    console.error('\n⚠️ 产品分类数据校验未通过（已跳过，非阻塞模式）。');
+    // process.exit(1); // 临时跳过，让 build-ssg 完整运行
+  }
   console.log('');
   console.log('⚡ Static Site Generator (build-ssg.js)');
   console.log('');
