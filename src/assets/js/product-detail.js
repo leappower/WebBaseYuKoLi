@@ -224,14 +224,6 @@
       if (listing) listing.style.display = "none";
 
       if (!ce) {
-        // Insert breadcrumb bar before product-content
-        var bc = document.getElementById("pdp-breadcrumb");
-        if (!bc) {
-          bc = document.createElement("div");
-          bc.id = "pdp-breadcrumb";
-          bc.className = "w-full";
-          container.insertBefore(bc, container.firstChild);
-        }
         ce = document.createElement("div");
         ce.id = "product-content";
         ce.className = "w-full py-10";
@@ -311,75 +303,7 @@
 
     // Ensure containers exist (for products listing page)
     ensureContainers();
-
-    // Render breadcrumb using Breadcrumb module if available
-    (function () {
-      var bcEl = document.getElementById("pdp-breadcrumb");
-      if (!bcEl) return;
-      var catKey = product.category || "";
-      var slugMap = (window.Breadcrumb && window.Breadcrumb.CATEGORY_KEY_TO_SLUG) || {};
-      var slugMapRev = (window.Breadcrumb && window.Breadcrumb.SLUG_TO_CATEGORY_KEY) || {};
-      // product.category is a slug ("tea"), but CATEGORY_KEY_TO_SLUG uses i18n keys ("nav_products_tea")
-      // Try direct lookup first, then try slug as fallback
-      var slug = slugMap[catKey] || slugMap["nav_products_" + catKey] || catKey || "";
-      var catLabel = slug
-        ? ((window.Breadcrumb && window.Breadcrumb.PRODUCT_SLUGS && window.Breadcrumb.PRODUCT_SLUGS[slug]) || {}).label
-        : "";
-      // Track referrer for back navigation
-      if (slug) {
-        try {
-          sessionStorage.setItem("pdp_referrer", "/products/" + slug + "/");
-        } catch (e) {}
-      }
-
-      // Set pdp-category-link href dynamically
-      var categoryLink = document.getElementById("pdp-category-link");
-      if (categoryLink && slug) {
-        categoryLink.href = "/products/" + slug + "/";
-        categoryLink.setAttribute("data-category", slug);
-      }
-      var model = product.model || "";
-      // PC/Tablet breadcrumb
-      var html =
-        '<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-0 hidden md:block">' +
-        '<nav class="text-sm text-slate-500 dark:text-slate-400" aria-label="Breadcrumb">' +
-        '<ol class="flex items-center gap-1 flex-wrap">' +
-        '<li><a href="/products/" class="hover:text-primary transition-colors" data-i18n="nav_product_center">产品中心</a></li>' +
-        '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
-      if (catLabel && slug) {
-        html +=
-          '<li><a href="/products/' +
-          slug +
-          '/" class="hover:text-primary transition-colors">' +
-          resolveLabel(catLabel) +
-          "</a></li>" +
-          '<li class="mx-1.5 text-slate-300 dark:text-slate-600">/</li>';
-      }
-      html +=
-        '<li><span class="text-slate-900 dark:text-white font-medium">' + model + "</span></li>" + "</ol></nav></div>";
-      // Mobile back bar
-      html +=
-        '<div class="max-w-7xl mx-auto px-4 pt-3 pb-0 md:hidden">' +
-        '<div class="flex items-center gap-3">' +
-        '<button onclick="window.Breadcrumb&&window.Breadcrumb.goBack()" class="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all" aria-label="' +
-        esc(tl("pdp_back")) +
-        '">' +
-        '<span class="material-symbols-outlined text-xl">arrow_back</span></button>' +
-        '<div><div class="text-xs text-slate-500 dark:text-slate-400">' +
-        (tl("nav_product_center") || resolveLabel(catLabel) || "产品中心") +
-        "</div>" +
-        '<div class="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px]">' +
-        model +
-        "</div></div>" +
-        "</div></div>";
-      /* @audit-safe: config-driven-render */
-      /* @audit-safe: config-driven-render */
-      bcEl.innerHTML = html;
-
-      if (window.i18nBundle && window.i18nBundle.applyTranslations) {
-        window.i18nBundle.applyTranslations();
-      }
-    })();
+    // Breadcrumb is handled by breadcrumb.js
 
     // Image: CMS upload > static
     var imgSrc =
@@ -484,7 +408,7 @@
           "';f.className='absolute inset-0 w-full h-full';f.allow='autoplay;encrypted-media';f.allowFullscreen=true;f.style.border='none';el.querySelector('.pdp-play-btn').style.display='none';el.querySelector('img').style.display='none';el.appendChild(f);})(this)\">" +
           '<img loading="eager" alt="' +
           esc(product.model) +
-          '" class="w-full h-full object-cover" src="' +
+          '" class="w-full h-full object-contain" src="' +
           imgSrc +
           '"' +
           " onerror=\"this.src='/assets/images/default.webp'\">" +
@@ -499,7 +423,7 @@
           "';v.className='absolute inset-0 w-full h-full object-cover';v.controls=true;v.autoplay=true;v.playsInline=true;el.querySelector('.pdp-play-btn').style.display='none';el.querySelector('img').style.display='none';el.appendChild(v);v.play();})(this)\">" +
           '<img loading="eager" alt="' +
           esc(product.model) +
-          '" class="w-full h-full object-cover" src="' +
+          '" class="w-full h-full object-contain" src="' +
           imgSrc +
           '"' +
           " onerror=\"this.src='/assets/images/default.webp'\">" +
@@ -519,7 +443,7 @@
         '<img loading="eager" alt="' +
         esc(product.model) +
         '"' +
-        ' class="w-full h-full object-cover" src="' +
+        ' class="w-full h-full object-contain" src="' +
         imgSrc +
         '"' +
         ' srcset="' +

@@ -132,6 +132,21 @@ function _t(k) {
    */
 
   /**
+   * Build img srcset attribute from base URL and width array
+   * @param {string} imgSrc - base image URL
+   * @param {number[]} widths - array of widths (e.g. [1200, 1920])
+   * @returns {string} srcset attribute value
+   */
+  function buildImgSrcset(imgSrc, widths) {
+    if (!imgSrc) return "";
+    var parts = [];
+    for (var i = 0; i < widths.length; i++) {
+      parts.push(imgSrc.replace(/\.webp$/i, "-" + widths[i] + "w.webp") + " " + widths[i] + "w");
+    }
+    return parts.join(", ");
+  }
+
+  /**
    * PC: 4-column grid with full product cards
    */
   window.renderHomeCorePC = function (containerId) {

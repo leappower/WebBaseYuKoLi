@@ -1495,6 +1495,11 @@
 
     // SEO
     updateSEO(c);
+
+    // Apply i18n translations to newly injected content
+    if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
+      window.translationManager.applyTranslations();
+    }
   }
 
   function setInnerHTML(id, html) {
@@ -1532,13 +1537,23 @@
       }
     };
 
-    if (window.translationManager && window.translationManager.translationsCache &&
-        window.translationManager.translationsCache.has("ui-" + (window.translationManager.currentLanguage || "zh-CN"))) {
+    if (
+      window.translationManager &&
+      window.translationManager.translationsCache &&
+      window.translationManager.translationsCache.has("ui-" + (window.translationManager.currentLanguage || "zh-CN"))
+    ) {
       // Translations already loaded, render immediately
       doRender();
     } else if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
       // Translations not loaded yet — applyTranslations returns a Promise
-      window.translationManager.applyTranslations().then(function () { doRender(); }).catch(function () { doRender(); });
+      window.translationManager
+        .applyTranslations()
+        .then(function () {
+          doRender();
+        })
+        .catch(function () {
+          doRender();
+        });
     } else {
       // translationManager not available (e.g. static page), render now
       doRender();

@@ -2007,12 +2007,12 @@
 
     // PC/Tablet breadcrumb — aligned with KitchenYuKoLi PDP style
     var bc =
-      '<div class="pt-4 pb-0 hidden md:block max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">' +
+      '<div class="pt-4 pb-0 hidden md:block px-3 sm:px-6 lg:px-8">' +
       '<nav class="breadcrumb-nav text-sm text-slate-500 dark:text-slate-400 py-4" aria-label="Breadcrumb">' +
       '<ol class="flex items-center gap-1 flex-wrap">' +
       '<li><a href="' +
       page.parentPath +
-      '" data-no-swup class="hover:text-primary transition-colors">' +
+      '" data-no-swup class="hover:text-primary transition-colors" data-i18n="nav_product_center">' +
       esc(page.parentLabel) +
       "</a></li>";
 
@@ -2021,7 +2021,7 @@
         chevron +
         '<li><a href="/products/' +
         page.refSlug +
-        '/" data-no-swup class="hover:text-primary transition-colors">' +
+        '/" data-no-swup class="hover:text-primary transition-colors" data-i18n="nav_product_center">' +
         esc(page.refCategoryLabel) +
         "</a></li>";
     }
@@ -2035,7 +2035,7 @@
 
     // Mobile back bar — aligned with KitchenYuKoLi PDP style
     var backBar =
-      '<div class="pt-4 pb-2 md:hidden max-w-5xl mx-auto px-3 sm:px-6 lg:px-8">' +
+      '<div class="pt-4 pb-2 md:hidden px-3 sm:px-6 lg:px-8">' +
       '<div class="flex items-center gap-2">' +
       '<button onclick="window.Breadcrumb.goBack()" class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-primary hover:text-white text-slate-600 dark:text-slate-400 transition-all flex-shrink-0" aria-label="' +
       tl("pd_back", "返回") +
@@ -2044,7 +2044,7 @@
       '<div class="flex items-center gap-1 flex-wrap">' +
       '<a href="' +
       page.parentPath +
-      '" data-no-swup class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">' +
+      '" data-no-swup class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" data-i18n="nav_product_center">' +
       esc(page.parentLabel) +
       "</a>";
 
@@ -2053,7 +2053,7 @@
         mChevron +
         '<a href="/products/' +
         page.refSlug +
-        '/" data-no-swup class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors">' +
+        '/" data-no-swup class="text-xs text-slate-500 dark:text-slate-400 hover:text-primary transition-colors" data-i18n="nav_product_center">' +
         esc(page.refCategoryLabel) +
         "</a>";
     }
@@ -2156,6 +2156,8 @@
   // ─── Main init ─────────────────────────────────────────────────
 
   function reRender(page) {
+    if (__DEVELOPMENT__)
+      console.log("[Breadcrumb] reRender", page && page.type, !!document.getElementById("breadcrumb-container"));
     var container = document.getElementById("breadcrumb-container");
     if (!container) {
       // Auto-create if missing (e.g. SWUP replaced #spa-content)
@@ -2214,6 +2216,17 @@
 
     // Wait for translations to be ready before first render
     function doRender() {
+      if (__DEVELOPMENT__)
+        console.log(
+          "[Breadcrumb] doRender called, readyState=" +
+            document.readyState +
+            ", pathname=" +
+            window.location.pathname +
+            ", hasContainer=" +
+            !!document.getElementById("breadcrumb-container") +
+            ", hasTM=" +
+            !!window.translationManager
+        );
       // Re-detect to pick up translated labels
       var freshPage = detectPage();
       if (freshPage.type !== "none") {

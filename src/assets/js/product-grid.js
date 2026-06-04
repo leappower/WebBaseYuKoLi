@@ -548,7 +548,11 @@
       name +
       '" class="w-full h-full object-contain p-2 transition-transform duration-500 group-hover:scale-105" src="' +
       img +
-      "\" srcset=\"' + imgSrcset + '\" sizes=\"' + imgSizes + '\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
+      '" srcset="' +
+      imgSrcset +
+      '" sizes="' +
+      imgSizes +
+      "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       (badge ? '<div class="absolute top-4 left-4 flex gap-2">' + badge + "</div>" : "") +
       "</div>" +
       '<div class="p-6 flex-1 flex flex-col">' +
@@ -620,7 +624,11 @@
       name +
       '" class="w-full h-full object-contain p-2" src="' +
       img +
-      "\" srcset=\"' + imgSrcset + '\" sizes=\"' + imgSizes + '\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
+      '" srcset="' +
+      imgSrcset +
+      '" sizes="' +
+      imgSizes +
+      "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       (badge ? '<div class="absolute top-3 left-3 flex gap-1.5">' + badge + "</div>" : "") +
       "</div>" +
       '<div class="p-4 flex-1 flex flex-col">' +
@@ -687,7 +695,11 @@
       name +
       '" class="w-full h-full object-contain p-1" src="' +
       img +
-      "\" srcset=\"' + imgSrcset + '\" sizes=\"' + imgSizes + '\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
+      '" srcset="' +
+      imgSrcset +
+      '" sizes="' +
+      imgSizes +
+      "\" onerror=\"if(!this.dataset.errored){this.dataset.errored='1';this.src='/assets/images/products/default.webp' }\">" +
       "</div>" +
       '<div class="flex-1 min-w-0">' +
       '<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1 line-clamp-2">' +
