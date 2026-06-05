@@ -3122,10 +3122,9 @@
     document.body.appendChild(bar);
     bar.addEventListener("click", handleClick);
 
-    // Active state management
+    // Active state management (T4.2: spa:navigate removed — dead event)
     updateActiveState();
     window.addEventListener("popstate", updateActiveState);
-    document.addEventListener("spa:navigate", updateActiveState);
     document.addEventListener("spa:load", updateActiveState);
 
     // Resize: hide on PC, re-show on mobile/tablet

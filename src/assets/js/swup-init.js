@@ -3,13 +3,14 @@
  *
  * 职责:
  *   1. 从 swup-bundle.umd.js 调用 __initSwup() 启动 SWUP 实例
- *   2. 事件兼容层: spa:load + spa:ready 派发
+ *   2. 事件兼容层: 初始 spa:ready 派发（导航时由 swup-bundle.umd.js 派发）
  *   3. 暴露 window.__swupInit 供外部调用
  *
  * 依赖 (必须在此之前加载):
  *   - swup-bundle.umd.js (SWUP vendor + initSwup 函数定义 + SpaRouter 兼容层)
  *
  * JJC-020 T0.1: 将 SWUP 初始化从 swup-bundle.umd.js IIFE 中迁移至独立文件
+ * JJC-020 T4.2: 简化事件兼容层，spa:ready 由 swup-bundle.umd.js 的 page:view 钩子统一派发
  */
 (function (global) {
   "use strict";
@@ -40,49 +41,21 @@
     global.__initSwup();
 
     // ─── 事件兼容层 ───
-    // 在原有 spa:load 基础上增加 spa:ready 事件
-    // spa:ready 在 spa:load 之后通过 microtask 触发
+    // 初始 spa:ready 派发（页面首次加载已完成初始渲染）
+    // 后续 SPA 导航的 spa:ready 由 swup-bundle.umd.js 的 page:view 钩子派发
     setupEventCompatibility();
   }
 
   /**
-   * 事件兼容层
+   * 事件兼容层（T4.2 简化版）
    *
-   * swup-bundle.umd.js 中的 page:view 钩子已派发 spa:load。
-   * 此处监听 content:replace 派发 spa:load（内容替换后立即触发），
-   * 并在 spa:load 后通过 microtask 派发 spa:ready。
+   * swup-bundle.umd.js 的 page:view 钩子已同时派发 spa:load + spa:ready。
+   * 此处仅保留初始 spa:ready 派发（页面首次加载时触发）。
    */
   function setupEventCompatibility() {
-    // content:replace 钩子 — 内容替换后立即派发 spa:load
-    var origContentReplace = null;
-
-    // 需要等 swup 实例就绪后 hook 进去
-    // 由于 initSwup 同步执行，swup 此时应已创建
-    // 但我们不能直接访问 swup 变量（它在 IIFE 闭包内）…
-    // 通过监听自定义事件的方式来 hook
-
-    // 方案: 用 mutation observer 监测 #spa-content 变化
-    // 来触发 spa:ready
-    var spaContent = document.getElementById("spa-content");
-    if (spaContent) {
-      var observer = new MutationObserver(function () {
-        // spa:ready = spa:load 后的下一个 microtask
-        Promise.resolve().then(function () {
-          document.dispatchEvent(new CustomEvent("spa:ready", { bubbles: true }));
-        });
-      });
-
-      observer.observe(spaContent, {
-        childList: true,
-        subtree: true,
-        characterData: false,
-      });
-
-      // spa:ready 初始触发 (页面首次加载已完成初始渲染)
-      Promise.resolve().then(function () {
-        document.dispatchEvent(new CustomEvent("spa:ready", { bubbles: true }));
-      });
-    }
+    Promise.resolve().then(function () {
+      document.dispatchEvent(new CustomEvent("spa:ready", { bubbles: true }));
+    });
   }
 
   // ═══════════════════════════════════════════════════════════════════

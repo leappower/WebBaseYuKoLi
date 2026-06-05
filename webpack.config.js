@@ -59,11 +59,11 @@ module.exports = (env = {}, argv = {}) => {
     mode: isProduction || isDevBuild ? 'production' : 'development',
     entry: {
       'app': './src/index.js',
-      'lib/runtime-guard': './src/assets/js/lib/runtime-guard.js',
-      'lib/i18n-core': './src/assets/js/lib/i18n-core.js',
-      'lib/inline-translations': './src/assets/js/lib/inline-translations.js',
-      'lib/swup-polyfill': './src/assets/js/lib/swup-polyfill.js',
-      'swup-init': './src/assets/js/swup-init.js',
+      'assets/js/lib/runtime-guard': './src/assets/js/lib/runtime-guard.js',
+      'assets/js/lib/i18n-core': './src/assets/js/lib/i18n-core.js',
+      'assets/js/lib/inline-translations': './src/assets/js/lib/inline-translations.js',
+      'assets/js/lib/swup-polyfill': './src/assets/js/lib/swup-polyfill.js',
+      'assets/js/swup-init': './src/assets/js/swup-init.js',
     },
     optimization: (isProduction || isDevBuild) ? {
       // runtimeChunk: isolates webpack runtime so contenthash of main bundle stays stable.

@@ -2342,6 +2342,12 @@
   function dispatchSpaLoad() {
     document.dispatchEvent(new CustomEvent("spa:load", { bubbles: true }));
   }
+  function dispatchSpaReady() {
+    // spa:ready = spa:load 后的下一个 microtask
+    Promise.resolve().then(function () {
+      document.dispatchEvent(new CustomEvent("spa:ready", { bubbles: true }));
+    });
+  }
 
   // ═══════════════════════════════════════════════════════════════════
   // 设备感知页面路径映射 (适配 dev 的 88 个 SSG 页面)
@@ -2712,6 +2718,7 @@
       // ─── page:view — 派发 spa:load 兼容事件（页面完全渲染后）───
       swup.hooks.on("page:view", function () {
         dispatchSpaLoad();
+        dispatchSpaReady();
       });
 
       // ─── visit:start — 显示骨架屏并设置导航标志 ───
