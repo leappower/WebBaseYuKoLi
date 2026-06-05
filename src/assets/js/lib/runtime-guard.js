@@ -170,7 +170,7 @@
       if (typeof selectorOrFn === "function") {
         var maxChecks = Math.max(1, Math.floor(timeout / 10));
         var checks = 0;
-        function poll() {
+        var poll = function () {
           checks++;
           var result = selectorOrFn();
           if (result) {
@@ -190,7 +190,7 @@
             return;
           }
           setTimeout(poll, 10);
-        }
+        };
         poll();
       }
     },
