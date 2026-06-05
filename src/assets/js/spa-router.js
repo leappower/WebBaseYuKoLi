@@ -955,18 +955,18 @@
       // Support 页面需要 contact-channels 组件 + 微信弹窗
       if (path.indexOf("/support/") !== -1) {
         scripts.push({
-          src: (window.BASE_PATH || "") + "/assets/js/support-contact-channels.js",
+          src: "/assets/js/support-contact-channels.js",
           id: "spa-support-contact-channels",
         });
         scripts.push({
-          src: (window.BASE_PATH || "") + "/assets/js/support-wechat-modal.js",
+          src: "/assets/js/support-wechat-modal.js",
           id: "spa-support-wechat-modal",
         });
       }
 
       // Maps 页面需要 pi-maps.js
       if (path.indexOf("/support/installation/") !== -1) {
-        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/ui/pi-maps.js", id: "spa-pi-maps" });
+        scripts.push({ src: "/assets/js/ui/pi-maps.js", id: "spa-pi-maps" });
       }
 
       if (/\/deploy-/.test(path)) {
@@ -977,40 +977,40 @@
       if (path.indexOf("/support/") !== -1) {
         if (!window.CustomSelect) {
           scripts.push({
-            src: (window.BASE_PATH || "") + "/assets/js/ui/dropdown-styles.js",
+            src: "/assets/js/ui/dropdown-styles.js",
             id: "spa-dropdown-styles",
           });
-          scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/ui/custom-select.js", id: "spa-custom-select" });
+          scripts.push({ src: "/assets/js/ui/custom-select.js", id: "spa-custom-select" });
         }
       }
 
       // News detail 页面需要 news-detail.js
       if (path.indexOf("/news/detail") !== -1) {
-        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/news-detail.js", id: "spa-news-detail" });
+        scripts.push({ src: "/assets/js/news-detail.js", id: "spa-news-detail" });
       }
 
       // Home 页面需要 home-core-products.js（动态渲染核心产品卡片）
       if (path.indexOf("/home") !== -1) {
         scripts.push({
-          src: (window.BASE_PATH || "") + "/assets/js/home-core-products.js",
+          src: "/assets/js/home-core-products.js",
           id: "spa-home-core-products",
         });
       }
 
       // 产品列表页需要 product-grid.js（含 /products/all/ 和 6 个分类子页）
       if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
-        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/product-grid.js", id: "spa-product-grid" });
+        scripts.push({ src: "/assets/js/product-grid.js", id: "spa-product-grid" });
       }
 
       // 产品分类页需要 cross-sell.js（搭配推荐 + 适用场景，/products/all/ 只显示适用场景）
       if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
-        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/cross-sell.js", id: "spa-cross-sell" });
+        scripts.push({ src: "/assets/js/cross-sell.js", id: "spa-cross-sell" });
       }
 
       // 产品详情页需要 product-detail.js
       // 路由: /products/<cat>/<model>/
       if (/^\/products\/[a-z]+\/[A-Za-z0-9_-]+\/$/.test(path)) {
-        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/product-detail.js", id: "spa-product-detail" });
+        scripts.push({ src: "/assets/js/product-detail.js", id: "spa-product-detail" });
       }
 
       // Load scripts: vendor scripts in parallel, dependent scripts after
@@ -1035,6 +1035,7 @@
         }
       });
 
+      // JJC-020 T0.6: BASE_PATH 仅在此处拼接一次，避免 loadPageScripts 中重复拼接导致的 double-prefix
       function loadScript(s) {
         return new Promise(function (resolve) {
           var el = document.createElement("script");
