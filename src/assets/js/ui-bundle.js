@@ -1,4 +1,16 @@
 /**
+ * ╔══════════════════════════════════════════════════════════════════╗
+ * ║  ⚠️  DEPRECATED — JJC-020 T3.4                                 ║
+ * ║                                                                  ║
+ * ║  This bundle is a legacy concatenation of all UI components.    ║
+ * ║  New code should load individual modules from assets/js/ui/      ║
+ * ║  (each component is now a standalone Webpack entry).             ║
+ * ║                                                                  ║
+ * ║  Retained as fallback for backward compatibility.                ║
+ * ╚══════════════════════════════════════════════════════════════════╝
+ */
+
+/**
  * search-engine.js — Multi-language Product Search Engine
  *
  * Provides a lightweight, debounced search over the full product catalog.
