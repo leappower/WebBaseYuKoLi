@@ -6,6 +6,8 @@
   <script>window.BASE_PATH = window.BASE_PATH || '';</script>
   
   <!-- i18n_comment_site_config_must_load: Site Configuration (must load before all other scripts) -->
+    <!-- JJC-020: 全局安全存取器（必须在所有脚本之前加载，确保 __safe 在所有模块代码之前就绪） -->
+  <script defer src="/assets/js/lib/runtime-guard.js?v=202606051301"></script>
   <script src="/site.config.js"></script>
   <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
   <script>
@@ -75,6 +77,8 @@
 <script defer src="/assets/js/utils/device-utils.js?v=202605291142"></script>
 
 <!-- SWUP SPA Router v4.9.0 + plugins (replaces spa-router.js) -->
+<!-- SWUP 事件 polyfill（SWUP 未启用时提供 spa:load / spa:ready 兼容事件） -->
+<script defer src="/assets/js/lib/swup-polyfill.js?v=202606051301"></script>
 <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
 <script defer src="/assets/js/swup-init.js?v=202605291142"></script>
 
