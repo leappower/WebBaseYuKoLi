@@ -1,8 +1,8 @@
 # ARCHITECTURE.md — 项目架构 v2.2 (BrewYuKoLi)
 
-> **最后更新**：2026-05-23
+> **最后更新**：2026-06-05
 > **当前架构**：SWUP SPA + SSG 三屏分离 + 骨架屏 CSS 过渡
-> **分支**：feat/swup-replace-spa-v2 → dev
+> **分支**：dev-refactor-timing
 
 ---
 
@@ -135,7 +135,7 @@
 阶段 3: 业务模块
   ├─ product-grid.js, product-detail.js
   ├─ home-core-products.js, currency.js
-  └─ page-init.js（spa:load 监听 + 页面 wiring）
+  └─ page-init.js（spa:load / spa:ready 监听 + 页面 wiring）
 
 阶段 4: 产品数据
   └─ product-data-table.js（内联脚本，ETag/缓存）
@@ -163,7 +163,7 @@ UI 组件层 (15+ 文件)
   ├─ product-detail.js      产品详情
   ├─ home-core-products.js  首页核心产品
   ├─ case-grid.js           案例网格
-  ├─ page-init.js           页面 wiring + spa:load 监听
+  ├─ page-init.js           页面 wiring + spa:load/spa:ready 监听
   └─ product-data-table.js  产品数据表
 ```
 
@@ -178,9 +178,24 @@ enable        → 首次启动: 空容器→navigate 或 hideSkeleton
 visit:start   → showSkeleton() + 清除 .swup-fade-in
 fetch:request → routeToFetchUrl() 改写 fetch URL
 content:replace → hideSkeleton() + runPageInitByRoute() + updateActiveState()
-page:view     → dispatchEvent("spa:load") 兼容事件
+page:view     → dispatchSpaLoad() + dispatchSpaReady()   ← 三事件契约
 visit:end     → __spaNavigating = false
 ```
+
+> **T4.2 三事件契约（JJC-020）**：每次 SPA 导航完成后，`page:view` 钩子
+> 会依次派发三个事件，确保业务模块在不同时机正确初始化：
+>
+> 1. **`spa:load`** — DOM 替换完成后立即同步派发。适用于需要在新 DOM 首次
+>    可用时执行的初始化（如产品网格渲染、UI 事件绑定）。
+> 2. **`spa:ready`** — `spa:load` 之后的下一个 `microtask` 中异步派发。
+>    适用于需要等待同步初始化完成后再执行的逻辑（如延迟加载、分析追踪、
+>    第三方脚本注入）。`spa:ready` 保证 `spa:load` 监听器已全部执行完毕。
+> 3. **`page:view`** — SWUP 内部钩子，作为上述事件的数据基础。业务模块
+>    不应直接监听 `page:view`，应优先使用 `spa:load` 或 `spa:ready`。
+>
+> **初始加载**：首次页面加载时，`swup-init.js` 的 `setupEventCompatibility()`
+> 也在 `DOMContentLoaded` 之后派发 `spa:ready`，保证首次加载与 SPA 导航的
+> 行为一致。
 
 ### 4.2 设备感知 URL 映射
 
@@ -308,7 +323,7 @@ npm run build
 | `translations.js` | 国际化引擎 | 无 |
 | `navigator.js` | PC/Tablet 导航 | SITE_CONFIG |
 | `footer.js` | 页脚 | SITE_CONFIG |
-| `page-init.js` | 页面 wiring + spa:load 监听 | 无 |
+| `page-init.js` | 页面 wiring + spa:load/spa:ready 监听 | 无 |
 | `product-grid.js` | 产品网格 | 外部 API |
 | `product-detail.js` | 产品详情 | 外部 API |
 | `home-core-products.js` | 首页核心产品 | 无 |
@@ -337,7 +352,7 @@ site.config.js → window.SITE_CONFIG → 所有模块读取
          #spa-content 内容替换
          persist: navigator, footer
          ScriptsPlugin: data-swup-reload-script
-  → content:replace → runPageInitByRoute() → dispatchSpaLoad()
+  → content:replace → runPageInitByRoute() → dispatchSpaLoad() + dispatchSpaReady()
 ```
 
 ---
