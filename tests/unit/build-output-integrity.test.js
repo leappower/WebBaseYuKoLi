@@ -51,7 +51,7 @@ var CORE_SCRIPTS = [
   "assets/js/translations.js",
   "assets/js/ui/navigator.js",
   "assets/js/ui/footer.js",
-  "assets/js/vendor/swup.umd.js",
+  "assets/js/vendor/swup-bundle.umd.js",
   "assets/js/ui/mega-menu.js",
 ];
 
