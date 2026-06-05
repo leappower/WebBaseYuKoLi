@@ -46,6 +46,10 @@ rm -rf "$DIST"
 mkdir -p "$DIST"
 
 # ─── 2. Tailwind CSS + Webpack ──────────────────────────────────
+# ─── 1.5. Breadcrumb bundle ────────────────────────────────
+echo "🥖 Concatenating breadcrumb modules..."
+bash scripts/concat-breadcrumb.sh /tmp/breadcrumb-bundle.js
+
 echo "📦 Building CSS + JS..."
 npm run build:css 2>&1 | tail -1
 if [ "$BUILD_MODE" = "dev" ]; then

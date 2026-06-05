@@ -227,7 +227,8 @@
         ce = document.createElement("div");
         ce.id = "product-content";
         ce.className = "w-full py-10";
-        container.insertBefore(ce, bc.nextSibling);
+        var bcTarget = document.getElementById("breadcrumb-container");
+        container.insertBefore(ce, bcTarget ? bcTarget.nextSibling : container.firstChild);
       }
       if (!re) {
         var section = document.createElement("section");
