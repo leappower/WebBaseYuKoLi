@@ -13,8 +13,6 @@
 (function (global) {
   "use strict";
 
-  function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
-
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
@@ -27,7 +25,11 @@
    * 0. CONFIG
    * ───────────────────────────────────────────── */
 
-  var WHATSAPP_HREF = "https://wa.me/" + (window.Contacts && window.Contacts.whatsapp || ((window.SITE_CONFIG || {}).contacts || {}).whatsapp || "8618565718814");
+  var WHATSAPP_HREF =
+    "https://wa.me/" +
+    ((window.Contacts && window.Contacts.whatsapp) ||
+      ((window.SITE_CONFIG || {}).contacts || {}).whatsapp ||
+      "8618565718814");
   var SCROLL_THRESHOLD = 300;
 
   // 可通过 window 覆盖
@@ -75,8 +77,9 @@
    * 2. STYLES
    * ───────────────────────────────────────────── */
 
-  function injectStyles() { /* migrated to styles.css — no-op */ }
-
+  function injectStyles() {
+    /* migrated to styles.css — no-op */
+  }
 
   /* ─────────────────────────────────────────────
    * 3. HELPERS
@@ -89,7 +92,7 @@
         args = arguments;
       clearTimeout(timeout);
       timeout = setTimeout(function () {
-  var _cfg = window.SITE_CONFIG || window._cfg || {};
+        var _cfg = window.SITE_CONFIG || window._cfg || {};
         func.apply(ctx, args);
       }, wait);
     };
@@ -140,7 +143,7 @@
     var btt = document.createElement("button");
     btt.id = "fab-backtotop";
     btt.className = "fab-btn";
-    btt.setAttribute("aria-label", _t("ui_back_to_top") || "Back to top");
+    btt.setAttribute("aria-label", __safe.t("ui_back_to_top") || "Back to top");
     /* @audit-safe: template-func-return */
     /* @audit-safe: template-func-return */
     btt.innerHTML = SVG_BACKTOTOP;

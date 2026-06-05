@@ -48,17 +48,6 @@
   }
 
   /** i18n helper */
-  function _t(k) {
-    if (
-      typeof window !== "undefined" &&
-      window.translationManager &&
-      typeof window.translationManager.translate === "function"
-    ) {
-      var r = window.translationManager.translate(k);
-      return r && r !== k ? r : k;
-    }
-    return k;
-  }
 
   function hasSubmitted(email) {
     var leads = getLeads();
@@ -109,38 +98,38 @@
       "background:none;border:none;font-size:24px;cursor:pointer;color:#888;" +
       'line-height:1;">&times;</button>' +
       '<h3 style="margin:0 0 4px;font-size:22px;font-weight:800;color:#1a1a1a;">' +
-      _t("form_lead_title") +
+      __safe.t("form_lead_title") +
       "</h3>" +
       '<p style="margin:0 0 20px;font-size:14px;color:#666;">' +
-      _t("form_lead_subtitle") +
+      __safe.t("form_lead_subtitle") +
       "</p>" +
       '<form id="yk-lead-form" novalidate>' +
       '<label style="display:block;margin-bottom:14px;">' +
       '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">' +
-      _t("form_lead_name_label") +
+      __safe.t("form_lead_name_label") +
       "</span>" +
       '<input type="text" name="name" required placeholder="' +
-      _t("form_lead_name_placeholder") +
+      __safe.t("form_lead_name_placeholder") +
       '" ' +
       'style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;' +
       'font-size:14px;outline:none;box-sizing:border-box;transition:border .2s;" />' +
       "</label>" +
       '<label style="display:block;margin-bottom:14px;">' +
       '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">' +
-      _t("form_lead_company_label") +
+      __safe.t("form_lead_company_label") +
       "</span>" +
       '<input type="text" name="company" required placeholder="' +
-      _t("form_lead_company_placeholder") +
+      __safe.t("form_lead_company_placeholder") +
       '" ' +
       'style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;' +
       'font-size:14px;outline:none;box-sizing:border-box;transition:border .2s;" />' +
       "</label>" +
       '<label style="display:block;margin-bottom:20px;">' +
       '<span style="display:block;font-size:13px;font-weight:600;color:#333;margin-bottom:4px;">' +
-      _t("form_lead_email_label") +
+      __safe.t("form_lead_email_label") +
       "</span>" +
       '<input type="email" name="email" required placeholder="' +
-      _t("form_lead_email_placeholder") +
+      __safe.t("form_lead_email_placeholder") +
       '" ' +
       'style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;' +
       'font-size:14px;outline:none;box-sizing:border-box;transition:border .2s;" />' +
@@ -151,7 +140,7 @@
       ";" +
       "color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;" +
       'cursor:pointer;transition:background .2s;">' +
-      _t("form_lead_btn") +
+      __safe.t("form_lead_btn") +
       "</button>" +
       "</form>";
 
@@ -216,12 +205,12 @@
     var email = form.elements.email.value.trim();
 
     if (!name || !company || !email) {
-      errorEl.textContent = _t("form_lead_required") || "Please fill in all fields.";
+      errorEl.textContent = __safe.t("form_lead_required") || "Please fill in all fields.";
       errorEl.style.display = "block";
       return;
     }
     if (!isValidEmail(email)) {
-      errorEl.textContent = _t("form_lead_email") || "Please enter a valid email address.";
+      errorEl.textContent = __safe.t("form_lead_email") || "Please enter a valid email address.";
       errorEl.style.display = "block";
       return;
     }
@@ -263,7 +252,7 @@
       ";color:#fff;padding:14px 28px;border-radius:10px;" +
       "font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,0.2);" +
       "z-index:100000;animation:ykFadeIn .3s ease;max-width:90%;text-align:center;";
-    toast.textContent = _t("form_lead_download_success") || "\u2713 Thank you! Your download has started.";
+    toast.textContent = __safe.t("form_lead_download_success") || "\u2713 Thank you! Your download has started.";
     document.body.appendChild(toast);
     setTimeout(function () {
       toast.style.opacity = "0";

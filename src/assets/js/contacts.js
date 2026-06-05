@@ -12,7 +12,6 @@
   "use strict";
 
   var _spaRegs = {};
-  function _t(k){if(typeof window!=="undefined"&&window.translationManager&&typeof window.translationManager.translate==="function"){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
     var ac = new AbortController();
@@ -32,8 +31,8 @@
    * contact-dropdown.js、profit-calculator.js 等也通过 window.Contacts.whatsapp 读取此值。
    */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
-  var _social = ((_cfg.contacts || {}).social) || {};
-  var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp) || "8618565718814";
+  var _social = (_cfg.contacts || {}).social || {};
+  var WHATSAPP_NUMBER = (_cfg.contacts || {}).whatsapp || "8618565718814";
 
   // ============================================
   // WHATSAPP SOURCE TRACKING
@@ -59,7 +58,7 @@
     for (var i = 0; i < supportCats.length; i++) {
       var cat = supportCats[i];
       if (cat.slug && cat.label) {
-        var label = typeof cat.label === "object" ? (cat.label["zh-CN"] || cat.label.en || cat.slug) : cat.label;
+        var label = typeof cat.label === "object" ? cat.label["zh-CN"] || cat.label.en || cat.slug : cat.label;
         names["/support/" + cat.slug + "/"] = label;
       }
     }
@@ -68,7 +67,7 @@
     for (var j = 0; j < appCats.length; j++) {
       var ac = appCats[j];
       if (ac.slug && ac.label) {
-        var al = typeof ac.label === "object" ? (ac.label["zh-CN"] || ac.label.en || ac.slug) : ac.label;
+        var al = typeof ac.label === "object" ? ac.label["zh-CN"] || ac.label.en || ac.slug : ac.label;
         names["/applications/" + ac.slug + "/"] = al;
       }
     }
@@ -103,7 +102,7 @@
   function contactsWhatsApp(opts) {
     opts = opts || {};
     var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
-    var message = opts.message || ("Hi " + (_brand.name || "Brand"));
+    var message = opts.message || "Hi " + (_brand.name || "Brand");
     var source = opts.source || "";
 
     var text = message;
@@ -214,32 +213,37 @@
     window.open(url, "_blank");
   }
   function startLine() {
-    window.open((_social.line || ""), "_blank");
+    window.open(_social.line || "", "_blank");
   }
   function startPhone() {
     window.location.href = "tel:+" + WHATSAPP_NUMBER;
   }
   function startTelegram() {
-    window.open((_social.telegram || ""), "_blank");
+    window.open(_social.telegram || "", "_blank");
   }
   function startEmail() {
     var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
     var subject = (_brand.name || "Brand") + " 询价";
     var body = buildQuoteMessage();
     window.location.href =
-      "mailto:" + ((_cfg.contacts || {}).supportEmail || "support@example.com") + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+      "mailto:" +
+      ((_cfg.contacts || {}).supportEmail || "support@example.com") +
+      "?subject=" +
+      encodeURIComponent(subject) +
+      "&body=" +
+      encodeURIComponent(body);
   }
   function startFacebook() {
-    window.open((_social.facebook || ""), "_blank");
+    window.open(_social.facebook || "", "_blank");
   }
   function startInstagram() {
-    window.open((_social.instagram || ""), "_blank");
+    window.open(_social.instagram || "", "_blank");
   }
   function startTwitter() {
-    window.open((_social.twitter || ""), "_blank");
+    window.open(_social.twitter || "", "_blank");
   }
   function startLinkedIn() {
-    window.open((_social.linkedin || ""), "_blank");
+    window.open(_social.linkedin || "", "_blank");
   }
   /**
    * startTikTok 优先调用 window.showNotification（page-interactions.js Toast 注册后）。
@@ -247,7 +251,7 @@
    */
   function startTikTok() {
     var notify = typeof window.showNotification === "function" ? window.showNotification : _showNotification;
-    notify(_t("contact_coming_soon") || "Coming Soon", "success");
+    notify(__safe.t("contact_coming_soon") || "Coming Soon", "success");
   }
 
   // ============================================

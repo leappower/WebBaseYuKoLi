@@ -1,14 +1,3 @@
-function _t(k) {
-  if (
-    typeof window !== "undefined" &&
-    window.translationManager &&
-    typeof window.translationManager.translate === "function"
-  ) {
-    var r = window.translationManager.translate(k);
-    return r && r !== k ? r : k;
-  }
-  return k;
-}
 /**
  * cross-sell.js — Cross-sell recommendations & scene entry links
  *
@@ -279,7 +268,7 @@ function _t(k) {
       { slug: "rd", label: "R&D Lab", reason: "OEM + R&D for precision formula development", highlight: "R&D enabled" },
       {
         slug: "packaging",
-        label: _t("cross_sell_packaging") || "Custom Packaging",
+        label: __safe.t("cross_sell_packaging") || "Custom Packaging",
         reason: "OEM + custom packaging for unified branding",
         highlight: "Brand unity",
       },
@@ -299,7 +288,7 @@ function _t(k) {
       },
       {
         slug: "packaging",
-        label: _t("cross_sell_packaging") || "Custom Packaging",
+        label: __safe.t("cross_sell_packaging") || "Custom Packaging",
         reason: "ODM + exclusive packaging for competitive edge",
         highlight: "Differentiation",
       },
@@ -334,7 +323,7 @@ function _t(k) {
       },
       {
         slug: "packaging",
-        label: _t("cross_sell_packaging") || "Custom Packaging",
+        label: __safe.t("cross_sell_packaging") || "Custom Packaging",
         reason: "New R&D products with innovative packaging",
         highlight: "Product innovation",
       },
@@ -570,7 +559,7 @@ function _t(k) {
     odm: "ODM Design",
     obm: "OBM Full Service",
     rd: "R&D Lab",
-    packaging: _t("cross_sell_packaging") || "Custom Packaging",
+    packaging: __safe.t("cross_sell_packaging") || "Custom Packaging",
     quality: "Quality Certified",
   };
 

@@ -1,4 +1,3 @@
-function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
 // init.js - Initialization and user tracking code
 // IIFE wrapper for src2 (no build tools)
 // This code runs immediately and doesn't wait for DOM ready
@@ -7,7 +6,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
   // ============================================
   // User Activity Tracking for Smart Popup System
@@ -185,7 +184,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       /* @audit-safe: array-concat-template */
       badge.innerHTML = [
         '<span style="font-size:1rem;">💬</span>',
-        "<span>" + (_t("roi_payback_whatsapp") || "8-Month Payback · WhatsApp Direct Support") + "</span>",
+        "<span>" + (__safe.t("roi_payback_whatsapp") || "8-Month Payback · WhatsApp Direct Support") + "</span>",
       ].join("");
     } else {
       badge.style.background = "rgba(34,197,94,0.1)";
@@ -195,7 +194,7 @@ function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof
       /* @audit-safe: array-concat-template */
       badge.innerHTML = [
         '<span style="font-size:1rem;">🌿</span>',
-        "<span>" + (_t("roi_esg_certified") || "ESG Compliant · Energy Star Certified") + "</span>",
+        "<span>" + (__safe.t("roi_esg_certified") || "ESG Compliant · Energy Star Certified") + "</span>",
       ].join("");
     }
 

@@ -9,8 +9,6 @@
 (function (global) {
   "use strict";
 
-  function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
-
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
@@ -141,7 +139,7 @@
         btn.setAttribute("aria-expanded", String(!isExpanded));
         var origText = btn.dataset.origText || btn.textContent.trim();
         if (!btn.dataset.origText) btn.dataset.origText = origText;
-        btn.textContent = isExpanded ? origText : _t("ui_show_less") || "Show Less";
+        btn.textContent = isExpanded ? origText : __safe.t("ui_show_less") || "Show Less";
       });
     }
   }

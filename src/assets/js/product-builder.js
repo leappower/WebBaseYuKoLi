@@ -16,16 +16,6 @@
   "use strict";
 
   // i18n helper
-  function _t(key) {
-    if (
-      typeof window !== "undefined" &&
-      window.translationManager &&
-      typeof window.translationManager.translate === "function"
-    ) {
-      return window.translationManager.translate(key);
-    }
-    return key;
-  }
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -101,56 +91,56 @@
     {
       id: "oem",
       icon: "precision_manufacturing",
-      title: _t("product_builder_mode_oem_title"),
-      subtitle: _t("product_builder_mode_oem_sub"),
+      title: __safe.t("product_builder_mode_oem_title"),
+      subtitle: __safe.t("product_builder_mode_oem_sub"),
       desc:
-        _t("product_builder_mode_oem_desc") ||
+        __safe.t("product_builder_mode_oem_desc") ||
         "You supply the formula & materials, we produce at scale. Recipe confidentiality guaranteed.",
     },
     {
       id: "odm",
       icon: "design_services",
-      title: _t("product_builder_mode_odm_title"),
-      subtitle: _t("product_builder_mode_odm_sub"),
+      title: __safe.t("product_builder_mode_odm_title"),
+      subtitle: __safe.t("product_builder_mode_odm_sub"),
       desc:
-        _t("product_builder_mode_odm_desc") ||
+        __safe.t("product_builder_mode_odm_desc") ||
         "We develop custom formulas based on your target market. You add your brand.",
     },
     {
       id: "obm",
       icon: "verified",
-      title: _t("product_builder_mode_obm_title"),
-      subtitle: _t("product_builder_mode_obm_sub"),
+      title: __safe.t("product_builder_mode_obm_title"),
+      subtitle: __safe.t("product_builder_mode_obm_sub"),
       desc:
-        _t("product_builder_mode_obm_desc") ||
+        __safe.t("product_builder_mode_obm_desc") ||
         "Full-service brand incubation: strategy, R&D, packaging, and launch support.",
     },
     {
       id: "not-sure",
       icon: "help_outline",
-      title: _t("product_builder_mode_not_sure_title"),
-      subtitle: _t("product_builder_mode_not_sure_sub"),
+      title: __safe.t("product_builder_mode_not_sure_title"),
+      subtitle: __safe.t("product_builder_mode_not_sure_sub"),
       desc:
-        _t("product_builder_mode_not_sure_desc") ||
+        __safe.t("product_builder_mode_not_sure_desc") ||
         "No worries! Our team will recommend the best model based on your goals.",
     },
   ];
 
   // Timeline options
   var TIMELINES = [
-    { id: "now", icon: "⚡", label: _t("product_builder_timeline_ready") },
-    { id: "1-3", icon: "📅", label: _t("product_builder_timeline_1_3m") },
-    { id: "3-6", icon: "🗓", label: _t("product_builder_timeline_3_6m") },
-    { id: "research", icon: "🔍", label: _t("product_builder_timeline_researching") },
+    { id: "now", icon: "⚡", label: __safe.t("product_builder_timeline_ready") },
+    { id: "1-3", icon: "📅", label: __safe.t("product_builder_timeline_1_3m") },
+    { id: "3-6", icon: "🗓", label: __safe.t("product_builder_timeline_3_6m") },
+    { id: "research", icon: "🔍", label: __safe.t("product_builder_timeline_researching") },
   ];
 
   // Quantity slider config
   var QUANTITY_STEPS = [
-    { val: 0, label: _t("product_builder_scale_lt_1k") },
-    { val: 1000, label: _t("product_builder_scale_1k_5k") },
-    { val: 5000, label: _t("product_builder_scale_5k_10k") },
-    { val: 10000, label: _t("product_builder_scale_10k_50k") },
-    { val: 50000, label: _t("product_builder_scale_50k_plus") },
+    { val: 0, label: __safe.t("product_builder_scale_lt_1k") },
+    { val: 1000, label: __safe.t("product_builder_scale_1k_5k") },
+    { val: 5000, label: __safe.t("product_builder_scale_5k_10k") },
+    { val: 10000, label: __safe.t("product_builder_scale_10k_50k") },
+    { val: 50000, label: __safe.t("product_builder_scale_50k_plus") },
   ];
 
   // Scale value → i18n key mapping (for data-i18n sync on slider move)
@@ -169,25 +159,25 @@
 
     if (mode === "oem" && cats.indexOf("coffee") !== -1) {
       return (
-        _t("product_builder_smartmatch_oem_coffee") ||
+        __safe.t("product_builder_smartmatch_oem_coffee") ||
         "Your OEM Coffee inquiry matches our specialty: 200+ coffee recipes, certified organic options."
       );
     }
     if (mode === "odm" && cats.indexOf("meal") !== -1) {
       return (
-        _t("product_builder_smartmatch_odm_meal") ||
+        __safe.t("product_builder_smartmatch_odm_meal") ||
         "ODM Meal Replacement is our fastest-growing category! We can prepare 3-5 formula samples for your review."
       );
     }
     if (mode === "obm") {
       return (
-        _t("product_builder_smartmatch_obm") ||
+        __safe.t("product_builder_smartmatch_obm") ||
         "OBM is our premium service. A product specialist will guide you through strategy, formulation, packaging, and launch."
       );
     }
     if (mode === "not-sure") {
       return (
-        _t("product_builder_smartmatch_not_sure") ||
+        __safe.t("product_builder_smartmatch_not_sure") ||
         "We'll recommend the best model based on your goals & timeline. Share more details below for a tailored solution."
       );
     }
@@ -196,18 +186,18 @@
         return c.slug === cats[0];
       })[0];
       var catName = catLabel
-        ? _t("product_builder_category_" + catLabel.slug) || catLabel.label
-        : _t("product_builder_smartmatch_this_category") || "this category";
+        ? __safe.t("product_builder_category_" + catLabel.slug) || catLabel.label
+        : __safe.t("product_builder_smartmatch_this_category") || "this category";
       return (
         "Your " +
         (mode.toUpperCase() === "OEM"
-          ? (_t("product_builder_mode_oem_title") || "OEM") + " "
+          ? (__safe.t("product_builder_mode_oem_title") || "OEM") + " "
           : mode.toUpperCase() === "ODM"
-            ? (_t("product_builder_mode_odm_title") || "ODM") + " "
+            ? (__safe.t("product_builder_mode_odm_title") || "ODM") + " "
             : "") +
         catName +
         " " +
-        (_t("product_builder_smartmatch_reviewed") ||
+        (__safe.t("product_builder_smartmatch_reviewed") ||
           "inquiry will be reviewed by our product team. We reply within 24 hours.")
       );
     }
@@ -216,7 +206,7 @@
         "Your " +
         mode.toUpperCase() +
         " " +
-        (_t("product_builder_smartmatch_specialist") ||
+        (__safe.t("product_builder_smartmatch_specialist") ||
           "inquiry will be reviewed by our specialists. Fill in more details for a targeted quote.")
       );
     }
@@ -236,12 +226,12 @@
 
   function formatQuantity(val) {
     // Use module-level _t (no shadowing needed) — both do the same thing
-    if (val === 0) return _t("product_builder_quantity_under_1k") || "Under 1,000 units/mo";
-    if (val === 1000) return _t("product_builder_quantity_1k_5k") || "1,000–5,000 units/mo";
-    if (val === 5000) return _t("product_builder_quantity_5k_10k") || "5,000–10,000 units/mo";
-    if (val === 10000) return _t("product_builder_quantity_10k_50k") || "10,000–50,000 units/mo";
-    if (val >= 50000) return _t("product_builder_quantity_50k_plus") || "50,000+ units/mo";
-    return val + " " + (_t("product_builder_units_per_month") || "units/mo");
+    if (val === 0) return __safe.t("product_builder_quantity_under_1k") || "Under 1,000 units/mo";
+    if (val === 1000) return __safe.t("product_builder_quantity_1k_5k") || "1,000–5,000 units/mo";
+    if (val === 5000) return __safe.t("product_builder_quantity_5k_10k") || "5,000–10,000 units/mo";
+    if (val === 10000) return __safe.t("product_builder_quantity_10k_50k") || "10,000–50,000 units/mo";
+    if (val >= 50000) return __safe.t("product_builder_quantity_50k_plus") || "50,000+ units/mo";
+    return val + " " + (__safe.t("product_builder_units_per_month") || "units/mo");
   }
 
   // ─── State ──────────────────────────────────────────────────────
@@ -292,9 +282,11 @@
           modeIcon = MODES[i].icon;
           // Re-translate at render time — i18n may not have been ready at script load
           modeTitle =
-            _t(MODES[i].title) +
+            __safe.t(MODES[i].title) +
             " " +
-            (MODES[i].subtitle ? _t(MODES[i].subtitle) : _t("product_builder_mode_fallback") || "Manufacturing");
+            (MODES[i].subtitle
+              ? __safe.t(MODES[i].subtitle)
+              : __safe.t("product_builder_mode_fallback") || "Manufacturing");
           break;
         }
       }
@@ -304,7 +296,7 @@
     for (var j = 0; j < state.categories.length; j++) {
       for (var k = 0; k < CATEGORIES.length; k++) {
         if (CATEGORIES[k].slug === state.categories[j]) {
-          var catName = _t("product_builder_category_" + CATEGORIES[k].slug);
+          var catName = __safe.t("product_builder_category_" + CATEGORIES[k].slug);
           if (!catName || catName.indexOf("product_builder_") === 0) {
             catName = CATEGORIES[k].label;
           }
@@ -322,7 +314,7 @@
         if (TIMELINES[l].id === state.timeline) {
           tlIcon = TIMELINES[l].icon;
           // Re-translate at render time
-          tlText = tlIcon + " " + _t(TIMELINES[l].label);
+          tlText = tlIcon + " " + __safe.t(TIMELINES[l].label);
           break;
         }
       }
@@ -334,11 +326,11 @@
       dom.briefSummary.innerHTML =
         '<div class="brief-empty-state">' +
           '<span class="material-symbols-outlined">edit_note</span>' +
-          _t("product_builder_brief_empty") || "Your selections will appear here</div>";
+          __safe.t("product_builder_brief_empty") || "Your selections will appear here</div>";
       dom.briefMatch.style.display = "none";
       dom.briefScoreFill.style.width = "0%";
       dom.briefScoreText.innerHTML =
-        _t("product_builder_score_desc") || "Complete the form for a <strong>more accurate quote</strong>";
+        __safe.t("product_builder_score_desc") || "Complete the form for a <strong>more accurate quote</strong>";
       return;
     }
 
@@ -390,19 +382,22 @@
     dom.briefScoreFill.style.width = score + "%";
     if (score >= 80) {
       dom.briefScoreText.innerHTML =
-        "<strong>" + score + "%</strong> " + (_t("product_builder_score_ready") || "complete — Ready for a quote!");
+        "<strong>" +
+        score +
+        "%</strong> " +
+        (__safe.t("product_builder_score_ready") || "complete — Ready for a quote!");
     } else if (score >= 50) {
       dom.briefScoreText.innerHTML =
         "<strong>" +
         score +
         "%</strong> " +
-        (_t("product_builder_score_add_details") || "complete — Add a few more details");
+        (__safe.t("product_builder_score_add_details") || "complete — Add a few more details");
     } else {
       dom.briefScoreText.innerHTML =
         "<strong>" +
         score +
         "%</strong> " +
-        (_t("product_builder_score_more_details") || "complete — More details = better quote");
+        (__safe.t("product_builder_score_more_details") || "complete — More details = better quote");
     }
   }
 
@@ -613,7 +608,7 @@
     if (firstMissing) {
       state.submitted = false;
       if (global.showNotification)
-        global.showNotification(_t("product_builder_validation_required") || "请填写所有必填项", "error");
+        global.showNotification(__safe.t("product_builder_validation_required") || "请填写所有必填项", "error");
       return;
     }
 
@@ -668,7 +663,7 @@
       var nameVal = nameEl ? nameEl.value.trim() : "";
       if (nameVal) {
         var greeting = dom.successEl.querySelector(".success-greeting");
-        if (greeting) greeting.textContent = _t("product_builder_success_greeting_prefix") + " " + nameVal + "!";
+        if (greeting) greeting.textContent = __safe.t("product_builder_success_greeting_prefix") + " " + nameVal + "!";
       }
     }
   }

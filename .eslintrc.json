@@ -13,10 +13,32 @@
     "eslint:recommended"
   ],
   "rules": {
-    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
-    "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }],
+    "no-console": [
+      "warn",
+      {
+        "allow": [
+          "warn",
+          "error",
+          "info"
+        ]
+      }
+    ],
+    "no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
     "no-undef": "error",
-    "no-empty": ["error", { "allowEmptyCatch": true }],
+    "no-empty": [
+      "error",
+      {
+        "allowEmptyCatch": true
+      }
+    ],
     "no-prototype-builtins": "warn",
     "no-useless-escape": "warn",
     "no-inner-declarations": "warn",
@@ -42,16 +64,25 @@
     "WHATSAPP_DEFAULT_MSG": "readonly",
     "INFO_EMAIL": "readonly",
     "FORM_EMAIL": "readonly",
-    "WHATSAPP_NUMBER": "readonly",
-    "WHATSAPP_DEFAULT_MSG": "readonly",
-    "INFO_EMAIL": "readonly",
-    "FORM_EMAIL": "readonly"
+    "__safe": "readonly"
   },
   "overrides": [
     {
-      "files": ["**/tests/**", "**/*.test.js", "jest.setup.js"],
-      "env": { "jest": true }
+      "files": [
+        "**/tests/**",
+        "**/*.test.js",
+        "jest.setup.js"
+      ],
+      "env": {
+        "jest": true
+      }
     }
   ],
-  "ignorePatterns": ["node_modules/", "dist/", "public/", "coverage/", "src/assets/js/tailwind.cdn.js"]
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "public/",
+    "coverage/",
+    "src/assets/js/tailwind.cdn.js"
+  ]
 }

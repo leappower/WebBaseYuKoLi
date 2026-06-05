@@ -1145,18 +1145,6 @@
 (function (global) {
   "use strict";
 
-  function _t(k) {
-    if (
-      typeof window !== "undefined" &&
-      window.translationManager &&
-      typeof window.translationManager.translate === "function"
-    ) {
-      var r = window.translationManager.translate(k);
-      return r && r !== k ? r : k;
-    }
-    return k;
-  }
-
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
     if (_spaRegs[key]) _spaRegs[key].abort();
@@ -1287,7 +1275,7 @@
     var btt = document.createElement("button");
     btt.id = "fab-backtotop";
     btt.className = "fab-btn";
-    btt.setAttribute("aria-label", _t("ui_back_to_top") || "Back to top");
+    btt.setAttribute("aria-label", __safe.t("ui_back_to_top") || "Back to top");
     /* @audit-safe: template-func-return */
     /* @audit-safe: template-func-return */
     btt.innerHTML = SVG_BACKTOTOP;
