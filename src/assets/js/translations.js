@@ -168,7 +168,7 @@
               return l.loadUITranslations("en");
             throw e;
           }),
-        15e3,
+        5e3,
         "[i18n] loadUITranslations timeout for " + t
       );
     }),
