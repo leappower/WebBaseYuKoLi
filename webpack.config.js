@@ -149,7 +149,7 @@ module.exports = (env = {}, argv = {}) => {
                     'back-to-top.js', // Moved to assets/js/ui/back-to-top.js
                     // Performance: old individual scripts replaced by bundles
                     'lang-registry.js', 'translations.js', 'translations-dropdown-template.js',
-                    'swup-init.js', 'swup.umd.js', 'swup-head-plugin.umd.js',
+                    'swup.umd.js', 'swup-head-plugin.umd.js',
                     'swup-scroll-plugin.umd.js', 'swup-scripts-plugin.umd.js',
                     'swup-debug-plugin.umd.js',
                     'dropdown-styles.js', 'dropdown-base.js',

@@ -1,0 +1,541 @@
+<!doctype html>
+
+<html class="light" lang="zh-CN">
+  <head>
+  <script src="/site.config.js"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=1780571099190"></script>
+    <!-- ═══ Responsive Redirect (injected by patch-responsive-redirect.py) ═══ -->
+    <link rel="canonical" href="https://brew.yukoli.com/home/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/home/" />
+  <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/home/" />
+  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/home/" />
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/home/index-mobile.html" />
+    <link
+      rel="alternate"
+      media="only screen and (min-width: 768px) and (max-width: 1279px)"
+      href="/home/index-tablet.html"
+    />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/home/index-pc.html" />
+    <script>
+      /* Responsive redirect — runs before render, no flash */
+      (function () {
+        // 防止 bfcache 恢复时重复 redirect
+        if (window.__redirectChecked) return;
+        window.__redirectChecked = true;
+
+        // 处理 clean-url 参数:重定向后清理 URL 为干净的目录 URL
+        var urlParams = new URLSearchParams(location.search);
+        var cleanUrl = urlParams.get("clean-url");
+        if (cleanUrl) {
+          history.replaceState({}, "", cleanUrl);
+          return;
+        }
+
+        // SPA 导航时跳过响应式重定向
+        if (window.__spaNavigating) {
+          return;
+        }
+
+        // 使用 DeviceUtils 统一管理设备判断
+        var currentFile = location.pathname.split("/").pop();
+
+        // 使用 DeviceUtils 判断是否需要重定向（目录 URL 也需要检查）
+        if (window.DeviceUtils && (currentFile === '' && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile))) {
+          var deviceType = window.DeviceUtils.getDeviceType();
+          var targetFile;
+
+          if (deviceType === window.DeviceUtils.DeviceType.MOBILE) {
+            targetFile = "index-mobile.html";
+          } else if (deviceType === window.DeviceUtils.DeviceType.TABLET) {
+            targetFile = "index-tablet.html";
+          } else {
+            targetFile = "index-pc.html";
+          }
+
+          location.href = targetFile;
+          return;
+        }
+
+      })();
+    </script>
+    <script>
+      /* Pre-apply cached translations to prevent flash */
+      (function () {
+        try {
+          var lang = localStorage.getItem("userLanguage") || "zh-CN";
+          if (lang === "zh-CN") return; // 默认中文，无需处理
+          var cacheKey = "yukoli-translations-ui-" + lang;
+          var cached = localStorage.getItem(cacheKey);
+          if (!cached) return;
+          var data = JSON.parse(cached);
+          if (!data.data) return;
+          var translations = data.data;
+          document.documentElement.lang = lang;
+          // 预应用关键翻译（仅处理无子元素的叶子节点）
+          var elements = document.querySelectorAll("[data-i18n]");
+          for (var i = 0; i < elements.length; i++) {
+            var el = elements[i];
+            var key = el.getAttribute("data-i18n");
+            if (translations[key] && el.children.length === 0) {
+              el.textContent = translations[key];
+            }
+          }
+        } catch (e) {
+          // 忽略错误，让主翻译系统处理
+        }
+      })();
+    </script>
+    <!-- ═══ End Responsive Redirect ═══ -->
+
+    <meta charset="utf-8" />
+
+    <meta property="og:type" content="website" />
+ <meta property="og:title" content="YuKoLi 优科力科技 | 专业健康食品 OEM/ODM 制造商" />
+    <meta
+      property="og:description"
+ content="YuKoLi 优科力科技 — 专业健康食品 OEM/ODM 制造商，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家。"
+    />
+    <meta property="og:url" content="https://brew.yukoli.com/home/" />
+    <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+ <meta name="description" content="YuKoLi 优科力科技 — 20年专注健康食品 OEM/ODM 制造，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家，MOQ 500起。" />
+    <title data-i18n="home_meta_title"><span data-i18n="seo_yukoli">YuKoLi</span><span data-i18n="home_meta_title_seg1"> | Health Food OEM/ODM Expert</span></title>
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <link rel="preload" href="/assets/css/styles.css?v=1780571099190" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=1780571099190" as="style" />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=1780571099190" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css?v=1780571099190" />
+    <style>
+      body { font-family: "Public Sans", sans-serif; min-height: 100dvh; }
+    </style>
+    <!-- Dark mode: apply saved preference before first paint (prevents flash) -->
+    <script>
+      (function () {
+        if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
+      })();
+    </script>
+    <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
+
+    <!-- SEO JSON-LD: Organization + WebSite -->
+    <script type="application/ld+json">
+      {
+        "@context": "https:/schema.org",
+        "@type": "Organization",
+        "name": "<span data-i18n="seo_yukoli">YuKoLi</span> 优科力科技",
+        "alternateName": "佛山优科力科技",
+        "url": "https://brew.yukoli.com",
+        "logo": "https://brew.yukoli.com/assets/images/logo-header.webp",
+        "description": "<span data-i18n="seo_yukoli">YuKoLi</span>（优科力科技）— <span data-i18n="seo_20_years_focus">20年专注</span>健康食品 OEM/ODM 制造，<span data-i18n="seo_4_own_factories">4座自有工厂</span>，<span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>，<span data-i18n="seo_export_30_countries">出口30+国家</span>。",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "佛山市",
+          "addressRegion": "广东",
+          "addressCountry": "CN"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+86-18565788184",
+          "contactType": "sales",
+          "availableLanguage": ["zh-CN", "en"]
+        },
+        "sameAs": []
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https:/schema.org",
+        "@type": "WebSite",
+        "name": "<span data-i18n="seo_yukoli">YuKoLi</span> 健康食品 OEM/ODM",
+        "url": "https://brew.yukoli.com",
+        "description": "<span data-i18n="seo_yukoli">YuKoLi</span> 专业健康食品 OEM/ODM 制造商，<span data-i18n="seo_4_own_factories">4座自有工厂</span>，<span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>覆盖<span data-i18n="seo_coffee_beverage">咖啡冲调</span>、<span data-i18n="seo_tea_milk_tea">茶饮奶茶</span>、<span data-i18n="seo_meal_replacement">代餐蛋白</span>、<span data-i18n="seo_beauty_collagen">美容胶原</span>、<span data-i18n="seo_weight_management">体重管理</span>、<span data-i18n="seo_gut_health">肠道健康</span>、<span data-i18n="seo_functional_drinks">功能冲饮</span>。",
+        "inLanguage": ["zh-CN", "en"]
+      }
+    </script>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 antialiased overflow-x-clip"
+  >
+    <!-- Top Navigation Bar -->
+    <!-- ═══ Navigator Component ═══ -->
+    <navigator
+      data-component="navigator" data-swup-persist="nav"
+      data-variant="tablet"
+      data-active="home"
+      data-search="true"
+      data-cta-text-key="nav_get_quote"
+      data-cta-href="/contact/"
+    ></navigator>
+
+    <main id="spa-content" class="max-w-[1024px] mx-auto space-y-6 pb-24">
+      <!-- ═══ Hero Section ═══ -->
+      <section class="fullwidth-bg section-passthrough w-full flex flex-col items-center gap-8 py-16 bg-white dark:bg-slate-950">
+        <div class="section-content">
+          <div class="w-full space-y-5">
+            <div
+              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest"
+            >
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+              </span>
+              <span data-i18n="home_hero_badge">Professional Health Food OEM/ODM Manufacturer</span>
+            </div>
+            <h1 class="text-4xl xl:text-5xl font-black leading-[1.1] tracking-tight text-slate-900 dark:text-white">
+              <span data-i18n="home_hero_title_1_part">Empower Global Brands,</span>
+              <span class="text-primary" data-i18n="home_hero_title_2">Customize a Healthy Future</span>
+            </h1>
+            <p class="text-base text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
+              <span data-i18n="seo_20_years">20 years</span><span data-i18n="home_hero_desc_mid1"> focused on health food OEM/ODM, 4 owned factories, </span><span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span><span data-i18n="home_hero_desc_mid2">, exported to </span><span data-i18n="seo_30_countries">30+ countries</span><span data-i18n="home_hero_desc_seg1">, MOQ 500. From R&D to delivery, one-stop branding service.</span></p>
+            <div class="flex flex-wrap gap-3 pt-2">
+              <a
+                href="/products/all/"
+                class="bg-primary text-white px-7 py-3 rounded-xl font-bold text-base flex items-center gap-2 hover:shadow-lg hover:shadow-primary/20 transition-all"
+              >
+                <span data-i18n="home_hero_btn_products">Free Sample</span>
+                <span class="material-symbols-outlined">science</span>
+              </a>
+              <a
+                href="/contact/"
+                class="border-2 border-slate-200 dark:border-slate-800 px-7 py-3 rounded-xl font-bold text-base hover:bg-slate-100 dark:hover:bg-slate-800 transition-all flex items-center gap-2"
+              >
+                <span data-i18n="home_hero_btn_hardware_text">Get a Quote</span>
+                <span class="material-symbols-outlined">request_quote</span>
+              </a>
+            </div>
+            <div class="w-full relative">
+              <div
+                class="aspect-square bg-gradient-to-br from-primary/20 to-transparent rounded-full absolute -top-10 -right-10 blur-3xl opacity-50 -z-10"
+              ></div>
+              <div
+                class="relative w-full h-[400px] bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+              >
+                <img
+                  alt="YuKoLi 健康食品 OEM/ODM 工厂"
+                  class="w-full h-full object-cover"
+                  src="/assets/images/oem/hero/hero-pc-1200w.webp"
+                  loading="eager"
+                 srcset="/assets/images/oem/hero/hero-pc-828w.webp 828w, /assets/images/oem/hero/hero-pc-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ Trust Bar ═══ -->
+      <section class="fullwidth-bg py-10 bg-slate-100 dark:bg-slate-900/50">
+        <div class="section-content">
+          <div class="grid grid-cols-3 md:grid-cols-6 gap-4">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-2xl font-black text-primary">4</p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_factory">Owned Factories</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-2xl font-black text-primary">20+</p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_years">Years Experience</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-2xl font-black text-primary">8</p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_lines">Product Lines</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-2xl font-black text-primary">30+</p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_countries">Export Countries</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-2xl font-black text-primary">6</p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_certs">Certifications</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+              <p class="text-2xl font-black text-primary">500</p>
+              <p class="text-xs font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_moq">Min Order Qty</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ Why <span data-i18n="seo_yukoli">YuKoLi</span> ═══ -->
+      <section class="fullwidth-bg py-16 bg-white dark:bg-slate-950">
+        <div class="section-content">
+          <div class="w-full text-center mb-10">
+            <h2 class="text-2xl font-black tracking-tight mb-2" data-i18n="home_advantage_title">Why Choose <span data-i18n="seo_yukoli">YuKoLi</span></h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm max-w-2xl mx-auto" data-i18n="home_advantage_subtitle">
+              <span data-i18n="seo_20_years">20 years</span><span data-i18n="home_advantage_subtitle_seg1"> of health food manufacturing, one-stop service
+            </span></p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">factory</span>
+              </div>
+              <h3 class="text-base font-bold mb-1" data-i18n="home_why_factory_title">Owned Factories</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_why_factory_desc">
+                4 owned factories, full-process control
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">science</span>
+              </div>
+              <h3 class="text-base font-bold mb-1" data-i18n="home_why_rd_title">R&D Strength</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_why_rd_desc">
+                Professional R&D team, rapid market response
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">verified</span>
+              </div>
+              <h3 class="text-base font-bold mb-1" data-i18n="home_why_cert_title">International Certifications</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_why_cert_desc">
+                <span data-i18n="certifications">HACCP/FDA/ISO</span><span data-i18n="home_why_cert_desc_seg1"> certified
+              </span></p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">tune</span>
+              </div>
+              <h3 class="text-base font-bold mb-1" data-i18n="home_why_flex_title">Flexible Manufacturing</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_why_flex_desc">
+                Full customization for formula, flavor, packaging
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">support_agent</span>
+              </div>
+              <h3 class="text-base font-bold mb-1" data-i18n="home_why_service_title">One-Stop Service</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_why_service_desc">
+                Full process from concept to market
+              </p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-xl p-6 text-center border border-slate-200 dark:border-slate-700">
+              <div class="size-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                <span class="material-symbols-outlined text-primary text-2xl">public</span>
+              </div>
+              <h3 class="text-base font-bold mb-1" data-i18n="home_why_export_title">Export Experience</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_why_export_desc">
+                Exported to <span data-i18n="seo_30_countries">30+ countries</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 产品展示 ═══ -->
+      <section class="fullwidth-bg py-16 bg-slate-100 dark:bg-slate-900/50">
+        <div class="section-content">
+          <div class="w-full text-center mb-10">
+            <h2 class="text-2xl font-black tracking-tight mb-2" data-i18n="home_products_title">Core Product Lines</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm max-w-2xl mx-auto" data-i18n="home_products_subtitle">
+              8 categories covering diverse health needs
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <a href="/products/coffee/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Coffee Series" data-i18n="alt_coffee_series" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/coffee-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/coffee-828w.webp 828w, /assets/images/oem/products/coffee-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_coffee_name">Coffee & Mixes</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_coffee_tagline">Rich aroma, instant enjoyment</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_coffee_desc">Instant coffee, latte, cappuccino and more</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/tea/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Tea & Milk Tea Series" data-i18n="alt_tea_&_milk_tea_series" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/tea-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/tea-828w.webp 828w, /assets/images/oem/products/tea-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_tea_name">Tea & Milk Tea</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_tea_tagline">Real leaf extraction, modern tea</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_tea_desc">Fruit tea, milk tea, pure tea powder</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/meal/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Meal Replacement Series" data-i18n="alt_meal_replacement_series" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/meal-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/meal-828w.webp 828w, /assets/images/oem/products/meal-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_meal_name">Meal Replacement</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_meal_tagline">Balanced nutrition, convenient meals</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_meal_desc">Protein bars, meal powders, science-based satiety</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/beauty/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Beauty Collagen" data-i18n="alt_beauty_collagen" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/beauty-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/beauty-828w.webp 828w, /assets/images/oem/products/beauty-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_beauty_name">Beauty Collagen</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_beauty_tagline">Oral beauty, skin rejuvenation</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_beauty_desc">Collagen peptide drinks enriched with beauty essences</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/weight/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Weight Management" data-i18n="alt_weight_management" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/weight-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/weight-828w.webp 828w, /assets/images/oem/products/weight-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_weight_name">Weight Management</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_weight_tagline">Scientific weight control, healthy shaping</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_weight_desc">Fat-burning drinks, blockers, weight management solutions</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/gut/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Gut Health" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/gut-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/gut-828w.webp 828w, /assets/images/oem/products/gut-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_gut_name">Gut Health</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_gut_tagline">Probiotics, balanced gut care</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_gut_desc">Probiotics, dietary fiber for gut health</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/lifestyle/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Functional Beverages" data-i18n="alt_functional_beverages" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/lifestyle-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/lifestyle-828w.webp 828w, /assets/images/oem/products/lifestyle-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_lifestyle_name">Functional Beverages</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_lifestyle_tagline">Targeted benefits, precise supplementation</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_lifestyle_desc">Energy, sleep, immune support customization</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+            <a href="/products/legacy/" class="bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <div class="aspect-[16/9] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="Classic Drinks" data-i18n="alt_classic_drinks" width="1920" height="1080" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/legacy-1200w.webp" loading="lazy"  srcset="/assets/images/oem/products/legacy-828w.webp 828w, /assets/images/oem/products/legacy-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_prod_legacy_name">Classic Drinks</h3>
+                <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_legacy_tagline">Heritage recipes, authentic flavors</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_legacy_desc">Lotus root powder, classic granules</p>
+                <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ 制造实力 ═══ -->
+      <section class="fullwidth-bg py-16 bg-white dark:bg-slate-950">
+        <div class="section-content">
+          <div class="w-full text-center mb-10">
+            <h2 class="text-2xl font-black tracking-tight mb-2" data-i18n="home_mfg_title">Manufacturing Excellence</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm max-w-2xl mx-auto" data-i18n="home_mfg_subtitle">
+              4 owned factories, setting industry standards
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="GMP 洁净车间" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-1-1200w.webp" loading="lazy"  srcset="/assets/images/oem/factory/factory-1-828w.webp 828w, /assets/images/oem/factory/factory-1-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4 bg-white dark:bg-slate-800">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_mfg_gmp_title">GMP Clean Workshop</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_mfg_gmp_desc">Strict HACCP/ISO standards</p>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="自动化产线" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-2-1200w.webp" loading="lazy"  srcset="/assets/images/oem/factory/factory-2-828w.webp 828w, /assets/images/oem/factory/factory-2-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4 bg-white dark:bg-slate-800">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_mfg_auto_title">Automated Production Line</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_mfg_auto_desc">International automation for efficiency</p>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="质量实验室" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-3-1200w.webp" loading="lazy"  srcset="/assets/images/oem/factory/factory-3-828w.webp 828w, /assets/images/oem/factory/factory-3-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4 bg-white dark:bg-slate-800">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_mfg_qc_title">Quality Lab</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_mfg_qc_desc">Professional instruments for real-time QC</p>
+              </div>
+            </div>
+            <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
+              <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
+                <img alt="智能仓储" width="2048" height="2048" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-4-1200w.webp" loading="lazy"  srcset="/assets/images/oem/factory/factory-4-828w.webp 828w, /assets/images/oem/factory/factory-4-1200w.webp 1200w" sizes="calc(100vw - 48px)" />
+              </div>
+              <div class="p-4 bg-white dark:bg-slate-800">
+                <h3 class="text-base font-bold mb-1" data-i18n="home_mfg_warehouse_title">Smart Warehouse</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_mfg_warehouse_desc">Monthly capacity in millions</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ CTA Bottom ═══ -->
+      <section class="fullwidth-bg py-16">
+        <div class="section-content">
+          <div class="w-full bg-primary rounded-2xl p-8 text-center text-white relative overflow-hidden">
+            <div class="absolute top-0 right-0 size-48 bg-white/10 rounded-full -mr-24 -mt-24"></div>
+            <div class="absolute bottom-0 left-0 size-36 bg-white/10 rounded-full -ml-18 -mb-18"></div>
+            <div class="relative z-10">
+              <h2 class="text-3xl font-black mb-4" data-i18n="home_cta_title">Ready to Start Your Brand?</h2>
+              <p class="text-white/80 text-sm mb-6 max-w-lg mx-auto" data-i18n="home_cta_desc">
+                Contact <span data-i18n="seo_yukoli">YuKoLi</span><span data-i18n="home_cta_desc_seg1"> experts for free samples and custom solutions.
+              </span></p>
+              <div class="flex flex-wrap justify-center gap-3">
+                <a
+                  href="/contact/"
+                  class="bg-white text-primary px-8 py-3 rounded-xl font-bold text-sm hover:bg-slate-100 transition-colors shadow-xl"
+                  data-i18n="home_cta_btn_quote"
+                >
+                  Free Sample
+                </a>
+                <a
+                  href="/contact/"
+                  class="bg-white text-primary px-8 py-3 rounded-xl font-bold text-sm hover:brightness-110 transition-all shadow-xl shadow-primary/20"
+                  data-i18n="home_cta_btn_contact"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+<script defer src="/assets/js/product-data-table.js?v=1780571099190"></script>
+<script defer src="/assets/js/search-index.js?v=1780571099190"></script>
+<script defer src="/assets/js/contacts.js?v=1780571099190"></script>
+    <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
+<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=1780571099190"></script>
+<script defer src="/assets/js/page-init.js?v=1780571099190"></script>
+
+    <script defer src="/assets/js/ui/helpers.js?v=1780571099190"></script>
+    <script defer src="/assets/js/ui/page-effects.js?v=1780571099190"></script>
+    <script defer src="/assets/js/ui/form-interactions.js?v=1780571099190"></script>
+    <script defer src="/assets/js/page-interactions.js?v=1780571099190"></script>
+<!-- ssg-nav-footer-injected -->
+  <script defer src="/assets/js/theme-init.js"></script>
+  <script defer src="/assets/js/i18n-bundle.js"></script>
+  <script defer src="/assets/js/dropdown-bundle.js"></script>
+  <script defer src="/assets/js/nav-bundle.js"></script>
+  <script defer src="/assets/js/ui-bundle.js"></script>
+  </body>
+</html>

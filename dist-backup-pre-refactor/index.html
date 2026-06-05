@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- i18n_comment_site_config_must_load: Site Configuration (must load before all other scripts) -->
+  <script src="/site.config.js"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=1780571099190"></script>
+  <script>
+  // i18n_comment_unregister_service_worker: Force unregister any stale Service Worker from previous versions
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(regs){
+      regs.forEach(function(r){r.unregister()});
+    });
+  }
+  if('caches' in window){
+    caches.keys().then(function(names){
+      names.forEach(function(n){caches.delete(n)});
+    });
+  }
+  </script>
+  <title data-i18n="home_meta_title"><span data-i18n="seo_yukoli">YuKoLi</span> 优科力 | 健康冲调食品 OEM/ODM 专家</title>
+  <link rel="canonical" href="https://brew.yukoli.com/home/"/>
+  <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/home/" />
+  <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/home/" />
+  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/home/" />
+ <meta name="description" content="YuKoLi 优科力 — 20年专注健康冲调食品 OEM/ODM，7大产品线，4座自有工厂，出口30+国家。提供配方研发、生产制造、品牌定制一站式服务。">
+  <meta property="og:type" content="website">
+ <meta property="og:title" content="YuKoLi 优科力 | 健康冲调食品 OEM/ODM 专家">
+ <meta property="og:description" content="YuKoLi 优科力 — 20年专注健康冲调食品 OEM/ODM，7大产品线，4座自有工厂，出口30+国家。提供配方研发、生产制造、品牌定制一站式服务。">
+  <meta property="og:url" content="https://brew.yukoli.com/">
+  <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp">
+
+  <!-- Fonts -->
+  <link rel="preload" href="/assets/fonts/local-fonts.css" as="style">
+  <link rel="preload" href="/assets/fonts/material-symbols-outlined-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/css/tailwind.css?v=1780571099190" as="style">
+  <link href="/assets/fonts/local-fonts.css" rel="stylesheet"/>
+
+  <!-- Core Styles (loaded in SPA shell) -->
+  <link rel="stylesheet" href="/assets/css/styles.css?v=1780571099190">
+  <link rel="stylesheet" href="/assets/css/tailwind.css?v=1780571099190">
+
+  <!-- Dark mode -->
+  <script>(function(){if(localStorage.getItem('darkMode')==='true')document.documentElement.classList.add('dark')})()</script>
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp">
+</head>
+<body>
+<noscript>
+  <p data-i18n="noscript_message">Please enable JavaScript or <a href="/home/">click here</a> to visit our site.</p>
+</noscript>
+
+<!-- SPA Shell Structure -->
+<!-- Navigator placeholder - will be replaced by Navigator component -->
+<navigator data-component="navigator"
+  data-active="home"
+  data-search="true"
+  data-cta-text-key="nav_get_quote"
+  data-cta-href="/contact/"></navigator>
+
+<!-- Main content area - content will be dynamically loaded by SPA router -->
+<main id="spa-content" class="transition-main"></main>
+
+
+
+<!-- Footer placeholder - will be replaced by Footer component -->
+<footer data-component="footer" data-active="home"></footer>
+
+<!-- All scripts deferred: browser parses HTML + renders skeleton immediately,
+     scripts download in parallel and execute in order after DOM is ready -->
+<script defer src="/assets/js/utils/device-utils.js?v=1780571099190"></script>
+
+<!-- SWUP SPA Router v4.9.0 + plugins (replaces spa-router.js) -->
+<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=1780571099190"></script>
+
+<script defer src="/assets/js/i18n-bundle.js?v=1780571099190"></script>
+<script defer src="/assets/js/dropdown-bundle.js?v=1780571099190"></script>
+<script defer src="/assets/js/nav-bundle.js?v=1780571099190"></script>
+<script defer src="/assets/js/ui-bundle.js?v=1780571099190"></script>
+<script defer src="/assets/js/contacts.js?v=1780571099190"></script>
+<script defer src="/assets/js/product-grid.js?v=1780571099190"></script>
+<script defer src="/assets/js/product-detail.js?v=1780571099190"></script>
+<script defer src="/assets/js/home-core-products.js?v=1780571099190"></script>
+<script defer src="/assets/js/case-grid.js?v=1780571099190"></script>
+
+<!-- spa-router.js replaced by swup-init.js + SWUP vendor -->
+
+<!-- Product data: static initial data → API refresh with ETag → localStorage cache -->
+
+    <script>/**
+ * i18n_module_name_product_data_table — product-data-table.js — BrewYuKoLi 产品目录（8 分类版）
+ *
+ * 数据来源: catalog V4 + 画册 V4（172 SKU）
+ * 最后更新: 2026-05-24
+ *
+ * 产品线:
+ *   beauty: 5 SKU
+ *   coffee: 32 SKU
+ *   gut: 41 SKU
+ *   legacy: 10 SKU
+ *   lifestyle: 23 SKU
+ *   meal: 25 SKU
+ *   tea: 24 SKU
+ *   weight: 12 SKU
+ */
+"use strict";
+var PRODUCT_DATA_TABLE = [
+  {id:"coffee-001",model:"CF-001",name:"(Bundle of 4) SUPER™ Instant 3in1 Coffee, 28/30sticks (Expiry: July 2027)",category:"coffee",image:"/assets/images/products/coffee/001.webp",brand:"SUPER",origin:"SG",specs:"",moq:500,diets:["Halal","Health"],description:"About Product",tags:["coffee"]},
+  {id:"coffee-002",model:"CF-002",name:"Tropicana Slim Cafe Latte 10 Sachet 14gr - Kopi Susu Nikmat Tanpa Gula Pasir",category:"coffee",image:"/assets/images/products/coffee/002.webp",brand:"Tropicana Slim",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-003",model:"CF-003",name:"กาแฟเบอร์ดี้ 3in1 เอสเปรสโซ่ 12.1 กรัม 27 ซอง x 3 แพ็ค",category:"coffee",image:"/assets/images/products/coffee/003.webp",brand:"Birdy(เบอร์ดี้)",origin:"Samut Prakan",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-004",model:"CF-004",name:"Ilocos Product: 100% ORGANIC NO CAFFEINE: Roasted Brown Rice, Corn Coffee, 3 in 1 Coffee, Soy Bean,",category:"coffee",image:"/assets/images/products/coffee/004.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-005",model:"CF-005",name:"畅销款] 真正的顺化古城盐咖啡，顺化古城浓香即溶咖啡 10 包 - F&B 版",category:"coffee",image:"/assets/images/products/coffee/005.webp",brand:"BẢN F&B",origin:"越南",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-006",model:"CF-006",name:"NESCAFE White Coffee Gao Siew Dai (14 x 30g)",category:"coffee",image:"/assets/images/products/coffee/006.webp",brand:"NESCAFE",origin:"SG",specs:"",moq:500,diets:[],description:"Nutri-Grade C",tags:["coffee"]},
+  {id:"coffee-007",model:"CF-007",name:"Kopi Liong Bulan PLUS Gula 28 GR (Isi 20 Sachet",category:"coffee",image:"/assets/images/products/coffee/007.webp",brand:"狮龙月",origin:"印度尼西亚",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-008",model:"CF-008",name:"咖啡清澈 低卡路里 无糖 1包 20袋 exp09/2027（甜度适中 低咖啡因 以草本植物为主）",category:"coffee",image:"/assets/images/products/coffee/008.webp",brand:"ฟ้าใส",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-009",model:"CF-009",name:"Cafe Puro Instant Coffee In Regency Cup 50g for Keto and Low Carb",category:"coffee",image:"/assets/images/products/coffee/009.webp",brand:"",origin:"Quezon City, Metro",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-010",model:"CF-010",name:"Buy 10 Great Taste White Twin Pack (40g), get 1 FREE",category:"coffee",image:"/assets/images/products/coffee/010.webp",brand:"Great Taste",origin:"Calamba City, Laguna",specs:"",moq:500,diets:[],description:"Buy 10",tags:["coffee"]},
+  {id:"coffee-011",model:"CF-011",name:"Coffee Kluang Brand Television Coffee O Empty (100 Bags x 2 Jars) | Black Coffee TV Cap | Sugar-Free",category:"coffee",image:"/assets/images/products/coffee/011.webp",brand:"",origin:"马来西亚",specs:"",moq:500,diets:["Halal"],description:"",tags:["coffee"]},
+  {id:"coffee-012",model:"CF-012",name:"Kopi Bubuk Tanpa Gula Serenceng Isi 10 Sachet x 6 gr | Aroma Khas Rasa Mantap | Kopi Mo",category:"coffee",image:"/assets/images/products/coffee/012.webp",brand:"-",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-013",model:"CF-013",name:"DUJOSOO Black Coffee Gifts Arabya coffee gift 0 fat, 0 sugar, healthy drink 3g*10",category:"coffee",image:"/assets/images/products/coffee/013.webp",brand:"DUJOSOO",origin:"Japan",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-014",model:"CF-014",name:"Oriental White Coffee Kopi 10 sachets Halal Classic / Charcoal / No Sugar /Himalayan Salt 炭烧白咖啡",category:"coffee",image:"/assets/images/products/coffee/014.webp",brand:"Oriental White Coffee",origin:"马来西亚",specs:"",moq:500,diets:["Halal"],description:"",tags:["coffee"]},
+  {id:"coffee-015",model:"CF-015",name:"KITSUI Coffee Xslim Shapez| 17's x 15g - Minuman Kopi Botani | Sokong Metabolisma & Pemakanan Sihat",category:"coffee",image:"/assets/images/products/coffee/015.webp",brand:"Kitsui",origin:"马来西亚",specs:"",moq:500,diets:["Halal","NonGMO"],description:"",tags:["coffee"]},
+  {id:"coffee-016",model:"CF-016",name:"Kopi Ala Kazim Original dari Emzi Care HQ Resepi Emas Ustaz Kazim | Ekstrak Peria Katak dan Susu Kambing - Coffee, Sihat",category:"coffee",image:"/assets/images/products/coffee/016.webp",brand:"Emzi",origin:"马来西亚",specs:"",moq:500,diets:["Halal","Health","Organic"],description:"",tags:["coffee"]},
+  {id:"coffee-017",model:"CF-017",name:"Brusko Extreme Coffee with Tongkat Ali & Ginseng – 3 / 5 / 10 Sachets",category:"coffee",image:"/assets/images/products/coffee/017.webp",brand:"Brusko Performaxxx",origin:"Philippines",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-018",model:"CF-018",name:"G-MAX KOPI STAMINA PRIA AMAN SUDAH BPOM & HALAL (1 BOX 10 Sachet)",category:"coffee",image:"/assets/images/products/coffee/018.webp",brand:"G-MAX",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-019",model:"CF-019",name:"KITFEE 咖啡节食排毒 | 咖啡节食 | 咖啡排毒 BPOM",category:"coffee",image:"/assets/images/products/coffee/019.webp",brand:"基斯利米",origin:"印度尼西亚",specs:"",moq:500,diets:["Halal"],description:"",tags:["coffee"]},
+  {id:"coffee-020",model:"CF-020",name:"3Pek] Daifi White Coffee 3 in 1 (Delysh) Kopi Sedap Tanpa Gula Putih Rendah Kalori Fiber No Added Sugar 20gram 15sachet",category:"coffee",image:"/assets/images/products/coffee/020.webp",brand:"",origin:"马来西亚",specs:"",moq:500,diets:["Health","SugarFree","LowFat","LowSodium"],description:"",tags:["coffee"]},
+  {id:"coffee-021",model:"CF-021",name:"💯% Arabica Coffee Bean (El-Salvador Blend)",category:"coffee",image:"/assets/images/products/coffee/021.webp",brand:"",origin:"Pulau Pinang",specs:"",moq:500,diets:[],description:"🔥Blend                     :   💯% Premium Grade Arabica Beans ( El Salvador +",tags:["coffee"]},
+  {id:"coffee-022",model:"CF-022",name:"Signature Espresso Blend 100% Arabica Coffee",category:"coffee",image:"/assets/images/products/coffee/022.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-023",model:"CF-023",name:"Kopi Arabika Mandailing Mandheling Arabica Coffee Beans Roast Bean Biji Bubuk Sakha Coffe Roastery",category:"coffee",image:"/assets/images/products/coffee/023.webp",brand:"萨哈咖啡",origin:"印度尼西亚",specs:"",moq:500,diets:["Halal","SugarFree","GlutenFree","NonGMO","HealthierChoice"],description:"",tags:["coffee"]},
+  {id:"coffee-024",model:"CF-024",name:"VOTRRO Biji Kopi Bubuk Arabika Mandheling 100% Full Arabica Espresso Commercial - BEST VALUE - 1 Kg",category:"coffee",image:"/assets/images/products/coffee/024.webp",brand:"Votrro Coffee",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-025",model:"CF-025",name:"Excelso Kopi Sumatera Mandheling Bubuk 200G",category:"coffee",image:"/assets/images/products/coffee/025.webp",brand:"EXCELSO",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-026",model:"CF-026",name:"Anghel Kape Caramel Macchiato Premium 3in1 Coffee 1pack/10pcs/200grams w/ APC limited only",category:"coffee",image:"/assets/images/products/coffee/026.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-027",model:"CF-027",name:"Bean Block Coffee Sampler – Freshly Roasted Premium Coffee Beans | Roasted in PH by Bean Block",category:"coffee",image:"/assets/images/products/coffee/027.webp",brand:"Bean Block",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-028",model:"CF-028",name:"代谢营养 - Protizyme - 乳清蛋白粉,高蛋白质,低碳水化合物,低脂肪含消化酶,24 种必需维生素和矿物质,香蕉奶油,2 磅",category:"coffee",image:"/assets/images/products/coffee/028.webp",brand:"Metabolic Nutrition",origin:"",specs:"",moq:500,diets:["GlutenFree"],description:"",tags:["coffee"]},
+  {id:"coffee-029",model:"CF-029",name:"(05) 乳清蛋白粉，每日配方，产品采用新鲜牛奶制成，从国外进口，500克，奶香味，易于食用。",category:"coffee",image:"/assets/images/products/coffee/029.webp",brand:"Cha Tim Yen (ชาติมเย็น)SKU1925924056_TH-",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-030",model:"CF-030",name:"Orgain 乳清蛋白粉,香草豆 - 21 克草饲乳制品蛋白,不含麸质,不含大豆,不含糖,犹太洁食,不添加激素或角叉菜胶,用于冰沙和奶昔-1.75 磅",category:"coffee",image:"/assets/images/products/coffee/030.webp",brand:"Orgain",origin:"",specs:"",moq:500,diets:["GlutenFree"],description:"",tags:["coffee"]},
+  {id:"coffee-031",model:"CF-031",name:"AW-豌豆蛋白分离物 纯素蛋白 豆蛋白 2磅 (907克)",category:"coffee",image:"/assets/images/products/coffee/031.webp",brand:"哎呀库存单位 (SKU)2189090487_TH-7340846521包装类型",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"coffee-032",model:"CF-032",name:"马泰尔大豆蛋白分离物 植物性大豆蛋白分离物（非乳清蛋白）",category:"coffee",image:"/assets/images/products/coffee/032.webp",brand:"马特尔库存单位 (SKU)2345028829_TH-24598967107包装",origin:"",specs:"",moq:500,diets:[],description:"",tags:["coffee"]},
+  {id:"tea-001",model:"TE-001",name:"ZUS Ngupi® 3in1 Instant Coffee - White Coffee - 13 Sticks",category:"tea",image:"/assets/images/products/tea/001.webp",brand:"Zus Coffee",origin:"马来西亚",specs:"",moq:500,diets:[],description:"Find yourself t",tags:["tea"]},
+  {id:"tea-002",model:"TE-002",name:"SweetLAB Nogula Caffe 100% Arabica 3 in 1 Instant Coffee Kopi (23g x 20 sachet) [Low Sugar Diet/Di",category:"tea",image:"/assets/images/products/tea/002.webp",brand:"SweetLAB",origin:"",specs:"",moq:500,diets:["Halal","Health","LowSugar"],description:"",tags:["tea"]},
+  {id:"tea-003",model:"TE-003",name:"Coffee Tree 2 in 1 No Sugar Added Gold Blend Penang White Coffee (30g x 15's) GB03",category:"tea",image:"/assets/images/products/tea/003.webp",brand:"Coffee Tree",origin:"Pulau Pinang",specs:"",moq:500,diets:[],description:"***MAX 20 PACKETS PER ORDER TO FIT INTO ONE BOX AS ONE CONSIGNMENT NOT",tags:["tea"]},
+  {id:"tea-004",model:"TE-004",name:"Café 21 2 In 1 Instant Coffeemix 12g x 22s",category:"tea",image:"/assets/images/products/tea/004.webp",brand:"Cafe21",origin:"Selangor",specs:"",moq:500,diets:[],description:"Product Information:",tags:["tea"]},
+  {id:"tea-005",model:"TE-005",name:"L'OR ESSENSO Classique with Microground 2in1 Instant Coffee 16g x 20s",category:"tea",image:"/assets/images/products/tea/005.webp",brand:"L'OR Essenso",origin:"Johor",specs:"",moq:500,diets:["Halal"],description:"L'OR ESSENSO Classique with Microground 2in1",tags:["tea"]},
+  {id:"tea-006",model:"TE-006",name:"ชาแดงอินโด INDO RED TEA(สูตรพิเศษ ระดับชาคั่วเข้ม)ฟรีสูตรชง",category:"tea",image:"/assets/images/products/tea/006.webp",brand:"湾仔茶咖啡（甜心茶咖啡）",origin:"印度尼西亚",specs:"",moq:500,diets:["LowFat"],description:"",tags:["tea"]},
+  {id:"tea-007",model:"TE-007",name:"ผงอี้เหวิน ผงชาไข่มุก ผงชานม ขนาด 450g",category:"tea",image:"/assets/images/products/tea/007.webp",brand:"奥伊文(อี้เหวิน)",origin:"泰国",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"tea-008",model:"TE-008",name:"Ahmad Tea Peach & Passion (20 Teabags) Halal Certified",category:"tea",image:"/assets/images/products/tea/008.webp",brand:"Ahmad Tea",origin:"UAE",specs:"",moq:500,diets:[],description:"A blend of mellow sweetness from perfectly ripened fuzzy peach",tags:["tea"]},
+  {id:"tea-009",model:"TE-009",name:"Supercube Sweet Peach Oolong Tea Teh Detox Kortisol Teh Tanpa Gula",category:"tea",image:"/assets/images/products/tea/009.webp",brand:"Supercube",origin:"W.P. Kuala Lumpur",specs:"",moq:500,diets:[],description:"Description:",tags:["tea"]},
+  {id:"tea-010",model:"TE-010",name:"Ahmad Tea Strawberry Sensation (20 Teabags) Halal Certified",category:"tea",image:"/assets/images/products/tea/010.webp",brand:"Ahmad Tea",origin:"Johor",specs:"",moq:500,diets:[],description:"It’s a warm June day and peak strawberry season, their fields filling the air w",tags:["tea"]},
+  {id:"tea-011",model:"TE-011",name:"现成速溶面包粉，多种口味，如泰国茶、抹茶、可可、咖啡。速溶粉（有配方）即冲即饮，无需过滤咖啡渣，简单易冲",category:"tea",image:"/assets/images/products/tea/011.webp",brand:"Pangsod(ปังสด)",origin:"泰国",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"tea-012",model:"TE-012",name:"花茶 Flower tea CHOOSE ONE HERBS 壹间草药 Teh Bunga 养生茶 花茶包 美白花茶 Flower tea pack",category:"tea",image:"/assets/images/products/tea/012.webp",brand:"Choose One Herbs",origin:"马来西亚",specs:"",moq:500,diets:["Health","CaffeineFree"],description:"",tags:["tea"]},
+  {id:"tea-013",model:"TE-013",name:"ผงชามะลิเข้มข้น 100 กรัม – หอมฟุ้ง มะลิชัด ละลายได้แม้ในน้ำอุณหภูมิห้อง (Jasmine Tea Powder)",category:"tea",image:"/assets/images/products/tea/013.webp",brand:"KC Interfoods(เคซี อินเตอร์ฟู้ดส์)",origin:"泰国",specs:"",moq:500,diets:["Halal","SugarFree","NoChol","NonGMO","HealthierChoice"],description:"",tags:["tea"]},
+  {id:"tea-014",model:"TE-014",name:"LF95. 100% Natural Tea 1bag（4g*30pcs）【30小袋】菊花决明子茶 美颜养生花茶 桂圆枸杞红枣姜茶红豆薏米玉米须 茶包 失眠熬夜Flower Tea",category:"tea",image:"/assets/images/products/tea/014.webp",brand:"",origin:"中国",specs:"",moq:500,diets:[],description:"【READY STOCK】",tags:["tea"]},
+  {id:"tea-015",model:"TE-015",name:"❤️BUY 100pcs FREE 10pcs❤️（糯香普洱熟茶） 浓香 糯米香普洱小沱茶 糯香茶叶迷你熟沱 糯米香普洱茶 / Chinese Tea ( Nuo Xiang Pu Er Shou Cha",category:"tea",image:"/assets/images/products/tea/015.webp",brand:"",origin:"中国",specs:"",moq:500,diets:["Health"],description:"🔥现货Ready Store ！24小时内发货除了星期六/日Shipped within 24 h",tags:["tea"]},
+  {id:"tea-016",model:"TE-016",name:"BOH Tea/ Teh Boh Cameron Highland Black Tea Catering Sachet (Red) 100's",category:"tea",image:"/assets/images/products/tea/016.webp",brand:"Boh",origin:"Kelantan",specs:"",moq:500,diets:[],description:"NEW PACKAGING/ PACKAGING BARU!!!!!",tags:["tea"]},
+  {id:"tea-017",model:"TE-017",name:"BOH Cameronian Gold Blend Teabag Sachet (60s) / BOH Uncang Teh Hitam Cameronian Gold Blend (60s)",category:"tea",image:"/assets/images/products/tea/017.webp",brand:"Boh",origin:"Selangor",specs:"",moq:500,diets:[],description:"Cameronian Gold Blend 60 teabags x 2g",tags:["tea"]},
+  {id:"tea-018",model:"TE-018",name:"Chinese Tea Assorted Flavors 5-7g 茶叶小袋 5-7克 铁观音 炭培铁观音 高山绿茶 小种红茶 黑乌龙茶 龙井绿茶 普洱熟茶 碧螺春绿茶 茉莉花茶 大红袍",category:"tea",image:"/assets/images/products/tea/018.webp",brand:"",origin:"Pulau Pinang",specs:"",moq:500,diets:[],description:"Chinese Tea Assorted Flavors 5-7g 茶叶小袋 5-7克 铁观音 炭培铁观音 高山绿茶 小种红茶 黑乌龙茶 龙井绿茶 普洱熟茶 碧螺春绿茶",tags:["tea"]},
+  {id:"tea-019",model:"TE-019",name:"Teh Halia Gula Merah❤️黑糖红糖 Brown Sugar Cube 蜂蜜冰糖 Honey Rock Sugar 姜茶 Ginger Tea 柠檬片九吉公 Rose Tea",category:"tea",image:"/assets/images/products/tea/019.webp",brand:"ABC",origin:"中国",specs:"",moq:500,diets:["Organic"],description:"",tags:["tea"]},
+  {id:"tea-020",model:"TE-020",name:"TEH KUNYIT,JAHE & SERAI/TUMERIC GINGER with LEMONGRASS TEA Herbal Tea Isi 30 Teh Celup",category:"tea",image:"/assets/images/products/tea/020.webp",brand:"-",origin:"KAB. GARUT",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"tea-021",model:"TE-021",name:"ฟรีสูตร ชาไทย ใบชาแดง ชาอินโด หอม เข้ม ชงง่าย ได้รสกลมกล่อม ชาไทยเข้มข้น นำเข้าจากอินโดเนเซีย มีสูตรทำให้ทุกออเดอร์",category:"tea",image:"/assets/images/products/tea/021.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"tea-022",model:"TE-022",name:"Teh Daun Kumis Kucing : Teh Batu Ginjal Isi 30 Tea bag",category:"tea",image:"/assets/images/products/tea/022.webp",brand:"-",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"tea-023",model:"TE-023",name:"Teh Kici Kurma Merah Murbei Hitam Kombinasi Sehat / Black Wolfberry Mulberry Red Date Goji Berry Tea",category:"tea",image:"/assets/images/products/tea/023.webp",brand:"-",origin:"",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"tea-024",model:"TE-024",name:"Teh Buah Longan Goji Berry Kurma Merah Jaga Kesehatan Tubuh / Longan Red Date Goji Berry Goddess Tea",category:"tea",image:"/assets/images/products/tea/024.webp",brand:"-",origin:"",specs:"",moq:500,diets:[],description:"",tags:["tea"]},
+  {id:"meal-001",model:"ML-001",name:"ส่งฟรี⚡(ซื้อคู่ =900 กรัม)Almond Protein New Life Plus โปรตีนจากพืชปรุงสำเร็จชนิดผง รสกล้วย",category:"meal",image:"/assets/images/products/meal/001.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-002",model:"ML-002",name:"โปรตีนพืชMerry Glow Protein :ไม่มีถั่วเหลือง โปรตีน + คอลลาเจน วิตามิน แร่ธาตุ",category:"meal",image:"/assets/images/products/meal/002.webp",brand:"Merry(เมอร์รี่)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-003",model:"ML-003",name:"EXP:12/01/2029Albumen ผงโปรตีนไข่ขาว (อัลบูเมน) 400g",category:"meal",image:"/assets/images/products/meal/003.webp",brand:"蛋白(อัลบูเมน)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-004",model:"ML-004",name:"Bundle 2 Box Peptisol - Nutrisi Tinggi Protein Rendah Residu - Vanila",category:"meal",image:"/assets/images/products/meal/004.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-005",model:"ML-005",name:"Anlene Gold 5X High Calcium High Protein Plain Milk Powder 950g",category:"meal",image:"/assets/images/products/meal/005.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-006",model:"ML-006",name:"MS SOY PROTEIN ISOLATE ซอยโปรตีน โปรตีนถั่วเหลือง ไอโซเลท เพิ่มกล้าม ลดไขมัน แพ้เวย์whey โปรตีนนม ทานได้ อยู่ท้อง ลดหิว",category:"meal",image:"/assets/images/products/meal/006.webp",brand:"MSSKU2006798935_TH-20987066793Model[]Pac",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-007",model:"ML-007",name:"Albumin Egg Powder อัลบูมิน ผงโปรตีนไข่ขาว 400 กรัม Albumen อัลบูเมน 30/60เม็ด (สินค้าตามตัวเลือก)",category:"meal",image:"/assets/images/products/meal/007.webp",brand:"Albumen(อัลบูเมน)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-008",model:"ML-008",name:"Infinity Whey Protein 1000 gram 2.2 lbs Protein Powder - Minuman Protein Diet Fitness",category:"meal",image:"/assets/images/products/meal/008.webp",brand:"-",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-009",model:"ML-009",name:"SUSU KEDELAI BUBUK MAHKOTA FIT 500 gram SUSU KEDELAI BUBUK PREMIUM SUSU PROTEIN TINGGI SUSU FITNES CUTTING DAN",category:"meal",image:"/assets/images/products/meal/009.webp",brand:"Mahkota",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-010",model:"ML-010",name:"PURO WPC WPRO Whey Protein Concentrate 1.2kg",category:"meal",image:"/assets/images/products/meal/010.webp",brand:"Puro",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-011",model:"ML-011",name:"Fresubin Whey Isolate ผง 300กรัม เฟรซูบิน เวย์โปรตีน EXP 04/27",category:"meal",image:"/assets/images/products/meal/011.webp",brand:"Fresubin(เฟรซูบิน)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-012",model:"ML-012",name:"Protein Powder Concentrated Whey Protein Powder 1,000g Slimming Skin-Increasing Powder Nutritional Supplements Immunity Children Adult",category:"meal",image:"/assets/images/products/meal/012.webp",brand:": Qi Leshi",origin:"",specs:"",moq:500,diets:[],description:"Brand: Qi Leshi",tags:["meal"]},
+  {id:"meal-013",model:"ML-013",name:"禾膳-高蛋白乳清营养配方粉补充中老年易吸收全面30g*14袋/420gWo Diet-High Protein Whey Nutritional Formula Powder Supplement20260125",category:"meal",image:"/assets/images/products/meal/013.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"Production Date: 04/01/2024 To 04/01/2024",tags:["meal"]},
+  {id:"meal-014",model:"ML-014",name:"Valens Myotein Powder 215g (Expiry Date: May 2027)",category:"meal",image:"/assets/images/products/meal/014.webp",brand:"VALENS",origin:"SG",specs:"",moq:500,diets:[],description:"5g protein per serving",tags:["meal"]},
+  {id:"meal-015",model:"ML-015",name:"Herbalife formula 3 protein powder(sg stock)",category:"meal",image:"/assets/images/products/meal/015.webp",brand:"HERBALIFE",origin:"SG",specs:"",moq:500,diets:[],description:"Authentic Singapore stock",tags:["meal"]},
+  {id:"meal-016",model:"ML-016",name:"KOKORI Nephra Whey Vanilla Coffee โคโคริอาหารเสริมโรคไต เวย์โปรตีน โปรตีนไข่ขาว เวย์ไข่ขาว วานิลา กาแฟ",category:"meal",image:"/assets/images/products/meal/016.webp",brand:"KOKORI(โกโกริ)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-017",model:"ML-017",name:"[Trial Pack] Kinohimitsu 井水 30.3g x 1s (植物蛋白质 完整营养 | 成人",category:"meal",image:"/assets/images/products/meal/017.webp",brand:"KinohimitsuSKU3532902511_MY-19674180556N",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-018",model:"ML-018",name:"Soluxe Protein Shake Powder ( Pea / Soy ) 25g Single Sachet HALAL / VEGAN / LACTOSE FREE / PLANT PROTEIN",category:"meal",image:"/assets/images/products/meal/018.webp",brand:"",origin:"",specs:"",moq:500,diets:["Halal","Vegan"],description:"",tags:["meal"]},
+  {id:"meal-019",model:"ML-019",name:"Almond Protein Powder Vismores Almond Protein, Dutch Cocoa Chocolate Flavor, 910 G. Almond Protein, Plant-Based Protein.",category:"meal",image:"/assets/images/products/meal/019.webp",brand:"VISMORESSKU4549347603_TH-21161603139Pack",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-020",model:"ML-020",name:"mall inline badgeVEGAN PROTEIN 420g - Bột Đậu Hạt & Rau Củ",category:"meal",image:"/assets/images/products/meal/020.webp",brand:"Thuần Chay.vn",origin:"Vietnam",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-021",model:"ML-021",name:"BIOPHARM Entrasol เครื่องดื่มโปรตีนสูง ชนิดผงชงดื่ม กลิ่นวานิลลา 800 กรัม 1 กระป๋อง",category:"meal",image:"/assets/images/products/meal/021.webp",brand:"Biopharm(ไบโอฟาร์ม)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-022",model:"ML-022",name:"GEN-DM MF Vanilla Flavor เจ็น-ดีเอ็ม เอ็มเอฟ กลิ่นวานิลลา 2.5 ก.ก. ชนิดผงสำหรับผู้ให้อาหารทางสายให้อาหาร (4 ถุง ยกลัง)",category:"meal",image:"/assets/images/products/meal/022.webp",brand:"Otsuka(โอซูก้า)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-023",model:"ML-023",name:"Anthony 有机大麻籽蛋白粉,1 磅,冷压,不含麸质,非转基因,细粉",category:"meal",image:"/assets/images/products/meal/023.webp",brand:"Anthony's",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-024",model:"ML-024",name:"NEO-MUNE Melon Flavor 400 g. นีโอ-มูน กลิ่นเมล่อน 400 g.อาหารชนิดผงสำหรับผู้ต้องการโปรตีนและพลังงานสูง จำนวน 1 กระป๋อง",category:"meal",image:"/assets/images/products/meal/024.webp",brand:"Otsuka(โอซูก้า)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["meal"]},
+  {id:"meal-025",model:"ML-025",name:"Nutricost 有机豌豆蛋白分离粉(5 磅)- 无味,美国农业部有机认证,植物蛋白质,素食友好,不含麸质,非转基因",category:"meal",image:"/assets/images/products/meal/025.webp",brand:"Nutricost",origin:"USA",specs:"5 lbs",moq:500,diets:["Organic","NonGMO","GlutenFree","Vegan"],description:"USDA organic pea protein isolate powder, vegan friendly, gluten-free, non-GMO",tags:["meal"]},
+  {id:"beauty-001",model:"BT-001",name:"Xanthone Gold Coffee Mix with Glutathione and Collagen [1 box:10sachets]",category:"beauty",image:"/assets/images/products/beauty/001.webp",brand:"YES2HEALTH",origin:"Silang, Cavite",specs:"",moq:500,diets:[],description:"This is the OFFICIAL SHOPEE STORE of YES2HEAL",tags:["beauty"]},
+  {id:"beauty-002",model:"BT-002",name:"Yusmira Sihat Tanpa Gula TAMBAHAN KOTAK(Walit, Durian Belanda, Ali Power, Halia Bara, Peria Katak, Kunyit Hitam)",category:"beauty",image:"/assets/images/products/beauty/002.webp",brand:"",origin:"Kelantan",specs:"",moq:500,diets:[],description:"HARAP MAKLUM hanya pembelian 5 UNIT dan KEATAS sahaja akan dibungkus dalam kotak asing kerana har",tags:["beauty"]},
+  {id:"beauty-003",model:"BT-003",name:"胶原蛋白肽粉（16盎司）|草饲，认证古早食，非转基因和无面筋 - 没有味道",category:"beauty",image:"/assets/images/products/beauty/003.webp",brand:"Sports Research",origin:"",specs:"",moq:500,diets:["GlutenFree"],description:"",tags:["beauty"]},
+  {id:"beauty-004",model:"BT-004",name:"Orgain 草饲水解胶原蛋白多肽蛋白粉",category:"beauty",image:"/assets/images/products/beauty/004.webp",brand:"Orgain",origin:"",specs:"",moq:500,diets:["GlutenFree"],description:"",tags:["beauty"]},
+  {id:"beauty-005",model:"BT-005",name:"亚马逊 Basics 胶原蛋白肽 1 型和 3 型粉末,9 盎司,38 份",category:"beauty",image:"/assets/images/products/beauty/005.webp",brand:"Amazon Basics",origin:"",specs:"",moq:500,diets:[],description:"",tags:["beauty"]},
+  {id:"weight-001",model:"WT-001",name:"ORIGINAL💯 KUFFEE MINUMAN KURUS COKlAT|WHiTE COFFE by YUNIEY ILUNIEY",category:"weight",image:"/assets/images/products/weight/001.webp",brand:"Kuffee",origin:"Kelantan",specs:"",moq:500,diets:[],description:"READY STOCK",tags:["weight"]},
+  {id:"weight-002",model:"WT-002",name:"KOREAN DIET KOPI (AMERICANO) ✨EVERBIKINI PPAGILLAKANO✨Coffee Diet Slimming减肥咖啡✨3.3gX28sticks✨",category:"weight",image:"/assets/images/products/weight/002.webp",brand:"Everbikini",origin:"韩国",specs:"",moq:500,diets:["SugarFree"],description:"",tags:["weight"]},
+  {id:"weight-003",model:"WT-003",name:"Slimming Coffee ORIGINAL 2025 NEW AUTHENTICITY very effective Instant Coffee",category:"weight",image:"/assets/images/products/weight/003.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-004",model:"WT-004",name:"I QURE COFFEE 18IN1 with Glutathione, Collagen and Chiaseed (10sachet)",category:"weight",image:"/assets/images/products/weight/004.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-005",model:"WT-005",name:"FITGUM 20X Collagen Chia Coffee 11 in 1 Coffee Mix Slim Body Bright Skin Healthy Drink",category:"weight",image:"/assets/images/products/weight/005.webp",brand:"",origin:"",specs:"",moq:500,diets:["SugarFree"],description:"",tags:["weight"]},
+  {id:"weight-006",model:"WT-006",name:"(BUY 1 TAKE 1) BONASLIM 15-in-1 Coffee (Mocha Flavor) – 2 Boxes",category:"weight",image:"/assets/images/products/weight/006.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-007",model:"WT-007",name:"瘦身 排毒茶 Slimming Detox Tea 【COH 壹间草药】消脂茶 荷叶 山楂 菊花茶 Lotus Chrysanthemum Teh Bunga 养生花茶 减肥 减脂 肚腩 排",category:"weight",image:"/assets/images/products/weight/007.webp",brand:"",origin:"马来西亚",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-008",model:"WT-008",name:"peluntur lemak / Aur mega herbal 40gr/ herbal alami / teh herbal jati cina",category:"weight",image:"/assets/images/products/weight/008.webp",brand:"Mega",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-009",model:"WT-009",name:"NATURLIFE JSR TEH - TEH HIJAU DIET PELANGSING / TEH HIJAU ORIGINAL / TEH HIJAU PENURUN BERAT BADAN / TEH PELANGSING",category:"weight",image:"/assets/images/products/weight/009.webp",brand:"NATURLIFE",origin:"",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-010",model:"WT-010",name:"Slimming Tea Teh Diet Teh Pelangsing Herbal Pelangsing Alami dan Peluntur Lemak",category:"weight",image:"/assets/images/products/weight/010.webp",brand:"-",origin:"",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-011",model:"WT-011",name:"GROSIR Teh celup jati cina,obat diet, pelangsing badan alami,peluntur lemak",category:"weight",image:"/assets/images/products/weight/011.webp",brand:"-",origin:"",specs:"",moq:500,diets:[],description:"",tags:["weight"]},
+  {id:"weight-012",model:"WT-012",name:"TEH JSR NATURLIFE DIET GLOWING - TEH RIMPANG JSR / RESEP SEHAT JSR / RAMUAN JSR / REMPAH JSR / PENURUN BERAT BADAN /",category:"weight",image:"/assets/images/products/weight/012.webp",brand:"NATURLIFE",origin:"",specs:"",moq:500,diets:[],description:"Herbal slimming tea",tags:["weight"]},
+  {id:"lifestyle-001",model:"LS-001",name:"ผงชาไทย สำเร็จรูป 1 ถุงชงน้ำได้ 2 ลิตร (ตรา Smoosh) ส่งตรงจากบริษัท !! 2-TT001-RT",category:"lifestyle",image:"/assets/images/products/lifestyle/001.webp",brand:"Smoosh(สมูช)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-002",model:"LS-002",name:"ผงกาแฟสด ผงกาแฟดำ ดอยอ่างขาง 100กรัม เพื่อสุขภาพ ไม่ผสมน้ำตาล สำเร็จรูป ช่วยชาวสวน มีอย.",category:"lifestyle",image:"/assets/images/products/lifestyle/002.webp",brand:"Doi Angkang(ดอยอ่างขาง)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-003",model:"LS-003",name:"Nescafe Original Twin Pack Sugar Free 23g - Pack of 5",category:"lifestyle",image:"/assets/images/products/lifestyle/003.webp",brand:"NESCAFE",origin:"Calamba City, Laguna",specs:"",moq:500,diets:[],description:"Your favorite NESCAFE ORIGINAL now availa",tags:["lifestyle"]},
+  {id:"lifestyle-004",model:"LS-004",name:"[100% ORIGINAL HQ]🔥 (5 KOTAK) Ad-din Kopi Moringa Sacha Inchi 3 Serangkai",category:"lifestyle",image:"/assets/images/products/lifestyle/004.webp",brand:"ADDIN",origin:"Selangor",specs:"",moq:500,diets:[],description:"AD-DIN KOPI MORINGA SACHA INCHI 🤎",tags:["lifestyle"]},
+  {id:"lifestyle-005",model:"LS-005",name:"🔥OFFICIAL ADDIN HERBS HQ🔥 KOPI MORINGA SACHA INCHI | 100% ORIGINAL | SET BERBALOI (5 KOTAK) | AD-DIN",category:"lifestyle",image:"/assets/images/products/lifestyle/005.webp",brand:"ADDIN",origin:"Selangor",specs:"",moq:500,diets:[],description:"OFFICIAL ACCOUNT ADDIN HERB'S HQ",tags:["lifestyle"]},
+  {id:"lifestyle-006",model:"LS-006",name:"Variation | Rice Coffee 400g | 100g Energy Booster Coffee, Organic coffee, acid-free coffee",category:"lifestyle",image:"/assets/images/products/lifestyle/006.webp",brand:"",origin:"Philippines",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-007",model:"LS-007",name:"BUY 1 TAKE 1] Avocafe extract organic coffee - healthy na kape",category:"lifestyle",image:"/assets/images/products/lifestyle/007.webp",brand:"",origin:"Philippines",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-008",model:"LS-008",name:"Native Coffee ng Mindanao Malunggay Corn Coffee with Mangosteen ang Guyabano, 100 grams per Pouch",category:"lifestyle",image:"/assets/images/products/lifestyle/008.webp",brand:"MixnFlex",origin:"Philippines",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-009",model:"LS-009",name:"BONA VITA 8-in-1 Coffee Original Flavor (1 Box)",category:"lifestyle",image:"/assets/images/products/lifestyle/009.webp",brand:"Bona Vita",origin:"Philippines",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-010",model:"LS-010",name:"ผงน้ำผลไม้และน้ำสมุนไพรสำเร็จรูป ตรา Jooze ขนาด 500 กรัม ผสมง่ายมาก แค่ผสมน้ำเย็น",category:"lifestyle",image:"/assets/images/products/lifestyle/010.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-011",model:"LS-011",name:"ผงเก็กฮวย สำเร็จรูป 1 ถุงชงน้ำได้ 5 ลิตร (ตรา Smoosh) ส่งตรงจากบริษัท !! 1-CT001-RT",category:"lifestyle",image:"/assets/images/products/lifestyle/011.webp",brand:"Smoosh(สมูช)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-012",model:"LS-012",name:"(ซื้อ 2แพ็คและแจก 1 แพ็ค)100g ผงมัทฉะ ออแกนิค 100% เครื่องดื่มเพื่อสุขภาพ อร่อย",category:"lifestyle",image:"/assets/images/products/lifestyle/012.webp",brand:"",origin:"Bangkok",specs:"",moq:500,diets:[],description:"ผงชาเขียวมัทฉะ 100% สูต",tags:["lifestyle"]},
+  {id:"lifestyle-013",model:"LS-013",name:"ผงเครื่องดื่มสำเร็จรูป ผงน้ำผลไม้ รส อัญชันฮันนี่เลมอน ตราจูซ ขนาด500กรัม",category:"lifestyle",image:"/assets/images/products/lifestyle/013.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-014",model:"LS-014",name:"Strawberry Powder | Serbuk Strawberi | Freeze dried -冻干草莓粉-Natural Fruits & Vege Powder - 纯天然蔬果粉 Freeze Dried Strawberry",category:"lifestyle",image:"/assets/images/products/lifestyle/014.webp",brand:"",origin:"马来西亚",specs:"",moq:500,diets:[],description:"Strawberry powder",tags:["lifestyle"]},
+  {id:"lifestyle-015",model:"LS-015",name:"(FRUIT&CHOC) Serbuk Perisa Minuman1kg [ FLAVOUR ]",category:"lifestyle",image:"/assets/images/products/lifestyle/015.webp",brand:"",origin:"Perlis",specs:"",moq:500,diets:[],description:"serbuk pelbagai perisa berat 1kg",tags:["lifestyle"]},
+  {id:"lifestyle-016",model:"LS-016",name:"Honeydew 2 in 1 Ice Blended Powder 900g",category:"lifestyle",image:"/assets/images/products/lifestyle/016.webp",brand:"",origin:"马来西亚",specs:"",moq:500,diets:["Halal"],description:"Kami adalah syarikat PEMBEKAL Bahan Mi",tags:["lifestyle"]},
+  {id:"lifestyle-017",model:"LS-017",name:"Bột Củ Sen Mix Hạt Dinh Dưỡng Giảm Cân Dưỡng Nhan Hộp 500g",category:"lifestyle",image:"/assets/images/products/lifestyle/017.webp",brand:"",origin:"China",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-018",model:"LS-018",name:"Anlene Total 10 800G",category:"lifestyle",image:"/assets/images/products/lifestyle/018.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-019",model:"LS-019",name:"余仁生乳清蛋白粉 500gm",category:"lifestyle",image:"/assets/images/products/lifestyle/019.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-020",model:"LS-020",name:"ONCE Renal Milk Flavor 400 g. วันซ์ รีนอล กลิ่นนม 400 g. อาหารสำหรับผู้ป่วยโรคไตระยะก่อนล้างไต จำนวน 6 กระป๋อง",category:"lifestyle",image:"/assets/images/products/lifestyle/020.webp",brand:"Otsuka(โอซูก้า)",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-021",model:"LS-021",name:"Bird’s Nest White Fungus Soy Milk No Sugar | Halal Instant Breakfast 燕窝银耳豆浆粉",category:"lifestyle",image:"/assets/images/products/lifestyle/021.webp",brand:"LUTEAZIA",origin:"中国",specs:"",moq:500,diets:["Halal"],description:"🌿 Bird’s",tags:["lifestyle"]},
+  {id:"lifestyle-022",model:"LS-022",name:"Kino Secrets WellSure 850g x2（植物蛋白 完整营养 | 成人）[免费 WellSure 10s]",category:"lifestyle",image:"/assets/images/products/lifestyle/022.webp",brand:"KinohimitsuSKU4753688853_MY-26758096680N",origin:"",specs:"",moq:500,diets:[],description:"",tags:["lifestyle"]},
+  {id:"lifestyle-023",model:"LS-023",name:"Heal 植物基和乳制品蛋白奶昔粉，每份含20克蛋白质 - 提供多种口味",category:"lifestyle",image:"/assets/images/products/lifestyle/023.webp",brand:"",origin:"",specs:"",moq:500,diets:["Vegan"],description:"",tags:["lifestyle"]},
+  {id:"legacy-001",model:"LG-001",name:"[โฉมใหม่สูตรชาชง] (1 ห่อ = 15 ซอง) แม่ชบา ชาสมุนไพรแบบซอง ชงง่าย ดื่มสะดวก",category:"legacy",image:"/assets/images/products/legacy/001.webp",brand:"แม่ชบา",origin:"泰国",specs:"",moq:500,diets:["SugarFree","NoTransFat"],description:"",tags:["legacy"]},
+  {id:"legacy-002",model:"LG-002",name:"MAIQUFENG Oufen Lotus Root Powder Bubuk Akar Teratai Original BPOM RI (HALAL)",category:"legacy",image:"/assets/images/products/legacy/002.webp",brand:"Maiqufeng",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-003",model:"LG-003",name:"YANG GUANG Lotus Powder Sereal Oufen dari Bubuk Akar Teratai Oufen Lotus-500gram",category:"legacy",image:"/assets/images/products/legacy/003.webp",brand:"-",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-004",model:"LG-004",name:"MAIQUFENG OUFEN LOTUS ROOT POWDER (HALAL) Dijamin Original Maiqufeng Karena Sudah BPOM RI",category:"legacy",image:"/assets/images/products/legacy/004.webp",brand:"Maiqufeng",origin:"Indonesia",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-005",model:"LG-005",name:"MAIQUFENG Oufen Lotus Root Powder Bubuk Akar Teratai Original BPOM RI (HALAL) - GOLD ChiaSeed",category:"legacy",image:"/assets/images/products/legacy/005.webp",brand:"Maiqufeng",origin:"",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-006",model:"LG-006",name:"MAIQUFENG Oufen Lotus Root Powder Bubuk Akar Teratai Original BPOM RI (HALAL) - Bird Nest",category:"legacy",image:"/assets/images/products/legacy/006.webp",brand:"Maiqufeng",origin:"Other Reg",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-007",model:"LG-007",name:"[100% ORIGINAL] MONSTA BUBUK AKAR TERATAI INSTAN 300G/BUBUR TERATAI HALAL /TEPUNG YANBAO/LOTUS ROOT POWDER",category:"legacy",image:"/assets/images/products/legacy/007.webp",brand:"Monsta",origin:"",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-008",model:"LG-008",name:"MAIQUFENG Oufen Lotus Root Powder Bubuk Akar Teratai Original BPOM RI (HALAL) - White Fungus Red Jujube",category:"legacy",image:"/assets/images/products/legacy/008.webp",brand:"Maiqufeng",origin:"Other Regions",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-009",model:"LG-009",name:"OU FEN - OUFEN LIMITED Lotus Teratai Root Powder All Varian 500g",category:"legacy",image:"/assets/images/products/legacy/009.webp",brand:"OUFEN",origin:"",specs:"",moq:500,diets:[],description:"",tags:["legacy"]},
+  {id:"legacy-010",model:"LG-010",name:"Kinohimitsu Superfood Lady 1kg | Women’s Wellness & Daily Nutrition Drink",category:"legacy",image:"/assets/images/products/legacy/010.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"This pinkalicious mixed cereal drink is enriched with Calcium and Iron that work in harmony with the combination of Beetroot, Red Dates and Longan to meet the needs of every woman.",tags:["legacy"]},
+  {id:"gut-001",model:"GT-001",name:"胶原蛋白肽粉（16盎司）|草饲，认证古早食，非转基因和无面筋 - 没有味道",category:"gut",image:"/assets/images/products/gut/001.webp",brand:"Sports Research",origin:"",specs:"",moq:500,diets:["不含麸质"],description:"",tags:["gut"]},
+  {id:"gut-002",model:"GT-002",name:"⚡(ซื้อคู่ =900 กรัม)Almond Protein New Life Plus โปรตีนจากพืชปรุงสำเร็จชนิดผง รสกล้วย",category:"gut",image:"/assets/images/products/gut/002.webp",brand:"",origin:"",specs:"900 กรัม)",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-003",model:"GT-003",name:"โปรตีนพืชMerry Glow Protein :ไม่มีถั่วเหลือง โปรตีน + คอลลาเจน วิตามิน แร่ธาตุ",category:"gut",image:"/assets/images/products/gut/003.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-004",model:"GT-004",name:"Anlene Total 10 800G",category:"gut",image:"/assets/images/products/gut/004.webp",brand:"Anlene",origin:"",specs:"800G",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-005",model:"GT-005",name:"Orgain 草饲水解胶原蛋白多肽蛋白粉",category:"gut",image:"/assets/images/products/gut/005.webp",brand:"Orgain",origin:"",specs:"",moq:500,diets:["不含麸质","生酮饮食"],description:"",tags:["gut"]},
+  {id:"gut-006",model:"GT-006",name:"亚马逊 Basics 胶原蛋白肽 1 型和 3 型粉末,9 盎司,38 份",category:"gut",image:"/assets/images/products/gut/006.webp",brand:"Amazon Basics",origin:"",specs:"9 盎司,38",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-007",model:"GT-007",name:"代谢营养 - Protizyme - 乳清蛋白粉,高蛋白质,低碳水化合物,低脂肪含消化酶,24 种必需维生素和矿物质,香蕉奶油,2 磅",category:"gut",image:"/assets/images/products/gut/007.webp",brand:"Metabolic Nutrition",origin:"",specs:"2 磅",moq:500,diets:["不含麸质"],description:"",tags:["gut"]},
+  {id:"gut-008",model:"GT-008",name:"EXP:12/01/2029Albumen ผงโปรตีนไข่ขาว (อัลบูเมน) 400g",category:"gut",image:"/assets/images/products/gut/008.webp",brand:"蛋白(อัลบูเมน)",origin:"",specs:"400g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-009",model:"GT-009",name:"2 Box Peptisol - Nutrisi Tinggi Protein Rendah Residu - Vanila",category:"gut",image:"/assets/images/products/gut/009.webp",brand:"Peptisol",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-010",model:"GT-010",name:"余仁生乳清蛋白粉 500gm",category:"gut",image:"/assets/images/products/gut/010.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-011",model:"GT-011",name:"Anlene Gold 5X High Calcium High Protein Plain Milk Powder 950g",category:"gut",image:"/assets/images/products/gut/011.webp",brand:"Anlene",origin:"",specs:"950g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-012",model:"GT-012",name:"Anlene Gold 5X High Calcium High Protein Plain Milk Powder 950g",category:"gut",image:"/assets/images/products/gut/012.webp",brand:"Anlene",origin:"",specs:"950g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-013",model:"GT-013",name:"MS SOY PROTEIN ISOLATE ซอยโปรตีน โปรตีนถั่วเหลือง ไอโซเลท เพิ่มกล้าม ลดไขมัน แพ้เวย์whey โปรตีนนม ทานได้ อยู่ท้อง ลดหิว",category:"gut",image:"/assets/images/products/gut/013.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-014",model:"GT-014",name:"乳清蛋白粉，每日配方，产品采用新鲜牛奶制成，从国外进口，500克，奶香味，易于食用。",category:"gut",image:"/assets/images/products/gut/014.webp",brand:"",origin:"",specs:"",moq:500,diets:["ออร์แกนิกNet Weight500 gPack TypeถุงฟรอยModel0Packaging TypeถุงWarranty TypeNo Warranty"],description:"",tags:["gut"]},
+  {id:"gut-015",model:"GT-015",name:"ONCE Renal Milk Flavor 400 g. วันซ์ รีนอล กลิ่นนม 400 g. อาหารสำหรับผู้ป่วยโรคไตระยะก่อนล้างไต จำนวน 6 กระป๋อง",category:"gut",image:"/assets/images/products/gut/015.webp",brand:"Otsuka",origin:"",specs:"400 g.",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-016",model:"GT-016",name:"Albumin Egg Powder อัลบูมิน ผงโปรตีนไข่ขาว 400 กรัม Albumen อัลบูเมน 30/60เม็ด (สินค้าตามตัวเลือก)",category:"gut",image:"/assets/images/products/gut/016.webp",brand:"Albumen",origin:"",specs:"400 กรัม",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-017",model:"GT-017",name:"Infinity Whey Protein 1000 gram 2.2 lbs Protein Powder - Minuman Protein Diet Fitness",category:"gut",image:"/assets/images/products/gut/017.webp",brand:"Infinity",origin:"",specs:"1000 gram",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-018",model:"GT-018",name:"SUSU KEDELAI BUBUK MAHKOTA FIT 500 gram SUSU KEDELAI BUBUK PREMIUM SUSU PROTEIN TINGGI SUSU FITNES CUTTING DAN",category:"gut",image:"/assets/images/products/gut/018.webp",brand:"Mahkota",origin:"",specs:"500 gram",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-019",model:"GT-019",name:"PURO WPC WPRO Whey Protein Concentrate 1.2kg",category:"gut",image:"/assets/images/products/gut/019.webp",brand:"Otsuka",origin:"",specs:"2kg",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-020",model:"GT-020",name:"Fresubin Whey Isolate ผง 300กรัม เฟรซูบิน เวย์โปรตีน EXP 04/27",category:"gut",image:"/assets/images/products/gut/020.webp",brand:"Fresubin",origin:"",specs:"300กรัม",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-021",model:"GT-021",name:"Protein Powder Concentrated Whey Protein Powder 1,000g Slimming Skin-Increasing Powder Nutritional Supplements Immunity Children Adult",category:"gut",image:"/assets/images/products/gut/021.webp",brand:"Otsuka",origin:"",specs:"000g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-022",model:"GT-022",name:"禾膳-高蛋白乳清营养配方粉补充中老年易吸收全面30g*14袋/420gWo Diet-High Protein Whey Nutritional Formula Powder Supplement20260125",category:"gut",image:"/assets/images/products/gut/022.webp",brand:"",origin:"",specs:"30g*14袋/420gWo",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-023",model:"GT-023",name:"Valens Myotein Powder 215g (Expiry Date: May 2027)",category:"gut",image:"/assets/images/products/gut/023.webp",brand:"VALENS",origin:"SG",specs:"215g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-024",model:"GT-024",name:"Herbalife formula 3 protein powder(sg stock)",category:"gut",image:"/assets/images/products/gut/024.webp",brand:"HERBALIFE",origin:"SG",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-025",model:"GT-025",name:"Orgain 乳清蛋白粉,香草豆 - 21 克草饲乳制品蛋白,不含麸质,不含大豆,不含糖,犹太洁食,不添加激素或角叉菜胶,用于冰沙和奶昔-1.75 磅",category:"gut",image:"/assets/images/products/gut/025.webp",brand:"Orgain",origin:"",specs:"75 磅",moq:500,diets:["不含麸质","犹太洁食"],description:"",tags:["gut"]},
+  {id:"gut-026",model:"GT-026",name:"KOKORI Nephra Whey Vanilla Coffee โคโคริอาหารเสริมโรคไต เวย์โปรตีน โปรตีนไข่ขาว เวย์ไข่ขาว วานิลา กาแฟ",category:"gut",image:"/assets/images/products/gut/026.webp",brand:"KOKORI",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-027",model:"GT-027",name:"Bird’s Nest White Fungus Soy Milk No Sugar | Halal Instant Breakfast 燕窝银耳豆浆粉",category:"gut",image:"/assets/images/products/gut/027.webp",brand:"LUTEAZIA",origin:"中国",specs:"",moq:500,diets:["清真"],description:"",tags:["gut"]},
+  {id:"gut-028",model:"GT-028",name:"Kinohimitsu 井水 30.3g x 1s (植物蛋白质 完整营养 | 成人",category:"gut",image:"/assets/images/products/gut/028.webp",brand:"Kinohimitsu",origin:"",specs:"3g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-029",model:"GT-029",name:"AW-豌豆蛋白分离物 纯素蛋白 豆蛋白 2磅 (907克)",category:"gut",image:"/assets/images/products/gut/029.webp",brand:"哎呀库存单位 (SKU)2189090487_TH-7340",origin:"",specs:"2磅",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-030",model:"GT-030",name:"马泰尔大豆蛋白分离物 植物性大豆蛋白分离物（非乳清蛋白）",category:"gut",image:"/assets/images/products/gut/030.webp",brand:"马特尔库存单位 (SKU)2345028829_TH-245",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-031",model:"GT-031",name:"Kino Secrets WellSure 850g x2（植物蛋白 完整营养 | 成人）[免费 WellSure 10s]",category:"gut",image:"/assets/images/products/gut/031.webp",brand:"",origin:"",specs:"850g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-032",model:"GT-032",name:"Soluxe Protein Shake Powder ( Pea / Soy ) 25g Single Sachet HALAL / VEGAN / LACTOSE FREE / PLANT PROTEIN",category:"gut",image:"/assets/images/products/gut/032.webp",brand:"Soluxe",origin:"",specs:"25g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-033",model:"GT-033",name:"Heal 植物基和乳制品蛋白奶昔粉，每份含20克蛋白质 - 提供多种口味",category:"gut",image:"/assets/images/products/gut/033.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-034",model:"GT-034",name:"Almond Protein Powder Vismores Almond Protein, Dutch Cocoa Chocolate Flavor, 910 G. Almond Protein, Plant-Based Protein.",category:"gut",image:"/assets/images/products/gut/034.webp",brand:"Vismores",origin:"",specs:"910 G.",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-035",model:"GT-035",name:"Kinohimitsu Superfood Lady 1kg | Women’s Wellness & Daily Nutrition Drink",category:"gut",image:"/assets/images/products/gut/035.webp",brand:"Kinohimitsu",origin:"",specs:"1kg",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-036",model:"GT-036",name:"mall inline badgeVEGAN PROTEIN 420g - Bột Đậu Hạt & Rau Củ",category:"gut",image:"/assets/images/products/gut/036.webp",brand:"",origin:"",specs:"420g",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-037",model:"GT-037",name:"BIOPHARM Entrasol เครื่องดื่มโปรตีนสูง ชนิดผงชงดื่ม กลิ่นวานิลลา 800 กรัม 1 กระป๋อง",category:"gut",image:"/assets/images/products/gut/037.webp",brand:"BIOPHARM",origin:"",specs:"800 กรัม",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-038",model:"GT-038",name:"GEN-DM MF Vanilla Flavor เจ็น-ดีเอ็ม เอ็มเอฟ กลิ่นวานิลลา 2.5 ก.ก. ชนิดผงสำหรับผู้ให้อาหารทางสายให้อาหาร (4 ถุง ยกลัง)",category:"gut",image:"/assets/images/products/gut/038.webp",brand:"",origin:"",specs:"",moq:500,diets:[],description:"",tags:["gut"]},
+  {id:"gut-039",model:"GT-039",name:"Nutricost 有机豌豆蛋白分离粉(5 磅)- 无味,美国农业部有机认证,植物蛋白质,素食友好,不含麸质,非转基因",category:"gut",image:"/assets/images/products/gut/039.webp",brand:"Nutricost",origin:"",specs:"5 磅)",moq:500,diets:["纯素"],description:"",tags:["gut"]},
+  {id:"gut-040",model:"GT-040",name:"Anthony 有机大麻籽蛋白粉,1 磅,冷压,不含麸质,非转基因,细粉",category:"gut",image:"/assets/images/products/gut/040.webp",brand:"Anthony's",origin:"",specs:"1 磅,冷压,不含麸质,非转基因,细粉",moq:500,diets:["原始人飲食法"],description:"",tags:["gut"]},
+  {id:"gut-041",model:"GT-041",name:"NEO-MUNE Melon Flavor 400 g. นีโอ-มูน กลิ่นเมล่อน 400 g.อาหารชนิดผงสำหรับผู้ต้องการโปรตีนและพลังงานสูง จำนวน 1 กระป๋อง",category:"gut",image:"/assets/images/products/gut/041.webp",brand:"NEO-MUNE",origin:"",specs:"400 g.",moq:500,diets:[],description:"",tags:["gut"]}
+];
+var PRODUCT_DATA_VERSION = "20260524-v2";
+window.PRODUCT_DATA_TABLE = PRODUCT_DATA_TABLE;
+window.PRODUCT_DATA_VERSION = PRODUCT_DATA_VERSION;
+window.dispatchEvent(new Event("product-data-ready"));
+
+"use strict";
+
+// product-data-table-translations.js — 产品多语言翻译文件
+// Products: 172 | Generated: 2026-05-25T06:33:11.855Z
+// Missing nameZh: 52 | Missing nameEn: 0
+
+var PRODUCT_DATA_TRANSLATIONS = {
+  // beauty (5 SKU)
+  "BT-001": {
+    nameZh: "Xanthone Gold 谷胱甘肽胶原蛋白咖啡（10条/盒）",
+    nameEn: "Xanthone Gold Coffee Mix with Glutathione and Collagen (10 Sachets/Box)",
+    descriptionZh: "This is the OFFICIAL SHOPEE STORE of YES2HEAL",
+    descriptionEn: ""
+  },
+  "BT-002": {
+    nameZh: "",
+    nameEn: "Yusmira Sihat Tanpa Gula TAMBAHAN KOTAK(Walit, Durian Belanda, Ali Power, Halia Bara, Peria Katak, Kunyit Hitam)",
+    descriptionZh: "HARAP MAKLUM hanya pembelian 5 UNIT dan KEATAS sahaja akan dibungkus dalam kotak asing kerana har",
+    descriptionEn: ""
+  },
+  "BT-003": {
+    nameZh: "胶原蛋白肽粉（16盎司）|草饲，认证古早食，非转基因和无面筋 - 没有味道",
+    nameEn: "Collagen Peptides Powder, 16 oz, Grass Fed, Paleo Certified, Non-GMO, Gluten Free, Unflavored",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "BT-004": {
+    nameZh: "Orgain 草饲水解胶原蛋白多肽蛋白粉",
+    nameEn: "Orgain Grass Fed Hydrolyzed Collagen Peptides Protein Powder",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "BT-005": {
+    nameZh: "亚马逊 Basics 胶原蛋白肽 1 型和 3 型粉末,9 盎司,38 份",
+    nameEn: "Amazon Basics Collagen Peptides Type 1 and 3 Powder, 9 oz, 38 Servings",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+
+  // coffee (32 SKU)
+  "CF-001": {
+    nameZh: "",
+    nameEn: "(Bundle of 4) SUPER™ Instant 3in1 Coffee, 28/30sticks (Expiry: July 2027)",
+    descriptionZh: "About Product",
+    descriptionEn: ""
+  },
+  "CF-002": {
+    nameZh: "Tropicana Slim 拿铁速溶咖啡 10条装 14g - 无蔗糖咖啡牛奶",
+    nameEn: "Tropicana Slim Cafe Latte 10 Sachets 14g - Sugar-Free Coffee Milk",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-003": {
+    nameZh: "Berdi 3合1速溶意式咖啡 12.1g x 27包 x 3袋",
+    nameEn: "Berdi 3in1 Instant Espresso Coffee 12.1g x 27 Sachets x 3 Packs",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-004": {
+    nameZh: "",
+    nameEn: "Ilocos Product: 100% ORGANIC NO CAFFEINE: Roasted Brown Rice, Corn Coffee, 3 in 1 Coffee, Soy Bean,",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-005": {
+    nameZh: "畅销款] 真正的顺化古城盐咖啡，顺化古城浓香即溶咖啡 10 包 - F&B 版",
+    nameEn: "Hue Ancient City Salt Coffee, Instant Coffee 10 Packs - F&B Edition",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-006": {
+    nameZh: "",
+    nameEn: "NESCAFE White Coffee Gao Siew Dai (14 x 30g)",
+    descriptionZh: "Nutri-Grade C",
+    descriptionEn: ""
+  },
+  "CF-007": {
+    nameZh: "Liong Bulan PLUS 加糖速溶咖啡 28g（20条装）",
+    nameEn: "Liong Bulan PLUS Sugar Coffee 28g (20 Sachets)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-008": {
+    nameZh: "咖啡清澈 低卡路里 无糖 1包 20袋 exp09/2027（甜度适中 低咖啡因 以草本植物为主）",
+    nameEn: "Clear Coffee Low Calorie Sugar Free 1 Pack 20 Sachets, Low Caffeine Herbal Blend",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-009": {
+    nameZh: "",
+    nameEn: "Cafe Puro Instant Coffee In Regency Cup 50g for Keto and Low Carb",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-010": {
+    nameZh: "Great Taste 白咖啡双联包 40g（10组）",
+    nameEn: "Great Taste White Coffee Twin Pack 40g (10 Packs)",
+    descriptionZh: "Buy 10",
+    descriptionEn: ""
+  },
+  "CF-011": {
+    nameZh: "",
+    nameEn: "Coffee Kluang Brand Television Coffee O Empty (100 Bags x 2 Jars) | Black Coffee TV Cap | Sugar-Free",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-012": {
+    nameZh: "Serenceng 无糖咖啡粉 10条装 x 6g | 浓郁风味",
+    nameEn: "Serenceng Sugar-Free Instant Coffee 10 Sachets x 6g | Rich Aroma",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-013": {
+    nameZh: "",
+    nameEn: "DUJOSOO Black Coffee Gifts Arabya coffee gift 0 fat, 0 sugar, healthy drink 3g*10",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-014": {
+    nameZh: "Oriental 白咖啡 10条装 清香型/炭烧/无糖/喜马拉雅盐",
+    nameEn: "Oriental White Coffee 10 Sachets Halal Classic / Charcoal / No Sugar / Himalayan Salt",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-015": {
+    nameZh: "KITSUI Coffee Xslim Shapez 17条 x 15g - 植物咖啡饮 | 促进代谢与健康饮食",
+    nameEn: "KITSUI Coffee Xslim Shapez 17s x 15g - Botanical Coffee Beverage | Metabolism & Healthy Diet Support",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-016": {
+    nameZh: "Kopi Ala Kazim 原味 Emzi Care HQ Ustaz Kazim 金配方 | 苦瓜提取物与羊奶 - 健康咖啡",
+    nameEn: "Kopi Ala Kazim Original by Emzi Care HQ Ustaz Kazim Golden Recipe | Bitter Melon Extract & Goat Milk Coffee",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-017": {
+    nameZh: "",
+    nameEn: "Brusko Extreme Coffee with Tongkat Ali & Ginseng – 3 / 5 / 10 Sachets",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-018": {
+    nameZh: "G-MAX 男性活力咖啡 安全认证 BPOM & HALAL（1盒10条）",
+    nameEn: "G-MAX Men's Stamina Coffee BPOM & Halal Certified (1 Box 10 Sachets)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-019": {
+    nameZh: "KITFEE 咖啡节食排毒 | 咖啡节食 | 咖啡排毒 BPOM",
+    nameEn: "KITFEE Coffee Diet Detox BPOM",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-020": {
+    nameZh: "Daifi 白咖啡3合1 Delysh 无糖低卡膳食纤维咖啡 20g x 15条装（3袋）",
+    nameEn: "Daifi White Coffee 3in1 Delysh No Added Sugar Low Calorie Fiber Coffee 20g x 15 Sachets (3 Packs)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-021": {
+    nameZh: "",
+    nameEn: "💯% Arabica Coffee Bean (El-Salvador Blend)",
+    descriptionZh: "🔥Blend                     :   💯% Premium Grade Arabica Beans ( El Salvador +",
+    descriptionEn: ""
+  },
+  "CF-022": {
+    nameZh: "",
+    nameEn: "Signature Espresso Blend 100% Arabica Coffee",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-023": {
+    nameZh: "Mandailing 曼特宁阿拉比卡咖啡豆/咖啡粉 Sakha Coffee 烘焙",
+    nameEn: "Mandailing Mandheling Arabica Coffee Beans / Ground Coffee by Sakha Coffee Roastery",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-024": {
+    nameZh: "VOTRRO 曼特宁阿拉比卡咖啡豆/咖啡粉 100%纯阿拉比卡 意式商用 1kg",
+    nameEn: "VOTRRO Mandheling Arabica Coffee Beans / Ground 100% Full Arabica Espresso Commercial 1kg",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-025": {
+    nameZh: "Excelso 苏门答腊曼特宁咖啡粉 200g",
+    nameEn: "Excelso Sumatra Mandheling Ground Coffee 200g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-026": {
+    nameZh: "",
+    nameEn: "Anghel Kape Caramel Macchiato Premium 3in1 Coffee 1pack/10pcs/200grams w/ APC limited only",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-027": {
+    nameZh: "",
+    nameEn: "Bean Block Coffee Sampler – Freshly Roasted Premium Coffee Beans | Roasted in PH by Bean Block",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-028": {
+    nameZh: "代谢营养 - Protizyme - 乳清蛋白粉,高蛋白质,低碳水化合物,低脂肪含消化酶,24 种必需维生素和矿物质,香蕉奶油,2 磅",
+    nameEn: "Metabolic Nutrition Protizyme Whey Protein Powder, Banana Cream, 2 lbs",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-029": {
+    nameZh: "(05) 乳清蛋白粉，每日配方，产品采用新鲜牛奶制成，从国外进口，500克，奶香味，易于食用。",
+    nameEn: "Whey Protein Powder Daily Formula, Fresh Milk, 500g, Milk Flavor",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-030": {
+    nameZh: "Orgain 乳清蛋白粉,香草豆 - 21 克草饲乳制品蛋白,不含麸质,不含大豆,不含糖,犹太洁食,不添加激素或角叉菜胶,用于冰沙和奶昔-1.75 磅",
+    nameEn: "Orgain Whey Protein Powder, Vanilla Bean, 21g Grass Fed Dairy Protein, Gluten Free, Soy Free, Sugar Free, Kosher, 1.75 lbs",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-031": {
+    nameZh: "AW-豌豆蛋白分离物 纯素蛋白 豆蛋白 2磅 (907克)",
+    nameEn: "AW Pea Protein Isolate, Vegan Protein, 2 lbs (907g)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "CF-032": {
+    nameZh: "马泰尔大豆蛋白分离物 植物性大豆蛋白分离物（非乳清蛋白）",
+    nameEn: "Martell Soy Protein Isolate, Plant-Based Soy Protein Isolate (Non-Whey)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+
+  // gut (41 SKU)
+  "GT-001": {
+    nameZh: "胶原蛋白肽粉（16盎司）|草饲，认证古早食，非转基因和无面筋 - 没有味道",
+    nameEn: "Collagen Peptides Powder, 16 oz, Grass Fed, Paleo Certified, Non-GMO, Gluten Free, Unflavored",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-002": {
+    nameZh: "New Life Plus 杏仁蛋白粉 香蕉味",
+    nameEn: "New Life Plus Almond Protein Powder Banana Flavor",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-003": {
+    nameZh: "Merry Glow 植物蛋白粉 无豆腥 蛋白质+胶原蛋白",
+    nameEn: "Merry Glow Plant Protein No Soy Protein + Collagen",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-004": {
+    nameZh: "",
+    nameEn: "Anlene Total 10 800G",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-005": {
+    nameZh: "Orgain 草饲水解胶原蛋白多肽蛋白粉",
+    nameEn: "Orgain Grass Fed Hydrolyzed Collagen Peptides Protein Powder",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-006": {
+    nameZh: "亚马逊 Basics 胶原蛋白肽 1 型和 3 型粉末,9 盎司,38 份",
+    nameEn: "Amazon Basics Collagen Peptides Type 1 and 3 Powder, 9 oz, 38 Servings",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-007": {
+    nameZh: "代谢营养 - Protizyme - 乳清蛋白粉,高蛋白质,低碳水化合物,低脂肪含消化酶,24 种必需维生素和矿物质,香蕉奶油,2 磅",
+    nameEn: "Metabolic Nutrition Protizyme Whey Protein Powder, High Protein, Low Carb, Low Fat, with Digestive Enzymes, 24 Vitamins and Minerals, Banana Cream, 2 lbs",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-008": {
+    nameZh: "蛋白粉 鸡蛋清蛋白粉 400g",
+    nameEn: "Albumen Egg White Protein Powder 400g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-009": {
+    nameZh: "Peptisol 高蛋白低残留营养粉 香草味 ×2盒",
+    nameEn: "Peptisol High Protein Low Residue Vanilla ×2 Boxes",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-010": {
+    nameZh: "余仁生乳清蛋白粉 500gm",
+    nameEn: "Eu Yan Sang Whey Protein Powder, 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-011": {
+    nameZh: "",
+    nameEn: "Anlene Gold 5X High Calcium High Protein Plain Milk Powder 950g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-012": {
+    nameZh: "",
+    nameEn: "Anlene Gold 5X High Calcium High Protein Plain Milk Powder 950g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-013": {
+    nameZh: "MS 大豆分离蛋白粉",
+    nameEn: "MS Soy Protein Isolate",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-014": {
+    nameZh: "乳清蛋白粉，每日配方，产品采用新鲜牛奶制成，从国外进口，500克，奶香味，易于食用。",
+    nameEn: "Whey Protein Powder Daily Formula, Fresh Milk, 500g, Milk Flavor",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-015": {
+    nameZh: "ONCE Renal 肾病配方奶粉 奶味 400g×6罐",
+    nameEn: "ONCE Renal Milk Flavor 400g × 6 Cans",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-016": {
+    nameZh: "白蛋白 鸡蛋清蛋白粉 400g",
+    nameEn: "Albumin Egg White Protein Powder 400g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-017": {
+    nameZh: "",
+    nameEn: "Infinity Whey Protein 1000 gram 2.2 lbs Protein Powder - Minuman Protein Diet Fitness",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-018": {
+    nameZh: "Mahkota Fit 高蛋白大豆奶粉 500g",
+    nameEn: "Mahkota Fit Premium High Protein Soy Milk Powder 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-019": {
+    nameZh: "",
+    nameEn: "PURO WPC WPRO Whey Protein Concentrate 1.2kg",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-020": {
+    nameZh: "Fresubin 乳清分离蛋白粉 300g",
+    nameEn: "Fresubin Whey Protein Isolate Powder 300g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-021": {
+    nameZh: "",
+    nameEn: "Protein Powder Concentrated Whey Protein Powder 1,000g Slimming Skin-Increasing Powder Nutritional Supplements Immunity Children Adult",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-022": {
+    nameZh: "禾膳-高蛋白乳清营养配方粉补充中老年易吸收全面30g*14袋/420gWo Diet-High Protein Whey Nutritional Formula Powder Supplement20260125",
+    nameEn: "He Shan High Protein Whey Nutrition Formula Powder for Elderly, 30g x 14 Sachets, 420g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-023": {
+    nameZh: "",
+    nameEn: "Valens Myotein Powder 215g (Expiry Date: May 2027)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-024": {
+    nameZh: "",
+    nameEn: "Herbalife formula 3 protein powder(sg stock)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-025": {
+    nameZh: "Orgain 乳清蛋白粉,香草豆 - 21 克草饲乳制品蛋白,不含麸质,不含大豆,不含糖,犹太洁食,不添加激素或角叉菜胶,用于冰沙和奶昔-1.75 磅",
+    nameEn: "Orgain Whey Protein Powder, Vanilla Bean, 21g Grass Fed Dairy Protein, Gluten Free, Soy Free, Sugar Free, Kosher",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-026": {
+    nameZh: "KOKORI Nephra 肾病专用蛋白粉 香草咖啡味",
+    nameEn: "KOKORI Nephra Whey Protein Vanilla Coffee",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-027": {
+    nameZh: "燕窝银耳豆浆粉 无糖 即食早餐",
+    nameEn: "Bird's Nest White Fungus Soy Milk No Sugar Halal Instant Breakfast",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-028": {
+    nameZh: "Kinohimitsu 井水 30.3g x 1s (植物蛋白质 完整营养 | 成人",
+    nameEn: "Kinohimitsu Well Water 30.3g x 1, Plant Protein Complete Nutrition for Adults",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-029": {
+    nameZh: "AW-豌豆蛋白分离物 纯素蛋白 豆蛋白 2磅 (907克)",
+    nameEn: "AW Pea Protein Isolate, Vegan Protein, 2 lbs (907g)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-030": {
+    nameZh: "马泰尔大豆蛋白分离物 植物性大豆蛋白分离物（非乳清蛋白）",
+    nameEn: "Martell Soy Protein Isolate, Plant-Based Soy Protein Isolate (Non-Whey)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-031": {
+    nameZh: "Kino Secrets WellSure 850g x2（植物蛋白 完整营养 | 成人）[免费 WellSure 10s]",
+    nameEn: "Kino Secrets WellSure 850g x 2, Plant Protein Complete Nutrition for Adults",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-032": {
+    nameZh: "Soluxe 蛋白粉（豌豆/大豆）25g 单包冲饮",
+    nameEn: "Soluxe Protein Shake Powder (Pea/Soy) 25g Single Sachet",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-033": {
+    nameZh: "Heal 植物基和乳制品蛋白奶昔粉，每份含20克蛋白质 - 提供多种口味",
+    nameEn: "Heal Plant-Based and Dairy Protein Shake Powder, 20g Protein Per Serving, Multiple Flavors",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-034": {
+    nameZh: "",
+    nameEn: "Almond Protein Powder Vismores Almond Protein, Dutch Cocoa Chocolate Flavor, 910 G. Almond Protein, Plant-Based Protein.",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-035": {
+    nameZh: "",
+    nameEn: "Kinohimitsu Superfood Lady 1kg | Women’s Wellness & Daily Nutrition Drink",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-036": {
+    nameZh: "",
+    nameEn: "mall inline badgeVEGAN PROTEIN 420g - Bột Đậu Hạt & Rau Củ",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-037": {
+    nameZh: "BIOPHARM Entrasol 高蛋白冲饮粉 香草味 800g",
+    nameEn: "BIOPHARM Entrasol High Protein Drink Powder Vanilla 800g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-038": {
+    nameZh: "GEN-DM MF 管饲肠内营养粉 香草味 2.5kg",
+    nameEn: "GEN-DM MF Enteral Feeding Powder Vanilla 2.5kg",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-039": {
+    nameZh: "Nutricost 有机豌豆蛋白分离粉(5 磅)- 无味,美国农业部有机认证,植物蛋白质,素食友好,不含麸质,非转基因",
+    nameEn: "Nutricost Organic Pea Protein Isolate Powder, 5 lbs, Unflavored, USDA Organic, Vegan",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-040": {
+    nameZh: "Anthony 有机大麻籽蛋白粉,1 磅,冷压,不含麸质,非转基因,细粉",
+    nameEn: "Anthony Organic Hemp Seed Protein Powder, 1 lb, Cold Pressed, Gluten Free, Non-GMO, Fine Powder",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "GT-041": {
+    nameZh: "NEO-MUNE 免疫营养粉 哈密瓜味 400g",
+    nameEn: "NEO-MUNE High Protein Energy Powder Melon Flavor 400g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+
+  // legacy (10 SKU)
+  "LG-001": {
+    nameZh: "Mae Cha Ba 草本袋泡茶 新配方（1包=15袋）",
+    nameEn: "Mae Cha Ba Herbal Tea Bags New Formula (1 Pack = 15 Sachets)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-002": {
+    nameZh: "MAIQUFENG 藕粉 原味",
+    nameEn: "MAIQUFENG Lotus Root Powder Original",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-003": {
+    nameZh: "YANG GUANG 藕粉 谷物冲饮 500g",
+    nameEn: "YANG GUANG Lotus Root Cereal Powder 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-004": {
+    nameZh: "MAIQUFENG 藕粉 原味",
+    nameEn: "MAIQUFENG Lotus Root Powder Original",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-005": {
+    nameZh: "MAIQUFENG 藕粉 奇亚籽",
+    nameEn: "MAIQUFENG Lotus Root Powder Gold Chia Seed",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-006": {
+    nameZh: "MAIQUFENG 藕粉 燕窝",
+    nameEn: "MAIQUFENG Lotus Root Powder Bird Nest",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-007": {
+    nameZh: "MONSTA 即食藕粉 300g",
+    nameEn: "MONSTA Instant Lotus Root Powder 300g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-008": {
+    nameZh: "MAIQUFENG 藕粉 银耳红枣",
+    nameEn: "MAIQUFENG Lotus Root Powder White Fungus Red Jujube",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-009": {
+    nameZh: "",
+    nameEn: "OU FEN - OUFEN LIMITED Lotus Teratai Root Powder All Varian 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LG-010": {
+    nameZh: "",
+    nameEn: "Kinohimitsu Superfood Lady 1kg | Women’s Wellness & Daily Nutrition Drink",
+    descriptionZh: "This pinkalicious mixed cereal drink is enriched with Calcium and Iron that work in harmony with the combination of Beetroot, Red Dates and Longan to meet the needs of every woman.",
+    descriptionEn: ""
+  },
+
+  // lifestyle (23 SKU)
+  "LS-001": {
+    nameZh: "Smoosh 泰式奶茶粉（1袋冲2升）",
+    nameEn: "Smoosh Thai Tea Instant Mix (1 Bag Makes 2 Liters)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-002": {
+    nameZh: "Doi Ang Khang 原味黑咖啡粉 100g 无糖",
+    nameEn: "Doi Ang Khang Original Black Coffee Powder 100g Sugar Free",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-003": {
+    nameZh: "Nescafe 原味无糖速溶咖啡 23g（5包）",
+    nameEn: "Nescafe Original Sugar Free Instant Coffee 23g (Pack of 5)",
+    descriptionZh: "Your favorite NESCAFE ORIGINAL now availa",
+    descriptionEn: ""
+  },
+  "LS-004": {
+    nameZh: "Ad-din 辣木籽咖啡（5盒装）",
+    nameEn: "Ad-din Kopi Moringa Sacha Inchi (5 Boxes)",
+    descriptionZh: "AD-DIN KOPI MORINGA SACHA INCHI 🤎",
+    descriptionEn: ""
+  },
+  "LS-005": {
+    nameZh: "Ad-din 辣木籽咖啡（5盒装）",
+    nameEn: "Ad-din Kopi Moringa Sacha Inchi (5 Boxes)",
+    descriptionZh: "OFFICIAL ACCOUNT ADDIN HERB'S HQ",
+    descriptionEn: ""
+  },
+  "LS-006": {
+    nameZh: "",
+    nameEn: "Variation | Rice Coffee 400g | 100g Energy Booster Coffee, Organic coffee, acid-free coffee",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-007": {
+    nameZh: "",
+    nameEn: "BUY 1 TAKE 1] Avocafe extract organic coffee - healthy na kape",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-008": {
+    nameZh: "",
+    nameEn: "Native Coffee ng Mindanao Malunggay Corn Coffee with Mangosteen ang Guyabano, 100 grams per Pouch",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-009": {
+    nameZh: "BONA VITA 8合1原味咖啡（1盒）",
+    nameEn: "BONA VITA 8-in-1 Coffee Original Flavor (1 Box)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-010": {
+    nameZh: "Jooze 水果花草茶速溶粉 500g",
+    nameEn: "Jooze Fruit and Herbal Juice Instant Mix Powder 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-011": {
+    nameZh: "Smoosh 菊花茶速溶粉（1袋冲5升）",
+    nameEn: "Smoosh Chrysanthemum Tea Instant Mix (1 Bag Makes 5 Liters)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-012": {
+    nameZh: "100%有机抹茶粉 100g",
+    nameEn: "100% Organic Matcha Powder 100g",
+    descriptionZh: "ผงชาเขียวมัทฉะ 100% สูต",
+    descriptionEn: ""
+  },
+  "LS-013": {
+    nameZh: "Jooze 蝴蝶豆蜂蜜柠檬风味水果茶粉 500g",
+    nameEn: "Jooze Butterfly Pea Honey Lemon Fruit Drink Powder 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-014": {
+    nameZh: "冻干草莓粉 纯天然蔬果粉",
+    nameEn: "Freeze Dried Strawberry Powder Natural Fruits & Vegetable Powder",
+    descriptionZh: "Strawberry powder",
+    descriptionEn: ""
+  },
+  "LS-015": {
+    nameZh: "果味巧克力饮品粉 1kg",
+    nameEn: "Fruit & Chocolate Drink Flavour Powder 1kg",
+    descriptionZh: "serbuk pelbagai perisa berat 1kg",
+    descriptionEn: ""
+  },
+  "LS-016": {
+    nameZh: "",
+    nameEn: "Honeydew 2 in 1 Ice Blended Powder 900g",
+    descriptionZh: "Kami adalah syarikat PEMBEKAL Bahan Mi",
+    descriptionEn: ""
+  },
+  "LS-017": {
+    nameZh: "",
+    nameEn: "Bột Củ Sen Mix Hạt Dinh Dưỡng Giảm Cân Dưỡng Nhan Hộp 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-018": {
+    nameZh: "",
+    nameEn: "Anlene Total 10 800G",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-019": {
+    nameZh: "余仁生乳清蛋白粉 500gm",
+    nameEn: "Eu Yan Sang Whey Protein Powder, 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-020": {
+    nameZh: "ONCE Renal 肾病配方奶粉 奶味 400g×6罐",
+    nameEn: "ONCE Renal Milk Flavor 400g × 6 Cans",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-021": {
+    nameZh: "燕窝银耳豆浆粉 无糖 即食早餐",
+    nameEn: "Bird's Nest White Fungus Soy Milk No Sugar Halal Instant Breakfast",
+    descriptionZh: "🌿 Bird’s",
+    descriptionEn: ""
+  },
+  "LS-022": {
+    nameZh: "Kino Secrets WellSure 850g x2（植物蛋白 完整营养 | 成人）[免费 WellSure 10s]",
+    nameEn: "Kino Secrets WellSure 850g x 2, Plant Protein Complete Nutrition for Adults",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "LS-023": {
+    nameZh: "Heal 植物基和乳制品蛋白奶昔粉，每份含20克蛋白质 - 提供多种口味",
+    nameEn: "Heal Plant-Based and Dairy Protein Shake Powder, 20g Protein Per Serving, Multiple Flavors",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+
+  // meal (25 SKU)
+  "ML-001": {
+    nameZh: "Almond Protein New Life Plus 植物蛋白粉 香蕉味",
+    nameEn: "Almond Protein New Life Plus Plant-Based Protein Powder Banana Flavor",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-002": {
+    nameZh: "Merry Glow 蛋白质粉（无大豆）蛋白质+胶原蛋白+维生素+矿物质",
+    nameEn: "Merry Glow Protein (Soy-Free) Protein + Collagen + Vitamins + Minerals",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-003": {
+    nameZh: "Albumen 蛋白粉 400g",
+    nameEn: "Albumen Egg White Protein Powder 400g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-004": {
+    nameZh: "Peptisol 高蛋白低残留营养粉 香草味（2盒装）",
+    nameEn: "Peptisol High Protein Low Residue Nutrition Vanilla (Bundle 2 Boxes)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-005": {
+    nameZh: "",
+    nameEn: "Anlene Gold 5X High Calcium High Protein Plain Milk Powder 950g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-006": {
+    nameZh: "MS 大豆分离蛋白粉",
+    nameEn: "MS Soy Protein Isolate",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-007": {
+    nameZh: "Albumin 蛋白粉 400g/30粒/60粒",
+    nameEn: "Albumin Egg White Protein Powder 400g / 30 or 60 Capsules",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-008": {
+    nameZh: "",
+    nameEn: "Infinity Whey Protein 1000 gram 2.2 lbs Protein Powder - Minuman Protein Diet Fitness",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-009": {
+    nameZh: "Mahkota Fit 高蛋白豆浆粉 500g",
+    nameEn: "Mahkota Fit Premium Soy Milk Powder High Protein 500g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-010": {
+    nameZh: "",
+    nameEn: "PURO WPC WPRO Whey Protein Concentrate 1.2kg",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-011": {
+    nameZh: "Fresubin 乳清分离蛋白粉 300g",
+    nameEn: "Fresubin Whey Protein Isolate Powder 300g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-012": {
+    nameZh: "",
+    nameEn: "Protein Powder Concentrated Whey Protein Powder 1,000g Slimming Skin-Increasing Powder Nutritional Supplements Immunity Children Adult",
+    descriptionZh: "Brand: Qi Leshi",
+    descriptionEn: ""
+  },
+  "ML-013": {
+    nameZh: "禾膳-高蛋白乳清营养配方粉补充中老年易吸收全面30g*14袋/420gWo Diet-High Protein Whey Nutritional Formula Powder Supplement20260125",
+    nameEn: "He Shan High Protein Whey Nutrition Formula Powder for Elderly, 30g x 14 Sachets, 420g",
+    descriptionZh: "Production Date: 04/01/2024 To 04/01/2024",
+    descriptionEn: ""
+  },
+  "ML-014": {
+    nameZh: "",
+    nameEn: "Valens Myotein Powder 215g (Expiry Date: May 2027)",
+    descriptionZh: "5g protein per serving",
+    descriptionEn: ""
+  },
+  "ML-015": {
+    nameZh: "",
+    nameEn: "Herbalife formula 3 protein powder(sg stock)",
+    descriptionZh: "Authentic Singapore stock",
+    descriptionEn: ""
+  },
+  "ML-016": {
+    nameZh: "KOKORI 肾病专用营养 蛋白粉 香草咖啡味",
+    nameEn: "KOKORI Nephra Whey Protein Vanilla Coffee",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-017": {
+    nameZh: "Kinohimitsu 井水 植物蛋白粉 30.3g",
+    nameEn: "Kinohimitsu Plant Protein Complete Nutrition 30.3g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-018": {
+    nameZh: "Soluxe 蛋白奶昔粉（豌豆/大豆）25g 单条装",
+    nameEn: "Soluxe Protein Shake Powder (Pea/Soy) 25g Single Sachet",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-019": {
+    nameZh: "",
+    nameEn: "Almond Protein Powder Vismores Almond Protein, Dutch Cocoa Chocolate Flavor, 910 G. Almond Protein, Plant-Based Protein.",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-020": {
+    nameZh: "",
+    nameEn: "mall inline badgeVEGAN PROTEIN 420g - Bột Đậu Hạt & Rau Củ",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-021": {
+    nameZh: "Entrasol 高蛋白冲饮粉 香草味 800g",
+    nameEn: "Entrasol High Protein Instant Drink Powder Vanilla 800g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-022": {
+    nameZh: "GEN-DM MF 管饲营养粉 香草味 2.5kg（4袋装）",
+    nameEn: "GEN-DM MF Vanilla Enteral Nutrition Powder 2.5kg (4 Bags)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-023": {
+    nameZh: "Anthony 有机大麻籽蛋白粉,1 磅,冷压,不含麸质,非转基因,细粉",
+    nameEn: "Anthony Organic Hemp Seed Protein Powder, 1 lb, Cold Pressed, Gluten Free, Non-GMO, Fine Powder",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-024": {
+    nameZh: "NEO-MUNE 高蛋白高能量营养粉 哈密瓜味 400g",
+    nameEn: "NEO-MUNE High Protein High Energy Powder Melon Flavor 400g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "ML-025": {
+    nameZh: "Nutricost 有机豌豆蛋白分离粉(5 磅)- 无味,美国农业部有机认证,植物蛋白质,素食友好,不含麸质,非转基因",
+    nameEn: "Nutricost Organic Pea Protein Isolate Powder, 5 lbs, Unflavored, USDA Organic, Vegan",
+    descriptionZh: "USDA organic pea protein isolate powder, vegan friendly, gluten-free, non-GMO",
+    descriptionEn: ""
+  },
+
+  // tea (24 SKU)
+  "TE-001": {
+    nameZh: "",
+    nameEn: "ZUS Ngupi® 3in1 Instant Coffee - White Coffee - 13 Sticks",
+    descriptionZh: "Find yourself t",
+    descriptionEn: ""
+  },
+  "TE-002": {
+    nameZh: "SweetLAB Nogula Caffe 100%阿拉比卡3合1速溶咖啡 23g x 20条装 [低糖/适合糖尿病患者]",
+    nameEn: "SweetLAB Nogula Caffe 100% Arabica 3in1 Instant Coffee 23g x 20 Sachets [Low Sugar / Diabetic Friendly]",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-003": {
+    nameZh: "",
+    nameEn: "Coffee Tree 2 in 1 No Sugar Added Gold Blend Penang White Coffee (30g x 15's) GB03",
+    descriptionZh: "***MAX 20 PACKETS PER ORDER TO FIT INTO ONE BOX AS ONE CONSIGNMENT NOT",
+    descriptionEn: ""
+  },
+  "TE-004": {
+    nameZh: "",
+    nameEn: "Café 21 2 In 1 Instant Coffeemix 12g x 22s",
+    descriptionZh: "Product Information:",
+    descriptionEn: ""
+  },
+  "TE-005": {
+    nameZh: "",
+    nameEn: "L'OR ESSENSO Classique with Microground 2in1 Instant Coffee 16g x 20s",
+    descriptionZh: "L'OR ESSENSO Classique with Microground 2in1",
+    descriptionEn: ""
+  },
+  "TE-006": {
+    nameZh: "INDO 红茶（浓煎配方）附冲泡方法",
+    nameEn: "INDO Red Tea (Dark Roast Formula) with Brewing Instructions",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-007": {
+    nameZh: "珍珠奶茶粉 450g",
+    nameEn: "Bubble Milk Tea Powder 450g",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-008": {
+    nameZh: "Ahmad Tea 蜜桃百香果茶 20袋装 HALAL认证",
+    nameEn: "Ahmad Tea Peach & Passion Fruit 20 Teabags Halal Certified",
+    descriptionZh: "A blend of mellow sweetness from perfectly ripened fuzzy peach",
+    descriptionEn: ""
+  },
+  "TE-009": {
+    nameZh: "Supercube 甜蜜桃乌龙茶 皮质醇排毒茶 无糖",
+    nameEn: "Supercube Sweet Peach Oolong Tea Cortisol Detox Tea No Sugar",
+    descriptionZh: "Description:",
+    descriptionEn: ""
+  },
+  "TE-010": {
+    nameZh: "Ahmad Tea 草莓红茶 20袋装 HALAL认证",
+    nameEn: "Ahmad Tea Strawberry Sensation 20 Teabags Halal Certified",
+    descriptionZh: "It’s a warm June day and peak strawberry season, their fields filling the air w",
+    descriptionEn: ""
+  },
+  "TE-011": {
+    nameZh: "现成速溶面包粉，多种口味，如泰国茶、抹茶、可可、咖啡。速溶粉（有配方）即冲即饮，无需过滤咖啡渣，简单易冲",
+    nameEn: "Instant Bread Mix, Thai Tea Matcha Cocoa Coffee Flavors, Instant Powder",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-012": {
+    nameZh: "花茶 草本养生茶 花茶包 美白花茶（可选款）",
+    nameEn: "Flower Tea Herbal Tea Pack Whitening Flower Tea (Choose One)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-013": {
+    nameZh: "茉莉花茶粉 浓郁型 100g - 茉莉花香 常温水即溶",
+    nameEn: "Jasmine Tea Powder Rich 100g - Fragrant Jasmine, Dissolves in Room Temperature Water",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-014": {
+    nameZh: "LF95. 100% Natural Tea 1bag（4g*30pcs）【30小袋】菊花决明子茶 美颜养生花茶 桂圆枸杞红枣姜茶红豆薏米玉米须 茶包 失眠熬夜Flower Tea",
+    nameEn: "LF95 100% Natural Tea 4g x 30 Sachets, Chrysanthemum Cassia Seed Tea",
+    descriptionZh: "【READY STOCK】",
+    descriptionEn: ""
+  },
+  "TE-015": {
+    nameZh: "❤️BUY 100pcs FREE 10pcs❤️（糯香普洱熟茶） 浓香 糯米香普洱小沱茶 糯香茶叶迷你熟沱 糯米香普洱茶 / Chinese Tea ( Nuo Xiang Pu Er Shou Cha",
+    nameEn: "Sticky Rice Pu'er Ripe Tea, Glutinous Rice Mini Pu'er Tea",
+    descriptionZh: "🔥现货Ready Store ！24小时内发货除了星期六/日Shipped within 24 h",
+    descriptionEn: ""
+  },
+  "TE-016": {
+    nameZh: "BOH 金马仑高原红茶 餐饮装茶包 红色系列 100条装",
+    nameEn: "BOH Cameron Highlands Black Tea Catering Sachet (Red) 100s",
+    descriptionZh: "NEW PACKAGING/ PACKAGING BARU!!!!!",
+    descriptionEn: ""
+  },
+  "TE-017": {
+    nameZh: "BOH Cameronian Gold Blend 红茶茶包 60条装",
+    nameEn: "BOH Cameronian Gold Blend Teabag Sachet 60s",
+    descriptionZh: "Cameronian Gold Blend 60 teabags x 2g",
+    descriptionEn: ""
+  },
+  "TE-018": {
+    nameZh: "Chinese Tea Assorted Flavors 5-7g 茶叶小袋 5-7克 铁观音 炭培铁观音 高山绿茶 小种红茶 黑乌龙茶 龙井绿茶 普洱熟茶 碧螺春绿茶 茉莉花茶 大红袍",
+    nameEn: "Chinese Tea Assorted Flavors 5-7g, Tieguanyin Charcoal Roasted",
+    descriptionZh: "Chinese Tea Assorted Flavors 5-7g 茶叶小袋 5-7克 铁观音 炭培铁观音 高山绿茶 小种红茶 黑乌龙茶 龙井绿茶 普洱熟茶 碧螺春绿茶",
+    descriptionEn: ""
+  },
+  "TE-019": {
+    nameZh: "Teh Halia Gula Merah❤️黑糖红糖 Brown Sugar Cube 蜂蜜冰糖 Honey Rock Sugar 姜茶 Ginger Tea 柠檬片九吉公 Rose Tea",
+    nameEn: "Teh Halia Gula Merah Brown Sugar Cube, Honey Crystallized Ginger Teh Halia",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-020": {
+    nameZh: "姜黄生姜柠檬草草本茶 30袋装",
+    nameEn: "Turmeric Ginger & Lemongrass Herbal Tea 30 Tea Bags",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-021": {
+    nameZh: "印尼红茶 浓郁型 附冲泡配方 印尼进口",
+    nameEn: "Indonesian Black Tea Rich & Aromatic Easy Brew with Brewing Formula Imported from Indonesia",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-022": {
+    nameZh: "猫须草茶（肾石茶）30袋装",
+    nameEn: "Cat's Whiskers Leaf Tea (Kidney Stone Tea) 30 Tea Bags",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-023": {
+    nameZh: "",
+    nameEn: "Teh Kici Kurma Merah Murbei Hitam Kombinasi Sehat / Black Wolfberry Mulberry Red Date Goji Berry Tea",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "TE-024": {
+    nameZh: "",
+    nameEn: "Teh Buah Longan Goji Berry Kurma Merah Jaga Kesehatan Tubuh / Longan Red Date Goji Berry Goddess Tea",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+
+  // weight (12 SKU)
+  "WT-001": {
+    nameZh: "",
+    nameEn: "ORIGINAL💯 KUFFEE MINUMAN KURUS COKlAT|WHiTE COFFE by YUNIEY ILUNIEY",
+    descriptionZh: "READY STOCK",
+    descriptionEn: ""
+  },
+  "WT-002": {
+    nameZh: "EVERBIKINI 韩式美式减肥咖啡 3.3g×28条",
+    nameEn: "EVERBIKINI Korean Diet Americano Coffee 3.3g x 28 Sticks",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-003": {
+    nameZh: "",
+    nameEn: "Slimming Coffee ORIGINAL 2025 NEW AUTHENTICITY very effective Instant Coffee",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-004": {
+    nameZh: "",
+    nameEn: "I QURE COFFEE 18IN1 with Glutathione, Collagen and Chiaseed (10sachet)",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-005": {
+    nameZh: "",
+    nameEn: "FITGUM 20X Collagen Chia Coffee 11 in 1 Coffee Mix Slim Body Bright Skin Healthy Drink",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-006": {
+    nameZh: "",
+    nameEn: "(BUY 1 TAKE 1) BONASLIM 15-in-1 Coffee (Mocha Flavor) – 2 Boxes",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-007": {
+    nameZh: "COH 壹间草药 瘦身排毒茶 荷叶山楂菊花茶",
+    nameEn: "COH Slimming Detox Tea Lotus Leaf Hawthorn Chrysanthemum",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-008": {
+    nameZh: "",
+    nameEn: "peluntur lemak / Aur mega herbal 40gr/ herbal alami / teh herbal jati cina",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-009": {
+    nameZh: "NATURLIFE JSR 绿茶减肥茶",
+    nameEn: "NATURLIFE JSR Green Tea Slimming Tea",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-010": {
+    nameZh: "Slimming Tea 草本瘦身茶",
+    nameEn: "Slimming Tea Herbal Weight Loss Tea",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-011": {
+    nameZh: "Jati Cina 菊苣草本减肥茶",
+    nameEn: "Jati Cina Herbal Slimming Tea",
+    descriptionZh: "",
+    descriptionEn: ""
+  },
+  "WT-012": {
+    nameZh: "",
+    nameEn: "TEH JSR NATURLIFE DIET GLOWING - TEH RIMPANG JSR / RESEP SEHAT JSR / RAMUAN JSR / REMPAH JSR / PENURUN BERAT BADAN /",
+    descriptionZh: "Herbal slimming tea",
+    descriptionEn: ""
+  },
+
+};
+
+window.PRODUCT_DATA_TRANSLATIONS = PRODUCT_DATA_TRANSLATIONS;
+</script>
+<script defer src="/assets/js/search-index.js?v=1780571099190"></script>
+<script>
+(function() {
+  var KEY = 'pdt_v2';
+  var VERSION_KEY = 'pdt_version';
+  // Step 1: initial data from static file (always fresh after publish)
+  var initial = window.PRODUCT_DATA_TABLE || [];
+  var version = window.PRODUCT_DATA_VERSION || '0';
+  // Step 2: check localStorage cache — invalidate if version changed
+  var cached = null;
+  var storedVersion = localStorage.getItem(VERSION_KEY) || '';
+  if (storedVersion === version) {
+    try { cached = JSON.parse(localStorage.getItem(KEY)); } catch(e) {}
+  } else {
+    // Version mismatch — clear stale cache
+    try { localStorage.removeItem(KEY); localStorage.removeItem(KEY + '_etag'); } catch(e) {}
+  }
+  // Use cached > initial (only if version matches)
+  window.PRODUCT_DATA_TABLE = cached || initial;
+  // Step 3: fetch latest from API (skip cache to always get fresh data after publish)
+  // i18n_comment_no_backend_api_use_static: No backend API — use static data only
+  window.dispatchEvent(new Event('product-data-ready'));
+})();
+</script>
+
+<!-- Scripts -->
+<script>
+  (function() {
+    // i18n_comment_wait_dom_ready: Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSPA);
+    } else {
+      initSPA();
+    }
+
+    function initSPA() {
+      // Navigator and Footer are auto-mounted by their own boot() code.
+      // Do NOT call mount() again — the placeholder has already been replaced
+      // and a second mount would find no placeholder to render.
+
+      // Root path redirect: / → /home/
+      var path = window.location.pathname;
+      if (path === '/' || path === '/index.html') {
+        history.replaceState(null, '', '/home/');
+      }
+
+      // GitHub Pages 404 SPA redirect:
+      // 404.html redirects unknown paths to /?redirect=/original/path/
+      // We restore the path before the SPA router initializes so it
+      // navigates to the correct route instead of home.
+      var redirectParam = new URLSearchParams(window.location.search).get('redirect');
+      if (redirectParam) {
+        // Clean the URL back to the original path before router init
+        history.replaceState(null, '', redirectParam);
+      }
+
+
+    }
+  })();
+</script>
+    
+    
+  
+
+<script>
+(function() {
+  window.addEventListener('load', function diag() {
+    setTimeout(function() {
+      var d = [];
+      d.push('--- NAV/TRANS DIAG ---');
+      d.push('SITE_CONFIG=' + !!window.SITE_CONFIG);
+      d.push('LANG_REGISTRY=' + !!window.LANG_REGISTRY + ' langs=' + (window.LANG_REGISTRY ? window.LANG_REGISTRY.LANGUAGES.length : '-'));
+      d.push('TM=' + !!window.translationManager + ' init=' + (window.translationManager ? window.translationManager.isInitialized : '-'));
+      d.push('TM.lang=' + (window.translationManager ? window.translationManager.currentLanguage : '-'));
+      d.push('TM.cache.ui-en=' + (window.translationManager ? !!window.translationManager.translationsCache.get('ui-en') : '-'));
+      var header = document.querySelector('header');
+      d.push('header=' + !!header);
+      if (header) {
+        var items = header.querySelectorAll('[data-i18n]');
+        d.push('nav.data-i18n.count=' + items.length);
+        for (var i = 0; i < Math.min(items.length, 8); i++) {
+          d.push('  [' + i + '] ' + items[i].getAttribute('data-i18n') + ' = "' + items[i].textContent.replace(/\s+/g,' ').trim() + '"');
+        }
+      }
+      var footer = document.querySelector('footer');
+      d.push('footer=' + !!footer);
+      var spa = document.getElementById('spa-content');
+      if (spa) d.push('spa.content.len=' + spa.innerHTML.length + ' hasMain=' + (!!spa.querySelector('section')));
+      console.log(d.join('\n'));
+    }, 5000);
+  });
+})();
+</script>
+
+<!-- ssg-nav-footer-injected -->
+  <script defer src="/assets/js/theme-init.js"></script>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<!doctype html>
+<html class="light" lang="zh-CN">
+  <head>
+  <script src="/site.config.js"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=1780571099190"></script>
+    <!-- ═══ Responsive Redirect ═══ -->
+    <link rel="canonical" href="https://brew.yukoli.com/cases/" />
+  <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/cases/" />
+  <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/cases/" />
+  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/cases/" />
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/cases/index-mobile.html" />
+    <link rel="alternate" media="only screen and (min-width: 768px) and (max-width: 1279px)" href="/cases/index-tablet.html" />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/cases/index-pc.html" />
+    <script>
+      (function () {
+        if (window.__redirectChecked) return;
+        window.__redirectChecked = true;
+        var urlParams = new URLSearchParams(location.search);
+        var cleanUrl = urlParams.get("clean-url");
+        if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
+        if (window.__spaNavigating) return;
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
+          var deviceType = window.DeviceUtils.getDeviceType();
+          var targetFile = deviceType === window.DeviceUtils.DeviceType.MOBILE ? "index-mobile.html" : deviceType === window.DeviceUtils.DeviceType.TABLET ? "index-tablet.html" : "index-pc.html";
+          location.href = targetFile;
+        }
+      })();
+    </script>
+    <!-- ═══ End Responsive Redirect ═══ -->
+
+    <meta charset="utf-8" />
+ <meta name="description" content="YuKoLi 健康食品 OEM/ODM案例 — 覆盖全球品牌的Case Studies，包含品牌方、连锁品牌、跨境电商、大健康品牌等业务场景。" />
+ <meta name="keywords" content="健康食品OEM案例,代餐案例,胶原蛋白案例,YuKoLi案例,OEM制造" />
+    <meta property="og:type" content="website" />
+ <meta property="og:title" content="{brand} | OEM/ODM Case Studies" />
+ <meta property="og:description" content="覆盖东南亚的健康食品 OEM/ODMCase Studies，查看真实投资回报数据。" />
+    <meta property="og:url" content="https://brew.yukoli.com/cases/" />
+    <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title data-i18n="cases_page_title">{brand} | products manufacturing Automation <span data-i18n="cases_hero_badge">Case Studies</span></title>
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <link rel="preload" href="/assets/css/styles.css?v=1780571099190" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=1780571099190" as="style" />
+    <link rel="preload" href="/assets/fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=1780571099190" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css?v=1780571099190" />
+    <script>
+      (function () {
+        if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
+      })();
+    </script>
+    <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
+  </head>
+  <body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip" data-case-variant="mobile">
+    <!-- Top Navigation Bar -->
+    <navigator data-component="navigator" data-swup-persist="nav" data-variant="mobile" data-active="cases" data-cta-text-key="nav_get_quote" data-cta-href="/contact/"></navigator>
+
+    <main id="spa-content">
+      <!-- Hero Section -->
+      <section class="fullwidth-bg hero-overlap relative py-8 overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-orange-100/30 dark:from-primary/10 dark:to-orange-900/20">
+        <div class="section-content">
+          <div class="max-w-lg mx-auto text-center">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider w-fit mx-auto mb-3">
+          <span class="material-symbols-outlined text-sm">verified</span>
+          <span data-i18n="cases_hero_badge"><span data-i18n="cases_hero_badge">Case Studies</span></span>
+          </div>
+          <h1 class="text-2xl font-black leading-tight tracking-tight mb-3">
+          <span data-i18n="cases_hero_title_1">Real Results from </span><span class="text-primary" data-i18n="cases_hero_title_2">Real Productions</span>
+          </h1>
+          <p class="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-5" data-i18n="cases_hero_subtitle">
+          OEM/ODM case studies covering health food brands in 30+ countries
+          </p>
+          </div>
+        </div>
+      </section>
+
+            <!-- Case Grid -->
+      <section class="fullwidth-bg py-6">
+
+        <div class="section-content">
+          <h2 class="text-lg font-bold mb-4" data-i18n="cases_grid_title">All <span data-i18n="cases_hero_badge">Case Studies</span></h2>
+          <div id="case-grid" class="grid grid-cols-1 gap-4">
+            <!-- Cards rendered by case-grid.js -->
+          </div>
+      
+
+        </div></section>
+
+      <!-- Footer CTA -->
+      <section class="fullwidth-bg py-10 bg-primary">
+        <div class="section-content">
+          <div class="max-w-lg mx-auto text-center">
+            <h2 class="text-xl font-black text-white mb-3" data-i18n="cases_footer_cta_title">
+              Still not sure?
+            </h2>
+            <p class="text-base text-white/80 mb-5" data-i18n="cases_footer_cta_desc">
+              <span data-i18n="cases_footer_cta_desc">Tell us your requirements and get a free consultation within 24 hours.</span>
+            </p>
+            <a href="/contact/" class="inline-flex items-center gap-2 bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all">
+              <span class="material-symbols-outlined">send</span>
+              <span data-i18n="cases_footer_cta_button">Get a Free Quote</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Tailwind safelist for dynamic case-grid classes -->
+    <div class="hidden bg-blue-100 bg-blue-500 bg-blue-600 bg-green-100 bg-green-500 bg-green-600 bg-orange-100 bg-orange-500 bg-orange-600 bg-purple-100 bg-purple-500 bg-purple-600 bg-primary-100 bg-primary-500 bg-primary-600 text-blue-600 text-green-600 text-orange-600 text-purple-600 text-primary-600 border-blue-500 border-green-500 border-orange-500 border-purple-500 border-primary-500 dark:bg-blue-900 dark:bg-green-900 dark:bg-orange-900 dark:bg-purple-900 dark:bg-primary-900 dark:bg-blue-900/30 dark:bg-green-900/30 dark:bg-orange-900/30 dark:bg-purple-900/30 dark:bg-primary-900/30 border-blue-400 border-green-400 border-orange-400 border-purple-400 lg:flex-row lg:w-2/5 lg:h-auto lg:p-8 lg:text-2xl lg:text-3xl min-h-\[220px\] flex flex-col backdrop-blur-sm"></div>
+    <!-- Footer -->
+    <footer data-component="footer" data-swup-persist="footer" data-variant="mobile" data-cta="true"></footer>
+
+    <!-- Scripts -->
+    <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
+<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=1780571099190"></script>
+<script defer src="/assets/js/page-init.js?v=1780571099190"></script>
+<script defer src="/assets/js/case-grid.js?v=1780571099190"></script>
+    <script>
+      // Both SSG load and SPA navigation
+      (function() {
+        if (window.CaseGrid) { CaseGrid.init('mobile'); return; }
+        var tries = 0;
+        var check = setInterval(function() {
+          tries++;
+          if (window.CaseGrid) { clearInterval(check); CaseGrid.init('mobile'); }
+          else if (tries > 30) clearInterval(check);
+        }, 100);
+      })();
+    </script>
+    <script>
+      // SPA reload script
+        if (window.CaseGrid) CaseGrid.init('mobile');
+      });
+    </script>
+<!-- ssg-nav-footer-injected -->
+  <script defer src="/assets/js/theme-init.js"></script>
+  <script defer src="/assets/js/i18n-bundle.js"></script>
+  <script defer src="/assets/js/dropdown-bundle.js"></script>
+  <script defer src="/assets/js/nav-bundle.js"></script>
+  <script defer src="/assets/js/ui-bundle.js"></script>
+  </body>
+</html>

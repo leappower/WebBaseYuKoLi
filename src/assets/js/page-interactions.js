@@ -13,7 +13,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
   var _brand = (window.SITE_CONFIG || window._cfg || {}).brand || {};
 
   var _spaRegs = {};
@@ -68,27 +68,15 @@
   function bindQuoteButtons() {
     bindByText("button", "get a quote", function (e) {
       e.preventDefault();
-      if (window.SpaRouter) {
-        window.SpaRouter.navigate("/contact/");
-      } else {
-        window.location.href = "/contact";
-      }
+      window.location.href = "/contact";
     });
     bindByText("button", "request a quote", function (e) {
       e.preventDefault();
-      if (window.SpaRouter) {
-        window.SpaRouter.navigate("/contact/");
-      } else {
-        window.location.href = "/contact";
-      }
+      window.location.href = "/contact";
     });
     bindByText("button", "get quote", function (e) {
       e.preventDefault();
-      if (window.SpaRouter) {
-        window.SpaRouter.navigate("/contact/");
-      } else {
-        window.location.href = "/contact";
-      }
+      window.location.href = "/contact";
     });
   }
 
@@ -101,7 +89,7 @@
     }
     var phone = window.Contacts && window.Contacts.whatsapp ? window.Contacts.whatsapp : "";
     var prefix = source ? " [" + source + "]" : "";
-    var text = encodeURIComponent((msg || ("Hi " + ((_brand || {}).name || "Brand"))) + prefix);
+    var text = encodeURIComponent((msg || "Hi " + ((_brand || {}).name || "Brand")) + prefix);
     var url = phone ? "https://wa.me/" + phone.replace(/\D/g, "") + "?text=" + text : "https://wa.me/?text=" + text;
     window.open(url, "_blank");
   }
@@ -140,11 +128,7 @@
       } else if (iconName === "public") {
         link.addEventListener("click", function (e) {
           e.preventDefault();
-          if (window.SpaRouter) {
-            window.SpaRouter.navigate("/home/");
-          } else {
-            window.location.href = "/";
-          }
+          window.location.href = "/";
         });
       }
     });
@@ -282,7 +266,9 @@
   function toggleDarkMode() {
     var html = document.documentElement;
     var isDark = html.classList.toggle("dark");
-    try { localStorage.setItem("darkMode", isDark ? "true" : "false"); } catch(e) {}
+    try {
+      localStorage.setItem("darkMode", isDark ? "true" : "false");
+    } catch (e) {}
 
     document.querySelectorAll("[data-dark-toggle]").forEach(function (el) {
       el.textContent = isDark ? "light_mode" : "dark_mode";

@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /products/detail/
+Disallow: /thank-you/
+
+Sitemap: https://brew.yukoli.com/sitemap.xml

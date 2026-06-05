@@ -785,15 +785,7 @@
           }
           closeMenu();
           if (targetItem && targetItem.href) {
-            if (window.SpaRouter) {
-              try {
-                window.SpaRouter.navigate(targetItem.href);
-              } catch (e) {
-                location.href = targetItem.href;
-              }
-            } else {
-              location.href = targetItem.href;
-            }
+            location.href = targetItem.href;
           }
         }
       });

@@ -538,11 +538,7 @@
     if (addMoreLink) {
       addMoreLink.addEventListener("click", function (e) {
         e.preventDefault();
-        if (window.SpaRouter && window.SpaRouter.navigate) {
-          window.SpaRouter.navigate("/products/");
-        } else {
-          window.location.href = "/products/";
-        }
+        window.location.href = "/products/";
       });
     }
 

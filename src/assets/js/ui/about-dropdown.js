@@ -130,7 +130,7 @@
           var anchorId = hashMatch[2];
           if (!targetPath.endsWith("/")) targetPath += "/";
 
-          var currentPath = window.SpaRouter ? window.SpaRouter.getCurrentPath() : window.location.pathname;
+          var currentPath = window.location.pathname;
           if (!currentPath.endsWith("/")) currentPath += "/";
 
           if (targetPath === currentPath) {
@@ -138,18 +138,13 @@
               var el = document.getElementById(anchorId);
               if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
             }, 100);
-          } else if (window.SpaRouter) {
-            window.SpaRouter._pendingScroll = anchorId;
-            window.SpaRouter.navigate(targetPath);
           } else {
+            // Store anchor for scroll after navigation
+            window.__spaScrollAnchor = anchorId;
             window.location.href = href;
           }
         } else {
-          if (window.SpaRouter) {
-            window.SpaRouter.navigate(href);
-          } else {
-            window.location.href = href;
-          }
+          window.location.href = href;
         }
       });
     });

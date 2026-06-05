@@ -16,13 +16,23 @@
  */
 (function (global) {
   "use strict";
-  function _t(k){if(typeof window!=='undefined'&&window.translationManager&&typeof window.translationManager.translate==='function'){var r=window.translationManager.translate(k);return r&&r!==k?r:k}return k}
+  function _t(k) {
+    if (
+      typeof window !== "undefined" &&
+      window.translationManager &&
+      typeof window.translationManager.translate === "function"
+    ) {
+      var r = window.translationManager.translate(k);
+      return r && r !== k ? r : k;
+    }
+    return k;
+  }
   /* ═══════════════════════════════════════════════════════════════════
      SECTION 1: CONSTANTS & CONFIGURATION
      ═══════════════════════════════════════════════════════════════════ */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
-  var WHATSAPP_NUMBER = ((_cfg.contacts || {}).whatsapp)
-    || (window.Contacts && window.Contacts.whatsapp) || "8618565718814";
+  var WHATSAPP_NUMBER =
+    (_cfg.contacts || {}).whatsapp || (window.Contacts && window.Contacts.whatsapp) || "8618565718814";
   var _routes = (_cfg.routes || {}).pages || {};
   var PAGES = Object.freeze({
     home: _routes.home || "/home/",
@@ -40,11 +50,7 @@
      SECTION 3: NAVIGATION FUNCTIONS
      ═══════════════════════════════════════════════════════════════════ */
   function navigate(url) {
-    if (window.SpaRouter && typeof window.SpaRouter.navigate === "function") {
-      window.SpaRouter.navigate(url);
-    } else {
-      window.location.href = url;
-    }
+    window.location.href = url;
   }
   function whatsappHref(msg) {
     var base = "https://wa.me/" + WHATSAPP_NUMBER;
@@ -378,6 +384,4 @@
     safeBack: safeBack,
     PAGES: PAGES,
   };
-
-
 })(window);

@@ -649,11 +649,7 @@
             if (isOpen && highlightedIndex >= 0 && resultItems[highlightedIndex]) {
               e.preventDefault();
               hidePanel();
-              if (window.SpaRouter && window.SpaRouter.navigate) {
-                window.SpaRouter.navigate("/products/");
-              } else {
-                window.location.href = "/products/";
-              }
+              window.location.href = "/products/";
             }
             break;
 

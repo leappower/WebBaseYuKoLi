@@ -647,11 +647,7 @@
             if (isOpen && highlightedIndex >= 0 && resultItems[highlightedIndex]) {
               e.preventDefault();
               hidePanel();
-              if (window.SpaRouter && window.SpaRouter.navigate) {
-                window.SpaRouter.navigate("/products/");
-              } else {
-                window.location.href = "/products/";
-              }
+              window.location.href = "/products/";
             }
             break;
 
@@ -2742,11 +2738,7 @@
       }
       var path = window.location.pathname;
       if (referrer && path.indexOf("/products/") === 0 && path !== referrer) {
-        if (window.SpaRouter && typeof window.SpaRouter.navigate === "function") {
-          window.SpaRouter.navigate(referrer);
-        } else {
-          window.location.href = referrer;
-        }
+        window.location.href = referrer;
       } else if (_currentPage && _currentPage.segments && _currentPage.segments.length >= 2) {
         var parent = _currentPage.segments[_currentPage.segments.length - 2];
         if (parent && parent.href) {

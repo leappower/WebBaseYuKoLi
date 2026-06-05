@@ -1,0 +1,213 @@
+{
+  "hero": {
+    "title_cn": "赋能全球品牌，定制健康未来",
+    "title_en": "Empowering Global Brands, Customizing Health Futures",
+    "subtitle_cn": "20 年专注健康食品 OEM/ODM，4 座自有工厂，出口 30+ 国家",
+    "subtitle_en": "20 Years Focused on Health Food OEM/ODM, 4 Own Factories, Exporting to 30+ Countries",
+    "cta_primary": "获取报价",
+    "cta_secondary": "查看解决方案"
+  },
+  "trust_bar": [
+    {
+      "icon": "icon-year",
+      "number": "20+",
+      "label_cn": "年行业经验",
+      "label_en": "Years Experience"
+    },
+    {
+      "icon": "icon-factory",
+      "number": "4",
+      "label_cn": "座自有工厂",
+      "label_en": "Own Factories"
+    },
+    {
+      "icon": "icon-line",
+      "number": "7",
+      "label_cn": "大产品线",
+      "label_en": "Product Lines"
+    },
+    {
+      "icon": "icon-globe",
+      "number": "30+",
+      "label_cn": "出口国家",
+      "label_en": "Export Countries"
+    },
+    {
+      "icon": "icon-box",
+      "number": "500",
+      "label_cn": "最低起订量",
+      "label_en": "Low MOQ"
+    },
+    {
+      "icon": "icon-sample",
+      "number": "免费",
+      "label_cn": "打样服务",
+      "label_en": "Free Sampling"
+    },
+    {
+      "icon": "icon-shield",
+      "number": "100%",
+      "label_cn": "全体系认证",
+      "label_en": "Certified Quality"
+    }
+  ],
+  "why": {
+    "title_cn": "为何选择优科力",
+    "title_en": "Why Choose YuKoLi",
+    "items": [
+      {
+        "title_cn": "卓越研发实力",
+        "title_en": "Superior R&D",
+        "desc_cn": "专业配方团队，快速响应市场趋势，提供创新解决方案",
+        "desc_en": "Professional formula team, rapid response to market trends, providing innovative solutions",
+        "icon": "icon-research"
+      },
+      {
+        "title_cn": "严格品质管控",
+        "title_en": "Strict Quality Control",
+        "desc_cn": "从原料到成品全流程检测，确保每一批次安全卓越",
+        "desc_en": "Full-process testing from raw materials to finished products, ensuring safety and excellence in every batch",
+        "icon": "icon-quality"
+      },
+      {
+        "title_cn": "灵活定制服务",
+        "title_en": "Flexible Customization",
+        "desc_cn": "支持配方、口味、包装全方位定制，打造专属品牌产品",
+        "desc_en": "Support comprehensive customization of formula, taste, and packaging to create exclusive brand products",
+        "icon": "icon-custom"
+      },
+      {
+        "title_cn": "稳定供应链",
+        "title_en": "Stable Supply Chain",
+        "desc_cn": "4 座自有工厂产能保障，准时交付，无忧供货",
+        "desc_en": "4 own factories ensure capacity, on-time delivery, and worry-free supply",
+        "icon": "icon-supply"
+      },
+      {
+        "title_cn": "国际合规认证",
+        "title_en": "Global Compliance",
+        "desc_cn": "通过 HACCP/FDA/ISO 等多项认证，符合全球出口标准",
+        "desc_en": "Passed HACCP/FDA/ISO and other certifications, meeting global export standards",
+        "icon": "icon-cert"
+      },
+      {
+        "title_cn": "全程品牌支持",
+        "title_en": "End-to-End Support",
+        "desc_cn": "从概念到上市提供一站式服务，助力品牌快速成长",
+        "desc_en": "One-stop service from concept to launch, helping brands grow rapidly",
+        "icon": "icon-support"
+      }
+    ]
+  },
+  "products": {
+    "title_cn": "核心产品系列",
+    "title_en": "Core Product Lines",
+    "subtitle_cn": "七大品类覆盖，满足不同健康需求",
+    "subtitle_en": "Seven categories covering different health needs",
+    "lines": [
+      {
+        "slug": "coffee",
+        "name_cn": "咖啡冲调",
+        "name_en": "Coffee & Mixes",
+        "tagline_cn": "醇香体验， instant 享受",
+        "tagline_en": "Rich Aroma, Instant Enjoyment",
+        "desc_cn": "速溶咖啡、拿铁、卡布奇诺等多种风味定制",
+        "desc_en": "Customization of various flavors including instant coffee, latte, cappuccino"
+      },
+      {
+        "slug": "tea",
+        "name_cn": "茶饮奶茶",
+        "name_en": "Tea & Milk Tea",
+        "tagline_cn": "原叶萃取，新式茶饮",
+        "tagline_en": "Leaf Extract, Modern Tea Drinks",
+        "desc_cn": "果茶、奶茶、纯茶粉，还原门店级口感",
+        "desc_en": "Fruit tea, milk tea, pure tea powder，restoring store-level taste"
+      },
+      {
+        "slug": "meal",
+        "name_cn": "代餐蛋白",
+        "name_en": "Meal Replacement & Protein",
+        "tagline_cn": "营养均衡，便捷代餐",
+        "tagline_en": "Balanced Nutrition, Convenient Meal",
+        "desc_cn": "蛋白棒、代餐粉，科学配比饱腹感强",
+        "desc_en": "Protein bars, meal replacement powder, scientific ratio for strong satiety"
+      },
+      {
+        "slug": "beauty",
+        "name_cn": "美容胶原",
+        "name_en": "Beauty Collagen",
+        "tagline_cn": "口服美容，焕活肌肤",
+        "tagline_en": "Oral Beauty, Revitalize Skin",
+        "desc_cn": "胶原蛋白肽饮品，添加多种美容精华",
+        "desc_en": "Collagen peptide drinks with added beauty essences"
+      },
+      {
+        "slug": "weight",
+        "name_cn": "体重管理",
+        "name_en": "Weight Management",
+        "tagline_cn": "科学控重，健康塑形",
+        "tagline_en": "Scientific Control, Healthy Shaping",
+        "desc_cn": "燃脂饮、阻断剂，辅助健康体重管理方案",
+        "desc_en": "Fat burning drinks, blockers, assisting healthy weight management plans"
+      },
+      {
+        "slug": "gut",
+        "name_cn": "肠道健康",
+        "name_en": "Gut Health",
+        "tagline_cn": "益生菌群，平衡呵护",
+        "tagline_en": "Probiotics, Balanced Care",
+        "desc_cn": "益生菌粉、膳食纤维，维护肠道微生态",
+        "desc_en": "Probiotic powder, dietary fiber, maintaining gut microecology"
+      },
+      {
+        "slug": "lifestyle",
+        "name_cn": "功能冲饮",
+        "name_en": "Functional Drinks",
+        "tagline_cn": "特定功效，精准补充",
+        "tagline_en": "Specific Functions, Precise Supplement",
+        "desc_cn": "提神、助眠、免疫支持等多种功能定制",
+        "desc_en": "Customization of various functions such as energy, sleep aid, immune support"
+      }
+    ]
+  },
+  "mfg": {
+    "title_cn": "智造实力",
+    "title_en": "Manufacturing Excellence",
+    "subtitle_cn": "4 座自有工厂，打造行业标准生产线",
+    "subtitle_en": "4 Own Factories, Creating Industry Standard Production Lines",
+    "features": [
+      {
+        "title_cn": "自动化生产",
+        "title_en": "Automated Production",
+        "desc_cn": "引入国际先进自动化设备，确保效率与一致性",
+        "desc_en": "Introducing international advanced automated equipment to ensure efficiency and consistency"
+      },
+      {
+        "title_cn": "独立质检实验室",
+        "title_en": "Independent QC Lab",
+        "desc_cn": "配备专业检测仪器，实时监控关键质量指标",
+        "desc_en": "Equipped with professional testing instruments to monitor key quality indicators in real time"
+      },
+      {
+        "title_cn": "规模化产能",
+        "title_en": "Scalable Capacity",
+        "desc_cn": "月产能千万级，轻松应对大单与急单需求",
+        "desc_en": "Monthly capacity of millions, easily handling large and urgent orders"
+      },
+      {
+        "title_cn": "合规管理体系",
+        "title_en": "Compliance System",
+        "desc_cn": "严格执行 HACCP/ISO 标准，确保生产环境安全",
+        "desc_en": "Strictly implement HACCP/ISO standards to ensure safe production environment"
+      }
+    ]
+  },
+  "cta": {
+    "title_cn": "启动您的健康品牌项目",
+    "title_en": "Launch Your Health Brand Project",
+    "desc_cn": "立即联系优科力专家，获取免费样品与定制方案",
+    "desc_en": "Contact YuKoLi experts now to get free samples and customization plans",
+    "button_cn": "联系专家",
+    "button_en": "Contact Expert"
+  }
+}
