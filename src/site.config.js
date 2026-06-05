@@ -693,6 +693,14 @@
     },
   };
 
+  // JJC-020 T2.4: BASE_PATH 感知 — 对外提供路径解析方法
+  cfg.resolvePath = function (path) {
+    if (!path || path.indexOf("/") === 0) {
+      return ((typeof window !== "undefined" && window.BASE_PATH) || "") + (path || "");
+    }
+    return path;
+  };
+
   // 挂载到全局
   if (typeof window !== "undefined") {
     window.SITE_CONFIG = cfg;

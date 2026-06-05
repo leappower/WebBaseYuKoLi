@@ -821,6 +821,25 @@
   global.SITE_CONFIG = config;
   global._cfg = config; // @deprecated — use window.SITE_CONFIG instead
 
+  // JJC-020 T2.4: BASE_PATH 感知 — 对外提供路径解析能力
+  // 内部路径使用绝对路径（如 /assets/images/...），消费方需通过 BASE_PATH 拼接
+  // BASE_PATH 在 index.html 最顶部定义: <script>window.BASE_PATH = window.BASE_PATH || '';</script>
+  config.resolvePath = function (path) {
+    if (!path || path.indexOf("/") === 0) {
+      return (window.BASE_PATH || "") + (path || "");
+    }
+    return path;
+  };
+  config.resolveImage = function (name) {
+    var paths = {
+      logo: config.brand.logo,
+      logoDark: config.brand.logoDark,
+      logoFooter: config.brand.logoFooter,
+      logoHeader: config.brand.logoHeader,
+    };
+    return config.resolvePath(paths[name] || "/assets/images/" + name);
+  };
+
   // Node.js 环境导出
   if (typeof module !== "undefined" && module.exports) {
     module.exports = config;
