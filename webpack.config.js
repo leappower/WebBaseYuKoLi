@@ -50,9 +50,21 @@ module.exports = (env = {}, argv = {}) => {
   // This avoids the hash churn that causes sw.js / dist cache de-sync during development.
   const isDevBuild = Boolean(env.devBuild);
 
+  // ─── Dynamic publicPath ──────────────────────────────────────────
+  // Build-time: BASE_PATH env var (e.g. BASE_PATH=/subpath npm run build)
+  // Runtime:    window.BASE_PATH as fallback (site.config.js loaded before webpack output)
+  const publicPath = process.env.BASE_PATH || '/';
+
   return {
     mode: isProduction || isDevBuild ? 'production' : 'development',
-    entry: './src/index.js',
+    entry: {
+      'app': './src/index.js',
+      'lib/runtime-guard': './src/assets/js/lib/runtime-guard.js',
+      'lib/i18n-core': './src/assets/js/lib/i18n-core.js',
+      'lib/inline-translations': './src/assets/js/lib/inline-translations.js',
+      'lib/swup-polyfill': './src/assets/js/lib/swup-polyfill.js',
+      'swup-init': './src/assets/js/swup-init.js',
+    },
     optimization: (isProduction || isDevBuild) ? {
       // runtimeChunk: isolates webpack runtime so contenthash of main bundle stays stable.
       // Only needed for production (where contenthash matters); devBuild has no hash so skip it.
@@ -83,12 +95,11 @@ module.exports = (env = {}, argv = {}) => {
       // Production: contenthash for long-term cache busting.
       // devBuild:   fixed filenames (no hash) to prevent sw.js / dist cache de-sync during testing.
       // Development (serve): always fixed filenames (in-memory, no dist output).
-      filename: isProduction ? 'bundle.[contenthash:8].js' : 'bundle.js',
+      filename: isProduction ? '[name].[contenthash:8].js' : '[name].js',
       chunkFilename: isProduction ? '[name].[contenthash:8].js' : '[name].js',
       path: path.resolve(__dirname, 'dist'),
-      // Explicit root-relative publicPath — prevents 'auto' mis-detection
-      // when the page is served from a non-root path (Nginx, Docker, etc.)
-      publicPath: '/',
+      // Build-time BASE_PATH (env var) with runtime window.BASE_PATH fallback
+      publicPath: publicPath,
       clean: true,
     },
     module: {
@@ -121,6 +132,8 @@ module.exports = (env = {}, argv = {}) => {
       // Inject development mode variable for Service Worker
       new webpack.DefinePlugin({
         __DEVELOPMENT__: JSON.stringify(!isProduction && !isDevBuild),
+        // Expose BASE_PATH for runtime usage in webpack-processed files
+        'window.BASE_PATH': JSON.stringify(publicPath),
       }),
       ...buildHtmlPlugins(),
       ...((isProduction || isDevBuild)
@@ -136,6 +149,7 @@ module.exports = (env = {}, argv = {}) => {
                 from: 'src/assets/js',
                 to: 'assets/js',
                 filter: (resourcePath) => {
+                  const basename = path.basename(resourcePath);
                   // Skip webpack-only / dead-code modules (see src/index.js deprecation header)
                   const skip = [
                     'common.js', 'image-assets.js', 'init.js', 'main.js',
@@ -159,8 +173,19 @@ module.exports = (env = {}, argv = {}) => {
                     'navigator.js', 'slide-menu.js',
                     'search-engine.js', 'footer.js', 'floating-actions.js',
                     'currency.js', 'breadcrumb.js', 'trust-bar.js', 'bottom-tab.js',
+                    // ⚠️ Deprecated — JJC-020 T4.1: spa-router.js retired. SWUP (swup-init.js) is the sole router.
+                    'spa-router.js',
                   ];
-                  return !skip.includes(path.basename(resourcePath));
+                  // ─── JJC-020 T3.1: lib/ modules now processed by Webpack entries ───
+                  // Exclude lib/ directory files from copy — they are bundled via entry points.
+                  // These files are loaded as standalone Webpack chunks and written to assets/js/lib/.
+                  if (basename === 'runtime-guard.js' || basename === 'i18n-core.js' ||
+                      basename === 'inline-translations.js' || basename === 'swup-polyfill.js') {
+                    return false;
+                  }
+                  // swup-init.js is also a Webpack entry now
+                  if (basename === 'swup-init.js') return false;
+                  return !skip.includes(basename);
                 },
                 noErrorOnMissing: true,
               },

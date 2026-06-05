@@ -86,16 +86,32 @@ echo "📦 Syncing assets..."
 sync_assets() {
   local src_dir="$1"
   local ext_glob="$2"
+  # 第三个参数可选：排除文件名（空格分隔）
+  local exclude="${3:-}"
   local full_src="$SRC/assets/$src_dir"
   [ -d "$full_src" ] || return 0
   find "$full_src" -type f -name "$ext_glob" -print0 | while IFS= read -r -d '' f; do
+    local basename
+    basename=$(basename "$f")
+    # 如果在排除列表中，跳过
+    if [ -n "$exclude" ]; then
+      local skip=0
+      for excl in $exclude; do
+        if [ "$basename" = "$excl" ]; then
+          skip=1
+          break
+        fi
+      done
+      [ "$skip" -eq 1 ] && continue
+    fi
     rel="${f#$SRC/}"
     mkdir -p "$DIST/$(dirname "$rel")"
     cp "$f" "$DIST/$rel"
   done
 }
 
-sync_assets "js"       "*.js"
+# ⚠️ Deprecated — JJC-020 T4.1: spa-router.js retired. SWUP (swup-init.js) is the sole router.
+sync_assets "js"       "*.js" "spa-router.js"
 sync_assets "css"      "*.css"
 sync_assets "fonts"    "*"
 sync_assets "lang"     "*.json"

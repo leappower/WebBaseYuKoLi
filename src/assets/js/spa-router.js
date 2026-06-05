@@ -1,3 +1,7 @@
+// ⚠️ DEPRECATED — JJC-020 T4.1
+// This file is no longer used. SWUP (swup-init.js) is the sole router.
+// Kept for reference only. Not included in production build.
+
 /* ─── Suppress third-party DOM errors (frame_start.js etc.) ─────────────
  * Must run early — before any deferred scripts fire their callbacks.
  * Uses capture-phase listener to catch async errors that window.onerror misses. */
