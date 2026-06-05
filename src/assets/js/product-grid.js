@@ -55,8 +55,8 @@
     } else {
       if (items.length >= MAX_COMPARE) {
         showToast(
-          (typeof window.t === "function"
-            ? window.t("products_compare_max_reached")
+          (typeof window.__safe !== "undefined" && typeof window.__safe.t === "function"
+            ? window.__safe.t("products_compare_max_reached")
             : "最多只能选择 3 款产品进行对比"
           ).replace("{max}", MAX_COMPARE)
         );

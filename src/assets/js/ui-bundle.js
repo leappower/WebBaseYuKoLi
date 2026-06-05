@@ -2471,8 +2471,8 @@
   function tl(key, fallback) {
     if (typeof key === "object") key = key.en || key["zh-CN"] || "";
     if (typeof fallback === "object") fallback = key;
-    if (typeof window.t === "function") {
-      var result = window.t(key);
+    if (typeof window.__safe !== "undefined" && typeof window.__safe.t === "function") {
+      var result = window.__safe.t(key);
       if (result && result !== key) return result;
     }
     return fallback || key;

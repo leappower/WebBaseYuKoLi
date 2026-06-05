@@ -590,8 +590,8 @@
   // falls back to English map when TranslationManager not available.
   function tl(key) {
     // Try TranslationManager first (handles all UI json keys)
-    if (typeof window.t === "function") {
-      var translated = window.t(key);
+    if (typeof window.__safe !== "undefined" && typeof window.__safe.t === "function") {
+      var translated = window.__safe.t(key);
       if (translated && translated !== key) return translated;
     }
     // Fallback: hardcoded English map
@@ -632,8 +632,8 @@
     if (!cat) return "";
     // Priority: product._categoryName (enriched from parent) > i18n translate > product.categoryName > raw key
     if (product._categoryName) return product._categoryName;
-    if (typeof window.t === "function") {
-      var translated = window.t(cat);
+    if (typeof window.__safe !== "undefined" && typeof window.__safe.t === "function") {
+      var translated = window.__safe.t(cat);
       if (translated && translated !== cat) return translated;
     }
     return product.categoryName || cat;

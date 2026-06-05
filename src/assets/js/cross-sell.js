@@ -44,8 +44,8 @@ function _t(k) {
         return fallback || "";
       }
     }
-    if (typeof window.t === "function") {
-      var result = window.t(key);
+    if (typeof window.__safe !== "undefined" && typeof window.__safe.t === "function") {
+      var result = window.__safe.t(key);
       if (result && result !== key) return result;
     }
     return fallback || key;
