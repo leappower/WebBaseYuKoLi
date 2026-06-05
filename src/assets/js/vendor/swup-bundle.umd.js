@@ -2795,6 +2795,9 @@
     }
   }
 
+  // 暴露 initSwup 供 swup-init.js 调用 — JJC-020 T0.1
+  window.__initSwup = initSwup;
+
   // ═══════════════════════════════════════════════════════════════════
   // SpaRouter 向前兼容层 (供旧模块调用)
   // ═══════════════════════════════════════════════════════════════════
@@ -2868,13 +2871,13 @@
   };
 
   // ═══════════════════════════════════════════════════════════════════
-  // 启动
+  // 启动 (已迁移至 swup-init.js — JJC-020 T0.1)
   // ═══════════════════════════════════════════════════════════════════
 
-  // ② 初始化 SWUP
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initSwup);
-  } else {
-    initSwup();
-  }
+  // ② 初始化 SWUP (已迁移至 swup-init.js — JJC-020 T0.1)
+  // if (document.readyState === "loading") {
+  //   document.addEventListener("DOMContentLoaded", initSwup);
+  // } else {
+  //   initSwup();  (已迁移至 swup-init.js — JJC-020 T0.1)
+  // }
 })(window);
