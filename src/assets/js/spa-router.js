@@ -41,8 +41,8 @@
     // Route resolution: convention over configuration.
     // No hardcoded route table — the server's file-system resolver is
     // the single source of truth.  The SPA router mirrors the same logic:
-    //   /foo/          → fetch /pages/foo/index-pc.html   (server resolves to dist/pages/foo/index-pc.html)
-    //   /news/detail/  → fetch /pages/news/detail/index-pc.html  (server resolves to dist/pages/news/detail/index-pc.html)
+    //   /foo/          â fetch /foo/index-pc.html           (dist root, no /pages/ prefix)
+    //   /news/detail/  â fetch /news/detail-pc.html               (flat file, no /pages/ prefix)
     //   /products/<model>/  → dynamic PDP (see loadRoute)
     //
     // SPA shell paths that use index.html (not index-pc.html) are
@@ -51,36 +51,36 @@
     // NOTE: Only exceptions need listing here — everything else follows convention.
     routes: {
       // Aliases / redirects
-      "/": "/pages/home/index-pc.html",
-      "/home/": "/pages/home/index-pc.html",
+      "/": "/home/index-pc.html",
+      "/home/": "/home/index-pc.html",
       // Flat-file pattern (no directory, e.g. news/detail-pc.html)
-      "/news/detail/": "/pages/news/detail-pc.html",
+      "/news/detail/": "/news/detail-pc.html",
       // Solutions pages
-      "/solutions/oem/": "/pages/solutions/oem/index-pc.html",
-      "/solutions/odm/": "/pages/solutions/odm/index-pc.html",
-      "/solutions/obm/": "/pages/solutions/obm/index-pc.html",
+      "/solutions/oem/": "/solutions/oem/index-pc.html",
+      "/solutions/odm/": "/solutions/odm/index-pc.html",
+      "/solutions/obm/": "/solutions/obm/index-pc.html",
       // Resources pages
-      "/resources/catalog/": "/pages/resources/catalog/index-pc.html",
-      "/resources/videos/": "/pages/resources/videos/index-pc.html",
-      "/resources/whitepapers/": "/pages/resources/whitepapers/index-pc.html",
+      "/resources/catalog/": "/resources/catalog/index-pc.html",
+      "/resources/videos/": "/resources/videos/index-pc.html",
+      "/resources/whitepapers/": "/resources/whitepapers/index-pc.html",
       // Solutions pages (all 5)
-      "/solutions/rd/": "/pages/solutions/rd/index-pc.html",
-      "/solutions/packaging/": "/pages/solutions/packaging/index-pc.html",
+      "/solutions/rd/": "/solutions/rd/index-pc.html",
+      "/solutions/packaging/": "/solutions/packaging/index-pc.html",
       // Manufacturing & Compliance
-      "/manufacturing/": "/pages/manufacturing/index-pc.html",
-      "/compliance/": "/pages/compliance/index-pc.html",
+      "/manufacturing/": "/manufacturing/index-pc.html",
+      "/compliance/": "/compliance/index-pc.html",
       // About page
-      "/about/": "/pages/about/index-pc.html",
+      "/about/": "/about/index-pc.html",
       // Contact page
-      "/contact/": "/pages/contact/index-pc.html",
+      "/contact/": "/contact/index-pc.html",
       // Privacy
-      "/privacy/": "/pages/privacy/index-pc.html",
+      "/privacy/": "/privacy/index-pc.html",
       // Terms
-      "/terms/": "/pages/terms/index-pc.html",
+      "/terms/": "/terms/index-pc.html",
       // Thank you
-      "/thank-you/": "/pages/thank-you/index-pc.html",
+      "/thank-you/": "/thank-you/index-pc.html",
       // Cases
-      "/cases/": "/pages/cases/index-pc.html",
+      "/cases/": "/cases/index-pc.html",
     },
 
     // Category slugs used for /products/<slug>/ routing
@@ -101,7 +101,7 @@
       for (var j = 1; j < slugs.length; j++) {
         var redirectPath = "/" + slugs[j] + "/";
         if (!this.routes[redirectPath]) {
-          this.routes[redirectPath] = "/pages/products/" + slugs[j] + "/index-pc.html";
+          this.routes[redirectPath] = "/products/" + slugs[j] + "/index-pc.html";
         }
       }
     },
@@ -551,18 +551,18 @@
       if (!pagePath && routePath.match(/^\/products\/[^/]+\/$/)) {
         var segment = routePath.replace(/^\/products\/|\/$/g, "");
         if (this.CATEGORY_SLUGS.indexOf(segment) >= 0) {
-          // Category page — convention: /products/<slug>/ → /pages/products/<slug>/index-pc.html
-          pagePath = "/pages/products/" + segment + "/index-pc.html";
+          // Category page â convention: /products/<slug>/ â /products/<slug>/index-pc.html
+          pagePath = "/products/" + segment + "/index-pc.html";
         } else {
-          // PDP — convention: /products/<model>/ → /pages/pdp/index-pc.html
-          pagePath = "/pages/pdp/index-pc.html";
+          // PDP â convention: /products/<model>/ â /pdp/index-pc.html
+          pagePath = "/pdp/index-pc.html";
         }
       }
 
-      // Convention: any path not in routes[] → /pages/<path>/index-pc.html
+      // Convention: any path not in routes[] â /<path>/index-pc.html
       if (!pagePath) {
         var clean = routePath.replace(/\/+$/, "");
-        pagePath = "/pages" + clean + "/index-pc.html";
+        pagePath = "" + clean + "/index-pc.html";
       }
 
       // Never redirect — let the server return SPA shell if file doesn't exist.
@@ -576,7 +576,7 @@
       this.log("Loading:", devicePath);
 
       // 添加 BASE_PATH 前缀（如果存在）
-      var basePath = (typeof window !== "undefined" && window.BASE_PATH) || "";
+      var basePath = window.BASE_PATH || "";
       if (basePath && devicePath.startsWith("/")) {
         devicePath = basePath + devicePath;
       }
@@ -793,6 +793,31 @@
     init: function () {
       var _self = this;
 
+      // file:// 协议检测 — 直接跳过 fetch，使用 SSG 已有内容
+      if (window.location.protocol === "file:") {
+        console.warn("[SPA] file:// protocol detected — SPA fetch disabled, using SSG content only");
+        window.__fileProtocol = true;
+        // 添加降级 banner
+        var banner = document.createElement("div");
+        banner.id = "file-protocol-banner";
+        banner.style.cssText =
+          "position:fixed;top:0;left:0;right:0;z-index:99999;" +
+          "background:#fff3cd;color:#856404;padding:10px 16px;" +
+          "text-align:center;font-size:14px;font-weight:500;" +
+          "border-bottom:1px solid #ffc107;display:flex;" +
+          "align-items:center;justify-content:center;gap:8px;";
+        var warnIcon = '<span class="material-symbols-outlined" style="font-size:18px">warning</span>';
+        banner.innerHTML =
+          warnIcon +
+          "<span>\u26a0\ufe0f \u5f53\u524d\u4e3a\u6587\u4ef6\u9884\u89c8\u6a21\u5f0f\u3002\u67d0\u4e9b\u9875\u9762\u8df3\u8f6c\u548c\u7ffb\u8bd1\u540c\u6b65\u529f\u80fd\u53d7\u9650\u3002\u5efa\u8bae\u901a\u8fc7 Web \u670d\u52a1\u5668\u8bbf\u95ee\u3002</span>";
+        document.body.prepend(banner);
+        // 翻译同步降级
+        if (window.i18nBundle && window.i18nBundle.applyTranslations) {
+          window.i18nBundle.applyTranslations();
+        }
+        return;
+      }
+
       this._initCategorySlugs();
       this.log("Initializing...");
 
@@ -880,14 +905,14 @@
             if (!targetPath.endsWith("/")) targetPath += "/";
           }
 
-          // 处理 /pages/.../index*.html -> /<basename>
+          // 处理 /.../index*.html -> /<basename>
           var pagesMatch = targetPath.match(/^\/pages\/([^/]+)\/index(?:-[a-z0-9-]+)?\.html$/i);
           if (pagesMatch && pagesMatch[1]) {
             targetPath = "/" + pagesMatch[1] + "/";
           }
 
           // Intercept all internal links — loadRoute handles unknown paths via
-          // convention (/pages/<path>/index-pc.html). Only skip non-page paths.
+          // convention (<path>/index-pc.html). Only skip non-page paths.
           var isPage = targetPath.match(/^\/[a-z0-9][a-z0-9._-]*(?:\/[a-z0-9][a-z0-9._-]*)*\/$/i);
           if (!isPage) {
             _self.log("Skipping SPA for non-page path:", targetPath);
@@ -925,13 +950,19 @@
 
       // Support 页面需要 contact-channels 组件 + 微信弹窗
       if (path.indexOf("/support/") !== -1) {
-        scripts.push({ src: "/assets/js/support-contact-channels.js", id: "spa-support-contact-channels" });
-        scripts.push({ src: "/assets/js/support-wechat-modal.js", id: "spa-support-wechat-modal" });
+        scripts.push({
+          src: (window.BASE_PATH || "") + "/assets/js/support-contact-channels.js",
+          id: "spa-support-contact-channels",
+        });
+        scripts.push({
+          src: (window.BASE_PATH || "") + "/assets/js/support-wechat-modal.js",
+          id: "spa-support-wechat-modal",
+        });
       }
 
       // Maps 页面需要 pi-maps.js
       if (path.indexOf("/support/installation/") !== -1) {
-        scripts.push({ src: "/assets/js/ui/pi-maps.js", id: "spa-pi-maps" });
+        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/ui/pi-maps.js", id: "spa-pi-maps" });
       }
 
       if (/\/deploy-/.test(path)) {
@@ -941,35 +972,41 @@
       // Support 页面需要 custom-select.js
       if (path.indexOf("/support/") !== -1) {
         if (!window.CustomSelect) {
-          scripts.push({ src: "/assets/js/ui/dropdown-styles.js", id: "spa-dropdown-styles" });
-          scripts.push({ src: "/assets/js/ui/custom-select.js", id: "spa-custom-select" });
+          scripts.push({
+            src: (window.BASE_PATH || "") + "/assets/js/ui/dropdown-styles.js",
+            id: "spa-dropdown-styles",
+          });
+          scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/ui/custom-select.js", id: "spa-custom-select" });
         }
       }
 
       // News detail 页面需要 news-detail.js
       if (path.indexOf("/news/detail") !== -1) {
-        scripts.push({ src: "/assets/js/news-detail.js", id: "spa-news-detail" });
+        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/news-detail.js", id: "spa-news-detail" });
       }
 
       // Home 页面需要 home-core-products.js（动态渲染核心产品卡片）
       if (path.indexOf("/home") !== -1) {
-        scripts.push({ src: "/assets/js/home-core-products.js", id: "spa-home-core-products" });
+        scripts.push({
+          src: (window.BASE_PATH || "") + "/assets/js/home-core-products.js",
+          id: "spa-home-core-products",
+        });
       }
 
       // 产品列表页需要 product-grid.js（含 /products/all/ 和 6 个分类子页）
       if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
-        scripts.push({ src: "/assets/js/product-grid.js", id: "spa-product-grid" });
+        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/product-grid.js", id: "spa-product-grid" });
       }
 
       // 产品分类页需要 cross-sell.js（搭配推荐 + 适用场景，/products/all/ 只显示适用场景）
       if (path.match(new RegExp("/products/(" + SpaRouter.PRODUCT_SLUG_PATTERN + ")/"))) {
-        scripts.push({ src: "/assets/js/cross-sell.js", id: "spa-cross-sell" });
+        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/cross-sell.js", id: "spa-cross-sell" });
       }
 
       // 产品详情页需要 product-detail.js
       // 路由: /products/<cat>/<model>/
       if (/^\/products\/[a-z]+\/[A-Za-z0-9_-]+\/$/.test(path)) {
-        scripts.push({ src: "/assets/js/product-detail.js", id: "spa-product-detail" });
+        scripts.push({ src: (window.BASE_PATH || "") + "/assets/js/product-detail.js", id: "spa-product-detail" });
       }
 
       // Load scripts: vendor scripts in parallel, dependent scripts after
@@ -998,7 +1035,7 @@
         return new Promise(function (resolve) {
           var el = document.createElement("script");
           el.id = s.id;
-          el.src = s.src;
+          el.src = (window.BASE_PATH || "") + s.src;
           el.onload = function () {
             resolve();
           };
