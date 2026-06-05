@@ -79,7 +79,7 @@
       iconHtml =
         '<span class="nav-dropdown-icon"><span class="nav-dropdown-emoji">' + esc(child.emoji) + "</span></span>";
     }
-    var sep = showSep ? '<div class="nav-dropdown-separator"></div>' : "";
+    var sep = showSep ? window.TemplateConstants.separator("nav-dropdown") : "";
     return (
       '<a href="' +
       esc(childHref) +
@@ -143,7 +143,7 @@
     var label = resolveLabel(cfg.label) || navId;
 
     var centerEntry = buildCenterEntry(navId);
-    var centerSep = centerEntry ? '<div class="nav-dropdown-separator"></div>' : "";
+    var centerSep = centerEntry ? window.TemplateConstants.separator("nav-dropdown") : "";
 
     var itemsHtml = children
       .map(function (child, idx) {
@@ -267,7 +267,7 @@
         .replace("nav-dropdown-item", "nav-dropdown-popup-item")
         .replace("nav-dropdown-chevron", "nav-dropdown-popup-chevron")
         .replace('href="/solutions/"', 'href="/solutions/"');
-      popupHtml = centerPopupItem + '<div class="nav-dropdown-separator"></div>' + childItems;
+      popupHtml = centerPopupItem + window.TemplateConstants.separator("nav-dropdown") + childItems;
     } else {
       popupHtml = childItems;
     }

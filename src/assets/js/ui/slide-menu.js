@@ -463,7 +463,7 @@
           '">' +
           '<a class="mobile-menu-l2-item mobile-menu-l2-viewall" href="/products/">' +
           '<span class="mobile-menu-l2-icon">' +
-          '<span class="material-symbols-outlined">store</span>' +
+          window.TemplateConstants.ICONS.store +
           "</span>" +
           '<span class="mobile-menu-l2-label" data-i18n="nav_products_center">Products Center</span>' +
           "</a>" +
@@ -964,7 +964,7 @@
       ' placeholder="Search..." data-i18n-placeholder="search_placeholder"' +
       ' autocomplete="off" spellcheck="false" />' +
       '<button id="mobile-search-clear" type="button" class="mobile-search-clear" aria-label="Clear">' +
-      '<span class="material-symbols-outlined">cancel</span>' +
+      window.TemplateConstants.ICONS.cancel +
       "</button>" +
       "</div>" +
       '<div id="mobile-search-results" class="mobile-search-results"></div>';

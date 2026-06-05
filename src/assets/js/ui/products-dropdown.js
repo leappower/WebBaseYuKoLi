@@ -7,7 +7,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
   var esc = global.DropdownBase.esc;
   var isTouch = global.DropdownBase.isTouch;
@@ -33,7 +33,7 @@
     var cats = _categories[categoryKey] || [];
     return cats.map(function (cat) {
       return {
-        key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        key: cat.i18nKey || "nav_" + categoryKey + "_" + cat.slug,
         label: resolveLabel(cat.label) || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         emoji: cat.emoji || "",
@@ -47,7 +47,7 @@
   /* ── Prepend: All Products entry ───────────────────────── */
   SUBSERIES.unshift({
     key: "all",
-    label: (function(){
+    label: (function () {
       var lang = (document.documentElement && document.documentElement.lang) || "zh-CN";
       return lang === "zh-CN" ? "全部产品" : "All Products";
     })(),
@@ -72,7 +72,7 @@
       esc(parentHref) +
       '" class="prod-dropdown-item prod-viewall-item">' +
       '<span class="prod-dropdown-icon">' +
-      '<span class="material-symbols-outlined">store</span>' +
+      window.TemplateConstants.ICONS.store +
       "</span>" +
       '<span class="prod-dropdown-label" data-i18n="nav_products_center">Products Center</span>' +
       '<span class="material-symbols-outlined prod-dropdown-chevron">chevron_right</span>' +
@@ -127,7 +127,9 @@
       esc(sub.icon) +
       "</span>" +
       "</span>" +
-      '<span class="prod-dropdown-label" data-i18n="' + esc(i18nKey) + '">' +
+      '<span class="prod-dropdown-label" data-i18n="' +
+      esc(i18nKey) +
+      '">' +
       fallbackLabel +
       "</span>" +
       chevron +
@@ -141,7 +143,7 @@
     var centerHtml =
       '<a href="/products/" class="prod-popup-item prod-viewall-item">' +
       '<span class="prod-dropdown-icon">' +
-      '<span class="material-symbols-outlined">store</span>' +
+      window.TemplateConstants.ICONS.store +
       "</span>" +
       '<span class="prod-popup-label" data-i18n="nav_products_center">Products Center</span>' +
       '<span class="material-symbols-outlined prod-popup-chevron">chevron_right</span>' +

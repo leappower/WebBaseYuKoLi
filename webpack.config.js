@@ -87,6 +87,7 @@ module.exports = (env = {}, argv = {}) => {
       'assets/js/lib/dom-utils': './src/assets/js/lib/dom-utils.js',
       'assets/js/lib/format-utils': './src/assets/js/lib/format-utils.js',
       'assets/js/lib/async-utils': './src/assets/js/lib/async-utils.js',
+      'assets/js/lib/template-constants': './src/assets/js/lib/template-constants.js',
       // ─── JJC-020 T3.3: breadcrumb ESM modules ───
       'assets/js/breadcrumb-data': './src/assets/js/breadcrumb-data.js',
       'assets/js/breadcrumb-render': './src/assets/js/breadcrumb-render.js',
