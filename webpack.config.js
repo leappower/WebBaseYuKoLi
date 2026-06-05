@@ -63,6 +63,10 @@ module.exports = (env = {}, argv = {}) => {
       'assets/js/lib/i18n-core': './src/assets/js/lib/i18n-core.js',
       'assets/js/lib/inline-translations': './src/assets/js/lib/inline-translations.js',
       'assets/js/lib/swup-polyfill': './src/assets/js/lib/swup-polyfill.js',
+      // ─── JJC-020 T3.2: lib/ utility modules ───
+      'assets/js/lib/dom-utils': './src/assets/js/lib/dom-utils.js',
+      'assets/js/lib/format-utils': './src/assets/js/lib/format-utils.js',
+      'assets/js/lib/async-utils': './src/assets/js/lib/async-utils.js',
       'assets/js/swup-init': './src/assets/js/swup-init.js',
     },
     optimization: (isProduction || isDevBuild) ? {
@@ -179,8 +183,7 @@ module.exports = (env = {}, argv = {}) => {
                   // ─── JJC-020 T3.1: lib/ modules now processed by Webpack entries ───
                   // Exclude lib/ directory files from copy — they are bundled via entry points.
                   // These files are loaded as standalone Webpack chunks and written to assets/js/lib/.
-                  if (basename === 'runtime-guard.js' || basename === 'i18n-core.js' ||
-                      basename === 'inline-translations.js' || basename === 'swup-polyfill.js') {
+                  if (basename.endsWith('.js') && resourcePath.includes('/lib/')) {
                     return false;
                   }
                   // swup-init.js is also a Webpack entry now
