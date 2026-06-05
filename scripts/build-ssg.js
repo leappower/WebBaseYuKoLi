@@ -362,6 +362,11 @@ function injectThemeAndNavScripts(html, deviceType) {
   var bp = BASE_PATH ? BASE_PATH.replace(/\/$/, '') : '';
   var allTags = '';
 
+  // ── 0. Runtime guard (__safe — must be first, before all other scripts) ──
+  if (html.indexOf('runtime-guard.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/lib/runtime-guard.js"></script>\n  ';
+  }
+
   // ── 1. Core framework (theme-init.js — font CDN + CSS tokens) ──
   if (html.indexOf('theme-init.js') === -1) {
     allTags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
@@ -418,11 +423,27 @@ function injectThemeAndNavScripts(html, deviceType) {
     }
   }
 
+  // ── 5. Split runtime-guard into head; rest to body ──
+  var headTags = '';
+  var bodyTags = '';
+  var lines = allTags.split('\n').filter(Boolean);
+  lines.forEach(function(tag) {
+    if (tag.indexOf('runtime-guard.js') !== -1) {
+      headTags += tag + '\n  ';
+    } else {
+      bodyTags += tag + '\n  ';
+    }
+  });
   // Skip if nothing to inject
-  if (!allTags) return html;
-
-  // ── 5. Insert all tags before </body> ──
-  html = html.replace(/<\/body>/i, MARKER + '\n  ' + allTags + '</body>');
+  if (!headTags && !bodyTags) return html;
+  // Inject runtime-guard into head (after <head> tag)
+  if (headTags) {
+    html = html.replace('<head>', '<head>\n  ' + headTags);
+  }
+  // Inject remaining tags before </body>
+  if (bodyTags) {
+    html = html.replace(/<\/body>/i, MARKER + '\n  ' + bodyTags + '<\/body>');
+  }
 
   return html;
 }
