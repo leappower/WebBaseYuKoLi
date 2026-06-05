@@ -8,6 +8,8 @@
   <!-- i18n_comment_site_config_must_load: Site Configuration (must load before all other scripts) -->
     <!-- JJC-020: 全局安全存取器（必须在所有脚本之前加载，确保 __safe 在所有模块代码之前就绪） -->
   <script defer src="/assets/js/lib/runtime-guard.js?v=202606051301"></script>
+  <!-- JJC-020: 高频翻译键内联（在 runtime-guard 之后立即加载，确保 translations.js 加载前就有翻译 fallback） -->
+  <script defer src="/assets/js/lib/inline-translations.js?v=202606051301"></script>
   <script src="/site.config.js"></script>
   <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
   <script>

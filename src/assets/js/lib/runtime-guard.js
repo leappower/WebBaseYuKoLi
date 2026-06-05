@@ -25,7 +25,16 @@
      * @returns {string}
      */
     t: function (key, fallback) {
-      return typeof window.t === "function" ? window.t(key) : fallback || key;
+      // Priority: TranslationManager > inline high-frequency keys > fallback > key itself
+      if (typeof window.t === "function") {
+        var result = window.t(key);
+        if (result && result !== key) return result;
+      }
+      // T1.5: Fallback to inline translations when TranslationManager not ready
+      if (window.__inlineTranslations && window.__inlineTranslations[key]) {
+        return window.__inlineTranslations[key];
+      }
+      return fallback || key;
     },
 
     /**
