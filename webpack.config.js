@@ -43,6 +43,27 @@ function buildHtmlPlugins() {
   return plugins;
 }
 
+/**
+ * ─── JJC-020 T3.4: UI component ESM entries ─────────────────────────────────
+ * Scan src/assets/js/ui/ and create webpack entry objects for each .js file,
+ * mapping to output path assets/js/ui/<filename>.
+ *
+ * These IIFE modules register on window.* and are loaded as standalone scripts.
+ * Webpack processes them for consistency (prod: minify + hash, dev: passthrough).
+ * The build.sh sync_assets step provides unhashed fallback copies.
+ */
+function buildUiEntries() {
+  const uiDir = path.join(__dirname, 'src/assets/js/ui');
+  const entries = {};
+  if (!fs.existsSync(uiDir)) return entries;
+  for (const file of fs.readdirSync(uiDir)) {
+    if (!file.endsWith('.js')) continue;
+    const name = file.replace(/\.js$/, '');
+    entries[`assets/js/ui/${name}`] = `./src/assets/js/ui/${file}`;
+  }
+  return entries;
+}
+
 module.exports = (env = {}, argv = {}) => {
   const isProduction = argv.mode === 'production';
   // devBuild: production pipeline (minify + copy) but fixed filenames (no contenthash).
@@ -66,11 +87,14 @@ module.exports = (env = {}, argv = {}) => {
       'assets/js/lib/dom-utils': './src/assets/js/lib/dom-utils.js',
       'assets/js/lib/format-utils': './src/assets/js/lib/format-utils.js',
       'assets/js/lib/async-utils': './src/assets/js/lib/async-utils.js',
+      'assets/js/lib/template-constants': './src/assets/js/lib/template-constants.js',
       // ─── JJC-020 T3.3: breadcrumb ESM modules ───
       'assets/js/breadcrumb-data': './src/assets/js/breadcrumb-data.js',
       'assets/js/breadcrumb-render': './src/assets/js/breadcrumb-render.js',
       'assets/js/breadcrumb': './src/assets/js/breadcrumb.js',
       'assets/js/swup-init': './src/assets/js/swup-init.js',
+      // ─── JJC-020 T3.4: UI component ESM entries ───
+      ...buildUiEntries(),
     },
     optimization: (isProduction || isDevBuild) ? {
       // runtimeChunk: isolates webpack runtime so contenthash of main bundle stays stable.
@@ -157,6 +181,12 @@ module.exports = (env = {}, argv = {}) => {
                 to: 'assets/js',
                 filter: (resourcePath) => {
                   const basename = path.basename(resourcePath);
+                  // ─── JJC-020 T3.4: UI component files are now webpack entries ───
+                  // Exclude files in ui/ subdirectory — they are bundled via webpack entries
+                  // and the build.sh sync_assets step provides their unhashed copies.
+                  if (resourcePath.includes('/ui/')) {
+                    return false;
+                  }
                   // Skip webpack-only / dead-code modules (see src/index.js deprecation header)
                   const skip = [
                     'common.js', 'image-assets.js', 'init.js', 'main.js',
@@ -205,12 +235,10 @@ module.exports = (env = {}, argv = {}) => {
                 to: 'assets/js/utils',
                 noErrorOnMissing: true,
               },
-              // Copy UI component JS files
-              {
-                from: 'src/assets/js/ui',
-                to: 'assets/js/ui',
-                noErrorOnMissing: true,
-              },
+              // ─── JJC-020 T3.4: UI components are now webpack entries ───
+              // Exclude ui/ from CopyWebpackPlugin copy to avoid duplicate copies.
+              // The build.sh sync_assets step still provides unhashed copies.
+              // Keep ui-bundle.js as deprecated fallback (copied via src/assets/js pattern above).
               // Copy all CSS files from src/assets/css into dist/assets/css
               // (includes styles.css, tailwind.css, z-index-system.css,
               // performance-optimized.css, etc.)

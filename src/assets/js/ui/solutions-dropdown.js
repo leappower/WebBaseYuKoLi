@@ -54,7 +54,7 @@
   function buildChildHtml(child) {
     var childHref = child.href || "/" + (child.slug || child.id) + "/";
     var childLabel = resolveLabel(child.label) || child.id;
-    var i18nKey = child.i18nKey || ("nav_" + (child.slug || child.id));
+    var i18nKey = child.i18nKey || "nav_" + (child.slug || child.id);
     return (
       '<a href="' +
       esc(childHref) +
@@ -62,7 +62,9 @@
       '<span class="nav-dropdown-icon"><span class="material-symbols-outlined">' +
       esc(child.icon || "circle") +
       "</span></span>" +
-      '<span class="nav-dropdown-label" data-i18n="' + esc(i18nKey) + '">' +
+      '<span class="nav-dropdown-label" data-i18n="' +
+      esc(i18nKey) +
+      '">' +
       esc(childLabel) +
       "</span>" +
       '<span class="material-symbols-outlined nav-dropdown-chevron">chevron_right</span>' +
@@ -83,7 +85,7 @@
 
     var itemsHtml = children
       .map(function (child, idx) {
-        var sep = idx < children.length - 1 ? '<div class="nav-dropdown-separator"></div>' : "";
+        var sep = idx < children.length - 1 ? window.TemplateConstants.separator("nav-dropdown") : "";
         return buildChildHtml(child) + sep;
       })
       .join("\n");
@@ -106,7 +108,7 @@
       "</a>" +
       '<div class="nav-dropdown-panel"><div class="nav-dropdown-card">' +
       centerEntry +
-      '<div class="nav-dropdown-separator"></div>' +
+      window.TemplateConstants.separator("nav-dropdown") +
       itemsHtml +
       "</div></div>" +
       "</div>"
@@ -123,7 +125,7 @@
       '<span class="nav-dropdown-popup-label" data-i18n="nav_solutions_center">Solutions Center</span>' +
       '<span class="material-symbols-outlined nav-dropdown-popup-chevron">chevron_right</span>' +
       "</a>";
-    centerHtml += '<div class="nav-dropdown-separator"></div>';
+    centerHtml += window.TemplateConstants.separator("nav-dropdown");
 
     var itemsHtml = children
       .map(function (child) {

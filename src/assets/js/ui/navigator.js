@@ -278,7 +278,7 @@
       '<a class="ios-search-clear" href="javascript:void(0)" ' +
       'aria-label="Clear" role="button" tabindex="-1" ' +
       'style="text-decoration:none;-webkit-tap-highlight-color:transparent">' +
-      '<span class="material-symbols-outlined">cancel</span>' +
+      window.TemplateConstants.ICONS.cancel +
       "</a>" +
       "</div>" +
       "</div>"
@@ -1076,8 +1076,8 @@
     html += '<div class="cs-popup-title">' + escapeHtml(labelEl ? labelEl.textContent : "") + "</div>";
     html +=
       '<div class="cs-popup-search-wrap">' +
-      '<span class="material-symbols-outlined cs-popup-search-icon">search</span>' +
-      '<input type="text" class="cs-popup-search" placeholder="搜索..." data-i18n-placeholder="search_placeholder">' +
+      window.TemplateConstants.popupSearchIcon() +
+      window.TemplateConstants.popupSearchInput() +
       "</div>";
     html += '<div class="cs-popup-list">' + result.inst._buildItemsHTML(data) + "</div>";
     /* @audit-safe: config-driven-render */
