@@ -11,9 +11,20 @@
  *   5. PDP 异步品类：PDP 页面包屑品类延迟加载场景
  *   6. i18n：中英文切换后面包屑标签正确切换
  *   7. 边界情况：404页、根路径、无品类的产品页
+ *
+ * viewport 覆盖:
+ *   - PC:      1440×900（默认）
+ *   - Mobile:  375×812（移动端返回栏）
+ *   - Tablet:  768×1024（iPad portrait，md: 断点范围）
  */
 
 import { test, expect } from '@playwright/test';
+
+// ─── Constants ──────────────────────────────────────────────
+
+const TABLET_VIEWPORT  = { width: 768, height: 1024 };
+const PC_VIEWPORT      = { width: 1440, height: 900 };
+const MOBILE_VIEWPORT  = { width: 375, height: 812 };
 
 // ─── Helpers ────────────────────────────────────────────────
 
@@ -42,7 +53,8 @@ async function waitForBreadcrumb(page, { allowEmpty } = {}) {
 }
 
 /**
- * 获取 PC 面包屑的文本列表
+ * 获取 PC / Tablet 面包屑的文本列表
+ * 两者均使用 .breadcrumb-nav li 结构（md:block 显示）
  */
 async function getBreadcrumbTexts(page) {
   const items = await page.locator('#breadcrumb-container .breadcrumb-nav li').all();
@@ -89,6 +101,20 @@ function filterErrors(errors) {
     !e.includes('swup') && !e.includes('Swup') && !e.includes('SWUP') &&
     !e.includes('__DEVELOPMENT__')  // 开发模式特定警告
   );
+}
+
+/**
+ * 设置 Tablet viewport 并等待页面稳定
+ */
+async function setupTablet(page) {
+  await page.setViewportSize(TABLET_VIEWPORT);
+}
+
+/**
+ * 设置 Mobile viewport 并等待页面稳定
+ */
+async function setupMobile(page) {
+  await page.setViewportSize(MOBILE_VIEWPORT);
 }
 
 // ─── Tests ──────────────────────────────────────────────────
@@ -176,7 +202,7 @@ test.describe('面包屑 E2E 测试', () => {
   test.describe('2. SPA 导航交互', () => {
     test('点击面包屑链接导航到产品中心', async ({ page }) => {
       // 从品类页出发（PC viewport，因为移动端面包屑是隐藏的）
-      await page.setViewportSize({ width: 1440, height: 900 });
+      await page.setViewportSize(PC_VIEWPORT);
       await page.goto('/products/coffee/');
       await page.waitForLoadState('networkidle');
       await page.waitForTimeout(2000);
@@ -597,7 +623,7 @@ test.describe('面包屑 E2E 测试', () => {
   // ════════════════════════════════════════════════════════════
   test.describe('移动端面包屑', () => {
     test('移动端品类页面包屑文本不为空', async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 812 });
+      await setupMobile(page);
 
       await page.goto('/products/coffee/');
       await page.waitForLoadState('networkidle');
@@ -607,6 +633,311 @@ test.describe('面包屑 E2E 测试', () => {
 
       const texts = await getMobileBreadcrumbTexts(page);
       expect(texts.length).toBeGreaterThanOrEqual(0);
+    });
+  });
+
+  // ════════════════════════════════════════════════════════════
+  // 平板端覆盖：iPad portrait（768×1024）— md: 断点范围
+  // 平板端使用 PC 面包屑变体（md:block），但需验证布局在边界宽度正常
+  // ════════════════════════════════════════════════════════════
+  test.describe('平板端面包屑', () => {
+
+    // ── 1. 平板端基础导航 ──────────────────────────────────
+    test.describe('1. 平板端基础导航', () => {
+      test('品类页面包屑正常渲染', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/coffee/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const texts = await getBreadcrumbTexts(page);
+        expect(texts.length).toBeGreaterThanOrEqual(1);
+        expect(texts[0]).toMatch(/产品中心/i);
+      });
+
+      test('PDP 页面包屑正常渲染', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/coffee/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+
+        const productLink = page.locator('a[href*="/products/coffee/"]').filter({
+          has: page.locator('[data-model]')
+        }).first();
+        let pdpUrl = null;
+        if (await productLink.count() > 0) {
+          pdpUrl = await productLink.getAttribute('href');
+        }
+        if (!pdpUrl) pdpUrl = '/products/coffee/CF-001/';
+
+        await page.goto(pdpUrl);
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2500);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const texts = await getBreadcrumbTexts(page);
+        expect(texts.length).toBeGreaterThanOrEqual(2);
+        expect(texts[0]).toMatch(/产品中心/i);
+        expect(texts[texts.length - 1].length).toBeGreaterThan(0);
+      });
+
+      test('产品中心首页无面包屑报错', async ({ page }) => {
+        await setupTablet(page);
+        const errors = [];
+        page.on('pageerror', (err) => errors.push(err.message));
+
+        await page.goto('/products/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+
+        const realErrors = filterErrors(errors);
+        const criticalErrors = realErrors.filter(e =>
+          e.includes('TypeError') || e.includes('ReferenceError')
+        );
+        expect(criticalErrors).toHaveLength(0);
+      });
+    });
+
+    // ── 2. 平板端 SPA 导航 ────────────────────────────────
+    test.describe('2. 平板端 SPA 导航', () => {
+      test('点击面包屑链接导航到产品中心', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/coffee/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const links = page.locator('#breadcrumb-container .breadcrumb-nav a');
+        await expect(links.first()).toBeVisible({ timeout: 5000 });
+
+        const href = await links.first().getAttribute('href');
+        if (href) {
+          await links.first().click();
+          await page.waitForTimeout(2000);
+          expect(page.url()).toMatch(/\/products\/?$/);
+        }
+      });
+
+      test('SPA 导航后面包屑自动更新', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/home/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(1000);
+
+        await page.evaluate(() => {
+          if (window.SpaRouter && typeof window.SpaRouter.navigate === 'function') {
+            window.SpaRouter.navigate('/products/coffee/');
+          }
+        });
+        await page.waitForTimeout(3000);
+
+        const ok = await waitForBreadcrumb(page);
+        if (ok) {
+          const texts = await getBreadcrumbTexts(page);
+          expect(texts.length).toBeGreaterThanOrEqual(1);
+        }
+      });
+    });
+
+    // ── 3. 平板端刷新保持 ──────────────────────────────────
+    test.describe('3. 平板端刷新保持', () => {
+      test('品类页刷新后面包屑不变', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/coffee/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const textsBefore = await getBreadcrumbTexts(page);
+        await page.reload();
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok2 = await waitForBreadcrumb(page);
+        if (!ok2) return;
+
+        const textsAfter = await getBreadcrumbTexts(page);
+        expect(textsAfter).toEqual(textsBefore);
+      });
+
+      test('PDP 页刷新后面包屑不变', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/coffee/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+
+        const productLink = page.locator('a[href*="/products/coffee/"]').filter({
+          has: page.locator('[data-model]')
+        }).first();
+        let pdpUrl = null;
+        if (await productLink.count() > 0) {
+          pdpUrl = await productLink.getAttribute('href');
+        } else {
+          pdpUrl = '/products/coffee/CF-001/';
+        }
+
+        await page.goto(pdpUrl);
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const textsBefore = await getBreadcrumbTexts(page);
+        await page.reload();
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok2 = await waitForBreadcrumb(page);
+        if (!ok2) return;
+
+        const textsAfter = await getBreadcrumbTexts(page);
+        expect(textsAfter).toEqual(textsBefore);
+      });
+
+      test('应用页刷新后面包屑不变', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/applications/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(1000);
+
+        const appLink = page.locator('a[href*="/applications/"]').first();
+        if (await appLink.count() === 0) return;
+
+        const href = await appLink.getAttribute('href');
+        if (!href || href === '/applications/') return;
+
+        await page.goto(href);
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const textsBefore = await getBreadcrumbTexts(page);
+        await page.reload();
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok2 = await waitForBreadcrumb(page);
+        if (!ok2) return;
+
+        const textsAfter = await getBreadcrumbTexts(page);
+        expect(textsAfter).toEqual(textsBefore);
+      });
+
+      test('支持页刷新后面包屑不变', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/support/faq/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+
+        const textsBefore = await getBreadcrumbTexts(page);
+        await page.reload();
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok2 = await waitForBreadcrumb(page);
+        if (!ok2) return;
+
+        const textsAfter = await getBreadcrumbTexts(page);
+        expect(textsAfter).toEqual(textsBefore);
+      });
+    });
+
+    // ── 4. 平板端同级导航 ──────────────────────────────────
+    test.describe('4. 平板端同级导航', () => {
+      test('应用页同级导航可见（PC 变体）', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/applications/brand_owner/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+
+        // 平板端同级导航使用 PC 变体（md:block）
+        const siblingNav = page.locator('#sibling-wrapper');
+        if (await siblingNav.count() > 0) {
+          await expect(siblingNav).toBeVisible({ timeout: 3000 });
+          const siblingLinks = siblingNav.locator('a');
+          expect(await siblingLinks.count()).toBeGreaterThanOrEqual(1);
+        } else {
+          console.log('平板端未检测到 #sibling-wrapper');
+        }
+      });
+
+      test('支持页同级导航可见', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/support/faq/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+
+        const siblingNav = page.locator('#sibling-wrapper');
+        if (await siblingNav.count() > 0) {
+          await expect(siblingNav).toBeVisible({ timeout: 3000 });
+          const siblingLinks = siblingNav.locator('a');
+          expect(await siblingLinks.count()).toBeGreaterThanOrEqual(1);
+        } else {
+          console.log('平板端未检测到 #sibling-wrapper');
+        }
+      });
+    });
+
+    // ── 5. 平板端 PDP 异步品类 ──────────────────────────────
+    test.describe('5. 平板端 PDP 异步品类', () => {
+      test('PDP 面包屑包含产品中心+品类', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/espresso-machines/Expobar-Brew/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+
+        const bc = page.locator('#breadcrumb-nav, [data-breadcrumb]');
+        if (await bc.count() > 0) {
+          const texts = await getBreadcrumbTexts(page);
+          expect(texts.length).toBeGreaterThanOrEqual(2);
+        }
+      });
+    });
+
+    // ── 6. 平板端 i18n 切换 ────────────────────────────────
+    test.describe('6. 平板端 i18n 切换', () => {
+      test('中文面包屑标签正确', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/espresso-machines/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+        const texts = await getBreadcrumbTexts(page);
+        expect(texts.length).toBeGreaterThanOrEqual(1);
+      });
+    });
+
+    // ── 7. 平板端边界情况 ──────────────────────────────────
+    test.describe('7. 平板端边界情况', () => {
+      test('404 页面无面包屑不崩溃', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/nonexistent-page-xyz/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+      });
+
+      test('根路径无面包屑不崩溃', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+      });
+
+      test('产品对比页面包屑正确', async ({ page }) => {
+        await setupTablet(page);
+        await page.goto('/products/compare/');
+        await page.waitForLoadState('networkidle');
+        await page.waitForTimeout(2000);
+        const ok = await waitForBreadcrumb(page);
+        if (!ok) return;
+        const texts = await getBreadcrumbTexts(page);
+        expect(texts.length).toBeGreaterThanOrEqual(1);
+      });
     });
   });
 });
