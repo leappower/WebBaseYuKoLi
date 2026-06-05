@@ -4,21 +4,19 @@
  * 纯函数，不依赖 window/DOM。
  * 职责：路由检测 + 面包屑数据模型构建 + i18n 标签解析 + 同级导航 + goBack
  *
- * 与 breadcrumb-render.js（渲染层）和 breadcrumb.js（入口层）分离。
- *
  * 依赖（外部传入）：
  *   - categories: site.config.js 中的 categories 对象
  *   - pathname: window.location.pathname
  *
  * 输出：
  *   BreadcrumbData.detect() → { type, segments, refSlug, ... }
+ *
+ * 格式：IIFE（向后兼容静态 <script> 标签 + vm 单元测试）
+ * Webpack entry: breadcrumb-data → 此文件作为 webpack 入口，通过 entry 末尾的 registerOnWindow 注册全局 API
  */
 
 (function () {
   "use strict";
-
-  if (window.BreadcrumbData) return; // 防止重复执行
-  var BreadcrumbData = (window.BreadcrumbData = {});
 
   // ═══════════════════════════════════════════════════════════════
   // 内部工具函数
@@ -78,7 +76,7 @@
    * @param {boolean} [options.pdpCategoryFallback] — PDP 品类未就绪时是否 fallback
    * @returns {{ type, segments, refSlug, refCategoryLabel, slug, siblings }}
    */
-  BreadcrumbData.detect = function (pathname, categories, options) {
+  function detect(pathname, categories, options) {
     options = options || {};
     var path = (pathname || "/").replace(/\/$/, "");
     var result = {
@@ -180,7 +178,7 @@
           { label: resolveLabel(appInfo.label, currentLang), href: "", current: true },
         ];
         // 同级导航（同类目下兄弟页面）
-        result.siblings = BreadcrumbData.buildSiblingList("applications", appSlug, categories, currentLang);
+        result.siblings = buildSiblingList("applications", appSlug, categories, currentLang);
       }
       return result;
     }
@@ -197,7 +195,7 @@
           { label: "nav_support", href: "/support/" },
           { label: resolveLabel(supInfo.label, currentLang), href: "", current: true },
         ];
-        result.siblings = BreadcrumbData.buildSiblingList("support", supSlug, categories, currentLang);
+        result.siblings = buildSiblingList("support", supSlug, categories, currentLang);
       }
       return result;
     }
@@ -226,7 +224,7 @@
     }
 
     return result;
-  };
+  }
 
   /**
    * 获取 goBack 导航目标
@@ -237,7 +235,7 @@
    * @param {string|null} [sessionReferrer=null] — sessionStorage 中存储的 referrer
    * @returns {{ href, label }}
    */
-  BreadcrumbData.getGoBackTarget = function (segments, options) {
+  function getGoBackTarget(segments, options) {
     options = options || {};
     if (segments && segments.length >= 2) {
       // 优先返回面包屑路径中的上一级
@@ -247,7 +245,7 @@
       }
     }
     return { href: "", label: "" };
-  };
+  }
 
   /**
    * 构建同级导航列表
@@ -258,7 +256,7 @@
    * @param {string} [currentLang]
    * @returns {Array<{href, label, active}>}
    */
-  BreadcrumbData.buildSiblingList = function (group, currentSlug, categories, currentLang) {
+  function buildSiblingList(group, currentSlug, categories, currentLang) {
     var list = [];
     currentLang = currentLang || "zh-CN";
     if (!categories || !categories[group]) return list;
@@ -276,7 +274,7 @@
     });
 
     return list;
-  };
+  }
 
   /**
    * 构建品类映射（SLUG_TO_CATEGORY_KEY / CATEGORY_KEY_TO_SLUG）
@@ -284,7 +282,7 @@
    * @param {Object} categories
    * @returns {{ slugToKey, keyToSlug }}
    */
-  BreadcrumbData.buildCategoryMaps = function (categories) {
+  function buildCategoryMaps(categories) {
     var slugToKey = {};
     var keyToSlug = {};
     if (!categories || !categories.products) return { slugToKey: slugToKey, keyToSlug: keyToSlug };
@@ -296,5 +294,18 @@
     });
 
     return { slugToKey: slugToKey, keyToSlug: keyToSlug };
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 注册到 window（向后兼容 <script> 标签 + vm 单元测试）
+  // ═══════════════════════════════════════════════════════════════
+
+  var BreadcrumbData = {
+    detect: detect,
+    getGoBackTarget: getGoBackTarget,
+    buildSiblingList: buildSiblingList,
+    buildCategoryMaps: buildCategoryMaps,
   };
+
+  window.BreadcrumbData = BreadcrumbData;
 })();

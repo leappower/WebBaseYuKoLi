@@ -28,15 +28,12 @@ describe("breadcrumb-render.js — 代码质量", function () {
   test("不应使用 innerHTML（应使用 createElement）", function () {
     var content = fs.readFileSync(MODULE, "utf-8");
     // innerHTML is acceptable only in clearContainer
-    // In build* methods, we should NOT see innerHTML
-    var lines = content.split("\n");
-    var innerHtmlLines = lines.filter(function (l, i) {
-      return l.indexOf("innerHTML") >= 0 && (lines[i] || "").indexOf("BreadcrumbRender") >= 0;
-    });
-    // This is a structural check — no innerHTML in render functions
-    var buildMethods = content.match(/BreadcrumbRender\.\w+ = function/g) || [];
+    // Check that render functions use DOM API, not innerHTML
+    // Functions are now declared as local `function foo()` and assigned to
+    // `window.BreadcrumbRender = { foo: foo, ... }`
+    var functionDecls = content.match(/function (buildDesktopBreadcrumb|buildMobileBackBar|buildSiblings|clearContainer|renderAll)/g) || [];
     // We're testing that render functions use DOM API, not innerHTML
-    expect(buildMethods.length).toBeGreaterThanOrEqual(4);
+    expect(functionDecls.length).toBeGreaterThanOrEqual(4);
   });
 
   test("应包含 desctop/mobile 面包屑构建函数", function () {

@@ -10,13 +10,13 @@
  *   3. buildSiblings(siblings, labelMap) → HTMLElement
  *   4. clearContainer(container) → void
  *   5. renderAll(container, segments, siblings, options) → void
+ *
+ * 格式：IIFE（向后兼容静态 <script> 标签 + vm 单元测试）
+ * Webpack entry: breadcrumb-render → 此文件作为 webpack 入口
  */
 
 (function () {
   "use strict";
-
-  if (window.BreadcrumbRender) return;
-  var BreadcrumbRender = (window.BreadcrumbRender = {});
 
   // ═══════════════════════════════════════════════════════════════
   // 内部工具
@@ -83,7 +83,7 @@
    * @param {Array} segments — [{label, href, current}]
    * @returns {HTMLElement} 完整的面包屑容器 div
    */
-  BreadcrumbRender.buildDesktopBreadcrumb = function (segments) {
+  function buildDesktopBreadcrumb(segments) {
     if (!segments || !segments.length) return null;
 
     var container = el("div", ["pt-4", "pb-0", "hidden", "md:block", "px-3", "sm:px-6", "lg:px-8"]);
@@ -127,7 +127,7 @@
     }
 
     return container;
-  };
+  }
 
   /**
    * 构建 Mobile 返回栏
@@ -137,7 +137,7 @@
    * @param {Function} [options.goBackFn] — goBack 回调
    * @returns {HTMLElement}
    */
-  BreadcrumbRender.buildMobileBackBar = function (segments, options) {
+  function buildMobileBackBar(segments, options) {
     if (!segments || !segments.length) return null;
 
     options = options || {};
@@ -214,7 +214,7 @@
     flexBox.appendChild(linkBox);
     container.appendChild(flexBox);
     return container;
-  };
+  }
 
   /**
    * 构建同级导航
@@ -223,7 +223,7 @@
    * @param {string} [options.sectionLabel] — 分区标签（如"其他品类"）
    * @returns {HTMLElement} 包含 PC 和 Mobile 两套同级导航的容器
    */
-  BreadcrumbRender.buildSiblings = function (siblings, options) {
+  function buildSiblings(siblings, options) {
     if (!siblings || siblings.length <= 1) return null;
 
     options = options || {};
@@ -318,7 +318,7 @@
         "transition-all",
         "whitespace-nowrap",
       ]);
-      mobA.href = sm.href;
+      mobA.href = s.href;
       if (sm.icon) {
         var mobIcon = document.createElement("span");
         mobIcon.textContent = sm.icon;
@@ -335,18 +335,18 @@
     var container = el("div", []);
     container.appendChild(wrapper);
     return container;
-  };
+  }
 
   /**
    * 清空容器
    * @param {HTMLElement} container
    */
-  BreadcrumbRender.clearContainer = function (container) {
+  function clearContainer(container) {
     if (!container) return;
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
-  };
+  }
 
   /**
    * 全量渲染（清空容器后按顺序 append）
@@ -359,28 +359,40 @@
    * @param {string} [options.siblingSectionLabel]
    * @param {boolean} [options.skipSiblings] — 如果已有 cross-sell-container 则跳过同级导航
    */
-  BreadcrumbRender.renderAll = function (container, segments, siblings, options) {
+  function renderAll(container, segments, siblings, options) {
     if (!container) return;
 
     options = options || {};
 
-    BreadcrumbRender.clearContainer(container);
+    clearContainer(container);
 
     // 1. PC 面包屑
-    var bcEl = BreadcrumbRender.buildDesktopBreadcrumb(segments);
+    var bcEl = buildDesktopBreadcrumb(segments);
     if (bcEl) container.appendChild(bcEl);
 
     // 2. Mobile 返回栏
-    var mbEl = BreadcrumbRender.buildMobileBackBar(segments, options);
+    var mbEl = buildMobileBackBar(segments, options);
     if (mbEl) container.appendChild(mbEl);
 
     // 3. 同级导航
     if (!options.skipSiblings && siblings && siblings.length > 1) {
-      var siblingEl = BreadcrumbRender.buildSiblings(siblings, options);
+      var siblingEl = buildSiblings(siblings, options);
       if (siblingEl) {
         siblingEl.id = "sibling-wrapper";
         container.appendChild(siblingEl);
       }
     }
+  }
+
+  // ═══════════════════════════════════════════════════════════════
+  // 注册到 window（向后兼容 <script> 标签 + vm 单元测试）
+  // ═══════════════════════════════════════════════════════════════
+
+  window.BreadcrumbRender = {
+    buildDesktopBreadcrumb: buildDesktopBreadcrumb,
+    buildMobileBackBar: buildMobileBackBar,
+    buildSiblings: buildSiblings,
+    clearContainer: clearContainer,
+    renderAll: renderAll,
   };
 })();

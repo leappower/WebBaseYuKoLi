@@ -10,13 +10,19 @@
  *   3. 语言切换: languageChanged → refresh()
  *   4. PDP 异步品类: product-data-ready → updateCurrent()
  *
- * 公共 API（向后兼容）:
+ * 公共 API:
  *   window.Breadcrumb.refresh()
  *   window.Breadcrumb.goBack()
  *   window.Breadcrumb.updateCurrent(text)
- *   window.Breadcrumb.SLUG_TO_CATEGORY_KEY
- *   window.Breadcrumb.CATEGORY_KEY_TO_SLUG
+ *
+ * 格式：IIFE（向后兼容静态 <script> 标签 + vm 单元测试）
+ * Webpack entry: breadcrumb → 此文件作为 webpack 入口
+ *
+ * ⚠ 依赖 breadcrumb-data.js（window.BreadcrumbData）和
+ *   breadcrumb-render.js（window.BreadcrumbRender）在运行前已加载。
+ *   在 webpack 构建中，它们作为独立 entry 先于 breadcrumb.js 执行。
  */
+
 (function () {
   "use strict";
 
@@ -126,7 +132,7 @@
   var _keyToSlug = {};
 
   function initMaps() {
-    var maps = BreadcrumbData.buildCategoryMaps(getCategories());
+    var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
     _slugToKey = maps.slugToKey;
     _keyToSlug = maps.keyToSlug;
   }
@@ -153,7 +159,7 @@
     // 是否跳过同级导航（cross-sell-container 存在时）
     var skipSiblings = !!document.getElementById("cross-sell-container");
 
-    BreadcrumbRender.renderAll(container, page.segments, siblings, {
+    window.BreadcrumbRender.renderAll(container, page.segments, siblings, {
       backLabel: tl("pd_back", "返回"),
       siblingSectionLabel: siblingSectionLabel,
       skipSiblings: skipSiblings,
@@ -164,7 +170,7 @@
   function detectAndRender() {
     var categories = getCategories();
     var currentLang = getCurrentLanguage();
-    var page = BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
+    var page = window.BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
 
     if (page && page.type !== "none") {
       _currentPage = page;
@@ -203,7 +209,9 @@
               var currentLang = getCurrentLanguage();
               // 重新检测，此时 refSlug 已就绪
               _currentPage.refSlug = slug;
-              _currentPage = BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
+              _currentPage = window.BreadcrumbData.detect(window.location.pathname, categories, {
+                currentLang: currentLang,
+              });
               doRender(_currentPage);
             }
           }
@@ -345,13 +353,10 @@
       if (_currentPage.type === "pdp" && !_currentPage.refSlug) {
         var categories = getCategories();
         var currentLang = getCurrentLanguage();
-        _currentPage = BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
+        _currentPage = window.BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
         doRender(_currentPage);
       }
     },
-
-    SLUG_TO_CATEGORY_KEY: _slugToKey,
-    CATEGORY_KEY_TO_SLUG: _keyToSlug,
   };
 
   // ─── 启动 ────────────────────────────────────────────────────

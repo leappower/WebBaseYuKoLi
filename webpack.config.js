@@ -63,10 +63,13 @@ module.exports = (env = {}, argv = {}) => {
       'assets/js/lib/i18n-core': './src/assets/js/lib/i18n-core.js',
       'assets/js/lib/inline-translations': './src/assets/js/lib/inline-translations.js',
       'assets/js/lib/swup-polyfill': './src/assets/js/lib/swup-polyfill.js',
-      // ─── JJC-020 T3.2: lib/ utility modules ───
       'assets/js/lib/dom-utils': './src/assets/js/lib/dom-utils.js',
       'assets/js/lib/format-utils': './src/assets/js/lib/format-utils.js',
       'assets/js/lib/async-utils': './src/assets/js/lib/async-utils.js',
+      // ─── JJC-020 T3.3: breadcrumb ESM modules ───
+      'assets/js/breadcrumb-data': './src/assets/js/breadcrumb-data.js',
+      'assets/js/breadcrumb-render': './src/assets/js/breadcrumb-render.js',
+      'assets/js/breadcrumb': './src/assets/js/breadcrumb.js',
       'assets/js/swup-init': './src/assets/js/swup-init.js',
     },
     optimization: (isProduction || isDevBuild) ? {
@@ -187,6 +190,10 @@ module.exports = (env = {}, argv = {}) => {
                     return false;
                   }
                   // swup-init.js is also a Webpack entry now
+                                    // ─── JJC-020 T3.3: breadcrumb ESM modules — webpack entries, not copied ───
+                  if (basename === 'breadcrumb-data.js' || basename === 'breadcrumb-render.js' || basename === 'breadcrumb.js') {
+                    return false;
+                  }
                   if (basename === 'swup-init.js') return false;
                   return !skip.includes(basename);
                 },
