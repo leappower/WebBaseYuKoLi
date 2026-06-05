@@ -101,6 +101,9 @@ module.exports = {
     'hover:shadow-lg','hover:shadow-xl',
     'group-hover:border-blue-500/50','group-hover:border-green-500/50','group-hover:border-orange-500/50','group-hover:border-purple-500/50','group-hover:border-primary-500/50',
     'rounded-xl','rounded-2xl','rounded-lg','rounded-full',
+    // ── Grid-cols (for footer & dynamic JS grid layouts) ──
+    { pattern: /^grid-cols-\d+$/ },
+    'grid-cols-2','md:grid-cols-4',
     // ── JS-only z-index / arbitrary values (regex can't match CSS var syntax) ──
     'z-[var(--z-header)]','z-[var(--z-footer)]','z-[var(--z-language-dropdown)]',
   ],
