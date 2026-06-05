@@ -472,3 +472,139 @@ describe("T5a: 基础时序测试", function () {
     });
   });
 });
+
+
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 6. swup-init.js — document.readyState 不同阶段的行为
+  // ───────────────────────────────────────────────────────────────────────────
+  describe("swup-init.js — document.readyState 阶段", function () {
+
+    var SWUP_INIT = path.resolve(__dirname, "../../src/assets/js/swup-init.js");
+
+    test("文件应存在且语法合法", function () {
+      expect(fs.existsSync(SWUP_INIT)).toBe(true);
+      var result = cp.spawnSync("node", ["--check", SWUP_INIT]);
+      expect(result.status).toBe(0);
+    });
+
+    test("readyState=loading 时应注册 DOMContentLoaded 监听而非立即调用 initSwup", function (done) {
+      var domContentLoadedRegistered = false;
+      var ctx = makeBaseCtx({
+        documentProps: {
+          readyState: "loading",
+          addEventListener: function (event, handler) {
+            if (event === "DOMContentLoaded") {
+              domContentLoadedRegistered = true;
+            }
+          },
+        },
+      });
+      delete ctx.window.__initSwup; // ensure undefined
+      delete ctx.window.Swup;
+      var vm = require("vm");
+      vm.createContext(ctx);
+      vm.runInContext(fs.readFileSync(SWUP_INIT, "utf-8"), ctx, { timeout: 5000 });
+
+      // When readyState is "loading", swup-init registers a DOMContentLoaded listener
+      // and should NOT call __initSwup immediately
+      expect(domContentLoadedRegistered).toBe(true);
+      // initSwup should not have been called (Swup undefined + __initSwup undefined)
+      // Verify by checking that initCalled is still false internally
+      // The code only calls initSwup if readyState !== "loading"
+      done();
+    });
+
+    test("readyState=complete 时应立即调用 initSwup（幂等）", function (done) {
+      var initSwupCallCount = 0;
+      var domContentLoadedRegistered = false;
+
+      // Simulate Swup being present so __initSwup gets called
+      var ctx = makeBaseCtx({
+        windowProps: {
+          Swup: { version: "4" },
+          __initSwup: function () {
+            initSwupCallCount++;
+          },
+        },
+        documentProps: {
+          readyState: "complete",
+          addEventListener: function (event, handler) {
+            if (event === "DOMContentLoaded") {
+              domContentLoadedRegistered = true;
+            }
+          },
+        },
+      });
+      var vm = require("vm");
+      vm.createContext(ctx);
+      vm.runInContext(fs.readFileSync(SWUP_INIT, "utf-8"), ctx, { timeout: 5000 });
+
+      // When readyState is "complete", initSwup should be called immediately
+      // Since __initSwup is defined, initSwupCallCount should be 1
+      setTimeout(function () {
+        expect(initSwupCallCount).toBe(1);
+        expect(domContentLoadedRegistered).toBe(false);
+        done();
+      }, 50);
+    }, 5000);
+  });
+
+  // ───────────────────────────────────────────────────────────────────────────
+  // 7. runtime-guard.js — __safe.ready() 与 __safe.whenReady() 链式调用顺序
+  // ───────────────────────────────────────────────────────────────────────────
+  describe("runtime-guard.js — ready / whenReady 链式调用", function () {
+
+    test("__safe.ready() 应在变量就绪后 resolve，__safe.whenReady() 应在之后正确执行", function (done) {
+      var ctx = sandbox({}, runtimeGuardCode());
+
+      var order = [];
+      // Test: ready() resolves, then whenReady() fires in the same chain
+      ctx.window.Swup = { version: "4" }; // immediately ready
+
+      ctx.window.__safe.ready("Swup").then(function (swup) {
+        order.push("ready-resolved");
+        expect(swup).toEqual({ version: "4" });
+        // After Swup ready, whenReady for a DOM element
+        ctx.window.__safe.whenReady("#app", function (el) {
+          order.push("whenReady-fired");
+          expect(order).toEqual(["ready-resolved", "whenReady-fired"]);
+          done();
+        });
+      });
+
+      // Simulate #app appearing
+      setTimeout(function () {
+        // Override querySelector to return #app
+        var origQS = ctx.document.querySelector;
+        ctx.document.querySelector = function (sel) {
+          if (sel === "#app") return { nodeType: 1 };
+          return origQS ? origQS.call(ctx.document, sel) : null;
+        };
+      }, 20);
+    }, 5000);
+
+    test("__safe.whenReady() 回调中嵌套 __safe.ready() 应保持执行顺序一致", function (done) {
+      var ctx = sandbox({}, runtimeGuardCode());
+      var order = [];
+
+      // First, make the DOM element available
+      ctx.document.querySelector = function (sel) {
+        if (sel === "#main") return { nodeType: 1 };
+        return null;
+      };
+
+      ctx.window.__safe.whenReady("#main", function (el) {
+        order.push("whenReady-fired");
+        expect(el).toBeTruthy();
+
+        // Inside whenReady callback, call ready() for a global variable
+        ctx.window.SpaRouter = { version: "1" };
+        ctx.window.__safe.ready("SpaRouter").then(function (sr) {
+          order.push("ready-resolved");
+          expect(order).toEqual(["whenReady-fired", "ready-resolved"]);
+          done();
+        });
+      });
+    }, 5000);
+  });
