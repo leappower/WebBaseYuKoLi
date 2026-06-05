@@ -1122,9 +1122,13 @@ function _t(k) {
   _spaOn(document, "spa:load", function () {
     trackPdpReferrer();
     updatePdpCategoryNav();
-    // Delay render slightly to ensure DOM is settled after content swap
-    setTimeout(function () {
-      renderCrossSellForCurrentPage();
-    }, 50);
+    // T2.3: 使用 whenReady 替代 setTimeout(50) 确保 DOM 已替换
+    window.__safe.whenReady(
+      "#spa-content",
+      function () {
+        renderCrossSellForCurrentPage();
+      },
+      300
+    );
   });
 })();

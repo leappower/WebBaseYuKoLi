@@ -888,9 +888,14 @@
     if (/^\/cases(\/|\/index-pc\.html|\/index-mobile\.html|\/index-tablet\.html)?$/.test(path)) {
       // Only re-init on the listing page, not detail pages
       var variant = document.body.getAttribute("data-case-variant") || "pc";
-      setTimeout(function () {
-        init(variant);
-      }, 50);
+      // T2.3: 使用 whenReady 替代 setTimeout(50) 等待 DOM
+      window.__safe.whenReady(
+        "#case-grid",
+        function () {
+          init(variant);
+        },
+        300
+      );
     } else {
     }
   });

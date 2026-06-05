@@ -92,14 +92,16 @@
 
       // 监听 SPA 就绪
       document.addEventListener("spa:ready", check, { once: true });
-      // 兜底：500ms 后仍尝试一次
-      setTimeout(function () {
-        if (configReady() && i18nReady()) resolve();
-        else {
-          // 即使未就绪也尝试渲染（fallback 模式）
+      // T2.3: 使用 whenReady 替代 setTimeout 兜底
+      window.__safe.whenReady(
+        function () {
+          return configReady() && i18nReady();
+        },
+        function (ready) {
           resolve();
-        }
-      }, 500);
+        },
+        500
+      );
     });
 
     return _readyPromise;
