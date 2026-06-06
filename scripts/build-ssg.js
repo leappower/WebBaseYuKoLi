@@ -410,7 +410,12 @@ function injectThemeAndNavScripts(html, deviceType) {
     }
   }
 
-  // ── 4. Search/slide-menu (only if bundles not loaded) ──
+  // ── 4. SWUP init (must be injected manually for SSG pages) ──
+  if (html.indexOf('swup-init.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/swup-init.js"></script>\n  ';
+  }
+
+  // ── 5. Search/slide-menu (only if bundles not loaded) ──
   if (html.indexOf('nav-bundle.js') === -1 && allTags.indexOf('nav-bundle.js') === -1) {
     if (html.indexOf('slide-menu.js') === -1) {
       allTags += '<script defer src="' + bp + '/assets/js/ui/slide-menu.js"></script>\n    ';
@@ -551,6 +556,11 @@ function copyDeviceFiles(route) {
     // Inject theme-init.js + nav scripts
     var deviceType = detectDeviceType(file);
     content = injectThemeAndNavScripts(content, deviceType);
+    // 重定向守卫：SWUP 运行时跳过
+    content = content.replace(
+      /window\.__redirectChecked = true;\n        (\/\/)/,
+      'window.__redirectChecked = true;\n        if (window.__swupEnabled || window.__spaNavigating) return;\n        $1'
+    );
     fs.writeFileSync(destFile, content, 'utf-8');
     copied++;
   }
@@ -574,6 +584,11 @@ function copyDeviceFiles(route) {
       }
       var deviceType = detectDeviceType(file);
       content = injectThemeAndNavScripts(content, deviceType);
+      // 重定向守卫
+      content = content.replace(
+        /window\.__redirectChecked = true;\n        (\/\/)/,
+        'window.__redirectChecked = true;\n        if (window.__swupEnabled || window.__spaNavigating) return;\n        $1'
+      );
       fs.writeFileSync(destFile, content, 'utf-8');
       copied++;
     }
