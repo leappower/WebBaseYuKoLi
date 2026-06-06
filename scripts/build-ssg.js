@@ -495,8 +495,15 @@ function generateRouteIndex(route) {
   var srcFile = path.join(srcDir, 'index.html');
 
   if (!fs.existsSync(srcFile)) {
-    log('  ⚠ No index.html for ' + route.slug + ' (skipping)');
-    return;
+    // Fallback: 用 PC 版作为 index.html
+    var pcFile = path.join(srcDir, 'index-pc.html');
+    if (fs.existsSync(pcFile)) {
+      srcFile = pcFile;
+      log('  ⚠ No index.html for ' + route.slug + ', using index-pc.html as fallback');
+    } else {
+      log('  ⚠ No index.html for ' + route.slug + ' (skipping)');
+      return;
+    }
   }
 
   var html = fs.readFileSync(srcFile, 'utf-8');
