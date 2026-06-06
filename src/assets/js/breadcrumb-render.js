@@ -49,7 +49,20 @@
   function link(href, label, classes) {
     var a = el("a", classes || []);
     a.href = href || "";
-    a.textContent = String(label || "");
+    if (
+      label &&
+      typeof label === "string" &&
+      /^[a-z_]/.test(label) &&
+      label.indexOf(" ") === -1 &&
+      label.indexOf(":") === -1
+    ) {
+      // i18n key: 直接取翻译后的文本
+      a.setAttribute("data-i18n", label);
+      var translated = typeof global.t === "function" ? global.t(label) : null;
+      a.textContent = translated || label;
+    } else {
+      a.textContent = String(label || "");
+    }
     if (href) {
       a.setAttribute("data-no-swup", "");
     }
@@ -119,7 +132,19 @@
         if (seg.current) {
           span.id = "breadcrumb-current";
         }
-        span.textContent = String(seg.label || "");
+        if (
+          seg.label &&
+          typeof seg.label === "string" &&
+          /^[a-z_]/.test(seg.label) &&
+          seg.label.indexOf(" ") === -1 &&
+          seg.label.indexOf(":") === -1
+        ) {
+          span.setAttribute("data-i18n", seg.label);
+          var translated = typeof global.t === "function" ? global.t(seg.label) : null;
+          span.textContent = translated || seg.label;
+        } else {
+          span.textContent = String(seg.label || "");
+        }
         li.appendChild(span);
       }
 

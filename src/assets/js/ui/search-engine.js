@@ -84,6 +84,18 @@
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
+  /**
+   * Generate srcset attribute for product .webp images.
+   * Converts '/assets/images/products/xxx/001.webp' to:
+   *   '/assets/images/products/xxx/001-375w.webp 375w, .../001-828w.webp 828w'
+   * Returns empty string for non-webp images.
+   */
+  function _makeSrcset(imgSrc) {
+    if (!imgSrc || !imgSrc.match(/\.webp$/)) return "";
+    var base = imgSrc.replace(/\.webp$/, "");
+    return base + "-375w.webp 375w, " + base + "-828w.webp 828w";
+  }
+
   // ─── State ────────────────────────────────────────────────────────────────
 
   var panel = null; // DOM reference to results panel
@@ -454,7 +466,11 @@
             '" role="option">' +
             '<div class="ios-search-result-img">' +
             (item.image
-              ? '<img src="' + esc(item.image) + '" alt="" loading="lazy" decoding="async">'
+              ? '<img src="' +
+                esc(item.image) +
+                '" alt="" srcset="' +
+                _makeSrcset(item.image) +
+                '" sizes="(max-width: 767px) 375px, 828px" loading="lazy" decoding="async">'
               : '<span class="material-symbols-outlined">language</span>') +
             "</div>" +
             '<div class="ios-search-result-info">' +
@@ -496,7 +512,11 @@
             '" role="option">' +
             '<div class="ios-search-result-img">' +
             (imgSrc
-              ? '<img src="' + esc(imgSrc) + '" alt="" loading="lazy" decoding="async">'
+              ? '<img src="' +
+                esc(imgSrc) +
+                '" alt="" srcset="' +
+                _makeSrcset(imgSrc) +
+                '" sizes="(max-width: 767px) 375px, 828px" loading="lazy" decoding="async">'
               : '<span class="material-symbols-outlined">inventory_2</span>') +
             "</div>" +
             '<div class="ios-search-result-info">' +
@@ -522,7 +542,7 @@
     html += "</div>";
 
     html +=
-      '<a class="ios-search-view-all" href="/products/all/">' +
+      '<a class="ios-search-view-all" href="/products/all/" data-no-swup>' +
       "<span>" +
       esc(viewAllText) +
       "</span>" +
@@ -536,21 +556,18 @@
     // Bind click events on result items
     var items = panel.querySelectorAll(".ios-search-result-item");
     for (var j = 0; j < items.length; j++) {
-      items[j].addEventListener("click", function (e) {
+      items[j].addEventListener("click", function () {
         hidePanel();
-        // Let the SPA router handle navigation
-        // The href is already set to /products/
-        if (e.target.closest(".ios-search-view-all")) {
-          hidePanel();
-        }
       });
     }
 
     // View all link
     var viewAllLink = panel.querySelector(".ios-search-view-all");
     if (viewAllLink) {
-      viewAllLink.addEventListener("click", function () {
+      viewAllLink.addEventListener("click", function (e) {
+        e.preventDefault();
         hidePanel();
+        window.location.href = "/products/all/";
       });
     }
 

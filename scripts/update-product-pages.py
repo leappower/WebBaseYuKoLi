@@ -250,12 +250,13 @@ def generate_page(slug, device, cfg):
     <link rel="alternate" media="only screen and (min-width: 1280px)" href="/{cfg['canonical']}index-pc.html" />
     <script>
       (function () {{
+        // SWUP 已启用时跳过设备重定向（避免 SPA 导航时跳转到设备文件）
+        if (window.__swupEnabled || window.__spaNavigating) return;
         if (window.__redirectChecked) return;
         window.__redirectChecked = true;
         var urlParams = new URLSearchParams(location.search);
         var cleanUrl = urlParams.get("clean-url");
         if (cleanUrl) {{ history.replaceState({{}}, "", cleanUrl); return; }}
-        if (window.__spaNavigating) return;
         var currentFile = location.pathname.split("/").pop();
         if (window.DeviceUtils && window.DeviceUtils.isDirectoryURL()) return;
         if (window.DeviceUtils && window.DeviceUtils.shouldRedirect(currentFile)) {{

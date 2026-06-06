@@ -30,6 +30,9 @@
 
   var resizeTimer;
 
+  /** @type {string} 上次挂载的宽度桶（"pc"/"tablet"/"mobile"），用于 SPA 过渡时避免重复重建 */
+  var _lastFooterMountWidthBucket = null;
+
   /* ─── Mobile items (4) ─── */
   var mobileItems = [
     { id: "home", icon: "home", key: "nav_home", href: "/home/", fill: true },
@@ -252,6 +255,18 @@
   function mount() {
     var footers = document.querySelectorAll('footer[data-component="footer"]');
 
+    // ── Early exit: if width bucket hasn't changed and footer already exists, skip rebuild ──
+    var w = window.innerWidth;
+    var widthBucket = w >= 1280 ? "pc" : w >= 768 ? "tablet" : "mobile";
+    if (_lastFooterMountWidthBucket === widthBucket) {
+      // Footer DOM already correct for this device — just update active state
+      if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
+        window.translationManager.applyTranslations();
+      }
+      return;
+    }
+    _lastFooterMountWidthBucket = widthBucket;
+
     // Defensive: if no footer placeholder exists, create one
     if (footers.length === 0) {
       var f = document.createElement("footer");
@@ -260,8 +275,6 @@
       document.body.appendChild(f);
       footers = [f];
     }
-
-    var w = window.innerWidth;
 
     for (var i = 0; i < footers.length; i++) {
       var footer = footers[i];

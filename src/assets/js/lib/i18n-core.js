@@ -300,7 +300,14 @@
     }
 
     var bp = this._basePath();
-    var url = bp + "/assets/lang/" + lang + "-ui.json";
+    // Use absolute URL to prevent relative path resolution issues in dev mode
+    var origin = (global.location && global.location.origin) || "";
+    var url = origin + bp + "/assets/lang/" + lang + "-ui.json";
+
+    // Dev mode debugging: log the fetch URL for easier troubleshooting
+    if (_isDev) {
+      // dev mode: url is absolute with origin
+    }
 
     return _withTimeout(
       fetch(url, { cache: _isDev ? "no-store" : "default" })

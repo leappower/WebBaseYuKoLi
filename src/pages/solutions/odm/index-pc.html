@@ -1,4 +1,280 @@
-<!DOCTYPE html>
+<!doctype html>
+<html class="light" lang="zh-CN">
+  <head>
+  <script src="/site.config.js"></script>
+  <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <link rel="canonical" href="https://brew.yukoli.com/solutions/odm/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/solutions/odm/" />
+    <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/solutions/odm/" />
+    <link rel="alternate" media="only screen and (max-width: 767px)" href="/solutions/odm/index-mobile.html" />
+    <link rel="alternate" media="only screen and (min-width: 768px) and (max-width: 1279px)" href="/solutions/odm/index-tablet.html" />
+    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/solutions/odm/index-pc.html" />
+    <script>
+      (function () {
+        if (window.__redirectChecked) return; window.__redirectChecked = true;
+        var urlParams = new URLSearchParams(location.search);
+        var cleanUrl = urlParams.get("clean-url");
+        if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
+        if (window.__spaNavigating) return;
+        var currentFile = location.pathname.split("/").pop();        
+        
+        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
+          var deviceType = window.DeviceUtils.getDeviceType();
+          var targetFile;
+          if (deviceType === window.DeviceUtils.DeviceType.MOBILE) targetFile = "index-mobile.html";
+          else if (deviceType === window.DeviceUtils.DeviceType.TABLET) targetFile = "index-tablet.html";
+          else targetFile = "index-pc.html";
+          location.href = targetFile; return;
+        }
+      })();
+    </script>
+    <meta charset="utf-8" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="ODM Private Label - YuKoLi Technology" />
+    <meta property="og:description" content="我们研发，您贴牌。从配方开发到成品交付的一站式私标服务。We develop the formula, you build the brand." />
+    <meta property="og:url" content="https://brew.yukoli.com/solutions/odm/" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta data-i18n-meta="meta_solutions_odm_description" name="description" content="YuKoLi Technology — We develop the formula, you build the brand. Full private label service from R&amp;D to finished products." />
-    <title>ODM Private Label Service - <span data-i18n="seo_yukoli">YuKoLi</span> Technology</title>
+    <meta data-i18n-meta="meta_solutions_odm_description" name="description" content="YuKoLi Technology — 我们研发，您贴牌。从配方开发到成品交付的一站式私标服务。We develop the formula, you build the brand." />
+    <title>ODM Private Label - <span data-i18n="seo_yukoli">YuKoLi</span> Technology</title>
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
+    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
+    <script>if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");</script>
+  </head>
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-clip">
+    <navigator data-component="navigator" data-swup-persist="nav" data-variant="pc" data-active="solutions" data-search="true" data-cta-text-key="nav_contact_us" data-cta-href="/contact/"></navigator>
+    <main id="spa-content">
+      <!-- Breadcrumb -->
+      <div id="breadcrumb-container" class="section-content py-3 text-sm text-slate-500">
+        <a href="/" class="hover:text-primary transition-colors" data-i18n="breadcrumb_home">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/solutions/" class="hover:text-primary transition-colors" data-i18n="breadcrumb_solutions">Solutions</a>
+        <span class="mx-2">/</span>
+        <span class="text-slate-700 dark:text-slate-300 font-medium" data-i18n="breadcrumb_odm">ODM Private Label</span>
+      </div>
+
+      <!-- Hero -->
+      <section class="fullwidth-bg hero-banner w-full h-[500px] relative overflow-hidden">
+        <img alt="ODM Private Label Service" class="w-full h-full object-cover" src="/assets/images/oem/solutions/odm-hero-1920w.webp" loading="eager" srcset="/assets/images/oem/solutions/odm-hero-1200w.webp 1200w, /assets/images/oem/solutions/odm-hero-1920w.webp 1920w" sizes="(min-width: 1280px) 1024px, 80vw" />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
+        <div class="absolute inset-0 flex items-center">
+          <div class="section-content w-full">
+            <div class="max-w-2xl">
+              <h1 class="text-5xl lg:text-6xl font-black leading-tight text-white mb-4" data-i18n="solutions_odm_hero_title">ODM Private Label</h1>
+              <p class="text-lg text-white/80" data-i18n="solutions_odm_hero_desc">We Develop the Formula, You Build the Brand</p>
+              <div class="mt-8 flex flex-wrap gap-4">
+                <a href="/contact/" class="bg-white text-primary px-8 py-3 rounded-xl font-black hover:bg-slate-100 transition-colors shadow-lg" data-i18n="solutions_odm_cta_hero_btn">Start Private Label</a>
+                <button onclick="window.YuKoLiFAB && window.YuKoLiFAB.openWhatsApp()" class="bg-green-500 text-white px-8 py-3 rounded-xl font-black hover:bg-green-600 transition-colors shadow-lg" data-i18n="solutions_odm_cta_hero_whatsapp">WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Overview -->
+      <section class="fullwidth-bg py-16">
+        <div class="section-content">
+          <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl font-black mb-6" data-i18n="solutions_odm_section_title">ODM Private Label</h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="solutions_odm_section_desc">We develop the formula, you build the brand. From recipe R&D to packaging design, we deliver a turnkey private label solution so you can focus on sales.</p>
+            <p class="text-slate-500 mt-4" data-i18n="solutions_odm_section_desc_cn">We develop the formula, you build the brand. End-to-end private label service from formula to finished goods.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Service Flow -->
+      <section class="fullwidth-bg bg-slate-50 dark:bg-slate-900 py-16">
+        <div class="section-content">
+          <h2 class="text-3xl font-black text-center mb-12" data-i18n="solutions_odm_flow_title">How It Works</h2>
+          <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center relative">
+                <div class="absolute -top-4 -left-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-black text-lg">1</div>
+                <span class="material-symbols-outlined text-5xl mb-4 text-primary block">science</span>
+                <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_flow_formula_title">Formula R&amp;D</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="solutions_odm_flow_formula_desc">Our R&amp;D team develops custom formulas from a library of 200+ recipes, tailored to your target market, flavor profile, and functional requirements.</p>
+              </div>
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center relative">
+                <div class="absolute -top-4 -left-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-black text-lg">2</div>
+                <span class="material-symbols-outlined text-5xl mb-4 text-primary block">draft</span>
+                <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_flow_label_title">Label Design</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="solutions_odm_flow_label_desc">Professional packaging and label design that reflects your brand identity. From concept sketches to print-ready files, we handle the creative process.</p>
+              </div>
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center relative">
+                <div class="absolute -top-4 -left-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-black text-lg">3</div>
+                <span class="material-symbols-outlined text-5xl mb-4 text-primary block">precision_manufacturing</span>
+                <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_flow_production_title">Production</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="solutions_odm_flow_production_desc">Scalable batch production with rigorous quality control. MOQ 5,000+. Raw material sourcing, blending, filling, and packaging all in-house.</p>
+              </div>
+              <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow text-center relative">
+                <div class="absolute -top-4 -left-4 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-black text-lg">4</div>
+                <span class="material-symbols-outlined text-5xl mb-4 text-primary block">local_shipping</span>
+                <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_flow_delivery_title">Delivery</h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed" data-i18n="solutions_odm_flow_delivery_desc">Finished products delivered to your warehouse or distribution center within 45–60 days. Full documentation, inspection reports, and regulatory compliance included.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Grid -->
+      <section class="fullwidth-bg py-16">
+        <div class="section-content">
+          <h2 class="text-3xl font-black text-center mb-12" data-i18n="solutions_odm_services_title">Services</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <span class="material-symbols-outlined text-4xl mb-4 text-primary">science</span>
+              <h3 class="text-xl font-bold mb-2" data-i18n="solutions_odm_service_formula_title">Formula R&amp;D</h3>
+              <p class="text-slate-600 dark:text-slate-400" data-i18n="solutions_odm_service_formula_desc">Formula R&amp;D — 200+ recipe library. Custom formulation by our R&amp;D team to match your market needs.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <span class="material-symbols-outlined text-4xl mb-4 text-primary">label</span>
+              <h3 class="text-xl font-bold mb-2" data-i18n="solutions_odm_service_label_title">Private Label Customization</h3>
+              <p class="text-slate-600 dark:text-slate-400" data-i18n="solutions_odm_service_label_desc">Private Label — Your brand, our product. Full customization from flavor profile to packaging design.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <span class="material-symbols-outlined text-4xl mb-4 text-primary">precision_manufacturing</span>
+              <h3 class="text-xl font-bold mb-2" data-i18n="solutions_odm_service_onestop_title">One-Stop Production</h3>
+              <p class="text-slate-600 dark:text-slate-400" data-i18n="solutions_odm_service_onestop_desc">One-Stop Production — From raw material sourcing to finished goods. MOQ 5,000+, ready in 45–60 days.</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <span class="material-symbols-outlined text-4xl mb-4 text-primary">design_services</span>
+              <h3 class="text-xl font-bold mb-2" data-i18n="solutions_odm_service_packaging_title">Packaging Design</h3>
+              <p class="text-slate-600 dark:text-slate-400" data-i18n="solutions_odm_service_packaging_desc">Packaging Design — Professional packaging design that matches your brand identity. From concept to print-ready files.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Choose ODM -->
+      <section class="fullwidth-bg bg-slate-50 dark:bg-slate-900 py-16">
+        <div class="section-content">
+          <h2 class="text-3xl font-black text-center mb-12" data-i18n="solutions_odm_why_title">Why YuKoLi ODM?</h2>
+          <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+              <span class="material-symbols-outlined text-5xl text-primary mb-4 block">speed</span>
+              <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_why_speed_title">Fast Time-to-Market</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="solutions_odm_why_speed_desc">Sample within 7 days, production in 45–60 days. Our ready formula library eliminates months of R&amp;D.</p>
+            </div>
+            <div class="text-center">
+              <span class="material-symbols-outlined text-5xl text-primary mb-4 block">verified</span>
+              <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_why_quality_title">Quality Assurance</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="solutions_odm_why_quality_desc">FDA/HACCP/ISO certified facilities. Full batch inspection, third-party lab testing, and complete traceability.</p>
+            </div>
+            <div class="text-center">
+              <span class="material-symbols-outlined text-5xl text-primary mb-4 block">handshake</span>
+              <h3 class="text-xl font-bold mb-3" data-i18n="solutions_odm_why_partner_title">True Partnership</h3>
+              <p class="text-slate-600 dark:text-slate-400 text-sm" data-i18n="solutions_odm_why_partner_desc">Your brand is our priority. Flexible MOQ, dedicated project management, and transparent pricing with no hidden costs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Comparison Table -->
+      <section class="fullwidth-bg py-16">
+        <div class="section-content">
+          <h2 class="text-3xl font-black text-center mb-12" data-i18n="solutions_odm_compare_title">OEM vs ODM vs OBM</h2>
+          <div class="max-w-4xl mx-auto overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="border-b-2 border-primary">
+                  <th class="py-4 px-4 font-black" data-i18n="solutions_oem_compare_dimension">Dimension</th>
+                  <th class="py-4 px-4 font-black" data-i18n="solutions_oem_compare_oem">OEM</th>
+                  <th class="py-4 px-4 font-black" data-i18n="solutions_oem_compare_odm">ODM</th>
+                  <th class="py-4 px-4 font-black" data-i18n="solutions_oem_compare_obm">OBM</th>
+                </tr>
+              </thead>
+              <tbody class="text-slate-700 dark:text-slate-300">
+                <tr class="border-b border-slate-200 dark:border-slate-700">
+                  <td class="py-3 px-4 font-bold" data-i18n="solutions_oem_compare_formula">Formula Ownership</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_formula_oem">Client-provided</td>
+                  <td class="py-3 px-4 text-primary font-bold" data-i18n="solutions_oem_compare_formula_odm">Our R&amp;D</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_formula_obm">Our R&amp;D</td>
+                </tr>
+                <tr class="border-b border-slate-200 dark:border-slate-700">
+                  <td class="py-3 px-4 font-bold" data-i18n="solutions_oem_compare_brand">Brand Ownership</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_brand_oem">Client brand</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_brand_odm">Client brand</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_brand_obm">Co-branded or ours</td>
+                </tr>
+                <tr class="border-b border-slate-200 dark:border-slate-700">
+                  <td class="py-3 px-4 font-bold" data-i18n="solutions_oem_compare_moq">MOQ</td>
+                  <td class="py-3 px-4 text-primary font-bold" data-i18n="solutions_oem_compare_moq_oem">10,000+</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_moq_odm">5,000+</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_moq_obm">Negotiable</td>
+                </tr>
+                <tr class="border-b border-slate-200 dark:border-slate-700">
+                  <td class="py-3 px-4 font-bold" data-i18n="solutions_oem_compare_leadtime">Lead Time</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_leadtime_oem">30–45 days</td>
+                  <td class="py-3 px-4 text-primary font-bold" data-i18n="solutions_oem_compare_leadtime_odm">45–60 days</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_leadtime_obm">60–90 days</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 font-bold" data-i18n="solutions_oem_compare_packaging">Packaging</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_packaging_oem">Client-provided</td>
+                  <td class="py-3 px-4 text-primary font-bold" data-i18n="solutions_oem_compare_packaging_odm">We design</td>
+                  <td class="py-3 px-4" data-i18n="solutions_oem_compare_packaging_obm">Full service</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="fullwidth-bg bg-slate-50 dark:bg-slate-900 py-16">
+        <div class="section-content">
+          <h2 class="text-3xl font-black text-center mb-12" data-i18n="solutions_odm_testimonial_title">Trusted by Brands Worldwide</h2>
+          <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-black text-xl">M</div>
+                <div class="ml-4">
+                  <p class="font-bold">Mark T.</p>
+                  <p class="text-sm text-slate-500" data-i18n="solutions_odm_testimonial_1_role">Founder, Brio Beverages</p>
+                </div>
+              </div>
+              <p class="text-slate-600 dark:text-slate-400 italic" data-i18n="solutions_odm_testimonial_1_quote">"YuKoLi took our concept and turned it into a market-ready product in under 60 days. The formula development was spot-on and the packaging design exceeded our expectations."</p>
+            </div>
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-sm">
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary font-black text-xl">S</div>
+                <div class="ml-4">
+                  <p class="font-bold">Sarah L.</p>
+                  <p class="text-sm text-slate-500" data-i18n="solutions_odm_testimonial_2_role">CEO, PureLife Organics</p>
+                </div>
+              </div>
+              <p class="text-slate-600 dark:text-slate-400 italic" data-i18n="solutions_odm_testimonial_2_quote">"The best decision we made was choosing YuKoLi as our private label partner. Their R&amp;D team created three winning formulas from our brief and the quality is consistently excellent."</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="fullwidth-bg bg-primary py-16">
+        <div class="section-content">
+          <div class="w-full text-center text-white">
+            <h2 class="text-3xl lg:text-4xl font-black mb-6" data-i18n="solutions_odm_cta_title">Start Private Label</h2>
+            <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto" data-i18n="solutions_odm_cta_desc">Ready to launch your own brand? Get a free product concept and sample within 7 days.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+              <a href="/contact/" class="bg-white text-primary px-10 py-4 rounded-xl font-black hover:bg-slate-100 transition-colors shadow-xl" data-i18n="solutions_odm_cta_btn">Start Private Label</a>
+              <button onclick="window.YuKoLiFAB && window.YuKoLiFAB.openWhatsApp()" class="bg-green-500 text-white px-10 py-4 rounded-xl font-black hover:bg-green-600 transition-colors shadow-xl" data-i18n="solutions_odm_cta_whatsapp">WhatsApp</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
+    <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
+    <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
+    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
+    <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
+  </body>
+</html>

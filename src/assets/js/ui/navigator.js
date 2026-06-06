@@ -205,6 +205,9 @@
   /** @type {string} 当前检测到的设备变体（mobile / tablet / pc） */
   var currentVariant = "pc";
 
+  /** @type {string|null} 上次挂载的变体（用于 SPA 过渡时避免重复重建） */
+  var _lastMountVariant = null;
+
   /** @type {number|null} resize 防抖定时器 */
   var resizeTimer = null;
 
@@ -1272,9 +1275,24 @@
    * Can be called multiple times safely (idempotent by nature).
    */
   function mountNavigator() {
+    /* ── Early exit: if device variant hasn't changed and header already exists, skip full rebuild ── */
+    var placeholders = document.querySelectorAll('[data-component="navigator"]');
+    if (placeholders.length > 0) {
+      var config = extractConfigFromPlaceholder(placeholders[0]);
+      var computedVariant = config.variant;
+      var existingHeader = document.getElementById("main-header") || document.getElementById("mobile-header");
+      if (_lastMountVariant === computedVariant && existingHeader) {
+        /* No device change — just re-init DOM-dependent features */
+        reinitTranslationManager();
+        initSlideMenu();
+        initLangSwitcher();
+        return;
+      }
+      _lastMountVariant = computedVariant;
+    }
+
     /* Close all open dropdowns before remounting */
     closeOtherDropdowns(null);
-    var placeholders = document.querySelectorAll('[data-component="navigator"]');
 
     for (var i = 0; i < placeholders.length; i++) {
       var placeholder = placeholders[i];
@@ -1282,14 +1300,14 @@
       if (!placeholder.parentNode) continue;
 
       /* 如果 placeholder 内已有 <header>，直接提取替换 */
-      var existingHeader = placeholder.querySelector("header");
-      if (existingHeader) {
-        placeholder.parentNode.replaceChild(existingHeader, placeholder);
+      var existingHeaderInPH = placeholder.querySelector("header");
+      if (existingHeaderInPH) {
+        placeholder.parentNode.replaceChild(existingHeaderInPH, placeholder);
         /* Don't 'continue' — let the loop finish placeholder setup */
       }
 
       /* 否则根据配置构建新 header */
-      var config = extractConfigFromPlaceholder(placeholder);
+      config = extractConfigFromPlaceholder(placeholder);
       currentVariant = config.variant;
 
       var wrapper = document.createElement("div");
