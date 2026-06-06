@@ -46,6 +46,17 @@
   /**
    * 创建链接元素
    */
+  /**
+   * 翻译 i18n key，优先用 translationManager
+   */
+  function translate(key) {
+    if (!key || typeof key !== "string") return "";
+    if (window.translationManager && typeof window.translationManager.t === "function") {
+      return window.translationManager.t(key) || key;
+    }
+    return key;
+  }
+
   function link(href, label, classes) {
     var a = el("a", classes || []);
     a.href = href || "";
@@ -58,8 +69,7 @@
     ) {
       // i18n key: 直接取翻译后的文本
       a.setAttribute("data-i18n", label);
-      var translated = typeof global.t === "function" ? global.t(label) : null;
-      a.textContent = translated || label;
+      a.textContent = translate(label);
     } else {
       a.textContent = String(label || "");
     }
@@ -140,8 +150,7 @@
           seg.label.indexOf(":") === -1
         ) {
           span.setAttribute("data-i18n", seg.label);
-          var translated = typeof global.t === "function" ? global.t(seg.label) : null;
-          span.textContent = translated || seg.label;
+          span.textContent = translate(seg.label);
         } else {
           span.textContent = String(seg.label || "");
         }

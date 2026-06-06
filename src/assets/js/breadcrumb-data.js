@@ -128,10 +128,26 @@
     }
 
     // ── /products/<slug>/<model>/（PDP）──────────
-    var pdpMatch = path.match(/^\/products\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_-]+)$/);
+    var pdpMatch = path.match(/^\/products\/([a-zA-Z0-9_-]+)\/([a-zA-Z0-9_.-]+)$/);
     if (pdpMatch) {
       var categoryFromUrl = pdpMatch[1];
       var model = pdpMatch[2];
+      // 跳过设备文件名（index-pc.html, index-mobile.html, index-tablet.html）
+      if (/^index-(?:pc|mobile|tablet)\.html?$/.test(model)) {
+        // 降级为品类页
+        var slug = categoryFromUrl;
+        var info = productSlugs[slug];
+        if (info) {
+          result.type = "category";
+          result.slug = slug;
+          result.segments = [
+            { label: "nav_product_center", href: "/products/" },
+            { label: resolveLabel(info.label, currentLang), href: "/products/" + slug + "/", current: true },
+          ];
+          result.siblings = buildSiblingList("products", slug, categories, currentLang);
+        }
+        return result;
+      }
       var refSlug = productSlugs[categoryFromUrl] ? categoryFromUrl : "";
 
       result.type = "pdp";
