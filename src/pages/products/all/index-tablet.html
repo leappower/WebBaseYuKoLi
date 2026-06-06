@@ -8,39 +8,7 @@
     <link rel="canonical" href="https://brew.yukoli.com/products/all/" />
     <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/products/all/" />
     <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/products/all/" />
-    <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/products/all/" />
-    <link rel="alternate" media="only screen and (max-width: 767px)" href="/products/all/index-mobile.html" />
-    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/products/all/index-pc.html" />
-    <script>
-      /* Responsive redirect — runs before render, no flash */
-      (function () {
-        if (window.__redirectChecked) return;
-        window.__redirectChecked = true;
-
-        var urlParams = new URLSearchParams(location.search);
-        var cleanUrl = urlParams.get("clean-url");
-        if (cleanUrl) {
-          history.replaceState({}, "", cleanUrl);
-          return;
-        }
-
-        if (window.__spaNavigating) return;
-
-        var currentFile = location.pathname.split("/").pop();        
-        
-        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
-          var deviceType = window.DeviceUtils.getDeviceType();
-          var targetFile =
-            deviceType === window.DeviceUtils.DeviceType.MOBILE
-              ? "index-mobile.html"
-              : deviceType === window.DeviceUtils.DeviceType.TABLET
-                ? "index-tablet.html"
-                : "index-pc.html";
-          location.href = targetFile;
-        }
-      })();
-    </script>
-    <!-- ═══ End Responsive Redirect ═══ -->
+    <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/products/all/" />    <!-- ═══ End Responsive Redirect ═══ -->
 
     <meta charset="utf-8" />
     <meta

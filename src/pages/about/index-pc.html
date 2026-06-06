@@ -8,52 +8,11 @@
     <link rel="canonical" href="https://brew.yukoli.com/about/" />
   <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/about/" />
   <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/about/" />
-  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/about/" />
-    <link rel="alternate" media="only screen and (max-width: 767px)" href="/about/index-mobile.html" />
-    <link
+  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/about/" />    <link
       rel="alternate"
       media="only screen and (min-width: 768px) and (max-width: 1279px)"
       href="/about/index-tablet.html"
-    />
-    <link rel="alternate" media="only screen and (min-width: 1280px)" href="/about/index-pc.html" />
-    <script>
-      /* Responsive redirect — runs before render, no flash */
-      (function () {
-        if (window.__redirectChecked) return;
-        window.__redirectChecked = true;
-
-        var urlParams = new URLSearchParams(location.search);
-        var cleanUrl = urlParams.get("clean-url");
-        if (cleanUrl) {
-          history.replaceState({}, "", cleanUrl);
-          return;
-        }
-
-        if (window.__spaNavigating) {
-          return;
-        }
-
-        var currentFile = location.pathname.split("/").pop();        
-        
-        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
-          var deviceType = window.DeviceUtils.getDeviceType();
-          var targetFile;
-
-          if (deviceType === window.DeviceUtils.DeviceType.MOBILE) {
-            targetFile = "index-mobile.html";
-          } else if (deviceType === window.DeviceUtils.DeviceType.TABLET) {
-            targetFile = "index-tablet.html";
-          } else {
-            targetFile = "index-pc.html";
-          }
-
-          location.href = targetFile;
-          return;
-        }
-
-      })();
-    </script>
-    <!-- ═══ End Responsive Redirect ═══ -->
+    />    <!-- ═══ End Responsive Redirect ═══ -->
 
     <meta charset="utf-8" />
 
