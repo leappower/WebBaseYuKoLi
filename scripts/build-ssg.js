@@ -607,44 +607,30 @@ function copyDeviceFiles(route) {
 // ─── SPA SHELL GENERATION ─────────────────────────────────────────
 
 /**
- * Generate the root index.html (SPA Shell)
- * Uses src/index.html as the base — the SPA shell with navigator, spa-content, footer.
+ * Generate the root index.html — lightweight redirect to /home/
+ * The SPA shell caused a cascade of issues (empty spa-content, SWUP init loops,
+ * PRODUCT_DATA_TABLE not loading on SWUP navigation, device-file URL leaks).
+ * SSG pages have their own complete HTML + JS, so the root just redirects.
  */
 function generateSPAShell() {
-  const spaShell = path.join(__dirname, '..', 'src', 'index.html');
-  
-  if (!fs.existsSync(spaShell)) {
-    log('ERROR: src/index.html (SPA shell) not found');
-    return;
-  }
+  var bp = BASE_PATH ? BASE_PATH.replace(/\/$/, '') : '';
+  var target = bp + '/home/';
 
-  var html = fs.readFileSync(spaShell, 'utf-8');
+  // Use JS redirect (works on all hosts including serve, GitHub Pages, Cloudflare Pages)
+  var html = '<!DOCTYPE html>\n'
+    + '<html lang="zh-CN">\n'
+    + '<head>\n'
+    + '  <meta charset="UTF-8">\n'
+    + '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+    + '  <link rel="canonical" href="https://brew.yukoli.com/home/">\n'
+    + '  <script>window.location.replace("' + target + '");</script>\n'
+    + '  <noscript><meta http-equiv="refresh" content="0;url=' + target + '"></noscript>\n'
+    + '</head>\n'
+    + '<body>Redirecting to <a href="' + target + '">' + target + '</a></body>\n'
+    + '</html>\n';
 
-  // Inject lang-registry.js before translations.js (if not already present)
-  html = injectLangRegistry(html);
-
-  if (BASE_PATH) {
-    html = patchHtmlPaths(html);
-  }
-
-  // Inject theme-init.js + nav scripts (SPA shell serves all devices)
-  html = injectThemeAndNavScripts(html, 'responsive');
-
-  // Inject skeleton overlay before footer
-  var skeletonHTML = buildSkeletonHTML();
-  if (skeletonHTML) {
-    html = html.replace(
-      /<footer[^>]*data-component="footer"/,
-      skeletonHTML + '\n<footer data-component="footer"'
-    );
-  }
-
-  // Write to dist/index.html
   fs.writeFileSync(path.join(DIST_DIR, 'index.html'), html, 'utf-8');
-  log('  ✓ dist/index.html (SPA shell, ' + html.length + ' bytes)');
-
-  // Also write root index.html for GitHub Pages compatibility
-  // (GitHub Pages sometimes uses /index.html for root)
+  log('  ✓ dist/index.html (redirect to /home/, ' + html.length + ' bytes)');
 }
 
 // ─── 404 PAGE GENERATION ──────────────────────────────────────────
