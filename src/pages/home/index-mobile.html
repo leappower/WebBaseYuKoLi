@@ -4,42 +4,6 @@
   <head>
   <script src="/site.config.js"></script>
   <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
-    <!-- ═══ Responsive Redirect (injected by patch-responsive-redirect.py) ═══ -->
-    <link rel="canonical" href="https://brew.yukoli.com/home/" />
-  <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/home/" />
-  <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/home/" />
-  <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/home/" />    <link
-      rel="alternate"
-      media="only screen and (min-width: 768px) and (max-width: 1279px)"
-      href="/home/index-tablet.html"
-    />    <script>
-      /* Pre-apply cached translations to prevent flash */
-      (function () {
-        try {
-          var lang = localStorage.getItem("userLanguage") || "zh-CN";
-          if (lang === "zh-CN") return; // 默认中文，无需处理
-          var cacheKey = "yukoli-translations-ui-" + lang;
-          var cached = localStorage.getItem(cacheKey);
-          if (!cached) return;
-          var data = JSON.parse(cached);
-          if (!data.data) return;
-          var translations = data.data;
-          document.documentElement.lang = lang;
-          // 预应用关键翻译（仅处理无子元素的叶子节点）
-          var elements = document.querySelectorAll("[data-i18n]");
-          for (var i = 0; i < elements.length; i++) {
-            var el = elements[i];
-            var key = el.getAttribute("data-i18n");
-            if (translations[key] && el.children.length === 0) {
-              el.textContent = translations[key];
-            }
-          }
-        } catch (e) {
-          // 忽略错误，让主翻译系统处理
-        }
-      })();
-    </script>
-    <!-- ═══ End Responsive Redirect ═══ -->
 
     <meta charset="utf-8" />
 

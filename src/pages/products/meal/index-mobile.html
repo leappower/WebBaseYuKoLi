@@ -5,27 +5,7 @@
   <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
     <link rel="canonical" href="https://brew.yukoli.com/products/meal/" />
     <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/products/meal/" />
-    <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/products/meal/" />    <script>
-      (function () {
-        if (window.__redirectChecked) return;
-        window.__redirectChecked = true;
-        var urlParams = new URLSearchParams(location.search);
-        var cleanUrl = urlParams.get("clean-url");
-        if (cleanUrl) { history.replaceState({}, "", cleanUrl); return; }
-        if (window.__spaNavigating) return;
-        var currentFile = location.pathname.split("/").pop();        
-        
-        if (window.DeviceUtils && ((currentFile === "" && window.DeviceUtils && !window.DeviceUtils.isPC() || window.DeviceUtils.shouldRedirect(currentFile)))) {
-          var deviceType = window.DeviceUtils.getDeviceType();
-          var targetFile;
-          if (deviceType === window.DeviceUtils.DeviceType.MOBILE) targetFile = "index-mobile.html";
-          else if (deviceType === window.DeviceUtils.DeviceType.TABLET) targetFile = "index-tablet.html";
-          else targetFile = "index-pc.html";
-          location.href = targetFile;
-          return;
-        }
-      })();
-    </script>
+    <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/products/meal/" />
     <meta charset="utf-8" />
     <meta property="og:type" content="website" />
  <meta property="og:title" content="Meal Replacement OEM/ODM - YuKoLi Technology" />
@@ -119,7 +99,6 @@
 
       
 
-
       <!-- Product Gallery (Catalog V4 Grid) -->
       <section class="fullwidth-bg py-16">
         <div class="section-content">
@@ -139,7 +118,6 @@
         </button>
         </div>
 </section>
-
 
       <!-- CTA -->
       <section class="fullwidth-bg bg-primary py-16">
