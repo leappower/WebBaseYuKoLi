@@ -2082,16 +2082,11 @@
     clearTimeout(global._skDebugTimer);
     var overlay = document.getElementById("skeleton-overlay");
     var container = document.getElementById("spa-content");
-    if (overlay && !overlay.hasAttribute("hidden")) {
-      overlay.setAttribute("hidden", "");
-      if (container && container.innerHTML.trim()) {
-        container.classList.add("swup-fade-in");
-      }
-    } else {
-      // 即使已经隐藏，也要确保内容可见
-      if (container && container.innerHTML.trim()) {
-        container.classList.add("swup-fade-in");
-      }
+    if (overlay) {
+      overlay.setAttribute("data-hidden", "");
+    }
+    if (container && container.innerHTML.trim()) {
+      container.classList.add("swup-fade-in");
     }
   }
 
@@ -2111,9 +2106,7 @@
       '<div class="sk-grid"><div class="sk-card"></div>' +
       '<div class="sk-card"></div><div class="sk-card"></div></div>' +
       "</div>";
-    overlay.setAttribute("hidden", "");
-    overlay.style.opacity = "0";
-    overlay.style.pointerEvents = "none";
+    overlay.setAttribute("data-hidden", "");
     // 插入到 main#spa-content 内部作为第一个子元素，相对定位
     container.insertBefore(overlay, container.firstChild);
     return true;
@@ -2122,10 +2115,12 @@
   function showSkeleton() {
     createSkeletonIfMissing();
     var overlay = document.getElementById("skeleton-overlay");
-    if (overlay && overlay.hasAttribute("hidden")) {
+    if (overlay && overlay.hasAttribute("data-hidden")) {
       // 跳过过渡：先禁用 transition, 显示, 再恢复
       overlay.style.transition = "none";
-      overlay.removeAttribute("hidden");
+      overlay.removeAttribute("data-hidden");
+      overlay.style.opacity = "1";
+      overlay.style.pointerEvents = "auto";
       void overlay.offsetHeight; // 强制重绘
       overlay.style.transition = "";
     }
@@ -2133,8 +2128,8 @@
 
   function ensureSkeletonHidden() {
     var overlay = document.getElementById("skeleton-overlay");
-    if (overlay && !overlay.hasAttribute("hidden")) {
-      overlay.setAttribute("hidden", "");
+    if (overlay && !overlay.hasAttribute("data-hidden")) {
+      overlay.setAttribute("data-hidden", "");
     }
   }
 
@@ -2656,6 +2651,15 @@
 
       // ─── page:view — 派发 spa:load 兼容事件（页面完全渲染后）───
       swup.hooks.on("page:view", function () {
+        // hash 锚点滚动：页面加载完成后处理 hash
+        if (window.location.hash) {
+          var hashTarget = document.querySelector(window.location.hash);
+          if (hashTarget) {
+            setTimeout(function () {
+              hashTarget.scrollIntoView({ behavior: "smooth" });
+            }, 100);
+          }
+        }
         dispatchSpaLoad();
         dispatchSpaReady();
       });
@@ -2720,12 +2724,13 @@
             if (overlay) {
               // 立即显示骨架，然后在下一帧设置 fade-out
               overlay.style.transition = "none";
-              overlay.removeAttribute("hidden");
+              overlay.removeAttribute("data-hidden");
               overlay.style.opacity = "1";
+              overlay.style.pointerEvents = "auto";
               // 强制重绘后触发过渡
               overlay.offsetWidth;
-              overlay.style.transition = "opacity 350ms ease-out";
-              overlay.setAttribute("hidden", "");
+              overlay.style.transition = "";
+              overlay.setAttribute("data-hidden", "");
               container.classList.add("swup-fade-in");
             }
           }
