@@ -2558,11 +2558,9 @@
         // 检查容器是否存在（避免 404 页面缺少 #spa-content）
         var container = document.getElementById("spa-content");
         if (!container) {
-          // 容器不存在 → fallback 到原生导航
-          console.warn("[SWUP] #spa-content not found in incoming page, falling back to native navigation");
-          swup.navigate(visit.to.url).catch(function () {
-            global.location.href = visit.to.url;
-          });
+          // 容器不存在 → 404 页面，直接跳转避免无限循环
+          console.warn("[SWUP] #spa-content not found in incoming page, redirecting to 404");
+          global.location.replace("/404?from=" + encodeURIComponent(visit.to.url));
           return;
         }
         container.classList.add("swup-fade-in");
