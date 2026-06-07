@@ -2083,6 +2083,10 @@
     var overlay = document.getElementById("skeleton-overlay");
     var container = document.getElementById("spa-content");
     if (overlay) {
+      // 清除 showSkeleton 设置的 inline style，让 CSS [data-hidden] 生效
+      overlay.style.transition = "";
+      overlay.style.opacity = "";
+      overlay.style.pointerEvents = "";
       overlay.setAttribute("data-hidden", "");
     }
     if (container && container.innerHTML.trim()) {
@@ -2112,6 +2116,17 @@
     return true;
   }
 
+  function getNavigatorHeight() {
+    var nav = document.querySelector('navigator, [data-component="navigator"], nav, header');
+    if (nav) {
+      var h = nav.getBoundingClientRect().height;
+      if (h > 0) return h;
+    }
+    // fallback: 读取 CSS 变量
+    var cssVal = getComputedStyle(document.documentElement).getPropertyValue("--nav-height");
+    return parseInt(cssVal, 10) || 65;
+  }
+
   function showSkeleton() {
     createSkeletonIfMissing();
     var overlay = document.getElementById("skeleton-overlay");
@@ -2121,6 +2136,8 @@
       overlay.removeAttribute("data-hidden");
       overlay.style.opacity = "1";
       overlay.style.pointerEvents = "auto";
+      // 三屏适配：读取 navigator 实际高度
+      overlay.style.paddingTop = getNavigatorHeight() + "px";
       void overlay.offsetHeight; // 强制重绘
       overlay.style.transition = "";
     }
@@ -2725,6 +2742,8 @@
               overlay.removeAttribute("data-hidden");
               overlay.style.opacity = "1";
               overlay.style.pointerEvents = "auto";
+              // 三屏适配：读取 navigator 实际高度
+              overlay.style.paddingTop = getNavigatorHeight() + "px";
               // 强制重绘后触发过渡
               overlay.offsetWidth;
               overlay.style.transition = "";

@@ -31,18 +31,12 @@
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  padding-top: var(--nav-height, 65px);
+  /* padding-top 由 JS 动态设置：读取 navigator 实际高度 */
   overflow: hidden;
 }
-@media (min-width: 1024px) {
-  #skeleton-overlay {
-    padding-top: var(--nav-height, 109px);
-  }
-}
-#skeleton-overlay[hidden],
 #skeleton-overlay[data-hidden] {
-  opacity: 0;
-  pointer-events: none;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* ───────── 容器 ───────── */
