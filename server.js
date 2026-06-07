@@ -67,10 +67,8 @@ app.use(helmet({
       connectSrc: ["'self'", "wa.me", "*.googleapis.com", "script.google.com", "script.googleusercontent.com"],
       frameSrc: ["'self'"],
       frameAncestors: ["'none'"],
-      // Disable upgrade-insecure-requests — Express runs HTTP-only behind Caddy.
-      // This directive forces browsers to upgrade HTTP→HTTPS fetch calls,
-      // breaking SPA router on localhost:3097 (ERR_SSL_PROTOCOL_ERROR).
-      upgradeInsecureRequests: null,
+      // NOTE: helmet 7.x does NOT allow disabling upgrade-insecure-requests (boolean directive).
+      // We strip it below via a post-helmet middleware.
     },
   },
 }));
@@ -78,13 +76,18 @@ app.use(helmet({
 app.use(apiProxyGuard);
 app.set('trust proxy', 1);
 
-// Strict CSP for main site
-// Remove problematic CORS headers after helmet (for non-HTTPS LAN origins)
-const REMOVE_COEP = ['Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy', 'Origin-Agent-Cluster'];
+// Remove problematic headers after helmet (for non-HTTPS LAN origins)
+// Must intercept at writeHead level — helmet sets headers lazily on writeHead
+const REMOVE_HEADERS = ['Cross-Origin-Embedder-Policy', 'Cross-Origin-Opener-Policy', 'Origin-Agent-Cluster', 'Strict-Transport-Security'];
 app.use((req, res, next) => {
   const origWriteHead = res.writeHead;
   res.writeHead = function(...args) {
-    REMOVE_COEP.forEach(h => this.removeHeader(h));
+    REMOVE_HEADERS.forEach(h => this.removeHeader(h));
+    // Strip upgrade-insecure-requests from CSP at writeHead time
+    const csp = this.getHeader('Content-Security-Policy');
+    if (typeof csp === 'string' && csp.includes('upgrade-insecure-requests')) {
+      this.setHeader('Content-Security-Policy', csp.replace(/;?\s*upgrade-insecure-requests\s*/g, ''));
+    }
     return origWriteHead.apply(this, args);
   };
   next();

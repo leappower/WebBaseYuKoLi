@@ -357,7 +357,21 @@ function injectThemeAndNavScripts(html, deviceType) {
   // Use a custom marker for idempotency so we don't skip pages
   // that already have theme-init.js but need the core bundles.
   var MARKER = '<!-- ssg-nav-footer-injected -->';
+  // ── Auto-inject footer placeholder for mobile/tablet pages ──
+  // footer.js needs a <footer data-component="footer"> element to hydrate.
+  // PC pages do not need a footer. Idempotent via marker comment.
+  // This runs BEFORE the MARKER check because dist/ files may already have
+  // scripts injected by webpack but still be missing the footer placeholder.
+  var FOOTER_MARKER = '<!-- ssg-footer-placeholder -->';
+  if ((deviceType === 'mobile' || deviceType === 'tablet') && html.indexOf(FOOTER_MARKER) === -1) {
+    // Also check if the source HTML already has a footer placeholder (manual)
+    if (html.indexOf('data-component="footer"') === -1) {
+      var footerHtml = '\n  ' + FOOTER_MARKER + '\n    <footer data-component="footer" data-swup-persist="footer" data-variant="' + deviceType + '" data-active=""></footer>';
+      html = html.replace(/<\/body>/i, footerHtml + '\n  <\/body>');
+    }
+  }
   if (html.indexOf(MARKER) !== -1) return html;
+
 
   var bp = BASE_PATH ? BASE_PATH.replace(/\/$/, '') : '';
   var allTags = '';
@@ -393,6 +407,16 @@ function injectThemeAndNavScripts(html, deviceType) {
   }
   if (html.indexOf('footer.js') === -1 && html.indexOf('ui-bundle.js') === -1) {
     allTags += '<script defer src="' + bp + '/assets/js/ui/footer.js"></script>\n  ';
+  }
+
+  // bottom-tab.js (mobile/tablet bottom navigation bar)
+  if (html.indexOf('bottom-tab.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/ui/bottom-tab.js"></script>\n  ';
+  }
+
+  // search-engine.js (search functionality)
+  if (html.indexOf('search-engine.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n  ';
   }
 
   // ── 3. Device-specific nav script (only if bundles not loaded) ──
