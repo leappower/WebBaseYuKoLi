@@ -385,9 +385,13 @@ function injectThemeAndNavScripts(html, deviceType) {
   if (html.indexOf('nav-bundle.js') === -1 && html.indexOf('navigator.js') === -1) {
     allTags += '<script defer src="' + bp + '/assets/js/nav-bundle.js"></script>\n  ';
   }
-  // Inject individual footer.js instead of deprecated ui-bundle.js
-  // (ui-bundle.js is stale — see JJC-020 T3.4)
-  if (html.indexOf('footer.js') === -1) {
+  // ui-bundle.js is deprecated (stale source). Inject individual components:
+  // trust-bar (shown on all devices), footer.js (replaces deprecated ui-bundle.js)
+  // and nav-bundle (navigator, loader, bottom-tab).
+  if (html.indexOf('trust-bar.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/ui/trust-bar.js"></script>\n  ';
+  }
+  if (html.indexOf('footer.js') === -1 && html.indexOf('ui-bundle.js') === -1) {
     allTags += '<script defer src="' + bp + '/assets/js/ui/footer.js"></script>\n  ';
   }
 
@@ -553,26 +557,26 @@ function copyDeviceFiles(route) {
       if (!file.endsWith('.html')) continue;
       if (file === 'index.html') continue;
 
-    const srcFile = path.join(srcDir, file);
-    const destFile = path.join(destRouteDir, file);
+      const srcFile = path.join(srcDir, file);
+      const destFile = path.join(destRouteDir, file);
 
-    let content = fs.readFileSync(srcFile, 'utf-8');
-    // Inject lang-registry.js before translations.js (if not already present)
-    content = injectLangRegistry(content);
-    if (BASE_PATH) {
-      content = patchHtmlPaths(content);
+      let content = fs.readFileSync(srcFile, 'utf-8');
+      // Inject lang-registry.js before translations.js (if not already present)
+      content = injectLangRegistry(content);
+      if (BASE_PATH) {
+        content = patchHtmlPaths(content);
+      }
+      // Inject theme-init.js + nav scripts
+      var deviceType = detectDeviceType(file);
+      content = injectThemeAndNavScripts(content, deviceType);
+      // 重定向守卫：SWUP 运行时跳过
+      content = content.replace(
+        /window\.__redirectChecked = true;\n        (\/\/)/,
+        'window.__redirectChecked = true;\n        if (window.__swupEnabled || window.__spaNavigating) return;\n        $1'
+      );
+      fs.writeFileSync(destFile, content, 'utf-8');
+      copied++;
     }
-    // Inject theme-init.js + nav scripts
-    var deviceType = detectDeviceType(file);
-    content = injectThemeAndNavScripts(content, deviceType);
-    // 重定向守卫：SWUP 运行时跳过
-    content = content.replace(
-      /window\.__redirectChecked = true;\n        (\/\/)/,
-      'window.__redirectChecked = true;\n        if (window.__swupEnabled || window.__spaNavigating) return;\n        $1'
-    );
-    fs.writeFileSync(destFile, content, 'utf-8');
-    copied++;
-  }
   } else {
     // Cross-directory copy (e.g. case-detail sourceDir → slug directory)
     if (!fs.existsSync(destRouteDir)) {

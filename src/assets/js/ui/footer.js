@@ -199,7 +199,7 @@
     return (
       '<div class="bg-slate-900 text-white mx-auto mt-8" style="max-width:1920px">' +
       '<div class="section-content mx-auto px-3 sm:px-5 xl:px-10 pt-8 sm:pt-12 pb-6 sm:pb-8">' +
-      '<div class="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">' +
+      '<div class="grid grid-cols-4 gap-4 lg:gap-8">' +
       /* Products */
       '<div class="text-center">' +
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_products_title">Products</h4>' +
