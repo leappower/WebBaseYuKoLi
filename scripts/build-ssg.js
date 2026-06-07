@@ -413,6 +413,10 @@ function injectThemeAndNavScripts(html, deviceType) {
     allTags += '<script defer src="' + bp + '/assets/js/ui/bottom-tab.js"></script>\n  ';
   }
 
+  // search-engine.js (search functionality — unconditional, all devices)
+  if (html.indexOf('search-engine.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n  ';
+  }
 
   // ── 3. Device-specific nav script (only if bundles not loaded) ──
   if (html.indexOf('nav-bundle.js') === -1 && allTags.indexOf('nav-bundle.js') === -1) {
