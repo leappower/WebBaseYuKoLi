@@ -370,9 +370,8 @@ function injectThemeAndNavScripts(html, deviceType) {
       html = html.replace(/<\/body>/i, footerHtml + '\n  <\/body>');
     }
   }
+
   if (html.indexOf(MARKER) !== -1) return html;
-
-
   var bp = BASE_PATH ? BASE_PATH.replace(/\/$/, '') : '';
   var allTags = '';
 
@@ -414,10 +413,6 @@ function injectThemeAndNavScripts(html, deviceType) {
     allTags += '<script defer src="' + bp + '/assets/js/ui/bottom-tab.js"></script>\n  ';
   }
 
-  // search-engine.js (search functionality)
-  if (html.indexOf('search-engine.js') === -1) {
-    allTags += '<script defer src="' + bp + '/assets/js/ui/search-engine.js"></script>\n  ';
-  }
 
   // ── 3. Device-specific nav script (only if bundles not loaded) ──
   if (html.indexOf('nav-bundle.js') === -1 && allTags.indexOf('nav-bundle.js') === -1) {

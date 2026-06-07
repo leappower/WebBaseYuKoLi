@@ -2402,7 +2402,7 @@
    */
   var _globalScriptPatterns =
     window._BREW_GLOBAL_PATTERNS ||
-    /(?:^|[/])(?:device-utils|swup-bundle|i18n-bundle|dropdown-bundle|nav-bundle|ui-bundle|contacts|product-grid|product-detail|home-core-products|case-grid|search-index|page-init|dom-utils)\.js/;
+    /(?:^|[/])(?:device-utils|swup-bundle|swup-init|i18n-bundle|dropdown-bundle|nav-bundle|footer|bottom-tab|search-engine|trust-bar|analytics|theme-init|runtime-guard|product-data-table|product-grid|product-detail|home-core-products|case-grid|search-index|page-init|dom-utils|nav-config|breadcrumb|spa-router|utils|page-interactions|helpers|page-effects|form-interactions|hero-video|currency|floating-actions|lang-registry|translations|translations-dropdown-template|contacts|product-list)\.js/;
 
   /**
    * 用于缓存当前 SPA 导航周期中已动态注入的 script 元素。
