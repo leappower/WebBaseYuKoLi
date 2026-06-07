@@ -385,8 +385,10 @@ function injectThemeAndNavScripts(html, deviceType) {
   if (html.indexOf('nav-bundle.js') === -1 && html.indexOf('navigator.js') === -1) {
     allTags += '<script defer src="' + bp + '/assets/js/nav-bundle.js"></script>\n  ';
   }
-  if (html.indexOf('ui-bundle.js') === -1 && html.indexOf('footer.js') === -1) {
-    allTags += '<script defer src="' + bp + '/assets/js/ui-bundle.js"></script>\n  ';
+  // Inject individual footer.js instead of deprecated ui-bundle.js
+  // (ui-bundle.js is stale — see JJC-020 T3.4)
+  if (html.indexOf('footer.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/ui/footer.js"></script>\n  ';
   }
 
   // ── 3. Device-specific nav script (only if bundles not loaded) ──
