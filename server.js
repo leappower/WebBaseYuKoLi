@@ -428,10 +428,12 @@ function resolvePage(reqPath, deviceType) {
   if (isFile(f)) return f;
 
   // 3–5. Page resolution under dist/
-  //    Try index.html → index-{device}.html → <clean>-pc.html
+  //    Device-specific file first → index.html (fallback) → <clean>-pc.html
+  //    SSG generates index-pc/mobile/tablet.html per route; index.html is a PC copy.
+  //    Serving device-specific files ensures mobile gets mobile layout, not PC.
   var candidates = [
-    path.join(__dirname, 'dist', clean, 'index.html'),
     path.join(__dirname, 'dist', clean, deviceFile),
+    path.join(__dirname, 'dist', clean, 'index.html'),
     path.join(__dirname, 'dist', clean, 'index-pc.html'),  // fallback
     path.join(__dirname, 'dist', clean + '-pc.html'),
   ];
