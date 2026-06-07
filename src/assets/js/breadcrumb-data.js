@@ -88,6 +88,9 @@
       siblings: [],
     };
 
+    // Trim trailing slash — all regex patterns expect no trailing slash
+    path = path.replace(/\/+$/, "");
+
     if (!categories) return result;
 
     var productSlugs = buildSlugMap(categories.products);
