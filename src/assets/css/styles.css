@@ -1646,6 +1646,10 @@ function endAnimation(element) {
 #skeleton-overlay[hidden] {
   display: none;
 }
+#skeleton-overlay[data-hidden] {
+  opacity: 0;
+  pointer-events: none;
+}
 
 /* ───────── 容器 ───────── */
 .skeleton-container {
