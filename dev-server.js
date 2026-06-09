@@ -124,15 +124,14 @@ function handler(req, res) {
     // ─── Static file serving ─────────────────────────────
     var fp = path.join(ROOT, p);
 
-    // Route /products/<cat>/<model>/ → /pdp/index-pc.html (PDP)
-    var productPdpMatch = p.match(/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/);
-    if (productPdpMatch) {
-      // Determine device version from UA
-      var uaPdp = (req.headers['user-agent'] || '').toLowerCase();
-      var isMobPdp = /mobile|android|iphone|ipod/i.test(uaPdp) && !/ipad|tablet/i.test(uaPdp);
-      var isTabPdp = /ipad|tablet/i.test(uaPdp) || (/android/i.test(uaPdp) && !/mobile/i.test(uaPdp));
-      var pdpSuffix = isMobPdp ? 'index-mobile.html' : isTabPdp ? 'index-tablet.html' : 'index-pc.html';
-      fp = path.join(ROOT, 'pdp', pdpSuffix);
+    // Route /products/<cat>/<model>/ → pdp/index-[device].html
+    var prodPdpMatch = p.match(/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/);
+    if (prodPdpMatch) {
+      var uaP = (req.headers['user-agent'] || '').toLowerCase();
+      var isMobileP = /mobile|android|iphone|ipod/i.test(uaP) && !/ipad|tablet/i.test(uaP);
+      var isTabletP = /ipad|tablet/i.test(uaP) || (/android/i.test(uaP) && !/mobile/i.test(uaP));
+      var pdpSuffixP = isMobileP ? 'index-mobile.html' : isTabletP ? 'index-tablet.html' : 'index-pc.html';
+      fp = path.join(ROOT, 'pdp', pdpSuffixP);
     }
 
     if (!fs.existsSync(fp)) {
@@ -142,22 +141,6 @@ function handler(req, res) {
         res.end(JSON.stringify({ error: 'Not found in dev mode' }));
         return;
       }
-      // Fallback: check if this is a redirect route (/beauty/ → /products/beauty/)
-      var categorySlugs = ['all','coffee','tea','meal','beauty','weight','gut','lifestyle','legacy'];
-      var redirectMatch = p.match(/^\/([a-z]+)\/$/);
-      if (redirectMatch && categorySlugs.indexOf(redirectMatch[1]) >= 0) {
-        fp = path.join(ROOT, 'products', redirectMatch[1], 'index-pc.html');
-        if (!fs.existsSync(fp)) {
-          // Try device-specific as fallback from inside the product route
-          fp = path.join(ROOT, 'products', redirectMatch[1], 'index.html');
-        }
-        if (fs.existsSync(fp)) {
-          var extR = path.extname(fp).slice(1).toLowerCase();
-          res.writeHead(200, { 'Content-Type': MIME[extR] || 'application/octet-stream' });
-          fs.createReadStream(fp).pipe(res);
-          return;
-        }
-      }
       // SPA fallback for HTML routes
       fp = path.join(ROOT, 'index.html');
     }
@@ -165,22 +148,8 @@ function handler(req, res) {
     var stat = fs.statSync(fp);
     if (stat.isDirectory()) {
       var idx = path.join(fp, 'index.html');
-      if (fs.existsSync(idx)) {
-        // Device detection: if the user-agent indicates mobile/tablet,
-        // serve the device-specific file instead of the PC-fallback index.html
-        var ua = (req.headers['user-agent'] || '').toLowerCase();
-        var isMobile = /mobile|android|iphone|ipod/i.test(ua) && !/ipad|tablet/i.test(ua);
-        var isTablet = /ipad|tablet/i.test(ua) || (/android/i.test(ua) && !/mobile/i.test(ua));
-        if (isMobile) {
-          var mobileIdx = path.join(fp.replace(/\.html$/, ''), 'index-mobile.html');
-          if (fs.existsSync(mobileIdx)) { fp = mobileIdx; }
-        } else if (isTablet) {
-          var tabletIdx = path.join(fp.replace(/\.html$/, ''), 'index-tablet.html');
-          if (fs.existsSync(tabletIdx)) { fp = tabletIdx; }
-        }
-      } else {
-        fp = path.join(ROOT, 'index.html');
-      }
+      if (fs.existsSync(idx)) { fp = idx; }
+      else { fp = path.join(ROOT, 'index.html'); }
     }
 
     var ext = path.extname(fp).slice(1).toLowerCase();
