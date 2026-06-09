@@ -132,9 +132,42 @@
   var _keyToSlug = {};
 
   function initMaps() {
+    if (typeof window.BreadcrumbData === "undefined" || typeof window.BreadcrumbData.buildCategoryMaps !== "function") {
+      // BreadcrumbData not loaded yet — inject dynamically
+      injectBreadcrumbScripts();
+      return;
+    }
     var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
     _slugToKey = maps.slugToKey;
     _keyToSlug = maps.keyToSlug;
+  }
+
+  /**
+   * Dynamically inject breadcrumb dependency scripts if not present on the page.
+   * This handles SPA navigation where swup replaces #spa-content but not <head> scripts.
+   */
+  function injectBreadcrumbScripts() {
+    var scripts = [
+      "/assets/js/breadcrumb-data.js",
+      "/assets/js/breadcrumb-render.js",
+      "/assets/js/breadcrumb.js",
+    ];
+    for (var i = 0; i < scripts.length; i++) {
+      var src = scripts[i];
+      if (!document.querySelector('script[src*="' + src.split("/").pop().replace(".js", "") + '"]')) {
+        var s = document.createElement("script");
+        s.src = src;
+        s.defer = true;
+        s.onload = function () {
+          // If breadcrumb-data.js just loaded, retry initMaps
+          if (i === 0 && typeof window.BreadcrumbData !== "undefined") {
+            initMaps();
+            detectAndRender();
+          }
+        };
+        document.head.appendChild(s);
+      }
+    }
   }
 
   // ─── 渲染入口 ────────────────────────────────────────────────
