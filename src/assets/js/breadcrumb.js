@@ -169,7 +169,7 @@
 
     for (var j = 0; j < scripts.length; j++) {
       var src = scripts[j];
-      if (!document.querySelector('script[src$="' + src.split("/").pop() + '"]')) {
+      if (!document.querySelector('script[src*="' + src.split("/").pop().replace(".js", "") + '"]')) {
         pendingCount++;
         var s = document.createElement("script");
         s.src = src;
