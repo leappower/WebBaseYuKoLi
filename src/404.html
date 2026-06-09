@@ -9,7 +9,7 @@
     <script src="/site.config.js"></script>
     <!-- Redirect: known routes without trailing slash → correct path with slash -->
     <script>
-      (function(){var p=window.location.pathname,n=p.replace(/\\/$/,""),s=n.replace(/^\\//,"");var cats=["all","coffee","tea","meal","beauty","weight","gut","lifestyle","legacy"];if(/^\\/products\\//.test(p)){var c=p.replace(/^\\/products\\//,"").replace(/\\/$/,"");if(cats.indexOf(c)!==-1)window.location.replace("/products/"+c+"/")}else{var routes=["home","solutions","about","contact","cases","support","manufacturing","compliance","resources","news","profit-calculator","quote","thank-you"];if(routes.indexOf(s)!==-1)window.location.replace("/"+s+"/");else{var seg=n.split("/").pop();if(routes.indexOf(seg)!==-1)window.location.replace("/"+seg+"/")}}})();
+      (function(){var p=window.location.pathname,n=p.replace(/\/$/,""),s=n.replace(/^\//,"");var cats=["all","coffee","tea","meal","beauty","weight","gut","lifestyle","legacy"];if(/^\/products\//.test(p)){var c=p.replace(/^\/products\//,"").replace(/\/$/,"");if(cats.indexOf(c)!==-1)window.location.replace("/products/"+c+"/")}else{var routes=["home","solutions","about","contact","cases","support","manufacturing","compliance","resources","news","profit-calculator","quote","thank-you"];if(routes.indexOf(s)!==-1)window.location.replace("/"+s+"/");else{var seg=n.split("/").pop();if(routes.indexOf(seg)!==-1)window.location.replace("/"+seg+"/")}}})();
     </script>
 
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
