@@ -2855,25 +2855,15 @@
         var toUrl = visit.to && visit.to.url ? visit.to.url : p;
         var _isPdp = /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl);
         if (_isPdp) {
-          console.info(
-            "[SWUP-BC] PDP detected — toUrl:",
-            toUrl,
-            "Breadcrumb:",
-            typeof global.Breadcrumb,
-            "BreadcrumbData:",
-            typeof global.BreadcrumbData
-          );
           if (typeof global.Breadcrumb !== "undefined") {
-            // 全局对象在 — 直接 refresh
             setTimeout(function () {
               try {
                 global.Breadcrumb.refresh();
               } catch (e) {
-                console.error("[SWUP-BC] refresh error:", e);
+                console.error("[Breadcrumb] refresh error:", e);
               }
             }, 50);
           } else {
-            // 全局对象不在 — 注入脚本（加 ?t= 防缓存）
             var bcScripts = [
               "/assets/js/breadcrumb-data.js?t=" + (global.SW_VERSION || Date.now()),
               "/assets/js/breadcrumb-render.js?t=" + (global.SW_VERSION || Date.now()),
@@ -2888,10 +2878,10 @@
                     try {
                       global.Breadcrumb.refresh();
                     } catch (e) {
-                      console.error("[SWUP-BC] refresh error:", e);
+                      console.error("[Breadcrumb] refresh error:", e);
                     }
                   } else {
-                    console.warn("[SWUP-BC] scripts loaded but Breadcrumb still undefined");
+                    console.warn("[Breadcrumb] scripts loaded but Breadcrumb undefined");
                   }
                 }, 50);
               }
@@ -2902,7 +2892,7 @@
                 ss.src = src;
                 ss.onload = bcOnReady;
                 ss.onerror = function () {
-                  console.warn("[SWUP-BC] failed to load:", src);
+                  console.warn("[Breadcrumb] script load failed:", src);
                   bcOnReady();
                 };
                 document.head.appendChild(ss);

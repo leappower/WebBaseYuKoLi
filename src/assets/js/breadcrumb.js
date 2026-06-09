@@ -75,7 +75,6 @@
    * @returns {Promise}
    */
   function whenReady() {
-    console.info("[Breadcrumb] whenReady — configReady:", !!getConfig().categories, "i18nReady:", typeof window.t === "function");
     if (_readyPromise) return _readyPromise;
 
     _readyPromise = new Promise(function (resolve) {
@@ -98,7 +97,7 @@
       };
 
       // 监听 SPA 就绪
-      console.info("[Breadcrumb] whenReady: config+i18n not ready, waiting for spa:ready or __safe.whenReady");
+
       document.addEventListener("spa:ready", check, { once: true });
       // T2.3: 使用 whenReady 替代 setTimeout 兜底
       window.__safe.whenReady(
@@ -134,7 +133,6 @@
   var _keyToSlug = {};
 
   function initMaps() {
-    console.info("[Breadcrumb] initMaps — BreadcrumbData:", typeof window.BreadcrumbData, "categories:", Object.keys(getConfig().categories || {}).length);
     if (typeof window.BreadcrumbData === "undefined" || typeof window.BreadcrumbData.buildCategoryMaps !== "function") {
       // BreadcrumbData not loaded yet — inject dynamically
       injectBreadcrumbScripts();
@@ -150,11 +148,7 @@
    * This handles SPA navigation where swup replaces #spa-content but not <head> scripts.
    */
   function injectBreadcrumbScripts() {
-    var scripts = [
-      "/assets/js/breadcrumb-data.js",
-      "/assets/js/breadcrumb-render.js",
-      "/assets/js/breadcrumb.js",
-    ];
+    var scripts = ["/assets/js/breadcrumb-data.js", "/assets/js/breadcrumb-render.js", "/assets/js/breadcrumb.js"];
     var loaded = 0;
     var total = scripts.length;
 
@@ -189,12 +183,14 @@
     }
 
     for (var si = 0; si < scripts.length; si++) {
-      (function(src) {
+      (function (src) {
         var s = document.createElement("script");
         s.src = src;
         s.async = false;
         s.onload = onReady;
-        s.onerror = function() { console.warn("[Breadcrumb] failed to load:", src); };
+        s.onerror = function () {
+          console.warn("[Breadcrumb] failed to load:", src);
+        };
         document.head.appendChild(s);
       })(scripts[si]);
     }
@@ -202,7 +198,6 @@
 
   // ─── 渲染入口 ────────────────────────────────────────────────
   function doRender(page) {
-    console.info("[Breadcrumb] doRender — page.type:", page.type, "segments:", page.segments && page.segments.length);
     var container = getContainer();
     if (!container) return;
 
@@ -228,11 +223,15 @@
       siblingSectionLabel: siblingSectionLabel,
       skipSiblings: skipSiblings,
     });
+
+    // 面包屑渲染在 applyTranslations 之后，需手动补充 i18n 替换
+    if (window.translationManager && typeof window.translationManager.applyTranslations === "function") {
+      window.translationManager.applyTranslations();
+    }
   }
 
   // ─── 检测页面并渲染 ─────────────────────────────────────────
   function detectAndRender() {
-    console.info("[Breadcrumb] detectAndRender — path:", window.location.pathname);
     var categories = getCategories();
     var currentLang = getCurrentLanguage();
     var page = window.BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
