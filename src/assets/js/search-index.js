@@ -100,7 +100,7 @@ var SEARCH_INDEX = [
       "Need Beauty Collagen OEM/ODM Service?",
     ],
     h2sZh: ["核心能力", "产品展示", "需要美容胶原 OEM/ODM 服务？"],
-    image: "/assets/images/products/beauty/001.webp",
+    image: "/assets/images/products/beauty/004.webp",
   },
   {
     path: "/products/weight/",

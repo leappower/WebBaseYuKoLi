@@ -75,6 +75,11 @@
   var currentPdfUrl = null;
 
   function createOverlay() {
+    /* If overlay variable is non-null but the DOM node has been removed
+       (e.g. by SPA page swap), reset so we rebuild from scratch. */
+    if (overlay && !document.body.contains(overlay)) {
+      overlay = null;
+    }
     if (overlay) {
       return;
     }
@@ -147,12 +152,9 @@
     overlay.appendChild(box);
     document.body.appendChild(overlay);
 
-    /* close button */
-    document.getElementById("yk-lead-close").onclick = closeModal;
-
-    /* click outside to close */
+    /* close button + click-outside via event delegation on overlay */
     overlay.addEventListener("click", function (e) {
-      if (e.target === overlay) {
+      if (e.target.id === "yk-lead-close" || e.target === overlay) {
         closeModal();
       }
     });
