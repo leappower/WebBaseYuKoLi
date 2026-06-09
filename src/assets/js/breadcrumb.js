@@ -75,6 +75,7 @@
    * @returns {Promise}
    */
   function whenReady() {
+    console.info("[Breadcrumb] whenReady — configReady:", !!getConfig().categories, "i18nReady:", typeof window.t === "function");
     if (_readyPromise) return _readyPromise;
 
     _readyPromise = new Promise(function (resolve) {
@@ -97,6 +98,7 @@
       };
 
       // 监听 SPA 就绪
+      console.info("[Breadcrumb] whenReady: config+i18n not ready, waiting for spa:ready or __safe.whenReady");
       document.addEventListener("spa:ready", check, { once: true });
       // T2.3: 使用 whenReady 替代 setTimeout 兜底
       window.__safe.whenReady(
@@ -132,6 +134,7 @@
   var _keyToSlug = {};
 
   function initMaps() {
+    console.info("[Breadcrumb] initMaps — BreadcrumbData:", typeof window.BreadcrumbData, "categories:", Object.keys(getConfig().categories || {}).length);
     if (typeof window.BreadcrumbData === "undefined" || typeof window.BreadcrumbData.buildCategoryMaps !== "function") {
       // BreadcrumbData not loaded yet — inject dynamically
       injectBreadcrumbScripts();
@@ -152,74 +155,36 @@
       "/assets/js/breadcrumb-render.js",
       "/assets/js/breadcrumb.js",
     ];
-    var pendingCount = 0;
+    var loaded = 0;
+    var total = scripts.length;
 
-    function onScriptLoad() {
-      pendingCount--;
-      if (pendingCount <= 0) {
-        // All scripts loaded — retry init
-        setTimeout(function () {
-          if (typeof window.BreadcrumbData !== "undefined") {
-            initMaps();
-            detectAndRender();
-          }
-        }, 50);
+    function onReady() {
+      if (typeof window.BreadcrumbData !== "undefined" && typeof window.BreadcrumbRender !== "undefined") {
+        // Both dependencies ready
+        if (typeof window.BreadcrumbData.buildCategoryMaps === "function") {
+          var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
+          _slugToKey = maps.slugToKey;
+          _keyToSlug = maps.keyToSlug;
+        }
+        detectAndRender();
       }
     }
 
-    for (var j = 0; j < scripts.length; j++) {
-      var src = scripts[j];
-      if (!document.querySelector('script[src*="' + src.split("/").pop().replace(".js", "") + '"]')) {
-        pendingCount++;
+    for (var si = 0; si < scripts.length; si++) {
+      (function(src) {
         var s = document.createElement("script");
         s.src = src;
-        s.defer = true;
-        s.onload = onScriptLoad;
+        s.async = false;
+        s.onload = onReady;
+        s.onerror = function() { console.warn("[Breadcrumb] failed to load:", src); };
         document.head.appendChild(s);
-      }
-    }
-
-    if (pendingCount === 0) {
-      // All scripts believed present — check if BreadcrumbData is loaded
-      if (typeof window.BreadcrumbData !== "undefined") {
-        setTimeout(function () {
-          initMaps();
-          detectAndRender();
-        }, 50);
-      } else {
-        // Not found — scripts thought to be present but not loaded;
-        // force inject all three regardless
-        var forceScripts = [
-          "/assets/js/breadcrumb-data.js",
-          "/assets/js/breadcrumb-render.js",
-          "/assets/js/breadcrumb.js",
-        ];
-        var fPending = 0;
-        function fOnLoad() {
-          fPending--;
-          if (fPending <= 0) {
-            setTimeout(function () {
-              if (typeof window.BreadcrumbData !== "undefined") {
-                initMaps();
-                detectAndRender();
-              }
-            }, 50);
-          }
-        }
-        for (var f = 0; f < forceScripts.length; f++) {
-          fPending++;
-          var fs = document.createElement("script");
-          fs.src = forceScripts[f];
-          fs.defer = true;
-          fs.onload = fOnLoad;
-          document.head.appendChild(fs);
-        }
-      }
+      })(scripts[si]);
     }
   }
 
   // ─── 渲染入口 ────────────────────────────────────────────────
   function doRender(page) {
+    console.info("[Breadcrumb] doRender — page.type:", page.type, "segments:", page.segments && page.segments.length);
     var container = getContainer();
     if (!container) return;
 
@@ -249,6 +214,7 @@
 
   // ─── 检测页面并渲染 ─────────────────────────────────────────
   function detectAndRender() {
+    console.info("[Breadcrumb] detectAndRender — path:", window.location.pathname);
     var categories = getCategories();
     var currentLang = getCurrentLanguage();
     var page = window.BreadcrumbData.detect(window.location.pathname, categories, { currentLang: currentLang });
