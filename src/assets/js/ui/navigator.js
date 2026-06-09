@@ -1161,13 +1161,23 @@
    * @returns {string} 实际使用的 variant (mobile / tablet / pc)
    */
   function resolveVariant(declaredVariant) {
+    // 未声明 variant 或声明为 "responsive" → 自动检测
+    if (!declaredVariant || declaredVariant === "responsive") {
+      if (window.DeviceUtils && typeof window.DeviceUtils.getDeviceType === "function") {
+        return window.DeviceUtils.getDeviceType();
+      }
+      var width = window.innerWidth;
+      if (width < 768) return "mobile";
+      if (width < 1280) return "tablet";
+      return "pc";
+    }
+    // 显式声明 & 不是 pc → 直接返回 (mobile/tablet)
     if (declaredVariant !== "pc") return declaredVariant;
 
-    // 优先使用 DeviceUtils（与 CSS @media 一致）
+    // 声明的 pc — 仍检测设备
     if (window.DeviceUtils && typeof window.DeviceUtils.getDeviceType === "function") {
       return window.DeviceUtils.getDeviceType();
     }
-
     var width = window.innerWidth;
     if (width < 768) return "mobile";
     if (width < 1280) return "tablet";
