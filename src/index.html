@@ -12,7 +12,7 @@
     <script defer src="/assets/js/lib/runtime-guard.js?v=202606051301"></script>
     <!-- JJC-020: 高频翻译键内联（在 runtime-guard 之后立即加载，确保 translations.js 加载前就有翻译 fallback） -->
     <script defer src="/assets/js/lib/inline-translations.js?v=202606051301"></script>
-    <script src="/site.config.js"></script>
+    <script src="/site.config.js" defer></script>
     <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
     <script>
       // i18n_comment_unregister_service_worker: Force unregister any stale Service Worker from previous versions
