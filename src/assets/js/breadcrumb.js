@@ -160,16 +160,32 @@
 
     function onReady() {
       if (typeof window.BreadcrumbData !== "undefined" && typeof window.BreadcrumbRender !== "undefined") {
-        // Both dependencies ready — wait for i18n before rendering
-        whenReady().then(function () {
-          if (typeof window.BreadcrumbData.buildCategoryMaps === "function") {
-            var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
-            _slugToKey = maps.slugToKey;
-            _keyToSlug = maps.keyToSlug;
-          }
-          detectAndRender();
-        });
+        // Wait for i18n system to be ready before rendering
+        // _enqueueRender() uses a 50ms polling loop that gives up after 5s
+        _enqueueRender();
       }
+    }
+
+    var _renderTimer = null;
+    var _renderRetries = 0;
+    var _RENDER_MAX_RETRIES = 100; // 100 × 50ms = 5s total
+
+    function _enqueueRender() {
+      if (typeof window.t === "function" && typeof window.BreadcrumbData.buildCategoryMaps === "function") {
+        var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
+        _slugToKey = maps.slugToKey;
+        _keyToSlug = maps.keyToSlug;
+        detectAndRender();
+        return;
+      }
+      _renderRetries++;
+      if (_renderRetries >= _RENDER_MAX_RETRIES) {
+        // Still not ready — render anyway with fallback
+        detectAndRender();
+        return;
+      }
+      if (_renderTimer) clearTimeout(_renderTimer);
+      _renderTimer = setTimeout(_enqueueRender, 50);
     }
 
     for (var si = 0; si < scripts.length; si++) {
