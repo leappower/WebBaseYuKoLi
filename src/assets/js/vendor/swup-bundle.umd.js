@@ -2768,7 +2768,7 @@
           if (el.getAttribute("target") === "_blank") return true;
           if (el.getAttribute("download") !== null) return true;
           // 面包屑/同级导航链接：整页加载（避免swup SPA状态冲突）
-          if (el.closest('[data-no-swup]') || el.getAttribute('data-no-swup') !== null) return true;
+          if (el.closest("[data-no-swup]") || el.getAttribute("data-no-swup") !== null) return true;
           // 跳过后端/外部路径
           if (url.match(/^(https?:|mailto:|tel:|javascript:)/)) return true;
           return false;
@@ -2851,22 +2851,47 @@
         // ─── 面包屑脚本注入 ───
         // SPA 导航后，如果新页面路径是 PDP 但当前 DOM 没有 breadcrumb-data 脚本，注入
         // 使用 visit.to.url 确保获取目标URL (content:replace 时 location.pathname 可能还未更新)
-        var toUrl = (visit.to && visit.to.url) ? visit.to.url : p;
-        if (!document.querySelector('script[src*="breadcrumb-data"]') && /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl)) {
-          var bcScripts = ["/assets/js/breadcrumb-data.js", "/assets/js/breadcrumb-render.js", "/assets/js/breadcrumb.js"];
+        var toUrl = visit.to && visit.to.url ? visit.to.url : p;
+        console.info(
+          "[SWUP-ContentReplace] url check — toUrl:",
+          toUrl,
+          "regex test:",
+          /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl),
+          "hasBreadcrumbData:",
+          !!document.querySelector('script[src*="breadcrumb-data"]')
+        );
+        var _isPdp = /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl);
+        var _hasBcScript = !!document.querySelector('script[src*="breadcrumb-data"]');
+        if (!_hasBcScript && _isPdp) {
+          var bcScripts = [
+            "/assets/js/breadcrumb-data.js?v=" + (global.SW_VERSION || Date.now()),
+            "/assets/js/breadcrumb-render.js?v=" + (global.SW_VERSION || Date.now()),
+            "/assets/js/breadcrumb.js?v=" + (global.SW_VERSION || Date.now()),
+          ];
+          console.info("[SWUP-ContentReplace] injecting breadcrumb scripts — v:", global.SW_VERSION || Date.now());
           var bcPending = 0;
           function bcOnReady() {
             bcPending--;
+            console.info(
+              "[SWUP-ContentReplace] bcOnReady — pending:",
+              bcPending,
+              "BreadcrumbData:",
+              typeof global.BreadcrumbData,
+              "Breadcrumb:",
+              typeof global.Breadcrumb
+            );
             if (bcPending <= 0) {
               setTimeout(function () {
                 if (typeof global.BreadcrumbData !== "undefined" && typeof global.Breadcrumb !== "undefined") {
-                  try { global.Breadcrumb.refresh(); } catch (e) { }
+                  try {
+                    global.Breadcrumb.refresh();
+                  } catch (e) {}
                 }
               }, 50);
             }
           }
           for (var bi = 0; bi < bcScripts.length; bi++) {
-            (function(src) {
+            (function (src) {
               bcPending++;
               var ss = document.createElement("script");
               ss.src = src;
@@ -2874,6 +2899,16 @@
               document.head.appendChild(ss);
             })(bcScripts[bi]);
           }
+        } else if (_hasBcScript && _isPdp) {
+          // Scripts already in <head> (persisted by SwupHeadPlugin) — just refresh
+          console.info("[SWUP-ContentReplace] breadcrumb scripts already present, calling refresh()");
+          setTimeout(function () {
+            if (typeof global.Breadcrumb !== "undefined") {
+              try {
+                global.Breadcrumb.refresh();
+              } catch (e) {}
+            }
+          }, 50);
         }
 
         // ─── 脚本热重载：提取新页面特有脚本并注入 ───
