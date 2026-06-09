@@ -73,9 +73,9 @@
     } else {
       a.textContent = String(label || "");
     }
-    if (href) {
-      a.setAttribute("data-no-swup", "");
-    }
+    // Breadcrumb links use SPA navigation (swup) — no full page reload
+    // data-no-swup was previously set here but caused page reloads that
+    // conflicted with swup's SPA state and could crash on dynamic routes.
     return a;
   }
 
@@ -312,7 +312,6 @@
       }
       var labelText = document.createTextNode(String(s.label || ""));
       a.appendChild(labelText);
-      a.setAttribute("data-no-swup", "");
       pcFlex.appendChild(a);
     }
     pcDiv.appendChild(pcFlex);
@@ -359,7 +358,6 @@
         mobA.appendChild(mobIcon);
       }
       mobA.appendChild(document.createTextNode(String(sm.label || "")));
-      mobA.setAttribute("data-no-swup", "");
       mobScroll.appendChild(mobA);
     }
     mobDiv.appendChild(mobScroll);
