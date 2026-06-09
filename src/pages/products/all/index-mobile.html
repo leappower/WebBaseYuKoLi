@@ -1,12 +1,16 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html class="light" lang="en">
   <head>
-  <script src="/site.config.js" defer></script>
-  <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script src="/site.config.js" defer></script>
+    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
 
     <meta charset="utf-8" />
-    <meta data-i18n-meta="meta_products_all_description" name="description" content="Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business." />
+    <meta
+      data-i18n-meta="meta_products_all_description"
+      name="description"
+      content="Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business."
+    />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="All Products | {brand} Smart products manufacturing" />
     <meta
@@ -16,12 +20,24 @@
     <meta property="og:url" content="https://brew.yukoli.com/products/all/" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <title data-i18n="products_all_page_title">All Products | {brand} Smart products manufacturing</title>
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/assets/fonts/public-sans-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/assets/fonts/public-sans-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
     <style>
@@ -67,7 +83,6 @@
         color: white;
         border-color: var(--color-primary);
       }
-
     </style>
     <script>
       (function () {
@@ -78,127 +93,148 @@
 
     <!-- SEO JSON-LD: CollectionPage -->
     <script type="application/ld+json">
-    {
-      "@context": "https:/schema.org",
-      "@type": "CollectionPage",
-      "name": "<span data-i18n="seo_yukoli">YuKoLi</span> 冲调食品全All Products",
-      "description": "<span data-i18n="seo_yukoli">YuKoLi</span> 冲调食品全系列，涵盖<span data-i18n="seo_coffee_beverage">咖啡冲调</span>、茶饮、<span data-i18n="seo_meal_replacement">代餐蛋白</span>、胶原蛋白等七大品类，按分类筛选或对比，找到最适合您的OEM/ODM方案。",
-      "url": "https://brew.yukoli.com/products/all/"
-    }
+      {
+        "@context": "https:/schema.org",
+        "@type": "CollectionPage",
+        "name": "<span data-i18n="seo_yukoli">YuKoLi</span> 冲调食品全All Products",
+        "description": "<span data-i18n="seo_yukoli">YuKoLi</span> 冲调食品全系列，涵盖<span data-i18n="seo_coffee_beverage">咖啡冲调</span>、茶饮、<span data-i18n="seo_meal_replacement">代餐蛋白</span>、胶原蛋白等七大品类，按分类筛选或对比，找到最适合您的OEM/ODM方案。",
+        "url": "https://brew.yukoli.com/products/all/"
+      }
     </script>
-      <link rel="stylesheet" href="/assets/css/skeleton.css" />
-</head>
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+  </head>
   <body
     class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-clip pb-20"
   >
     <navigator
-      data-component="navigator" data-swup-persist="nav"
+      data-component="navigator"
+      data-swup-persist="nav"
       data-variant="mobile"
       data-active="products"
       data-search="true"
     ></navigator>
 
     <main id="spa-content">
-        <!-- Hero Section -->
-        <section
-          class="fullwidth-bg hero-overlap relative w-full py-8 px-4 bg-gradient-to-br from-slate-50 dark:from-slate-900 to-white dark:to-black"
-        >
-          <div class="section-content">
-            <div class="absolute inset-0 opacity-20">
-              <div class="absolute top-10 right-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl"></div>
+      <!-- Hero Section -->
+      <section
+        class="fullwidth-bg hero-overlap relative w-full py-8 px-4 bg-gradient-to-br from-slate-50 dark:from-slate-900 to-white dark:to-black"
+      >
+        <div class="section-content">
+          <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 right-10 w-48 h-48 bg-primary/10 rounded-full blur-2xl"></div>
+          </div>
+          <div class="relative">
+            <!-- Breadcrumb rendered by breadcrumb.js -->
+            <div id="breadcrumb-container"></div>
+            <div
+              class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4"
+            >
+              <span class="material-symbols-outlined text-xs">inventory_2</span>
+              <span data-i18n="products_all_hero_badge">Industrial Excellence</span>
             </div>
-            <div class="relative">
-              <!-- Breadcrumb rendered by breadcrumb.js -->
-              <div id="breadcrumb-container"></div>
-              <div
-                class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4"
-              >
-                <span class="material-symbols-outlined text-xs">inventory_2</span>
-                <span data-i18n="products_all_hero_badge">Industrial Excellence</span>
+            <h1
+              class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white mb-3"
+              data-i18n="products_all_hero_title"
+            >
+              All Products
+            </h1>
+            <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="products_all_hero_desc">
+              Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best
+              automation solution for your business.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Category Filter & Sort -->
+      <section class="fullwidth-bg w-full py-10">
+        <div class="section-content">
+          <div class="flex flex-col gap-3">
+            <!-- Category tabs (single line, JS auto-fills with more toggle) -->
+            <div class="flex items-center gap-1.5 flex-nowrap overflow-hidden category-tab-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="fullwidth-bg pt-4 pb-4">
+        <div class="section-content">
+          <div class="grid grid-cols-2 gap-3" id="product-grid">
+            <!-- Skeleton placeholders (cleared by product-grid.js) -->
+            <div
+              class="animate-pulse bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden"
+            >
+              <div class="h-28 bg-slate-200 dark:bg-slate-700"></div>
+              <div class="p-2 space-y-1">
+                <div class="h-2.5 w-2/3 rounded bg-slate-200 dark:bg-slate-700"></div>
+                <div class="h-3 w-full rounded bg-slate-100 dark:bg-slate-700/50"></div>
               </div>
-              <h1
-                class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white mb-3"
-                data-i18n="products_all_hero_title"
-              >
-                All Products
-              </h1>
-              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="products_all_hero_desc">
-                Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business.
-              </p>
+            </div>
+            <div
+              class="animate-pulse bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden"
+            >
+              <div class="h-28 bg-slate-200 dark:bg-slate-700"></div>
+              <div class="p-2 space-y-1">
+                <div class="h-2.5 w-2/3 rounded bg-slate-200 dark:bg-slate-700"></div>
+                <div class="h-3 w-full rounded bg-slate-100 dark:bg-slate-700/50"></div>
+              </div>
             </div>
           </div>
-        </section>
-
-        <!-- Category Filter & Sort -->
-        <section class="fullwidth-bg w-full py-10">
-          <div class="section-content">
-            <div class="flex flex-col gap-3">
-              <!-- Category tabs (single line, JS auto-fills with more toggle) -->
-              <div class="flex items-center gap-1.5 flex-nowrap overflow-hidden category-tab-container">
-              </div>
-                          </div>
+          <!-- Load More -->
+          <div class="flex justify-center mt-6">
+            <button
+              class="flex items-center gap-2 px-6 py-2.5 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-400 hover:border-primary hover:text-primary transition-all"
+              data-i18n="products_load_more"
+            >
+              Load More
+              <span class="material-symbols-outlined text-sm">expand_more</span>
+            </button>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="products" class="fullwidth-bg pt-4 pb-4">
-          <div class="section-content">
-            <div class="grid grid-cols-2 gap-3" id="product-grid">
-              <!-- Skeleton placeholders (cleared by product-grid.js) -->
-              <div class="animate-pulse bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden"><div class="h-28 bg-slate-200 dark:bg-slate-700"></div><div class="p-2 space-y-1"><div class="h-2.5 w-2/3 rounded bg-slate-200 dark:bg-slate-700"></div><div class="h-3 w-full rounded bg-slate-100 dark:bg-slate-700/50"></div></div></div>
-              <div class="animate-pulse bg-white dark:bg-slate-800 rounded-xl border border-slate-100 dark:border-slate-700 overflow-hidden"><div class="h-28 bg-slate-200 dark:bg-slate-700"></div><div class="p-2 space-y-1"><div class="h-2.5 w-2/3 rounded bg-slate-200 dark:bg-slate-700"></div><div class="h-3 w-full rounded bg-slate-100 dark:bg-slate-700/50"></div></div></div>
-            </div>
-            <!-- Load More -->
-            <div class="flex justify-center mt-6">
+      <!-- Cross-sell & Scene Entry Section -->
+      <section class="fullwidth-bg py-10 bg-slate-50 dark:bg-slate-900/50">
+        <div class="section-content">
+          <div id="cross-sell-container"></div>
+          <div id="scene-entry-container"></div>
+          <nav id="product-category-nav"></nav>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="fullwidth-bg py-12">
+        <div class="section-content">
+          <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-6 text-center">
+            <h2 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="products_cta_title_mobile">
+              Need a Custom Solution?
+            </h2>
+            <p class="text-sm text-slate-600 dark:text-slate-400 mb-4" data-i18n="products_cta_desc_mobile">
+              Our engineering team can tailor the optimal equipment configuration based on your production layout and
+              business requirements.
+            </p>
+            <div class="flex flex-col gap-2">
+              <a
+                href="/contact/"
+                class="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm"
+              >
+                <span data-i18n="products_cta_btn_quote">Get a Quote</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
               <button
-                class="flex items-center gap-2 px-6 py-2.5 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-400 hover:border-primary hover:text-primary transition-all"
-                data-i18n="products_load_more"
+                onclick="window.YuKoLiFAB && YuKoLiFAB.openWhatsApp('page-cta', 'wa_msg_default')"
+                class="inline-flex items-center justify-center gap-2 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
               >
-                Load More
-                <span class="material-symbols-outlined text-sm">expand_more</span>
+                <span data-i18n="products_cta_btn_contact">Contact Sales</span>
+                <span class="material-symbols-outlined text-sm">support_agent</span>
               </button>
             </div>
           </div>
-        </section>
-
-        <!-- Cross-sell & Scene Entry Section -->
-        <section class="fullwidth-bg py-10 bg-slate-50 dark:bg-slate-900/50">
-          <div class="section-content">
-            <div id="cross-sell-container"></div>
-            <div id="scene-entry-container"></div>
-            <nav id="product-category-nav"></nav>
-          </div>
-        </section>
-
-        <!-- CTA Section -->
-        <section class="fullwidth-bg py-12">
-          <div class="section-content">
-            <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-6 text-center">
-              <h2 class="text-lg font-bold mb-2 text-slate-900 dark:text-white" data-i18n="products_cta_title_mobile">
-                Need a Custom Solution?
-              </h2>
-              <p class="text-sm text-slate-600 dark:text-slate-400 mb-4" data-i18n="products_cta_desc_mobile">
-                Our engineering team can tailor the optimal equipment configuration based on your production layout and business requirements.
-              </p>
-              <div class="flex flex-col gap-2">
-                <a
-                  href="/contact/"
-                  class="inline-flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-xl font-bold text-sm"
-                >
-                  <span data-i18n="products_cta_btn_quote">Get a Quote</span>
-                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
-                </a>
-                <button onclick="window.YuKoLiFAB && YuKoLiFAB.openWhatsApp('page-cta','wa_msg_default')" class="inline-flex items-center justify-center gap-2 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-                  <span data-i18n="products_cta_btn_contact">Contact Sales</span>
-                  <span class="material-symbols-outlined text-sm">support_agent</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
     </main>
 
     <!-- Bottom Navigation -->
-<script defer src="/assets/js/contacts.js?v=202605291142"></script>
+    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
@@ -206,8 +242,8 @@
 
     <script defer src="/assets/js/product-grid.js?v=202605291142"></script>
     <script defer src="/assets/js/cross-sell.js?v=202605291142"></script>
-<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-<script defer src="/assets/js/search-index.js?v=202605291142"></script>
-<script defer src="/assets/js/product-detail.js?v=202605291142"></script>
-</body>
+    <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
+    <script defer src="/assets/js/product-detail.js?v=202605291142"></script>
+  </body>
 </html>

@@ -1,77 +1,174 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="light" lang="en">
-<head>
-<link rel="canonical" href="https://www.brew.yukoli.com/privacy/" />
-<meta charset="utf-8" />
+  <head>
+    <link rel="canonical" href="https://www.brew.yukoli.com/privacy/" />
+    <meta charset="utf-8" />
 
-      <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/privacy/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/privacy/" />
     <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/privacy/" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta data-i18n-meta="privacy_meta_description" name="description" content="YuKoLi Privacy Policy — how we protect your business information, product formulations, and personal data during OEM/ODM cooperation." />
-<title data-i18n="meta_privacy_title">Privacy Policy — YuKoLi</title>
-<link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
-<link rel="stylesheet" href="/assets/css/styles.css" />
-<link rel="stylesheet" href="/assets/css/tailwind.css" />
-<link rel="stylesheet" href="/assets/css/skeleton.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      data-i18n-meta="privacy_meta_description"
+      name="description"
+      content="YuKoLi Privacy Policy — how we protect your business information, product formulations, and personal data during OEM/ODM cooperation."
+    />
+    <title data-i18n="meta_privacy_title">Privacy Policy — YuKoLi</title>
+    <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <link rel="stylesheet" href="/assets/css/tailwind.css" />
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
     <script>
-    (function checkDevice(){
-      if(window.__redirectChecked)return;
-      if(document.querySelector("meta[name=ssg-device]"))return;
-      window.__redirectChecked=true;
-      var u=new URLSearchParams(location.search);
-      var c=u.get("clean-url");
-      if(c){history.replaceState({},"",c);return}
-      if(window.__spaNavigating)return;
-      var f=location.pathname.split("/").pop();
-      // 目录 URL（末尾斜杠 /）— 不跳转，让 server.js 处理
-      if(!f||!f.match(/.html$/))return;
-      if(f.match(/^index-(pc|mobile|tablet).html$/))return;
-      function doRedirect(){
-        var mq767=window.matchMedia("(max-width:767px)");
-        var mq1279=window.matchMedia("(max-width:1279px)");
-        var e=mq767.matches?"index-mobile.html":mq1279.matches?"index-tablet.html":"index-pc.html";
-        if(f===e)return;
-        location.href=location.pathname.replace(/[^\/]*.html$/,"")+e;
-      }
-      window.addEventListener("DOMContentLoaded",doRedirect);
-      setTimeout(doRedirect,100);
-    })();
+      (function checkDevice() {
+        if (window.__redirectChecked) return;
+        if (document.querySelector("meta[name=ssg-device]")) return;
+        window.__redirectChecked = true;
+        var u = new URLSearchParams(location.search);
+        var c = u.get("clean-url");
+        if (c) {
+          history.replaceState({}, "", c);
+          return;
+        }
+        if (window.__spaNavigating) return;
+        var f = location.pathname.split("/").pop();
+        // 目录 URL（末尾斜杠 /）— 不跳转，让 server.js 处理
+        if (!f || !f.match(/.html$/)) return;
+        if (f.match(/^index-(pc|mobile|tablet).html$/)) return;
+        function doRedirect() {
+          var mq767 = window.matchMedia("(max-width:767px)");
+          var mq1279 = window.matchMedia("(max-width:1279px)");
+          var e = mq767.matches ? "index-mobile.html" : mq1279.matches ? "index-tablet.html" : "index-pc.html";
+          if (f === e) return;
+          location.href = location.pathname.replace(/[^\/]*.html$/, "") + e;
+        }
+        window.addEventListener("DOMContentLoaded", doRedirect);
+        setTimeout(doRedirect, 100);
+      })();
     </script>
-<link rel="stylesheet" href="/assets/css/z-index-system.css" />
-<link rel="stylesheet" href="/assets/css/performance-optimizations.css" />
-</head>
-<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <link rel="stylesheet" href="/assets/css/z-index-system.css" />
+    <link rel="stylesheet" href="/assets/css/performance-optimizations.css" />
+  </head>
+  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100">
+    <navigator
+      data-component="navigator"
+      data-variant="mobile"
+      data-active=""
+      data-search="true"
+      data-cta-text-key="nav_get_quote"
+      data-cta-href="/quote"
+    ></navigator>
 
-<navigator data-component="navigator" data-variant="mobile" data-active="" data-search="true" data-cta-text-key="nav_get_quote" data-cta-href="/quote"></navigator>
+    <main id="spa-content">
+      <section class="px-4 py-8 pb-24">
+        <h1 class="text-2xl font-black mb-6" data-i18n="privacy_policy_title">Privacy Policy</h1>
+        <p class="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed" data-i18n="privacy_policy_intro"></p>
 
-<main id="spa-content">
-  <section class="px-4 py-8 pb-24">
-    <h1 class="text-2xl font-black mb-6" data-i18n="privacy_policy_title">Privacy Policy</h1>
-    <p class="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed" data-i18n="privacy_policy_intro"></p>
+        <div id="privacy-sections">
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_1_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_1_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_2_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_2_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_3_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_3_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_4_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_4_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_5_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_5_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_6_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_6_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_7_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_7_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_8_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_8_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_9_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_9_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_10_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_10_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_11_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_11_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_12_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_12_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_13_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_13_content"
+            ></div>
+          </div>
+          <div class="mb-6">
+            <h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_14_title"></h2>
+            <div
+              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed"
+              data-i18n="privacy_section_14_content"
+            ></div>
+          </div>
+        </div>
 
-    <div id="privacy-sections">
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_1_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_1_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_2_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_2_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_3_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_3_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_4_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_4_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_5_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_5_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_6_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_6_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_7_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_7_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_8_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_8_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_9_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_9_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_10_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_10_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_11_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_11_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_12_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_12_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_13_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_13_content"></div></div>
-      <div class="mb-6"><h2 class="text-lg font-bold mb-2" data-i18n="privacy_section_14_title"></h2><div class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed" data-i18n="privacy_section_14_content"></div></div>
-    </div>
+        <div class="mt-12 pt-6 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500">
+          <p data-i18n="footer_copyright"></p>
+        </div>
+      </section>
+    </main>
 
-    <div class="mt-12 pt-6 border-t border-slate-200 dark:border-slate-700 text-xs text-slate-500">
-      <p data-i18n="footer_copyright"></p>
-    </div>
-  </section>
-</main>
-
-<footer data-component="footer" data-active="privacy" data-variant="mobile"></footer>
-</body>
+    <footer data-component="footer" data-active="privacy" data-variant="mobile"></footer>
+  </body>
 </html>

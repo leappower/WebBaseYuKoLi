@@ -2,24 +2,28 @@
 
 <html class="light" lang="en">
   <head>
-  <script src="/site.config.js" defer></script>
-  <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script src="/site.config.js" defer></script>
+    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
 
     <meta charset="utf-8" />
 
-      <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/about/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/about/" />
     <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/about/" />
 
     <meta property="og:type" content="website" />
- <meta property="og:title" content="YuKoLi Technology | 关于我们 - 20年健康食品OEM/ODM制造商" />
+    <meta property="og:title" content="YuKoLi Technology | 关于我们 - 20年健康食品OEM/ODM制造商" />
     <meta
       property="og:description"
- content="YuKoLi Technology（佛山优科力科技）— 20年健康食品OEM/ODM制造商，4座工厂，7大产品线，HACCP/FDA/ISO认证，出口30+国家。"
+      content="YuKoLi Technology（佛山优科力科技）— 20年健康食品OEM/ODM制造商，4座工厂，7大产品线，HACCP/FDA/ISO认证，出口30+国家。"
     />
     <meta property="og:url" content="https://brew.yukoli.com/about/" />
     <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
- <meta data-i18n-meta="meta_about_description" name="description" content="YuKoLi Technology 佛山优科力科技 — 20年健康食品OEM/ODM制造经验，4座工厂7大产品线，HACCP/FDA/ISO认证，出口30+国家。" />
+    <meta
+      data-i18n-meta="meta_about_description"
+      name="description"
+      content="YuKoLi Technology 佛山优科力科技 — 20年健康食品OEM/ODM制造经验，4座工厂7大产品线，HACCP/FDA/ISO认证，出口30+国家。"
+    />
     <title data-i18n="about_meta_title">{{brand}} Technology | About Us - Health Food OEM/ODM Manufacturer</title>
 
     <!-- Organization JSON-LD -->
@@ -48,7 +52,6 @@
       }
     </script>
 
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
@@ -65,7 +68,8 @@
       type="font/woff2"
       crossorigin
     />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
     <!-- Dark mode: apply saved preference before first paint (prevents flash) -->
@@ -91,38 +95,52 @@
         }
       }
     </script>
-      <link rel="stylesheet" href="/assets/css/skeleton.css" />
-</head>
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+  </head>
   <body
     class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip"
   >
     <!-- Top Navigation Bar -->
     <!-- ═══ Navigator Component ═══ -->
     <navigator
-      data-component="navigator" data-swup-persist="nav"
+      data-component="navigator"
+      data-swup-persist="nav"
       data-variant="pc"
       data-active="about"
       data-cta-text-key="nav_get_quote"
       data-cta-href="/contact/"
     ></navigator>
     <main id="spa-content">
-
       <!-- Hero Section -->
-      <section id="profile" class="fullwidth-bg hero-overlap section-passthrough w-full flex flex-col lg:flex-row items-center py-10 gap-12">
+      <section
+        id="profile"
+        class="fullwidth-bg hero-overlap section-passthrough w-full flex flex-col lg:flex-row items-center py-10 gap-12"
+      >
         <div class="section-content">
           <div class="w-full lg:w-1/2 space-y-8">
             <div
               class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest"
             >
               <span class="material-symbols-outlined text-xs leading-none">apartment</span>
-              <span data-i18n="about_badge">About <span data-i18n="seo_yukoli">YuKoLi</span></span>
+              <span data-i18n="about_badge">
+                About
+                <span data-i18n="seo_yukoli">YuKoLi</span>
+              </span>
             </div>
             <h1 class="text-5xl xl:text-7xl font-black leading-[1.1] tracking-tight text-slate-900 dark:text-white">
-              <span data-i18n="about_hero_title_1"><span data-i18n="about_years_in_manufacturing">20 Years in Health Food Manufacturing</span></span>
+              <span data-i18n="about_hero_title_1">
+                <span data-i18n="about_years_in_manufacturing">20 Years in Health Food Manufacturing</span>
+              </span>
             </h1>
             <p class="text-lg xl:text-xl text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed">
               <span data-i18n="about_hero_desc">
-                From Foshan to the world, providing quality OEM/ODM services for global brands. <span data-i18n="seo_4_factories">4 factories</span>, <span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>, serving clients in <span data-i18n="seo_30_countries">30+ countries</span>.
+                From Foshan to the world, providing quality OEM/ODM services for global brands.
+                <span data-i18n="seo_4_factories">4 factories</span>
+                ,
+                <span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>
+                , serving clients in
+                <span data-i18n="seo_30_countries">30+ countries</span>
+                .
               </span>
             </p>
             <div class="flex items-center gap-4 pt-4">
@@ -136,7 +154,10 @@
               <a
                 href="#story"
                 class="border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 px-8 py-4 rounded-xl font-bold text-lg flex items-center gap-2 hover:border-primary/50 transition-all"
-                onclick="event.preventDefault(); document.getElementById('story').scrollIntoView({behavior:'smooth',block:'start'})"
+                onclick="
+                  event.preventDefault();
+                  document.getElementById('story').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                "
               >
                 <span data-i18n="about_hero_btn_story">Learn Our Story</span>
                 <span class="material-symbols-outlined">arrow_downward</span>
@@ -157,7 +178,12 @@
                 src="/assets/images/oem/about/about-1-1920w.webp"
                 width="800"
                 height="600"
-               srcset="/assets/images/oem/about/about-1-1200w.webp 1200w, /assets/images/oem/about/about-1-1920w.webp 1920w" sizes="(min-width: 1280px) 25vw, 33vw" />
+                srcset="
+                  /assets/images/oem/about/about-1-1200w.webp 1200w,
+                  /assets/images/oem/about/about-1-1920w.webp 1920w
+                "
+                sizes="(min-width: 1280px) 25vw, 33vw"
+              />
             </div>
           </div>
         </div>
@@ -207,49 +233,65 @@
       <section class="fullwidth-bg py-20">
         <div class="section-content">
           <div class="w-full text-center mb-12">
-            <h2 class="text-3xl lg:text-4xl font-black tracking-tighter mb-4" data-i18n="about_products_title">7 Product Lines, Full Category Coverage</h2>
+            <h2 class="text-3xl lg:text-4xl font-black tracking-tighter mb-4" data-i18n="about_products_title">
+              7 Product Lines, Full Category Coverage
+            </h2>
             <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto" data-i18n="about_products_desc">
               From coffee mixes to functional beverages, meeting diverse brand and market needs
             </p>
           </div>
           <div class="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">coffee</span>
               </div>
               <p class="font-bold text-sm" data-i18n="about_pl_coffee">Coffee & Mixes</p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">local_cafe</span>
               </div>
               <p class="font-bold text-sm" data-i18n="about_pl_tea">Tea & Milk Tea</p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">fitness_center</span>
               </div>
               <p class="font-bold text-sm" data-i18n="about_pl_meal">Meal Replacement</p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">spa</span>
               </div>
               <p class="font-bold text-sm" data-i18n="about_pl_beauty">Beauty Collagen</p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">monitor_weight</span>
               </div>
               <p class="font-bold text-sm" data-i18n="about_pl_weight">Weight Management</p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">digest</span>
               </div>
               <p class="font-bold text-sm" data-i18n="about_pl_gut">Gut Health</p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 text-center hover:border-primary/50 transition-all"
+            >
               <div class="inline-flex items-center justify-center size-14 bg-primary/10 rounded-xl mb-3">
                 <span class="material-symbols-outlined text-primary text-2xl">science</span>
               </div>
@@ -275,18 +317,38 @@
                   src="/assets/images/oem/about/about-2-1920w.webp"
                   width="800"
                   height="500"
-                 srcset="/assets/images/oem/about/about-2-1200w.webp 1200w, /assets/images/oem/about/about-2-1920w.webp 1920w" sizes="(min-width: 1280px) 25vw, 33vw" />
+                  srcset="
+                    /assets/images/oem/about/about-2-1200w.webp 1200w,
+                    /assets/images/oem/about/about-2-1920w.webp 1920w
+                  "
+                  sizes="(min-width: 1280px) 25vw, 33vw"
+                />
               </div>
             </div>
             <div class="flex flex-col gap-6">
               <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
                 <span data-i18n="about_story_p1">
-                  <span data-i18n="about_founded_history">Founded in 2004 in Foshan, Guangdong, <span data-i18n="seo_yukoli">YuKoLi</span> started as a small food processing plant. We have always focused on health food R&D and manufacturing, providing professional OEM/ODM services for global brands.</span>
+                  <span data-i18n="about_founded_history">
+                    Founded in 2004 in Foshan, Guangdong,
+                    <span data-i18n="seo_yukoli">YuKoLi</span>
+                    started as a small food processing plant. We have always focused on health food R&D and
+                    manufacturing, providing professional OEM/ODM services for global brands.
+                  </span>
                 </span>
               </p>
               <p class="text-slate-600 dark:text-slate-400">
                 <span data-i18n="about_story_p2">
-                  After <span data-i18n="seo_20_years">20 years</span>, <span data-i18n="seo_yukoli">YuKoLi</span> has grown into a health food manufacturer with 4 modern factories and <span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>. We hold <span data-i18n="certifications">HACCP/FDA/ISO</span> certifications, exporting to <span data-i18n="seo_30_countries">30+ countries</span>.
+                  After
+                  <span data-i18n="seo_20_years">20 years</span>
+                  ,
+                  <span data-i18n="seo_yukoli">YuKoLi</span>
+                  has grown into a health food manufacturer with 4 modern factories and
+                  <span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>
+                  . We hold
+                  <span data-i18n="certifications">HACCP/FDA/ISO</span>
+                  certifications, exporting to
+                  <span data-i18n="seo_30_countries">30+ countries</span>
+                  .
                 </span>
               </p>
               <!-- Key stats -->
@@ -297,11 +359,15 @@
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center shadow-sm">
                   <div class="text-2xl font-black text-primary">4座</div>
-                  <div class="text-xs text-slate-500 font-bold mt-1" data-i18n="about_stat_factories">Modern Factories</div>
+                  <div class="text-xs text-slate-500 font-bold mt-1" data-i18n="about_stat_factories">
+                    Modern Factories
+                  </div>
                 </div>
                 <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center shadow-sm">
                   <div class="text-2xl font-black text-primary">30+</div>
-                  <div class="text-xs text-slate-500 font-bold mt-1" data-i18n="about_stat_countries">Export Countries</div>
+                  <div class="text-xs text-slate-500 font-bold mt-1" data-i18n="about_stat_countries">
+                    Export Countries
+                  </div>
                 </div>
               </div>
               <div class="flex gap-4">
@@ -327,13 +393,17 @@
       <section class="fullwidth-bg py-20" id="factory">
         <div class="section-content">
           <div class="w-full text-center mb-12">
-            <h2 class="text-3xl lg:text-4xl font-black tracking-tighter mb-4" data-i18n="about_factory_title">4 Production Bases</h2>
+            <h2 class="text-3xl lg:text-4xl font-black tracking-tighter mb-4" data-i18n="about_factory_title">
+              4 Production Bases
+            </h2>
             <p class="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto" data-i18n="about_factory_desc">
               Strategic national layout ensuring efficient capacity and flexible delivery
             </p>
           </div>
           <div class="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all"
+            >
               <div class="flex items-center gap-3 mb-4">
                 <div class="size-12 bg-primary/10 rounded-xl flex items-center justify-center">
                   <span class="material-symbols-outlined text-primary text-xl">factory</span>
@@ -344,10 +414,13 @@
                 </div>
               </div>
               <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="about_factory_hq_desc">
-                HQ and core R&D center, multiple automated lines focusing on coffee, tea, and functional beverages. Annual capacity 5,000+ tons.
+                HQ and core R&D center, multiple automated lines focusing on coffee, tea, and functional beverages.
+                Annual capacity 5,000+ tons.
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all"
+            >
               <div class="flex items-center gap-3 mb-4">
                 <div class="size-12 bg-primary/10 rounded-xl flex items-center justify-center">
                   <span class="material-symbols-outlined text-primary text-xl">factory</span>
@@ -358,10 +431,13 @@
                 </div>
               </div>
               <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="about_factory_east_desc">
-                Specializing in meal replacement and weight management, with clean workshops and low-temp extraction. Annual capacity 3,000+ tons.
+                Specializing in meal replacement and weight management, with clean workshops and low-temp extraction.
+                Annual capacity 3,000+ tons.
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all"
+            >
               <div class="flex items-center gap-3 mb-4">
                 <div class="size-12 bg-primary/10 rounded-xl flex items-center justify-center">
                   <span class="material-symbols-outlined text-primary text-xl">factory</span>
@@ -372,10 +448,13 @@
                 </div>
               </div>
               <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="about_factory_south_desc">
-                Focus on beauty collagen and gut health, advanced enzymatic and microencapsulation technology. Export to SE Asia and Europe. Annual capacity 4,000+ tons.
+                Focus on beauty collagen and gut health, advanced enzymatic and microencapsulation technology. Export to
+                SE Asia and Europe. Annual capacity 4,000+ tons.
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all">
+            <div
+              class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 hover:border-primary/50 transition-all"
+            >
               <div class="flex items-center gap-3 mb-4">
                 <div class="size-12 bg-primary/10 rounded-xl flex items-center justify-center">
                   <span class="material-symbols-outlined text-primary text-xl">factory</span>
@@ -386,7 +465,8 @@
                 </div>
               </div>
               <p class="text-sm text-slate-600 dark:text-slate-400" data-i18n="about_factory_west_desc">
-                Built in 2023, focusing on functional beverages and plant-based health foods. New automated lines for small-batch OEM/ODM.
+                Built in 2023, focusing on functional beverages and plant-based health foods. New automated lines for
+                small-batch OEM/ODM.
               </p>
             </div>
           </div>
@@ -397,7 +477,9 @@
       <section class="fullwidth-bg py-20 bg-slate-50 dark:bg-slate-900/50">
         <div class="section-content">
           <div class="w-full text-center mb-12">
-            <h2 class="text-3xl lg:text-4xl font-black tracking-tighter mb-4" data-i18n="about_milestone_title">Development Milestones</h2>
+            <h2 class="text-3xl lg:text-4xl font-black tracking-tighter mb-4" data-i18n="about_milestone_title">
+              Development Milestones
+            </h2>
           </div>
           <div class="w-full max-w-4xl mx-auto">
             <div class="relative">
@@ -407,15 +489,28 @@
               <div class="space-y-8">
                 <!-- 2004 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2004</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2004
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2004_title">Company Founded</p>
-                    <p class="text-xs text-slate-500" data-i18n="about_ms_2004_desc"><span data-i18n="seo_yukoli">YuKoLi</span><span data-i18n="about_ms_2004_desc_seg1"> Technology founded, starting health food processing</span></p>
+                    <p class="text-xs text-slate-500" data-i18n="about_ms_2004_desc">
+                      <span data-i18n="seo_yukoli">YuKoLi</span>
+                      <span data-i18n="about_ms_2004_desc_seg1">
+                        Technology founded, starting health food processing
+                      </span>
+                    </p>
                   </div>
                 </div>
                 <!-- 2010 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2010</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2010
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2010_title">ISO Certification</p>
                     <p class="text-xs text-slate-500" data-i18n="about_ms_2010_desc">Passed ISO 9001 certification</p>
@@ -423,42 +518,76 @@
                 </div>
                 <!-- 2015 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2015</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2015
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2015_title">FDA Registration</p>
-                    <p class="text-xs text-slate-500" data-i18n="about_ms_2015_desc">Completed FDA registration, entered North American market</p>
+                    <p class="text-xs text-slate-500" data-i18n="about_ms_2015_desc">
+                      Completed FDA registration, entered North American market
+                    </p>
                   </div>
                 </div>
                 <!-- 2018 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2018</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2018
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2018_title">HACCP Certification</p>
-                    <p class="text-xs text-slate-500" data-i18n="about_ms_2018_desc">Passed HACCP food safety certification</p>
+                    <p class="text-xs text-slate-500" data-i18n="about_ms_2018_desc">
+                      Passed HACCP food safety certification
+                    </p>
                   </div>
                 </div>
                 <!-- 2020 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2020</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2020
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2020_title">3rd Factory Launched</p>
-                    <p class="text-xs text-slate-500" data-i18n="about_ms_2020_desc">South China factory launched, added beauty collagen and gut health lines</p>
+                    <p class="text-xs text-slate-500" data-i18n="about_ms_2020_desc">
+                      South China factory launched, added beauty collagen and gut health lines
+                    </p>
                   </div>
                 </div>
                 <!-- 2023 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2023</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary/80 rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2023
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2023_title">4th Factory Launched</p>
-                    <p class="text-xs text-slate-500" data-i18n="about_ms_2023_desc">West China factory launched, expanded functional beverages line</p>
+                    <p class="text-xs text-slate-500" data-i18n="about_ms_2023_desc">
+                      West China factory launched, expanded functional beverages line
+                    </p>
                   </div>
                 </div>
                 <!-- 2024 -->
                 <div class="relative flex items-start gap-6 lg:gap-0">
-                  <div class="flex-shrink-0 size-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xs z-10">2024</div>
+                  <div
+                    class="flex-shrink-0 size-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xs z-10"
+                  >
+                    2024
+                  </div>
                   <div class="lg:ml-8 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm flex-1">
                     <p class="font-bold text-sm" data-i18n="about_ms_2024_title">Export to 30+ Countries</p>
-                    <p class="text-xs text-slate-500" data-i18n="about_ms_2024_desc">Exported to <span data-i18n="seo_30_countries">30+ countries</span><span data-i18n="about_ms_2024_desc_seg1">, became long-term OEM/ODM partner for global brands</span></p>
+                    <p class="text-xs text-slate-500" data-i18n="about_ms_2024_desc">
+                      Exported to
+                      <span data-i18n="seo_30_countries">30+ countries</span>
+                      <span data-i18n="about_ms_2024_desc_seg1">
+                        , became long-term OEM/ODM partner for global brands
+                      </span>
+                    </p>
                   </div>
                 </div>
               </div>
@@ -474,10 +603,14 @@
             <div class="py-12 lg:py-20 text-center text-white relative overflow-hidden rounded-3xl">
               <div class="absolute top-0 right-0 size-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
               <div class="relative z-10">
-                <h2 class="text-4xl lg:text-5xl font-black mb-6" data-i18n="about_cta_title">Ready to Start Cooperation?</h2>
+                <h2 class="text-4xl lg:text-5xl font-black mb-6" data-i18n="about_cta_title">
+                  Ready to Start Cooperation?
+                </h2>
                 <p class="text-white/80 text-lg mb-10 max-w-2xl mx-auto">
                   <span data-i18n="about_cta_desc">
-                    Partner with <span data-i18n="seo_yukoli">YuKoLi</span>. Free OEM/ODM custom solutions with professional team response within 24 hours.
+                    Partner with
+                    <span data-i18n="seo_yukoli">YuKoLi</span>
+                    . Free OEM/ODM custom solutions with professional team response within 24 hours.
                   </span>
                 </p>
                 <div class="flex flex-wrap justify-center gap-4">
@@ -494,18 +627,18 @@
           </div>
         </section>
       </div>
-
     </main>
-<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-<script defer src="/assets/js/search-index.js?v=202605291142"></script>
-<script defer src="/assets/js/contacts.js?v=202605291142"></script>
+    <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
+    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/page-init.js?v=202605291142"></script>
+    <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
+    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
 
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
-    <script defer src="/assets/js/page-interactions.js?v=202605291142"></script><script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
-</body>
+    <script defer src="/assets/js/page-interactions.js?v=202605291142"></script>
+    <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
+  </body>
 </html>

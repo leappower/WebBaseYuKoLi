@@ -10,14 +10,17 @@
     <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/contact/" />
 
     <meta charset="utf-8" />
-    <meta data-i18n-meta="contact_meta_description" name="description" content="Contact YuKoLi — Get health food OEM/ODM quotes and technical consultation. Global service network covering Southeast Asia, Middle East, South Asia, and more."
+    <meta
+      data-i18n-meta="contact_meta_description"
+      name="description"
+      content="Contact YuKoLi — Get health food OEM/ODM quotes and technical consultation. Global service network covering Southeast Asia, Middle East, South Asia, and more."
     />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="contact_meta_title">Yukoli | Contact Us</title>
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/product-builder.css?v=20260601" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
@@ -27,8 +30,8 @@
       })();
     </script>
     <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
-      <link rel="stylesheet" href="/assets/css/skeleton.css" />
-</head>
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+  </head>
   <body
     class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip"
   >
@@ -192,7 +195,9 @@
                         <span class="scale-display" data-i18n="product_builder_quantity_under_1k">Under 1,000 /mo</span>
                       </div>
                       <div class="scale-labels">
-                        <span class="scale-label active" data-idx="0" data-i18n="product_builder_scale_lt_1k">&lt;1K</span>
+                        <span class="scale-label active" data-idx="0" data-i18n="product_builder_scale_lt_1k">
+                          &lt;1K
+                        </span>
                         <span class="scale-label" data-idx="1" data-i18n="product_builder_scale_1k_5k">1K-5K</span>
                         <span class="scale-label" data-idx="2" data-i18n="product_builder_scale_5k_10k">5K-10K</span>
                         <span class="scale-label" data-idx="3" data-i18n="product_builder_scale_10k_50k">10K-50K</span>
@@ -269,25 +274,28 @@
                       type="text"
                       name="fullname"
                       required
-                      placeholder="John Doe" data-i18n-placeholder="product_builder_contact_name_placeholder"
+                      placeholder="John Doe"
+                      data-i18n-placeholder="product_builder_contact_name_placeholder"
                       style="font-size: 0.75rem; padding: 0.4rem 0.5rem"
                     />
                   </div>
                   <div class="contact-field">
-                    <label style="font-size: 0.6875rem">
-                      Company
-                    </label>
+                    <label style="font-size: 0.6875rem">Company</label>
                     <input
                       type="text"
                       name="company"
-                      placeholder="Company" data-i18n-placeholder="product_builder_contact_company_placeholder"
+                      placeholder="Company"
+                      data-i18n-placeholder="product_builder_contact_company_placeholder"
                       style="font-size: 0.75rem; padding: 0.4rem 0.5rem"
                     />
                   </div>
                 </div>
                 <div class="contact-row" style="margin-top: 0.375rem">
                   <div class="contact-field">
-                    <label style="font-size: 0.6875rem" data-i18n="product_builder_contact_country">Country<span style="color:#ef4444">*</span></label>
+                    <label style="font-size: 0.6875rem" data-i18n="product_builder_contact_country">
+                      Country
+                      <span style="color: #ef4444">*</span>
+                    </label>
                     <select name="country" style="font-size: 0.75rem; padding: 0.4rem 0.5rem">
                       <option value="" data-i18n="product_builder_contact_select">Select</option>
                       <option value="CN" data-i18n="country_china">🇨🇳 中国</option>
@@ -307,13 +315,12 @@
                     </select>
                   </div>
                   <div class="contact-field">
-                    <label style="font-size: 0.6875rem">
-                      Email
-                    </label>
+                    <label style="font-size: 0.6875rem">Email</label>
                     <input
                       type="email"
                       name="email"
-                      placeholder="you@company.com" data-i18n-placeholder="product_builder_contact_email_placeholder"
+                      placeholder="you@company.com"
+                      data-i18n-placeholder="product_builder_contact_email_placeholder"
                       style="font-size: 0.75rem; padding: 0.4rem 0.5rem"
                     />
                   </div>
@@ -359,7 +366,8 @@
                         type="tel"
                         name="phone"
                         required
-                        placeholder="手机号" data-i18n-placeholder="product_builder_contact_phone_placeholder"
+                        placeholder="手机号"
+                        data-i18n-placeholder="product_builder_contact_phone_placeholder"
                         style="
                           flex: 1;
                           padding: 0.4rem 0.5rem;
@@ -373,32 +381,63 @@
                     </div>
                   </div>
                 </div>
-              <!-- Contact Method -->
-              <div class="contact-row" style="margin-top:0.375rem">
-                <div class="contact-field">
-                  <label style="font-size:0.6875rem" data-i18n="product_builder_contact_method">主用社交软件<span style="color:#ef4444">*</span></label>
-                  <select name="contactMethod" style="width:100%;padding:0.4rem 0.3rem;border:1px solid #e2e8f0;border-radius:8px;font-size:0.75rem;background:var(--bg-card,#fff);color:var(--text,#1e293b);">
-                    <option value="" data-i18n="product_builder_contact_method_select">选择…</option>
-                    <option value="WhatsApp">WhatsApp</option>
-                    <option value="LINE">LINE</option>
-                    <option value="WeChat" data-i18n="product_builder_contact_method_wechat">微信 WeChat</option>
-                    <option value="Telegram">Telegram</option>
-                    <option value="Zalo">Zalo</option>
-                    <option value="Messenger">Messenger</option>
-                  </select>
-                </div>
-                <div class="contact-field">
-                  <label style="font-size:0.6875rem" data-i18n="product_builder_contact_account">账号/ID<span style="color:#ef4444">*</span></label>
-                  <input type="text" name="contactAccount" placeholder="WhatsApp/微信/Telegram 账号" data-i18n-placeholder="product_builder_contact_whatsapp_placeholder" style="width:100%;padding:0.4rem 0.5rem;border:1px solid #e2e8f0;border-radius:8px;font-size:0.75rem;background:var(--bg-card,#fff);color:var(--text,#1e293b);" />
+                <!-- Contact Method -->
+                <div class="contact-row" style="margin-top: 0.375rem">
+                  <div class="contact-field">
+                    <label style="font-size: 0.6875rem" data-i18n="product_builder_contact_method">
+                      主用社交软件
+                      <span style="color: #ef4444">*</span>
+                    </label>
+                    <select
+                      name="contactMethod"
+                      style="
+                        width: 100%;
+                        padding: 0.4rem 0.3rem;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                        font-size: 0.75rem;
+                        background: var(--bg-card, #fff);
+                        color: var(--text, #1e293b);
+                      "
+                    >
+                      <option value="" data-i18n="product_builder_contact_method_select">选择…</option>
+                      <option value="WhatsApp">WhatsApp</option>
+                      <option value="LINE">LINE</option>
+                      <option value="WeChat" data-i18n="product_builder_contact_method_wechat">微信 WeChat</option>
+                      <option value="Telegram">Telegram</option>
+                      <option value="Zalo">Zalo</option>
+                      <option value="Messenger">Messenger</option>
+                    </select>
+                  </div>
+                  <div class="contact-field">
+                    <label style="font-size: 0.6875rem" data-i18n="product_builder_contact_account">
+                      账号/ID
+                      <span style="color: #ef4444">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="contactAccount"
+                      placeholder="WhatsApp/微信/Telegram 账号"
+                      data-i18n-placeholder="product_builder_contact_whatsapp_placeholder"
+                      style="
+                        width: 100%;
+                        padding: 0.4rem 0.5rem;
+                        border: 1px solid #e2e8f0;
+                        border-radius: 8px;
+                        font-size: 0.75rem;
+                        background: var(--bg-card, #fff);
+                        color: var(--text, #1e293b);
+                      "
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <hr class="contact-divider" style="margin: 0.75rem 0" />
+              <hr class="contact-divider" style="margin: 0.75rem 0" />
 
-            <!-- Message + Chips -->
-            <div>
-              <div class="prompt-chips" style="margin-bottom: 0.375rem">
+              <!-- Message + Chips -->
+              <div>
+                <div class="prompt-chips" style="margin-bottom: 0.375rem">
                   <span
                     class="prompt-chip"
                     style="font-size: 0.625rem; padding: 0.15rem 0.5rem"
@@ -495,7 +534,9 @@
               <span class="text-xl">🇨🇳</span>
               <div>
                 <p class="font-bold text-sm" data-i18n="contact_office_hq">China Headquarters</p>
-                <p class="text-xs text-slate-500" data-i18n="contact_company_name">Foshan YuKoLi Technology Co., Ltd.</p>
+                <p class="text-xs text-slate-500" data-i18n="contact_company_name">
+                  Foshan YuKoLi Technology Co., Ltd.
+                </p>
               </div>
             </div>
             <div class="space-y-3">
@@ -544,7 +585,7 @@
         </div>
       </section>
     </main>
-<script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
+    <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/product-builder.js?v=20260601"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
@@ -552,7 +593,7 @@
     <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
     <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-<script defer src="/assets/js/search-index.js?v=202605291142"></script>
-</body>
+    <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
+  </body>
 </html>

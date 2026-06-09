@@ -52,7 +52,6 @@
     <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
 
     <!-- Fonts -->
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link
       rel="preload"
       href="/assets/fonts/material-symbols-outlined-latin-400-normal.woff2"
@@ -61,7 +60,8 @@
       crossorigin
     />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
 
     <!-- Core Styles (loaded in SPA shell) -->
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />

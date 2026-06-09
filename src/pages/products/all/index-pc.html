@@ -7,7 +7,8 @@
 
     <meta charset="utf-8" />
     <meta
-      data-i18n-meta="meta_products_all_description" name="description"
+      data-i18n-meta="meta_products_all_description"
+      name="description"
       content="探索 YuKoLi 全系列冲调食品，咖啡、茶饮、代餐、胶原蛋白、体重管理、肠道健康、功能冲饮七大品类，按分类筛选，找到最适合您的 OEM/ODM 方案。"
     />
     <meta property="og:type" content="website" />
@@ -20,7 +21,6 @@
     <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="products_all_page_title">All Products | {brand} Smart products manufacturing</title>
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
@@ -37,7 +37,8 @@
       type="font/woff2"
       crossorigin
     />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
     <style>
@@ -139,8 +140,8 @@
         "url": "https://brew.yukoli.com/products/all/"
       }
     </script>
-      <link rel="stylesheet" href="/assets/css/skeleton.css" />
-</head>
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+  </head>
   <body
     class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300 overflow-x-clip"
   >
@@ -210,7 +211,13 @@
                 class="w-full h-full object-contain p-6"
                 src="/assets/images/products/hero-all-products-1920w.webp"
                 loading="eager"
-               srcset="/assets/images/products/hero-all-products-1200w.webp 1200w, /assets/images/products/hero-all-products-1920w.webp 1920w, /assets/images/products/hero-all-products-2048w.webp 2048w" sizes="(min-width: 1280px) 1024px, 80vw" />
+                srcset="
+                  /assets/images/products/hero-all-products-1200w.webp 1200w,
+                  /assets/images/products/hero-all-products-1920w.webp 1920w,
+                  /assets/images/products/hero-all-products-2048w.webp 2048w
+                "
+                sizes="(min-width: 1280px) 1024px, 80vw"
+              />
               <div
                 class="absolute bottom-6 left-6 right-6 p-6 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl"
               >
@@ -338,12 +345,12 @@
     </main>
 
     <footer data-component="footer" data-swup-persist="footer"></footer>
-<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-<script defer src="/assets/js/search-index.js?v=202605291142"></script>
-<script defer src="/assets/js/contacts.js?v=202605291142"></script>
+    <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
+    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
     <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/page-init.js?v=202605291142"></script>
+    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
@@ -351,7 +358,7 @@
 
     <script defer src="/assets/js/product-grid.js?v=202605291142"></script>
     <script defer src="/assets/js/cross-sell.js?v=202605291142"></script>
-<style>
+    <style>
       @keyframes fadeIn {
         from {
           opacity: 0;
@@ -372,5 +379,5 @@
     </style>
 
     <script src="/assets/js/utils/device-utils.js?v=202605291142"></script>
-</body>
+  </body>
 </html>

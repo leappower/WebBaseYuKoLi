@@ -2,26 +2,32 @@
 
 <html class="light" lang="en">
   <head>
-  <script src="/site.config.js" defer></script>
-  <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script src="/site.config.js" defer></script>
+    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
 
     <meta charset="utf-8" />
 
-      <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/home/" />
+    <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/home/" />
     <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/home/" />
 
     <meta property="og:type" content="website" />
- <meta property="og:title" content="YuKoLi 优科力科技 | 专业健康食品 OEM/ODM 制造商" />
+    <meta property="og:title" content="YuKoLi 优科力科技 | 专业健康食品 OEM/ODM 制造商" />
     <meta
       property="og:description"
- content="YuKoLi 优科力科技 — 专业健康食品 OEM/ODM 制造商，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家。"
+      content="YuKoLi 优科力科技 — 专业健康食品 OEM/ODM 制造商，4座自有工厂，7大产品线覆盖咖啡冲调、茶饮奶茶、代餐蛋白、美容胶原、体重管理、肠道健康、功能冲饮，出口30+国家。"
     />
     <meta property="og:url" content="https://brew.yukoli.com/home/" />
     <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
- <meta data-i18n-meta="home_meta_description" name="description" content="YuKoLi Technology — 20 years of health food OEM/ODM manufacturing, 4 factories, 8 product lines covering coffee, tea, meal replacement, collagen, weight management, gut health, functional drinks. MOQ 500. Exported to 30+ countries." />
-    <title data-i18n="home_meta_title"><span data-i18n="seo_yukoli">YuKoLi</span><span data-i18n="home_meta_title_seg1"> | Health Food OEM/ODM Expert</span></title>
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
+    <meta
+      data-i18n-meta="home_meta_description"
+      name="description"
+      content="YuKoLi Technology — 20 years of health food OEM/ODM manufacturing, 4 factories, 8 product lines covering coffee, tea, meal replacement, collagen, weight management, gut health, functional drinks. MOQ 500. Exported to 30+ countries."
+    />
+    <title data-i18n="home_meta_title">
+      <span data-i18n="seo_yukoli">YuKoLi</span><span data-i18n="home_meta_title_seg1"> | Health Food OEM/ODM
+      Expert</span>
+    </title>
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
@@ -38,11 +44,15 @@
       type="font/woff2"
       crossorigin
     />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
     <style>
-      body { font-family: "Public Sans", sans-serif; min-height: 100dvh; }
+      body {
+        font-family: "Public Sans", sans-serif;
+        min-height: 100dvh;
+      }
     </style>
     <!-- Dark mode: apply saved preference before first paint (prevents flash) -->
     <script>
@@ -87,12 +97,15 @@
         "inLanguage": ["zh-CN", "en"]
       }
     </script>
-      <link rel="stylesheet" href="/assets/css/skeleton.css" />
-</head>
-  <body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-clip">
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col overflow-x-clip"
+  >
     <!-- ═══ Navigator Component ═══ -->
     <navigator
-      data-component="navigator" data-swup-persist="nav"
+      data-component="navigator"
+      data-swup-persist="nav"
       data-variant="mobile"
       data-active="home"
       data-search="true"
@@ -115,28 +128,47 @@
           </div>
 
           <h1 class="text-3xl font-black leading-tight tracking-tight text-slate-900 dark:text-white mb-3">
-            <span data-i18n="home_hero_title_1_part">Empower Global Brands,</span><span class="text-primary" data-i18n="home_hero_title_2">Customize a Healthy Future</span>
+            <span data-i18n="home_hero_title_1_part">Empower Global Brands,</span>
+            <span class="text-primary" data-i18n="home_hero_title_2">Customize a Healthy Future</span>
           </h1>
           <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            <span data-i18n="seo_20_years">20 years</span><span data-i18n="home_hero_desc_mid1"> focused on health food OEM/ODM, 4 owned factories, </span><span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span><span data-i18n="home_hero_desc_mid2">, exported to </span><span data-i18n="seo_30_countries">30+ countries</span><span data-i18n="home_hero_desc_seg1">, MOQ 500. From R&D to delivery, one-stop branding service.</span></p>
+            <span data-i18n="seo_20_years">20 years</span>
+            <span data-i18n="home_hero_desc_mid1">focused on health food OEM/ODM, 4 owned factories,</span>
+            <span data-i18n="seo_8_product_lines">8 Product Lines for Full Category Coverage</span>
+            <span data-i18n="home_hero_desc_mid2">, exported to</span>
+            <span data-i18n="seo_30_countries">30+ countries</span>
+            <span data-i18n="home_hero_desc_seg1">, MOQ 500. From R&D to delivery, one-stop branding service.</span>
+          </p>
 
-          <div class="relative w-full h-[220px] bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl border border-white/10 mb-5">
+          <div
+            class="relative w-full h-[220px] bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden shadow-xl border border-white/10 mb-5"
+          >
             <img
               alt="YuKoLi 健康食品 OEM/ODM 工厂"
               class="w-full h-full object-cover"
               src="/assets/images/oem/hero/hero-mobile-828w.webp"
-              srcset="/assets/images/oem/hero/hero-mobile-375w.webp 375w, /assets/images/oem/hero/hero-mobile-828w.webp 828w"
+              srcset="
+                /assets/images/oem/hero/hero-mobile-375w.webp 375w,
+                /assets/images/oem/hero/hero-mobile-828w.webp 828w
+              "
               sizes="calc(100vw - 32px)"
               loading="eager"
-/>
+            />
           </div>
 
           <div class="flex gap-3">
-            <a href="/products/all/" class="flex-1 bg-primary text-white px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25">
+            <a
+              href="/products/all/"
+              class="flex-1 bg-primary text-white px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-primary/25"
+            >
               <span data-i18n="home_hero_btn_products">Free Sample</span>
               <span class="material-symbols-outlined text-lg">science</span>
             </a>
-            <a href="/contact/" class="flex-1 border-2 border-slate-200 dark:border-slate-800 px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2" data-i18n="home_hero_btn_hardware_text">
+            <a
+              href="/contact/"
+              class="flex-1 border-2 border-slate-200 dark:border-slate-800 px-5 py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2"
+              data-i18n="home_hero_btn_hardware_text"
+            >
               Get a Quote
             </a>
           </div>
@@ -147,29 +179,53 @@
       <section class="fullwidth-bg py-8 bg-slate-100 dark:bg-slate-900/50">
         <div class="section-content">
           <div class="grid grid-cols-3 gap-3">
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700"
+            >
               <p class="text-xl font-black text-primary">4</p>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_factory">Owned Factories</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_factory">
+                Owned Factories
+              </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700"
+            >
               <p class="text-xl font-black text-primary">20+</p>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_years">Years Experience</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_years">
+                Years Experience
+              </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700"
+            >
               <p class="text-xl font-black text-primary">8</p>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_lines">Product Lines</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_lines">
+                Product Lines
+              </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700"
+            >
               <p class="text-xl font-black text-primary">30+</p>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_countries">Export Countries</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_countries">
+                Export Countries
+              </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700"
+            >
               <p class="text-xl font-black text-primary">6</p>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_certs">Certifications</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_certs">
+                Certifications
+              </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-3 text-center border border-slate-200 dark:border-slate-700"
+            >
               <p class="text-xl font-black text-primary">500</p>
-              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_moq">Min Order Qty</p>
+              <p class="text-[10px] font-bold text-slate-500 dark:text-slate-400" data-i18n="home_trust_moq">
+                Min Order Qty
+              </p>
             </div>
           </div>
         </div>
@@ -179,13 +235,19 @@
       <section class="fullwidth-bg py-10 bg-white dark:bg-slate-950">
         <div class="section-content">
           <div class="text-center mb-6">
-            <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_advantage_title">Why Choose <span data-i18n="seo_yukoli">YuKoLi</span></h2>
+            <h2 class="text-xl font-black tracking-tight mb-1" data-i18n="home_advantage_title">
+              Why Choose
+              <span data-i18n="seo_yukoli">YuKoLi</span>
+            </h2>
             <p class="text-slate-500 text-xs" data-i18n="home_advantage_subtitle">
-              <span data-i18n="seo_20_years">20 years</span><span data-i18n="home_advantage_subtitle_seg1"> of health food manufacturing, one-stop service
-            </span></p>
+              <span data-i18n="seo_20_years">20 years</span>
+              <span data-i18n="home_advantage_subtitle_seg1">of health food manufacturing, one-stop service</span>
+            </p>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700"
+            >
               <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <span class="material-symbols-outlined text-primary text-xl">factory</span>
               </div>
@@ -194,7 +256,9 @@
                 4 owned factories, full-process control
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700"
+            >
               <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <span class="material-symbols-outlined text-primary text-xl">science</span>
               </div>
@@ -203,16 +267,21 @@
                 Professional R&D team, rapid market response
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700"
+            >
               <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <span class="material-symbols-outlined text-primary text-xl">verified</span>
               </div>
               <h3 class="text-sm font-bold mb-1" data-i18n="home_why_cert_title">International Certifications</h3>
               <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_cert_desc">
-                <span data-i18n="certifications">HACCP/FDA/ISO</span><span data-i18n="home_why_cert_desc_seg1"> certified
-              </span></p>
+                <span data-i18n="certifications">HACCP/FDA/ISO</span>
+                <span data-i18n="home_why_cert_desc_seg1">certified</span>
+              </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700"
+            >
               <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <span class="material-symbols-outlined text-primary text-xl">tune</span>
               </div>
@@ -221,7 +290,9 @@
                 Formula, flavor, packaging customization
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700"
+            >
               <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <span class="material-symbols-outlined text-primary text-xl">support_agent</span>
               </div>
@@ -230,13 +301,16 @@
                 From concept to market full process
               </p>
             </div>
-            <div class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700">
+            <div
+              class="bg-white dark:bg-slate-800 rounded-xl p-4 text-center border border-slate-200 dark:border-slate-700"
+            >
               <div class="size-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-3">
                 <span class="material-symbols-outlined text-primary text-xl">public</span>
               </div>
               <h3 class="text-sm font-bold mb-1" data-i18n="home_why_export_title">Export Experience</h3>
               <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_why_export_desc">
-                Exported to <span data-i18n="seo_30_countries">30+ countries</span>
+                Exported to
+                <span data-i18n="seo_30_countries">30+ countries</span>
               </p>
             </div>
           </div>
@@ -253,107 +327,290 @@
             </p>
           </div>
           <div class="space-y-3">
-            <a href="/products/coffee/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/coffee/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Coffee Series" data-i18n="alt_coffee_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/coffee-828w.webp" srcset="/assets/images/oem/products/coffee-375w.webp 375w, /assets/images/oem/products/coffee-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Coffee Series"
+                    data-i18n="alt_coffee_series"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/coffee-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/coffee-375w.webp 375w,
+                      /assets/images/oem/products/coffee-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_coffee_name">Coffee & Mixes</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_coffee_tagline">Rich aroma, instant enjoyment</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_coffee_desc">Instant coffee, latte, cappuccino and more</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_coffee_tagline">
+                    Rich aroma, instant enjoyment
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_coffee_desc">
+                    Instant coffee, latte, cappuccino and more
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/tea/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/tea/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Tea & Milk Tea Series" data-i18n="alt_tea_&_milk_tea_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/tea-828w.webp" srcset="/assets/images/oem/products/tea-375w.webp 375w, /assets/images/oem/products/tea-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Tea & Milk Tea Series"
+                    data-i18n="alt_tea_&_milk_tea_series"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/tea-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/tea-375w.webp 375w,
+                      /assets/images/oem/products/tea-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_tea_name">Tea & Milk Tea</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_tea_tagline">Real leaf extraction, modern tea</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_tea_desc">Fruit tea, milk tea, pure tea powder</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_tea_tagline">
+                    Real leaf extraction, modern tea
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_tea_desc">
+                    Fruit tea, milk tea, pure tea powder
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/meal/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/meal/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Meal Replacement Series" data-i18n="alt_meal_replacement_series" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/meal-828w.webp" srcset="/assets/images/oem/products/meal-375w.webp 375w, /assets/images/oem/products/meal-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Meal Replacement Series"
+                    data-i18n="alt_meal_replacement_series"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/meal-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/meal-375w.webp 375w,
+                      /assets/images/oem/products/meal-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_meal_name">Meal Replacement</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_meal_tagline">Balanced nutrition, convenient meals</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_meal_desc">Protein bars, meal powders, science-based satiety</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_meal_tagline">
+                    Balanced nutrition, convenient meals
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_meal_desc">
+                    Protein bars, meal powders, science-based satiety
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/beauty/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/beauty/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Beauty Collagen" data-i18n="alt_beauty_collagen" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/beauty-828w.webp" srcset="/assets/images/oem/products/beauty-375w.webp 375w, /assets/images/oem/products/beauty-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Beauty Collagen"
+                    data-i18n="alt_beauty_collagen"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/beauty-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/beauty-375w.webp 375w,
+                      /assets/images/oem/products/beauty-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_beauty_name">Beauty Collagen</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_beauty_tagline">Oral beauty, skin rejuvenation</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_beauty_desc">Collagen peptide drinks enriched with beauty essences</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_beauty_tagline">
+                    Oral beauty, skin rejuvenation
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_beauty_desc">
+                    Collagen peptide drinks enriched with beauty essences
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/weight/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/weight/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Weight Management" data-i18n="alt_weight_management" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/weight-828w.webp" srcset="/assets/images/oem/products/weight-375w.webp 375w, /assets/images/oem/products/weight-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Weight Management"
+                    data-i18n="alt_weight_management"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/weight-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/weight-375w.webp 375w,
+                      /assets/images/oem/products/weight-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_weight_name">Weight Management</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_weight_tagline">Scientific weight control, healthy shaping</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_weight_desc">Fat-burning drinks, blockers, weight management solutions</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_weight_tagline">
+                    Scientific weight control, healthy shaping
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_weight_desc">
+                    Fat-burning drinks, blockers, weight management solutions
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/gut/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/gut/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Gut Health" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/gut-828w.webp" srcset="/assets/images/oem/products/gut-375w.webp 375w, /assets/images/oem/products/gut-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Gut Health"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/gut-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/gut-375w.webp 375w,
+                      /assets/images/oem/products/gut-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_gut_name">Gut Health</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_gut_tagline">Probiotics, balanced gut care</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_gut_desc">Probiotics, dietary fiber for gut health</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_gut_tagline">
+                    Probiotics, balanced gut care
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_gut_desc">
+                    Probiotics, dietary fiber for gut health
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/lifestyle/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/lifestyle/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Functional Beverages" data-i18n="alt_functional_beverages" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/lifestyle-828w.webp" srcset="/assets/images/oem/products/lifestyle-375w.webp 375w, /assets/images/oem/products/lifestyle-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Functional Beverages"
+                    data-i18n="alt_functional_beverages"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/lifestyle-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/lifestyle-375w.webp 375w,
+                      /assets/images/oem/products/lifestyle-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_lifestyle_name">Functional Beverages</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_lifestyle_tagline">Targeted benefits, precise supplementation</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_lifestyle_desc">Energy, sleep, immune support customization</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_lifestyle_tagline">
+                    Targeted benefits, precise supplementation
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_lifestyle_desc">
+                    Energy, sleep, immune support customization
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
-            <a href="/products/legacy/" class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300">
+            <a
+              href="/products/legacy/"
+              class="block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group hover:shadow-xl hover:border-primary/30 transition-all duration-300"
+            >
               <div class="flex">
                 <div class="w-28 flex-shrink-0 bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                  <img alt="Classic Drinks" data-i18n="alt_classic_drinks" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/products/legacy-828w.webp" srcset="/assets/images/oem/products/legacy-375w.webp 375w, /assets/images/oem/products/legacy-828w.webp 828w" sizes="calc(100vw - 32px)" loading="lazy" />
+                  <img
+                    alt="Classic Drinks"
+                    data-i18n="alt_classic_drinks"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    src="/assets/images/oem/products/legacy-828w.webp"
+                    srcset="
+                      /assets/images/oem/products/legacy-375w.webp 375w,
+                      /assets/images/oem/products/legacy-828w.webp 828w
+                    "
+                    sizes="calc(100vw - 32px)"
+                    loading="lazy"
+                  />
                 </div>
                 <div class="p-4 flex-1">
                   <h3 class="text-sm font-bold mb-0.5" data-i18n="home_prod_legacy_name">Classic Drinks</h3>
-                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_legacy_tagline">Heritage recipes, authentic flavors</p>
-                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_legacy_desc">Lotus root powder, classic granules</p>
-                  <span class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"><span data-i18n="app_card_cta">View Solution</span><span class="material-symbols-outlined text-sm">arrow_forward</span></span>
+                  <p class="text-xs text-primary font-bold mb-1" data-i18n="home_prod_legacy_tagline">
+                    Heritage recipes, authentic flavors
+                  </p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400" data-i18n="home_prod_legacy_desc">
+                    Lotus root powder, classic granules
+                  </p>
+                  <span
+                    class="inline-flex items-center gap-1 text-primary font-bold text-xs group-hover:gap-2 transition-all mt-1"
+                  >
+                    <span data-i18n="app_card_cta">View Solution</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </span>
                 </div>
               </div>
             </a>
@@ -373,38 +630,86 @@
           <div class="grid grid-cols-2 gap-3">
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="GMP 洁净车间" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-1-828w.webp" srcset="/assets/images/oem/factory/factory-1-375w.webp 375w, /assets/images/oem/factory/factory-1-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
+                <img
+                  alt="GMP 洁净车间"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src="/assets/images/oem/factory/factory-1-828w.webp"
+                  srcset="
+                    /assets/images/oem/factory/factory-1-375w.webp 375w,
+                    /assets/images/oem/factory/factory-1-828w.webp 828w
+                  "
+                  sizes="calc((100vw - 32px - 12px) / 2)"
+                  loading="lazy"
+                />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_gmp_title">GMP Clean Workshop</h3>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_gmp_desc">Strict HACCP/ISO standards</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_gmp_desc">
+                  Strict HACCP/ISO standards
+                </p>
               </div>
             </div>
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="自动化产线" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-2-828w.webp" srcset="/assets/images/oem/factory/factory-2-375w.webp 375w, /assets/images/oem/factory/factory-2-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
+                <img
+                  alt="自动化产线"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src="/assets/images/oem/factory/factory-2-828w.webp"
+                  srcset="
+                    /assets/images/oem/factory/factory-2-375w.webp 375w,
+                    /assets/images/oem/factory/factory-2-828w.webp 828w
+                  "
+                  sizes="calc((100vw - 32px - 12px) / 2)"
+                  loading="lazy"
+                />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_auto_title">Automated Production Line</h3>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_auto_desc">Efficiency and consistency</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_auto_desc">
+                  Efficiency and consistency
+                </p>
               </div>
             </div>
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="质量实验室" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-3-828w.webp" srcset="/assets/images/oem/factory/factory-3-375w.webp 375w, /assets/images/oem/factory/factory-3-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
+                <img
+                  alt="质量实验室"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src="/assets/images/oem/factory/factory-3-828w.webp"
+                  srcset="
+                    /assets/images/oem/factory/factory-3-375w.webp 375w,
+                    /assets/images/oem/factory/factory-3-828w.webp 828w
+                  "
+                  sizes="calc((100vw - 32px - 12px) / 2)"
+                  loading="lazy"
+                />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_qc_title">Quality Lab</h3>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_qc_desc">Real-time quality monitoring</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_qc_desc">
+                  Real-time quality monitoring
+                </p>
               </div>
             </div>
             <div class="rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 group">
               <div class="aspect-[4/3] bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                <img alt="智能仓储" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="/assets/images/oem/factory/factory-4-828w.webp" srcset="/assets/images/oem/factory/factory-4-375w.webp 375w, /assets/images/oem/factory/factory-4-828w.webp 828w" sizes="calc((100vw - 32px - 12px) / 2)" loading="lazy" />
+                <img
+                  alt="智能仓储"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src="/assets/images/oem/factory/factory-4-828w.webp"
+                  srcset="
+                    /assets/images/oem/factory/factory-4-375w.webp 375w,
+                    /assets/images/oem/factory/factory-4-828w.webp 828w
+                  "
+                  sizes="calc((100vw - 32px - 12px) / 2)"
+                  loading="lazy"
+                />
               </div>
               <div class="p-3 bg-white dark:bg-slate-800">
                 <h3 class="text-sm font-bold mb-0.5" data-i18n="home_mfg_warehouse_title">Smart Warehouse</h3>
-                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_warehouse_desc">Monthly capacity in millions</p>
+                <p class="text-[10px] text-slate-500 dark:text-slate-400" data-i18n="home_mfg_warehouse_desc">
+                  Monthly capacity in millions
+                </p>
               </div>
             </div>
           </div>
@@ -419,13 +724,23 @@
             <div class="relative z-10">
               <h2 class="text-2xl font-black mb-3" data-i18n="home_cta_title">Ready to Start Your Brand?</h2>
               <p class="text-white/80 text-sm mb-5" data-i18n="home_cta_desc">
-                Contact <span data-i18n="seo_yukoli">YuKoLi</span><span data-i18n="home_cta_desc_seg1"> experts for free samples and custom solutions.
-              </span></p>
+                Contact
+                <span data-i18n="seo_yukoli">YuKoLi</span>
+                <span data-i18n="home_cta_desc_seg1">experts for free samples and custom solutions.</span>
+              </p>
               <div class="flex flex-col gap-2">
-                <a href="/contact/" class="bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm text-center" data-i18n="home_cta_btn_quote">
+                <a
+                  href="/contact/"
+                  class="bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm text-center"
+                  data-i18n="home_cta_btn_quote"
+                >
                   Free Sample
                 </a>
-                <a href="/contact/" class="bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm text-center" data-i18n="home_cta_btn_contact">
+                <a
+                  href="/contact/"
+                  class="bg-white text-primary px-5 py-3 rounded-xl font-bold text-sm text-center"
+                  data-i18n="home_cta_btn_contact"
+                >
                   Contact Us
                 </a>
               </div>
@@ -437,16 +752,16 @@
 
     <!-- ═══ Footer Component ═══ -->
     <footer data-component="footer" data-swup-persist="footer" data-variant="mobile" data-active="home"></footer>
-<script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
-<script defer src="/assets/js/search-index.js?v=202605291142"></script>
-<script defer src="/assets/js/contacts.js?v=202605291142"></script>
+    <script defer src="/assets/js/product-data-table.js?v=202605291142"></script>
+    <script defer src="/assets/js/search-index.js?v=202605291142"></script>
+    <script defer src="/assets/js/contacts.js?v=202605291142"></script>
     <!-- SWUP SPA Router v4.9.0 (replaces spa-router.js) -->
-<script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/page-init.js?v=202605291142"></script>
+    <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
+    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
 
     <script defer src="/assets/js/ui/helpers.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/page-effects.js?v=202605291142"></script>
     <script defer src="/assets/js/ui/form-interactions.js?v=202605291142"></script>
     <script defer src="/assets/js/page-interactions.js?v=202605291142"></script>
-</body>
+  </body>
 </html>

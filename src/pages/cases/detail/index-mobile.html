@@ -14,7 +14,6 @@
     <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="cases_page_title">Case Studies | {{brand}}</title>
-    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" />
     <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
     <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
@@ -31,7 +30,8 @@
       type="font/woff2"
       crossorigin
     />
-    <link href="/assets/fonts/local-fonts.css" rel="stylesheet" />
+    <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
+    <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
     <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
     <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
     <script>
@@ -40,8 +40,8 @@
       })();
     </script>
     <link rel="icon" href="/assets/images/logo-header.webp" type="image/webp" />
-      <link rel="stylesheet" href="/assets/css/skeleton.css" />
-</head>
+    <link rel="stylesheet" href="/assets/css/skeleton.css" />
+  </head>
   <body
     class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip"
     data-case-variant="mobile"
@@ -168,12 +168,12 @@
     <!-- Scripts -->
     <!-- SWUP SPA Router v4.9.0 -->
     <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
-<script defer src="/assets/js/page-init.js?v=202605291142"></script>
-<script src="/assets/js/case-detail.js?v=202605291142" data-swup-script></script>
+    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
+    <script src="/assets/js/case-detail.js?v=202605291142" data-swup-script></script>
     <script data-swup-script>
       document.addEventListener("DOMContentLoaded", function () {
         if (window.CaseDetail) CaseDetail.init("mobile");
       });
     </script>
-</body>
+  </body>
 </html>
