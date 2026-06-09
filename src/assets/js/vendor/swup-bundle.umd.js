@@ -2630,9 +2630,67 @@
    * /news/detail/  → /news/detail-pc.html (flat-file pattern)
    */
   function routeToFetchUrl(path) {
-    // 所有路由都有 index.html (PC版fallback)，直接请求干净路径
-    // serve 会返回 dist/<route>/index.html
-    return path;
+    var suffix = getDeviceSuffix();
+
+    // 将 SPA 路由路径转换为设备特定页面的 fetch URL。
+    // resolveUrl 的逆向：routeToFetchUrl 负责找到实际存在的 HTML 文件去 fetch，
+    // resolveUrl 负责把 fetch 回来的文件路径映射回地址栏显示的干净 URL。
+
+    // Aliases / redirects
+    if (path === "/" || path === "/home/") return "/home/" + suffix;
+
+    // Flat-file pattern (no directory)
+    if (path === "/news/detail/") return "/news/detail-" + suffix.replace("index-", "");
+
+    // Solutions pages
+    if (path.indexOf("/solutions/") === 0) {
+      if (path === "/solutions/") return "/solutions/" + suffix;
+      var solMatch = path.match(/^\/solutions\/(oem|odm|obm|rd|packaging)\/$/);
+      if (solMatch) return "/solutions/" + solMatch[1] + "/" + suffix;
+    }
+
+    // Resources pages
+    if (path.indexOf("/resources/") === 0) {
+      var resMatch = path.match(/^\/resources\/(catalog|videos|whitepapers)\/$/);
+      if (resMatch) return "/resources/" + resMatch[1] + "/" + suffix;
+    }
+
+    // Manufacturing & Compliance
+    if (path === "/manufacturing/") return "/manufacturing/" + suffix;
+    if (path === "/compliance/") return "/compliance/" + suffix;
+
+    // 动态产品分类页: /products/<slug>/
+    var prodMatch = path.match(/^\/(products\/)?(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
+    if (prodMatch) {
+      return "/products/" + prodMatch[2] + "/" + suffix;
+    }
+
+    // 产品详情 PDP: /products/<category>/<model>/
+    if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(path)) {
+      return "/pdp/" + suffix;
+    }
+
+    // 产品详情 PDP: /products/<model>/ (旧格式)
+    if (
+      /^\/products\/[^/]+\/$/.test(path) &&
+      !/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy|detail|compare)\/$/.test(path)
+    ) {
+      return "/pdp/" + suffix;
+    }
+
+    // 案例详情页: /cases/<slug>/ → 共享模板 /cases/detail/?slug=<slug>
+    if (/^\/cases\/([a-z0-9-]+)\//.test(path)) {
+      var caseSlug = path.match(/^\/cases\/([a-z0-9-]+)\//)[1];
+      return "/cases/detail/" + suffix + "?slug=" + caseSlug;
+    }
+
+    // 旧路由兼容: /beauty/ → /products/beauty/
+    var redirectMatch = path.match(/^\/(coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/);
+    if (redirectMatch) return "/products/" + redirectMatch[1] + "/" + suffix;
+
+    // 通用约定: /<path>/ → /<path>/index-{device}.html
+    var clean = path.replace(/\/+$/, "");
+    return clean + "/" + suffix;
   }
 
   // ═══════════════════════════════════════════════════════════════════
