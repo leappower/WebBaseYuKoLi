@@ -463,11 +463,16 @@ function injectThemeAndNavScripts(html, deviceType) {
   }
 
   // ── 5. Split runtime-guard into head; rest to body ──
+  // ── Split tags: head-critical scripts go into <head>, rest before </body>
+  var HEAD_SCRIPTS = ['runtime-guard.js', 'boot-queue.js', 'theme-init.js'];
   var headTags = '';
   var bodyTags = '';
   var lines = allTags.split('\n').filter(Boolean);
   lines.forEach(function(tag) {
-    if (tag.indexOf('runtime-guard.js') !== -1) {
+    var isHead = HEAD_SCRIPTS.some(function(s) {
+      return tag.indexOf(s) !== -1;
+    });
+    if (isHead) {
       headTags += tag + '\n  ';
     } else {
       bodyTags += tag + '\n  ';
