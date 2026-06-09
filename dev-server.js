@@ -141,7 +141,14 @@ function handler(req, res) {
         res.end(JSON.stringify({ error: 'Not found in dev mode' }));
         return;
       }
-      // SPA fallback for HTML routes
+      // Unknown HTML routes → 404
+      var notFoundFile = path.join(ROOT, '404.html');
+      if (fs.existsSync(notFoundFile)) {
+        res.writeHead(404, { 'Content-Type': 'text/html' });
+        res.end(fs.readFileSync(notFoundFile, 'utf-8'));
+        return;
+      }
+      // SPA fallback for HTML routes (only for known routes)
       fp = path.join(ROOT, 'index.html');
     }
 
