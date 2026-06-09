@@ -52,6 +52,8 @@ bash scripts/concat-breadcrumb.sh /tmp/breadcrumb-bundle.js
 
 echo "📦 Building CSS + JS..."
 npm run build:css 2>&1 | tail -1
+echo "🔗 Fixing critical CSS cascade..."
+node scripts/fix-critical-cascade.js
 if [ "$BUILD_MODE" = "dev" ]; then
   npx webpack --env devBuild 2>&1 | tail -3 || echo "  ⚠️  Webpack had non-fatal errors"
 else
