@@ -17,6 +17,9 @@ const SRC_DIR = path.resolve(__dirname, '..', 'src', 'assets', 'images');
 const TARGET_WIDTHS = [375, 828, 1200, 1920, 2048];
 const CONCURRENCY = 16;
 
+// 限制 sharp/libvips 内部线程池，防止峰值内存过高
+sharp.concurrency(4);
+
 async function getImageWidth(filePath) {
   try {
     const meta = await sharp(filePath).metadata();
@@ -27,45 +30,45 @@ async function getImageWidth(filePath) {
 }
 
 async function processFile(absPath) {
-  const relPath = path.relative(SRC_DIR, absPath);
-  const dir = path.dirname(absPath);
-  const basename = path.basename(absPath, '.webp');
-  const sourceWidth = await getImageWidth(absPath);
+  var relPath = path.relative(SRC_DIR, absPath);
+  var dir = path.dirname(absPath);
+  var basename = path.basename(absPath, '.webp');
+  var sourceWidth = await getImageWidth(absPath);
 
   if (!sourceWidth) {
-    return { relPath, status: 'SKIP', reason: '无法读取' };
+    return { relPath: relPath, status: 'SKIP', reason: '无法读取' };
   }
 
-  let generated = 0;
-  for (const width of TARGET_WIDTHS) {
-    const targetName = `${basename}-${width}w.webp`;
-    const targetPath = path.join(dir, targetName);
+  var generated = 0;
+  for (var wi = 0; wi < TARGET_WIDTHS.length; wi++) {
+    var width = TARGET_WIDTHS[wi];
+    var targetName = basename + '-' + width + 'w.webp';
+    var targetPath = path.join(dir, targetName);
 
     if (fs.existsSync(targetPath)) {
       generated++;
       continue;
     }
     if (sourceWidth < width) {
-      // Skip upscaling
       generated++;
       continue;
     }
 
     try {
-      await sharp(absPath)
+      await sharp(absPath, { limitInputPixels: false })
         .resize(width, undefined, { fit: 'outside', withoutEnlargement: true })
         .webp({ quality: 82, effort: 4 })
         .toFile(targetPath);
       generated++;
     } catch (err) {
-      return { relPath, status: 'FAIL', reason: err.message };
+      return { relPath: relPath, status: 'FAIL', reason: err.message };
     }
   }
 
   if (generated === TARGET_WIDTHS.length) {
-    return { relPath, status: 'OK' };
+    return { relPath: relPath, status: 'OK' };
   } else {
-    return { relPath, status: 'PARTIAL', count: generated };
+    return { relPath: relPath, status: 'PARTIAL', count: generated };
   }
 }
 

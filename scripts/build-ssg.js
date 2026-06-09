@@ -380,6 +380,11 @@ function injectThemeAndNavScripts(html, deviceType) {
     allTags += '<script defer src="' + bp + '/assets/js/lib/runtime-guard.js"></script>\n  ';
   }
 
+  // ── 0.5. Boot queue — ensures ordered initialization ──
+  if (html.indexOf('boot-queue.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/lib/boot-queue.js"></script>\n  ';
+  }
+
   // ── 1. Core framework (theme-init.js — font CDN + CSS tokens) ──
   if (html.indexOf('theme-init.js') === -1) {
     allTags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
@@ -546,6 +551,13 @@ function generateRouteIndex(route) {
 
   // Inject theme-init.js + nav scripts (responsive — serves all device types)
   html = injectThemeAndNavScripts(html, 'responsive');
+
+  // Inject device detection into the index.html
+  var redirectJs =
+    '<script>' +
+    '(function(){var ua=navigator.userAgent.toLowerCase();var m=/mobile|android|iphone|ipod/i.test(ua)&&!/ipad|tablet|silk/i.test(ua);var t=/ipad|tablet|silk/i.test(ua)||(/android/i.test(ua)&&!/mobile/i.test(ua));if(!m&&!t)return;var d=m?"index-mobile.html":"index-tablet.html";var p=window.location.pathname.replace(/\/$/,"");var b=p.substring(0,p.lastIndexOf("/")+1);if(b)window.location.replace(b+d)})()' +
+    '</script>';
+  html = html.replace('</head>', redirectJs + '</head>');
 
   // Write to dist/<slug>/index.html
   var distDir = path.join(DIST_DIR, route.slug);
