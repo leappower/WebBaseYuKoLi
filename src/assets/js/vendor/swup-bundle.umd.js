@@ -2850,7 +2850,9 @@
 
         // ─── 面包屑脚本注入 ───
         // SPA 导航后，如果新页面路径是 PDP 但当前 DOM 没有 breadcrumb-data 脚本，注入
-        if (!document.querySelector('script[src*="breadcrumb-data"]') && /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(p)) {
+        // 使用 visit.to.url 确保获取目标URL (content:replace 时 location.pathname 可能还未更新)
+        var toUrl = (visit.to && visit.to.url) ? visit.to.url : p;
+        if (!document.querySelector('script[src*="breadcrumb-data"]') && /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl)) {
           var bcScripts = ["/assets/js/breadcrumb-data.js", "/assets/js/breadcrumb-render.js", "/assets/js/breadcrumb.js"];
           var bcPending = 0;
           function bcOnReady() {
