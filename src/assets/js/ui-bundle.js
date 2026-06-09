@@ -2095,9 +2095,7 @@
     var a = el("a", classes || []);
     a.href = href || "";
     a.textContent = String(label || "");
-    if (href) {
-      a.setAttribute("data-no-swup", "");
-    }
+    // Allow swup SPA navigation
     return a;
   }
 

@@ -73,11 +73,9 @@
     } else {
       a.textContent = String(label || "");
     }
-    // Breadcrumb links use full page load (data-no-swup) to avoid swup
-    // SPA state conflicts. target="_top" ensures navigation happens at
-    // the top frame level, preventing swup lifecycle issues.
+    // Breadcrumb links use SPA navigation (swup content:replace)
     if (href) {
-      a.setAttribute("data-no-swup", "");
+      // no data-no-swup — allows swup to handle navigation
     }
     return a;
   }

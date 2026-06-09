@@ -542,7 +542,7 @@
     html += "</div>";
 
     html +=
-      '<a class="ios-search-view-all" href="/products/all/" data-no-swup>' +
+      '<a class="ios-search-view-all" href="/products/all/">' +
       "<span>" +
       esc(viewAllText) +
       "</span>" +

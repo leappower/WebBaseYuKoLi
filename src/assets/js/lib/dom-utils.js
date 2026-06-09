@@ -79,9 +79,8 @@ export function link(href, label, classes) {
   var a = el("a", classes || []);
   a.href = href || "";
   a.textContent = String(label || "");
-  if (href) {
-    a.setAttribute("data-no-swup", "");
-  }
+  // Allow swup SPA navigation — callers that need full page load
+  // should explicitly add data-no-swup after calling link()
   return a;
 }
 
