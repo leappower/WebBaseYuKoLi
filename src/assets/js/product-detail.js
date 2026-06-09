@@ -66,6 +66,26 @@
     return String(label);
   }
 
+  // i18n-aware product field accessor (used by renderPDP and exposed to window)
+  // Moved here so it is defined before renderPDP calls it.
+  function getProductField(product, field) {
+    if (!product) return "";
+    var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
+    if (lang === "zh-CN" || lang === "zh") return product[field] || "";
+
+    var tKey = product.model || product.id;
+    var translations = window._productTranslations || {};
+    var t = translations[tKey] || translations[product._productId];
+
+    if (!t && window.PRODUCT_DATA_TRANSLATIONS) {
+      t = window.PRODUCT_DATA_TRANSLATIONS[tKey];
+    }
+
+    if (t && t[field + "En"]) return t[field + "En"];
+    if (t && t["nameEn" + field]) return t["nameEn" + field];
+    return product[field] || "";
+  }
+
   function getAllProducts() {
     var table = window.PRODUCT_DATA_TABLE || [];
     if (!table.length) return [];
@@ -640,25 +660,7 @@
   }
 
   // Usage: getProductField(product, 'name') → returns translated name or fallback to Chinese
-  window.getProductField = function (product, field) {
-    if (!product) return "";
-    var lang = (window.CURRENT_LANG || document.documentElement.lang || "zh-CN").replace("_", "-");
-    if (lang === "zh-CN" || lang === "zh") return product[field] || "";
-
-    // Priority: API translations > local translations > fallback to Chinese
-    var tKey = product.model || product.id;
-    var translations = window._productTranslations || {};
-    var t = translations[tKey] || translations[product._productId];
-
-    // Check local translations file (API fallback)
-    if (!t && window.PRODUCT_DATA_TRANSLATIONS) {
-      t = window.PRODUCT_DATA_TRANSLATIONS[tKey];
-    }
-
-    if (t && t[field + "En"]) return t[field + "En"]; // fieldEn format (nameEn, descriptionEn)
-    if (t && t["nameEn" + field]) return t["nameEn" + field]; // alt format (nameEnDescription)
-    return product[field] || "";
-  };
+  window.getProductField = getProductField;
 
   // Load translations for a language (called when user switches language)
   window.loadProductTranslations = function (lang, callback) {

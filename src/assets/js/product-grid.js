@@ -376,10 +376,24 @@
       window.dispatchEvent(new Event("product-data-ready"));
       if (callback) callback();
     } else {
-      console.warn("[ProductGrid] PRODUCT_DATA_TABLE not available; using empty array");
-      window[STORE_KEY] = [];
-      _dataLoaded = true;
-      if (callback) callback();
+      // Data not yet loaded — wait for product-data-ready event
+      // This happens when product-grid.js loads before product-data-table.js
+      var _waitTimer = setTimeout(function () {
+        // Fallback: after 3s, give up
+        console.warn("[ProductGrid] PRODUCT_DATA_TABLE timeout; using empty array");
+        window[STORE_KEY] = [];
+        _dataLoaded = true;
+        if (callback) callback();
+      }, 3000);
+      window.addEventListener("product-data-ready", function _onReady() {
+        clearTimeout(_waitTimer);
+        if (Array.isArray(window.PRODUCT_DATA_TABLE)) {
+          window[STORE_KEY] = window.PRODUCT_DATA_TABLE;
+        }
+        _dataLoaded = true;
+        if (callback) callback();
+        window.removeEventListener("product-data-ready", _onReady);
+      });
     }
   }
 
@@ -1273,7 +1287,9 @@
     /* already inited */
   } else {
     window._productGridInited = true;
-    if (document.readyState !== "loading") {
+    if (typeof Boot !== "undefined") {
+      Boot.register("product-grid", 4, autoRender);
+    } else if (document.readyState !== "loading") {
       autoRender();
     } else {
       document.addEventListener("DOMContentLoaded", autoRender);
