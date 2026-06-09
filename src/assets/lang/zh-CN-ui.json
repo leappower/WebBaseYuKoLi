@@ -1283,5 +1283,8 @@
   "privacy_meta_description": "YuKoLi 隐私政策 — 我们在 OEM/ODM 合作过程中如何保护您的商业信息、产品配方和个人数据。",
   "terms_meta_description": "YuKoLi 服务条款 — OEM/ODM 合作条款、质量协议、知识产权保护和责任条款。",
   "products_meta_description": "YuKoLi 产品中心 — 全面的健康食品 OEM/ODM 产品线，覆盖咖啡、茶饮、代餐、胶原、体重管理、肠道健康、功能冲饮。",
-  "all_products_meta_description": "全部产品 — 浏览 YuKoLi 完整的 OEM/ODM 产品目录，为您的品牌找到最合适的配方方案。"
+  "all_products_meta_description": "全部产品 — 浏览 YuKoLi 完整的 OEM/ODM 产品目录，为您的品牌找到最合适的配方方案。",
+  "wechat_qr_title": "微信扫码添加",
+  "wechat_qr_subtitle": "添加企业微信，获取专属售后支持",
+  "wechat_qr_close": "关闭"
 }

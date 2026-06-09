@@ -1283,5 +1283,8 @@
   "privacy_meta_description": "YuKoLi Privacy Policy — how we protect your business information, product formulations, and personal data during OEM/ODM cooperation.",
   "terms_meta_description": "YuKoLi Terms of Service — OEM/ODM cooperation terms, quality agreements, intellectual property protection, and liability clauses.",
   "products_meta_description": "YuKoLi Products — comprehensive health food OEM/ODM product line covering coffee, tea, meal replacement, collagen, weight management, gut health, functional drinks.",
-  "all_products_meta_description": "All Products — browse YuKoLi's complete OEM/ODM product catalog. Find the right formulation for your brand."
+  "all_products_meta_description": "All Products — browse YuKoLi's complete OEM/ODM product catalog. Find the right formulation for your brand.",
+  "wechat_qr_title": "Scan QR to Add",
+  "wechat_qr_subtitle": "Add our Enterprise WeChat for dedicated after-sales support",
+  "wechat_qr_close": "Close"
 }

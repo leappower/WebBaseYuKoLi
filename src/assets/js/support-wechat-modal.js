@@ -1,6 +1,6 @@
 (function () {
   var _cfg = window.SITE_CONFIG || window._cfg || {};
-  "use strict";
+  ("use strict");
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -11,8 +11,6 @@
   }
 
   var QR_IMAGE = "/assets/images/wechat-qr.webp";
-  var TITLE = "微信扫码添加";
-  var SUBTITLE = "添加企业微信，获取专属售后支持";
 
   var overlay = null;
   var scrollLocked = false;
@@ -48,7 +46,7 @@
     overlay = document.createElement("div");
     overlay.setAttribute("role", "dialog");
     overlay.setAttribute("aria-modal", "true");
-    overlay.setAttribute("aria-label", TITLE);
+    overlay.setAttribute("aria-label", __safe.t("wechat_qr_title"));
     overlay.style.cssText =
       "position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);transition:opacity .2s ease;";
 
@@ -62,7 +60,7 @@
 
     // Close button
     var closeBtn = document.createElement("button");
-    closeBtn.setAttribute("aria-label", "关闭");
+    closeBtn.setAttribute("aria-label", __safe.t("wechat_qr_close"));
     closeBtn.style.cssText =
       "position:absolute;top:0.75rem;right:0.75rem;width:2rem;height:2rem;border-radius:50%;border:none;background:rgba(0,0,0,0.08);color:#64748b;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.25rem;line-height:1;transition:background .15s;";
     closeBtn.textContent = "×";
@@ -80,21 +78,21 @@
 
     // Title
     var title = document.createElement("h3");
-    title.textContent = TITLE;
+    title.textContent = __safe.t("wechat_qr_title");
     title.style.cssText = "font-size:1.125rem;font-weight:700;margin-bottom:0.25rem;color:#0f172a;";
     title.className = "dark:text-white";
     inner.appendChild(title);
 
     // Subtitle
     var subtitle = document.createElement("p");
-    subtitle.textContent = SUBTITLE;
+    subtitle.textContent = __safe.t("wechat_qr_subtitle");
     subtitle.style.cssText = "font-size:0.875rem;color:#64748b;margin-bottom:1.25rem;";
     inner.appendChild(subtitle);
 
     // QR image
     var img = document.createElement("img");
     img.src = QR_IMAGE;
-    img.alt = TITLE;
+    img.alt = __safe.t("wechat_qr_title");
     img.style.cssText =
       "width:" +
       getQRSize() +
@@ -133,10 +131,10 @@
   }
 
   // ESC handler — guard against re-init in SPA
-  if (!document.querySelector('[data-wc-bound]')) {
-    document.documentElement.setAttribute('data-wc-bound', '');
+  if (!document.querySelector("[data-wc-bound]")) {
+    document.documentElement.setAttribute("data-wc-bound", "");
     var _escEM = window.DomUtils && new DomUtils.EventManager();
-    (_escEM || {on:function(){}}).on(document, "keydown", onKeydown);
+    (_escEM || { on: function () {} }).on(document, "keydown", onKeydown);
   }
 
   function bindClicks() {

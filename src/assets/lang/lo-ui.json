@@ -1230,5 +1230,8 @@
   "solutions_odm_why_quality_title": "ການຮັບປະກັນຄຸນນະພາບ",
   "solutions_odm_why_speed_desc": "ຕົວຢ່າງພາຍໃນ 7 ວັນ, ຜະລິດພາຍໃນ 45-60 ວັນ.",
   "solutions_odm_why_speed_title": "ໄວສູ່ຕະຫຼາດ",
-  "solutions_odm_why_title": "ເປັນຫຍັງ YuKoLi ODM?"
+  "solutions_odm_why_title": "ເປັນຫຍັງ YuKoLi ODM?",
+  "wechat_qr_title": "ສະແກນ QR ເພື່ອເພີ່ມ",
+  "wechat_qr_subtitle": "ເພີ່ມ Enterprise WeChat ເພື່ອຮັບການສະໜັບສະໜູນຫຼັງການຂາຍສ່ວນຕົວ",
+  "wechat_qr_close": "ປິດ"
 }

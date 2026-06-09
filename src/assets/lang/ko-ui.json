@@ -1230,5 +1230,8 @@
   "solutions_odm_why_quality_title": "품질 보증",
   "solutions_odm_why_speed_desc": "7일 이내 샘플, 45~60일 이내 생산. 기존 레시피 라이브러리로 수개월의 R&D를 절약.",
   "solutions_odm_why_speed_title": "빠른 시장 진입",
-  "solutions_odm_why_title": "왜 YuKoLi ODM인가요?"
+  "solutions_odm_why_title": "왜 YuKoLi ODM인가요?",
+  "wechat_qr_title": "QR 코드를 스캔하여 추가",
+  "wechat_qr_subtitle": "기업 WeChat을 추가하여 전용 사후 서비스를 받으세요",
+  "wechat_qr_close": "닫기"
 }
