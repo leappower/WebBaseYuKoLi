@@ -2848,70 +2848,68 @@
           }
         }
 
-        // ─── 面包屑脚本注入 ───
-        // SPA 导航后，如果新页面路径是 PDP 但当前 DOM 没有 breadcrumb-data 脚本，注入
-        // 使用 visit.to.url 确保获取目标URL (content:replace 时 location.pathname 可能还未更新)
+        // ─── 面包屑脚本注入与渲染 ───
+        // 策略：不依赖 DOM 中的 script 标签（SwupHeadPlugin persistAssets 会导致
+        // 标签残留但全局变量可能已丢失），只检查全局变量 window.Breadcrumb 是否存在。
+        // PDP 路径需要面包屑：/products/<cat>/<model>/
         var toUrl = visit.to && visit.to.url ? visit.to.url : p;
-        console.info(
-          "[SWUP-ContentReplace] url check — toUrl:",
-          toUrl,
-          "regex test:",
-          /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl),
-          "hasBreadcrumbData:",
-          !!document.querySelector('script[src*="breadcrumb-data"]')
-        );
         var _isPdp = /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl);
-        var _hasBcScript = !!document.querySelector('script[src*="breadcrumb-data"]');
-        if (!_hasBcScript && _isPdp) {
-          var bcScripts = [
-            "/assets/js/breadcrumb-data.js?v=" + (global.SW_VERSION || Date.now()),
-            "/assets/js/breadcrumb-render.js?v=" + (global.SW_VERSION || Date.now()),
-            "/assets/js/breadcrumb.js?v=" + (global.SW_VERSION || Date.now()),
-          ];
-          console.info("[SWUP-ContentReplace] injecting breadcrumb scripts — v:", global.SW_VERSION || Date.now());
-          var bcPending = 0;
-          function bcOnReady() {
-            bcPending--;
-            console.info(
-              "[SWUP-ContentReplace] bcOnReady — pending:",
-              bcPending,
-              "BreadcrumbData:",
-              typeof global.BreadcrumbData,
-              "Breadcrumb:",
-              typeof global.Breadcrumb
-            );
-            if (bcPending <= 0) {
-              setTimeout(function () {
-                if (typeof global.BreadcrumbData !== "undefined" && typeof global.Breadcrumb !== "undefined") {
-                  try {
-                    global.Breadcrumb.refresh();
-                  } catch (e) {}
-                }
-              }, 50);
-            }
-          }
-          for (var bi = 0; bi < bcScripts.length; bi++) {
-            (function (src) {
-              bcPending++;
-              var ss = document.createElement("script");
-              ss.src = src;
-              ss.onload = bcOnReady;
-              document.head.appendChild(ss);
-            })(bcScripts[bi]);
-          }
-        } else if (_hasBcScript && _isPdp) {
-          // Scripts already in <head> (persisted by SwupHeadPlugin) — just refresh
-          console.info("[SWUP-ContentReplace] breadcrumb scripts already present, calling refresh()");
-          setTimeout(function () {
-            if (typeof global.Breadcrumb !== "undefined") {
+        if (_isPdp) {
+          console.info(
+            "[SWUP-BC] PDP detected — toUrl:",
+            toUrl,
+            "Breadcrumb:",
+            typeof global.Breadcrumb,
+            "BreadcrumbData:",
+            typeof global.BreadcrumbData
+          );
+          if (typeof global.Breadcrumb !== "undefined") {
+            // 全局对象在 — 直接 refresh
+            setTimeout(function () {
               try {
                 global.Breadcrumb.refresh();
-              } catch (e) {}
+              } catch (e) {
+                console.error("[SWUP-BC] refresh error:", e);
+              }
+            }, 50);
+          } else {
+            // 全局对象不在 — 注入脚本（加 ?t= 防缓存）
+            var bcScripts = [
+              "/assets/js/breadcrumb-data.js?t=" + (global.SW_VERSION || Date.now()),
+              "/assets/js/breadcrumb-render.js?t=" + (global.SW_VERSION || Date.now()),
+              "/assets/js/breadcrumb.js?t=" + (global.SW_VERSION || Date.now()),
+            ];
+            var bcPending = bcScripts.length;
+            function bcOnReady() {
+              bcPending--;
+              if (bcPending <= 0) {
+                setTimeout(function () {
+                  if (typeof global.Breadcrumb !== "undefined") {
+                    try {
+                      global.Breadcrumb.refresh();
+                    } catch (e) {
+                      console.error("[SWUP-BC] refresh error:", e);
+                    }
+                  } else {
+                    console.warn("[SWUP-BC] scripts loaded but Breadcrumb still undefined");
+                  }
+                }, 50);
+              }
             }
-          }, 50);
-        }
-
-        // ─── 脚本热重载：提取新页面特有脚本并注入 ───
+            for (var bi = 0; bi < bcScripts.length; bi++) {
+              (function (src) {
+                var ss = document.createElement("script");
+                ss.src = src;
+                ss.onload = bcOnReady;
+                ss.onerror = function () {
+                  console.warn("[SWUP-BC] failed to load:", src);
+                  bcOnReady();
+                };
+                document.head.appendChild(ss);
+              })(bcScripts[bi]);
+            }
+          }
+        } // ─── 脚本热重载：提取新页面特有脚本并注入 ───
         // 替代 ScriptsPlugin optin 模式，解决 data-swup-reload-script 遗漏问题
         var newDoc = visit.to && visit.to.document ? visit.to.document : null;
         if (newDoc) {
