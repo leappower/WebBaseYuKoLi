@@ -2767,6 +2767,8 @@
           if (!el) return false;
           if (el.getAttribute("target") === "_blank") return true;
           if (el.getAttribute("download") !== null) return true;
+          // 面包屑/同级导航链接：整页加载（避免swup SPA状态冲突）
+          if (el.closest('[data-no-swup]') || el.getAttribute('data-no-swup') !== null) return true;
           // 跳过后端/外部路径
           if (url.match(/^(https?:|mailto:|tel:|javascript:)/)) return true;
           return false;
