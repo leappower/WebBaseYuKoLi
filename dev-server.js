@@ -148,8 +148,23 @@ function handler(req, res) {
     var stat = fs.statSync(fp);
     if (stat.isDirectory()) {
       var idx = path.join(fp, 'index.html');
-      if (fs.existsSync(idx)) { fp = idx; }
-      else { fp = path.join(ROOT, 'index.html'); }
+      if (fs.existsSync(idx)) {
+        fp = idx;
+        // Device detection for directory index: serve device-specific file when UA indicates mobile/tablet
+        var uaDir = (req.headers['user-agent'] || '').toLowerCase();
+        var isMobDir = /mobile|android|iphone|ipod/i.test(uaDir) && !/ipad|tablet/i.test(uaDir);
+        var isTabDir = /ipad|tablet/i.test(uaDir) || (/android/i.test(uaDir) && !/mobile/i.test(uaDir));
+        if (isMobDir || isTabDir) {
+          var devSuffix = isMobDir ? 'index-mobile.html' : 'index-tablet.html';
+          var baseDir = path.dirname(fp);
+          var devFile = path.join(baseDir, devSuffix);
+          if (fs.existsSync(devFile)) {
+            fp = devFile;
+          }
+        }
+      } else {
+        fp = path.join(ROOT, 'index.html');
+      }
     }
 
     var ext = path.extname(fp).slice(1).toLowerCase();
