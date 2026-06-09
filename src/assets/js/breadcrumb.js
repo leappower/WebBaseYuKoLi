@@ -160,13 +160,15 @@
 
     function onReady() {
       if (typeof window.BreadcrumbData !== "undefined" && typeof window.BreadcrumbRender !== "undefined") {
-        // Both dependencies ready
-        if (typeof window.BreadcrumbData.buildCategoryMaps === "function") {
-          var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
-          _slugToKey = maps.slugToKey;
-          _keyToSlug = maps.keyToSlug;
-        }
-        detectAndRender();
+        // Both dependencies ready — wait for i18n before rendering
+        whenReady().then(function () {
+          if (typeof window.BreadcrumbData.buildCategoryMaps === "function") {
+            var maps = window.BreadcrumbData.buildCategoryMaps(getCategories());
+            _slugToKey = maps.slugToKey;
+            _keyToSlug = maps.keyToSlug;
+          }
+          detectAndRender();
+        });
       }
     }
 
