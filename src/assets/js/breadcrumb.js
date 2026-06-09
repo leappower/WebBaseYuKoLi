@@ -180,13 +180,41 @@
     }
 
     if (pendingCount === 0) {
-      // All scripts already present — just retry
-      setTimeout(function () {
-        if (typeof window.BreadcrumbData !== "undefined") {
+      // All scripts believed present — check if BreadcrumbData is loaded
+      if (typeof window.BreadcrumbData !== "undefined") {
+        setTimeout(function () {
           initMaps();
           detectAndRender();
+        }, 50);
+      } else {
+        // Not found — scripts thought to be present but not loaded;
+        // force inject all three regardless
+        var forceScripts = [
+          "/assets/js/breadcrumb-data.js",
+          "/assets/js/breadcrumb-render.js",
+          "/assets/js/breadcrumb.js",
+        ];
+        var fPending = 0;
+        function fOnLoad() {
+          fPending--;
+          if (fPending <= 0) {
+            setTimeout(function () {
+              if (typeof window.BreadcrumbData !== "undefined") {
+                initMaps();
+                detectAndRender();
+              }
+            }, 50);
+          }
         }
-      }, 50);
+        for (var f = 0; f < forceScripts.length; f++) {
+          fPending++;
+          var fs = document.createElement("script");
+          fs.src = forceScripts[f];
+          fs.defer = true;
+          fs.onload = fOnLoad;
+          document.head.appendChild(fs);
+        }
+      }
     }
   }
 
