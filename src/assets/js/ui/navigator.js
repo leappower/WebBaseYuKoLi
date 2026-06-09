@@ -1619,7 +1619,9 @@
   registerListeners();
 
   /* 首次加载：DOM ready 后构建 header DOM */
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("navigator", 1, mountNavigator);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mountNavigator);
   } else {
     mountNavigator();

@@ -262,7 +262,9 @@
   }
 
   // Run on DOM ready and SPA navigation
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("support-contact-channels", 4, mount);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mount);
   } else {
     mount();

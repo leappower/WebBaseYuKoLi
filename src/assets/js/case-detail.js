@@ -1591,8 +1591,12 @@
     return false;
   }
   if (!tryInit()) {
-    document.addEventListener("DOMContentLoaded", function () {
-      tryInit();
-    });
+    if (typeof Boot !== "undefined") {
+      Boot.register("case-detail", 4, tryInit);
+    } else {
+      document.addEventListener("DOMContentLoaded", function () {
+        tryInit();
+      });
+    }
   }
 })();

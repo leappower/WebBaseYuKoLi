@@ -58,7 +58,9 @@
    * 统一替代项目中 6 处重复的 DOMContentLoaded 启动模板。
    */
   function ready(fn) {
-    if (document.readyState === "loading") {
+    if (typeof Boot !== "undefined") {
+      Boot.register("common", 4, fn);
+    } else if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", fn);
     } else {
       fn();

@@ -355,6 +355,8 @@
   // Auto-initialize when DOM is ready
   if (window.CommonUtils && typeof window.CommonUtils.ready === "function") {
     window.CommonUtils.ready(init);
+  } else if (typeof Boot !== "undefined") {
+    Boot.register("page-init", 3, init);
   } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
   } else {

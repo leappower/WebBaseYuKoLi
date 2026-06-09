@@ -913,7 +913,9 @@ if (typeof window !== "undefined") {
     function tryInit() {
       if (!s.isInitialized) s.initialize();
     }
-    if (document.readyState === "loading") {
+    if (typeof Boot !== "undefined") {
+      Boot.register("i18n", 0, tryInit);
+    } else if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", tryInit);
     } else {
       tryInit();

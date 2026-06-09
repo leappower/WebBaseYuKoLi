@@ -62,7 +62,9 @@
   // 启动
   // ═══════════════════════════════════════════════════════════════════
 
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("swup", 2, initSwup);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initSwup);
   } else {
     initSwup();

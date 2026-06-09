@@ -262,6 +262,10 @@
     initServiceCenterMap();
   };
 
-  document.addEventListener("DOMContentLoaded", initIoTSupportPage);
+  if (typeof Boot !== "undefined") {
+    Boot.register("pi-maps", 5, initIoTSupportPage);
+  } else {
+    document.addEventListener("DOMContentLoaded", initIoTSupportPage);
+  }
   _spaOn(document, "spa:load", initIoTSupportPage, "spa:load:initIoTSupportPage");
 })(window);

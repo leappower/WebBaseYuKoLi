@@ -1035,7 +1035,11 @@
    *  AUTO-INIT on DOMContentLoaded
    * ──────────────────────────────────────────────────────────────── */
 
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("custom-select", 5, function () {
+      CustomSelect.initAll();
+    });
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       CustomSelect.initAll();
     });

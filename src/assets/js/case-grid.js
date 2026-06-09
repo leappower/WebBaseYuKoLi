@@ -872,13 +872,18 @@
   }
 
   /* ── Auto-init on DOMContentLoaded (full page load) ── */
-  document.addEventListener("DOMContentLoaded", function () {
+  var _initCaseGrid = function () {
     var path = window.location.pathname;
     if (/^\/cases(\/|\/index-pc\.html|\/index-mobile\.html|\/index-tablet\.html)?$/.test(path)) {
       var variant = document.body.getAttribute("data-case-variant") || "pc";
       init(variant);
     }
-  });
+  };
+  if (typeof Boot !== "undefined") {
+    Boot.register("case-grid", 4, _initCaseGrid);
+  } else {
+    document.addEventListener("DOMContentLoaded", _initCaseGrid);
+  }
 
   /* ── Auto-init based on data attribute ──────────── */
   window.CaseGrid = { init: init, FILTERS: FILTERS, ROI_CASES: ROI_CASES };

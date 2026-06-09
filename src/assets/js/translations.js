@@ -601,7 +601,9 @@
     function tryInit() {
       if (!manager.isInitialized) _initialize(manager);
     }
-    if (document.readyState === "loading") {
+    if (typeof Boot !== "undefined") {
+      Boot.register("translations", 0, tryInit);
+    } else if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", tryInit);
     } else {
       tryInit();

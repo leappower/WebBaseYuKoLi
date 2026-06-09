@@ -16,7 +16,9 @@
  * @param {Function} fn
  */
 export function ready(fn) {
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("dom-utils", 4, fn);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", fn, { once: true });
   } else {
     fn();

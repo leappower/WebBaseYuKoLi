@@ -1205,7 +1205,13 @@
     initSmartHeader();
   }
 
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("slide-menu", 5, function () {
+      // Retry after a short delay in case navigator.js hasn't mounted yet
+      tryInit();
+      setTimeout(tryInit, 50);
+    });
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       // Retry after a short delay in case navigator.js hasn't mounted yet
       tryInit();

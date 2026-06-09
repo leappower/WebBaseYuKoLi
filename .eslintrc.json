@@ -64,7 +64,8 @@
     "WHATSAPP_DEFAULT_MSG": "readonly",
     "INFO_EMAIL": "readonly",
     "FORM_EMAIL": "readonly",
-    "__safe": "readonly"
+    "__safe": "readonly",
+    "Boot": "readonly"
   },
   "overrides": [
     {

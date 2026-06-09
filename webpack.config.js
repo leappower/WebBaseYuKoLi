@@ -88,6 +88,8 @@ module.exports = (env = {}, argv = {}) => {
       'assets/js/lib/format-utils': './src/assets/js/lib/format-utils.js',
       'assets/js/lib/async-utils': './src/assets/js/lib/async-utils.js',
       'assets/js/lib/template-constants': './src/assets/js/lib/template-constants.js',
+      // ─── Boot Queue (ES5) — loaded first, registered last ───
+      'assets/js/lib/boot-queue': './src/assets/js/lib/boot-queue.js',
       // ─── JJC-020 T3.3: breadcrumb ESM modules ───
       'assets/js/breadcrumb-data': './src/assets/js/breadcrumb-data.js',
       'assets/js/breadcrumb-render': './src/assets/js/breadcrumb-render.js',

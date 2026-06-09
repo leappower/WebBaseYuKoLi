@@ -194,6 +194,10 @@
     window.CommonUtils.ready(function () {
       app.initialize();
     });
+  } else if (typeof Boot !== "undefined") {
+    Boot.register("main", 4, function () {
+      app.initialize();
+    });
   } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       app.initialize();

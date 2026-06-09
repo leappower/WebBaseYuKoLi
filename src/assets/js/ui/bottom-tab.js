@@ -316,7 +316,9 @@
   };
 
   /* ── Bootstrap ─────────────────────────────────────────────── */
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("bottom-tab", 5, inject);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", inject);
   } else {
     inject();

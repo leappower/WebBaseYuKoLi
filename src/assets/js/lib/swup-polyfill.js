@@ -39,7 +39,9 @@
     });
   }
 
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("swup-polyfill", 3, dispatchSpaLoad);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", dispatchSpaLoad);
   } else {
     dispatchSpaLoad();

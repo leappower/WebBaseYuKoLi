@@ -333,7 +333,9 @@
   window.startTikTok = startTikTok;
 
   // Auto-init WhatsApp source tracking on all wa.me links
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("contacts", 4, initWhatsAppLinks);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initWhatsAppLinks);
   } else {
     initWhatsAppLinks();

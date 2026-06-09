@@ -297,7 +297,11 @@
   };
 
   /* auto-init on DOMContentLoaded */
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("lead-form", 4, function () {
+      window.YuKoLiLeadForm.init();
+    });
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
       window.YuKoLiLeadForm.init();
     });

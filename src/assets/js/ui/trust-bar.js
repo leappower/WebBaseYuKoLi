@@ -112,7 +112,9 @@
     }, 0);
   }
 
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("trust-bar", 5, safeInject);
+  } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", safeInject);
   } else {
     safeInject();

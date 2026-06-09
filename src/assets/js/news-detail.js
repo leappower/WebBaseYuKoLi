@@ -110,7 +110,9 @@
   }
 
   // Direct page load
-  if (document.readyState !== "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("news-detail", 4, initNewsDetail);
+  } else if (document.readyState !== "loading") {
     initNewsDetail();
   } else {
     document.addEventListener("DOMContentLoaded", initNewsDetail);

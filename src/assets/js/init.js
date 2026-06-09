@@ -221,12 +221,21 @@
     injectGeoBadge(hero, region);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    setupProductSectionTracking();
-    var _features = (window.SITE_CONFIG || window._cfg || {}).features || {};
-    if (_features.iotPulse) initIoTPulse();
-    if (_features.geoHero) initGeoHero();
-  });
+  if (typeof Boot !== "undefined") {
+    Boot.register("init", 4, function () {
+      setupProductSectionTracking();
+      var _features = (window.SITE_CONFIG || window._cfg || {}).features || {};
+      if (_features.iotPulse) initIoTPulse();
+      if (_features.geoHero) initGeoHero();
+    });
+  } else {
+    document.addEventListener("DOMContentLoaded", function () {
+      setupProductSectionTracking();
+      var _features = (window.SITE_CONFIG || window._cfg || {}).features || {};
+      if (_features.iotPulse) initIoTPulse();
+      if (_features.geoHero) initGeoHero();
+    });
+  }
 
   // Re-start tracking on SPA navigation
   document.addEventListener("spa:load", function () {

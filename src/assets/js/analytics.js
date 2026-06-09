@@ -133,7 +133,9 @@
   }
 
   // Run on DOMContentLoaded or immediately if DOM is ready
-  if (document.readyState === "loading") {
+  if (typeof Boot !== "undefined") {
+    Boot.register("analytics", 3, init);
+  } else if (document.readyState === "loading") {
     if (document.addEventListener) {
       document.addEventListener("DOMContentLoaded", init);
     }
