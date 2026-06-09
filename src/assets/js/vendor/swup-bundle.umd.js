@@ -2848,6 +2848,32 @@
           }
         }
 
+        // ─── 面包屑脚本注入 ───
+        // SPA 导航后，如果新页面路径是 PDP 但当前 DOM 没有 breadcrumb-data 脚本，注入
+        if (!document.querySelector('script[src*="breadcrumb-data"]') && /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(p)) {
+          var bcScripts = ["/assets/js/breadcrumb-data.js", "/assets/js/breadcrumb-render.js", "/assets/js/breadcrumb.js"];
+          var bcPending = 0;
+          function bcOnReady() {
+            bcPending--;
+            if (bcPending <= 0) {
+              setTimeout(function () {
+                if (typeof global.BreadcrumbData !== "undefined" && typeof global.Breadcrumb !== "undefined") {
+                  try { global.Breadcrumb.refresh(); } catch (e) { }
+                }
+              }, 50);
+            }
+          }
+          for (var bi = 0; bi < bcScripts.length; bi++) {
+            (function(src) {
+              bcPending++;
+              var ss = document.createElement("script");
+              ss.src = src;
+              ss.onload = bcOnReady;
+              document.head.appendChild(ss);
+            })(bcScripts[bi]);
+          }
+        }
+
         // ─── 脚本热重载：提取新页面特有脚本并注入 ───
         // 替代 ScriptsPlugin optin 模式，解决 data-swup-reload-script 遗漏问题
         var newDoc = visit.to && visit.to.document ? visit.to.document : null;
