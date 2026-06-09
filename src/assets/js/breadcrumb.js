@@ -152,21 +152,41 @@
       "/assets/js/breadcrumb-render.js",
       "/assets/js/breadcrumb.js",
     ];
-    for (var i = 0; i < scripts.length; i++) {
-      var src = scripts[i];
-      if (!document.querySelector('script[src*="' + src.split("/").pop().replace(".js", "") + '"]')) {
-        var s = document.createElement("script");
-        s.src = src;
-        s.defer = true;
-        s.onload = function () {
-          // If breadcrumb-data.js just loaded, retry initMaps
-          if (i === 0 && typeof window.BreadcrumbData !== "undefined") {
+    var pendingCount = 0;
+
+    function onScriptLoad() {
+      pendingCount--;
+      if (pendingCount <= 0) {
+        // All scripts loaded — retry init
+        setTimeout(function () {
+          if (typeof window.BreadcrumbData !== "undefined") {
             initMaps();
             detectAndRender();
           }
-        };
+        }, 50);
+      }
+    }
+
+    for (var j = 0; j < scripts.length; j++) {
+      var src = scripts[j];
+      if (!document.querySelector('script[src$="' + src.split("/").pop() + '"]')) {
+        pendingCount++;
+        var s = document.createElement("script");
+        s.src = src;
+        s.defer = true;
+        s.onload = onScriptLoad;
         document.head.appendChild(s);
       }
+    }
+
+    if (pendingCount === 0) {
+      // All scripts already present — just retry
+      setTimeout(function () {
+        if (typeof window.BreadcrumbData !== "undefined") {
+          initMaps();
+          detectAndRender();
+        }
+      }, 50);
     }
   }
 
