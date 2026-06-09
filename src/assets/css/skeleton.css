@@ -266,8 +266,56 @@
   }
 }
 
-/* ───────── Dark Mode ───────── */
-/* ───────── Product grid skeleton cards ───────── */
+/* ───────── Hero-grid: hero-large (home page) ───────── */
+.sk-hero-large {
+  min-height: 420px;
+}
+@media (min-width: 768px) {
+  .sk-hero-large {
+    min-height: 520px;
+  }
+}
+@media (min-width: 1280px) {
+  .sk-hero-large {
+    min-height: 580px;
+  }
+}
+
+/* ───────── Product grid skeleton ───────── */
+.sk-filter-bar {
+  height: 60px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.sk-filter-chip {
+  width: 90px;
+  height: 34px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-filter-chip {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-product-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .sk-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1280px) {
+  .sk-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 .sk-product-card {
   border-radius: 12px;
   overflow: hidden;
@@ -303,10 +351,197 @@
   background-size: 200% 100%;
 }
 
+/* ───────── Content page skeleton ───────── */
+.sk-page-title {
+  width: 40%;
+  height: 36px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-page-title {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-paragraph {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.sk-paragraph-row {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-paragraph-row {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-paragraph-row--short {
+  width: 60%;
+}
+.sk-content-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-content-image {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+/* ───────── Form page skeleton ───────── */
+.sk-form-row {
+  margin-bottom: 16px;
+}
+.sk-form-label {
+  width: 80px;
+  height: 14px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-form-label {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-form-input {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-form-input {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-form-textarea {
+  width: 100%;
+  height: 100px;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-form-textarea {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-form-submit {
+  width: 100%;
+  max-width: 200px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-form-submit {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+/* ───────── PDP skeleton (left image + right text) ───────── */
+.sk-pdp-layout {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+}
+@media (max-width: 767px) {
+  .sk-pdp-layout {
+    flex-direction: column;
+  }
+}
+.sk-pdp-image {
+  flex: 0 0 360px;
+  aspect-ratio: 1 / 1;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-pdp-image {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+@media (max-width: 767px) {
+  .sk-pdp-image {
+    flex: none;
+    width: 100%;
+  }
+}
+.sk-pdp-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.sk-pdp-title {
+  width: 70%;
+  height: 28px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-pdp-title {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-pdp-desc {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-pdp-desc {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+.sk-pdp-specs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+.sk-pdp-spec {
+  height: 40px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e8e8e8 25%, #d4d4d4 50%, #e8e8e8 75%);
+  background-size: 200% 100%;
+  animation: sk-shimmer 1.5s infinite;
+}
+.dark .sk-pdp-spec {
+  background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+  background-size: 200% 100%;
+}
+
+/* ─── Dark Mode overrides for all skeleton elements ─── */
 .dark .sk-badge,
 .dark .sk-line,
 .dark .sk-cta,
-.dark .sk-card {
+.dark .sk-card,
+.dark .sk-filter-chip,
+.dark .sk-paragraph-row,
+.dark .sk-form-label,
+.dark .sk-form-input,
+.dark .sk-form-textarea,
+.dark .sk-form-submit {
   background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
   background-size: 200% 100%;
 }

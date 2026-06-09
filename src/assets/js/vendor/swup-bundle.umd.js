@@ -2094,23 +2094,257 @@
     }
   }
 
+  // ═══════════════════════════════════════════════════════════
+  // 骨架类型推断：从 URL path 推断当前页面类型
+  // ═══════════════════════════════════════════════════════════
+
+  function getSkeletonType(path) {
+    if (
+      path === "/" ||
+      path === "/home/" ||
+      path === "/solutions/" ||
+      path === "/about/" ||
+      path === "/compliance/" ||
+      path === "/manufacturing/"
+    ) {
+      return "hero-grid";
+    }
+    if (path === "/products/" || path.startsWith("/products/")) {
+      return "product-grid";
+    }
+    if (path === "/contact/" || path === "/thank-you/") {
+      return "form-page";
+    }
+    if (path.startsWith("/pdp/")) {
+      return "pdp";
+    }
+    // privacy, terms, resources, solutions sub, cases, etc.
+    return "content-page";
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // 各类型骨架构建函数（DOM API，不用字符串拼接）
+  // ═══════════════════════════════════════════════════════════
+
+  function buildHeroGridSkeleton(container) {
+    // Hero: badge + title(s) + desc + CTAs + card grid
+    var hero = document.createElement("div");
+    hero.className = "sk-hero";
+
+    var badge = document.createElement("div");
+    badge.className = "sk-badge";
+    hero.appendChild(badge);
+
+    var title = document.createElement("div");
+    title.className = "sk-line";
+    hero.appendChild(title);
+
+    var subtitle = document.createElement("div");
+    subtitle.className = "sk-line sk-line--short";
+    hero.appendChild(subtitle);
+
+    var desc = document.createElement("div");
+    desc.className = "sk-line sk-line--desc";
+    hero.appendChild(desc);
+
+    var ctaGroup = document.createElement("div");
+    ctaGroup.className = "sk-cta-group";
+    var cta1 = document.createElement("div");
+    cta1.className = "sk-line sk-cta";
+    ctaGroup.appendChild(cta1);
+    var cta2 = document.createElement("div");
+    cta2.className = "sk-line sk-cta sk-cta--outline";
+    ctaGroup.appendChild(cta2);
+    hero.appendChild(ctaGroup);
+
+    container.appendChild(hero);
+
+    // Card grid
+    var grid = document.createElement("div");
+    grid.className = "sk-grid";
+    for (var i = 0; i < 3; i++) {
+      var card = document.createElement("div");
+      card.className = "sk-card";
+      grid.appendChild(card);
+    }
+    container.appendChild(grid);
+  }
+
+  function buildProductGridSkeleton(container) {
+    // Filter bar
+    var filterBar = document.createElement("div");
+    filterBar.className = "sk-filter-bar";
+    for (var fi = 0; fi < 3; fi++) {
+      var chip = document.createElement("div");
+      chip.className = "sk-filter-chip";
+      filterBar.appendChild(chip);
+    }
+    container.appendChild(filterBar);
+
+    // Product grid: 6 cards (fills 2 rows)
+    var pGrid = document.createElement("div");
+    pGrid.className = "sk-product-grid";
+    for (var pi = 0; pi < 6; pi++) {
+      var card = document.createElement("div");
+      card.className = "sk-product-card";
+      var img = document.createElement("div");
+      img.className = "sk-product-img";
+      card.appendChild(img);
+      var text = document.createElement("div");
+      text.className = "sk-product-text";
+      card.appendChild(text);
+      pGrid.appendChild(card);
+    }
+    container.appendChild(pGrid);
+  }
+
+  function buildContentPageSkeleton(container) {
+    // Title
+    var title = document.createElement("div");
+    title.className = "sk-page-title";
+    container.appendChild(title);
+
+    // Paragraph 1
+    var p1 = document.createElement("div");
+    p1.className = "sk-paragraph";
+    for (var i = 0; i < 4; i++) {
+      var row = document.createElement("div");
+      row.className = "sk-paragraph-row";
+      if (i === 3) row.className += " sk-paragraph-row--short";
+      p1.appendChild(row);
+    }
+    container.appendChild(p1);
+
+    // Image placeholder
+    var img = document.createElement("div");
+    img.className = "sk-content-image";
+    container.appendChild(img);
+
+    // Paragraph 2
+    var p2 = document.createElement("div");
+    p2.className = "sk-paragraph";
+    for (var j = 0; j < 3; j++) {
+      var row2 = document.createElement("div");
+      row2.className = "sk-paragraph-row";
+      if (j === 2) row2.className += " sk-paragraph-row--short";
+      p2.appendChild(row2);
+    }
+    container.appendChild(p2);
+  }
+
+  function buildFormSkeleton(container) {
+    // Title
+    var title = document.createElement("div");
+    title.className = "sk-page-title";
+    container.appendChild(title);
+
+    // 4 form rows
+    var fields = ["name", "email", "company", "message"];
+    for (var fi = 0; fi < fields.length; fi++) {
+      var row = document.createElement("div");
+      row.className = "sk-form-row";
+
+      var label = document.createElement("div");
+      label.className = "sk-form-label";
+      row.appendChild(label);
+
+      if (fi === 3) {
+        // textarea field
+        var ta = document.createElement("div");
+        ta.className = "sk-form-textarea";
+        row.appendChild(ta);
+      } else {
+        var inp = document.createElement("div");
+        inp.className = "sk-form-input";
+        row.appendChild(inp);
+      }
+
+      container.appendChild(row);
+    }
+
+    // Submit button
+    var submit = document.createElement("div");
+    submit.className = "sk-form-submit";
+    container.appendChild(submit);
+  }
+
+  function buildPdpSkeleton(container) {
+    var layout = document.createElement("div");
+    layout.className = "sk-pdp-layout";
+
+    // Left: image
+    var image = document.createElement("div");
+    image.className = "sk-pdp-image";
+    layout.appendChild(image);
+
+    // Right: details
+    var details = document.createElement("div");
+    details.className = "sk-pdp-details";
+
+    var title = document.createElement("div");
+    title.className = "sk-pdp-title";
+    details.appendChild(title);
+
+    for (var i = 0; i < 4; i++) {
+      var desc = document.createElement("div");
+      desc.className = "sk-pdp-desc";
+      details.appendChild(desc);
+    }
+
+    // Specs grid (2x3)
+    var specs = document.createElement("div");
+    specs.className = "sk-pdp-specs";
+    for (var si = 0; si < 6; si++) {
+      var spec = document.createElement("div");
+      spec.className = "sk-pdp-spec";
+      specs.appendChild(spec);
+    }
+    details.appendChild(specs);
+
+    layout.appendChild(details);
+    container.appendChild(layout);
+  }
+
+  // ═══════════════════════════════════════════════════════════
+  // 类型化骨架创建（替代旧的通用 HTML 字符串版本）
+  // ═══════════════════════════════════════════════════════════
+
   function createSkeletonIfMissing() {
     if (document.getElementById("skeleton-overlay")) return true;
     var container = document.getElementById("spa-content");
     if (!container) return false;
+
+    var type = getSkeletonType(global.location.pathname);
+
     var overlay = document.createElement("div");
     overlay.id = "skeleton-overlay";
-    overlay.innerHTML =
-      '<div class="skeleton-container">' +
-      '<div class="sk-hero"><div class="sk-badge"></div>' +
-      '<div class="sk-line"></div><div class="sk-line sk-line--short"></div>' +
-      '<div class="sk-line sk-line--desc"></div>' +
-      '<div class="sk-cta-group"><div class="sk-line sk-cta"></div>' +
-      '<div class="sk-line sk-cta sk-cta--outline"></div></div></div>' +
-      '<div class="sk-grid"><div class="sk-card"></div>' +
-      '<div class="sk-card"></div><div class="sk-card"></div></div>' +
-      "</div>";
+
+    var skelContainer = document.createElement("div");
+    skelContainer.className = "skeleton-container";
+
+    // Build type-specific skeleton
+    switch (type) {
+      case "hero-grid":
+        buildHeroGridSkeleton(skelContainer);
+        break;
+      case "product-grid":
+        buildProductGridSkeleton(skelContainer);
+        break;
+      case "form-page":
+        buildFormSkeleton(skelContainer);
+        break;
+      case "pdp":
+        buildPdpSkeleton(skelContainer);
+        break;
+      case "content-page":
+      default:
+        buildContentPageSkeleton(skelContainer);
+        break;
+    }
+
+    overlay.appendChild(skelContainer);
     overlay.setAttribute("data-hidden", "");
+
     // 插入到 main#spa-content 内部作为第一个子元素，相对定位
     container.insertBefore(overlay, container.firstChild);
     return true;
