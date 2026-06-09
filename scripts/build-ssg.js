@@ -555,7 +555,7 @@ function generateRouteIndex(route) {
   // Inject device detection into the index.html
   var redirectJs =
     '<script>' +
-    '(function(){var ua=navigator.userAgent.toLowerCase();var m=/mobile|android|iphone|ipod/i.test(ua)&&!/ipad|tablet|silk/i.test(ua);var t=/ipad|tablet|silk/i.test(ua)||(/android/i.test(ua)&&!/mobile/i.test(ua));if(!m&&!t)return;var d=m?"index-mobile.html":"index-tablet.html";var p=window.location.pathname.replace(/\/$/,"");var b=p.substring(0,p.lastIndexOf("/")+1);if(b)window.location.replace(b+d)})()' +
+    '(function(){var ua=navigator.userAgent.toLowerCase();var m=/mobile|android|iphone|ipod/i.test(ua)&&!/ipad|tablet|silk/i.test(ua);var t=/ipad|tablet|silk/i.test(ua)||(/android/i.test(ua)&&!/mobile/i.test(ua));if(!m&&!t)return;var d=m?"index-mobile.html":"index-tablet.html";var p=window.location.pathname.replace(/\\/+$/,"");var b=p.substring(0,p.lastIndexOf("/")+1);if(b)window.location.replace(b+d)})()' +
     '</script>';
   html = html.replace('</head>', redirectJs + '</head>');
 
