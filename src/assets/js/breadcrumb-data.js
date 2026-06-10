@@ -124,7 +124,7 @@
         result.slug = slug;
         result.segments = [
           { label: "nav_product_center", href: "/products/" },
-          { label: resolveLabel(info.label, currentLang), href: "/products/" + slug + "/" },
+          { label: resolveLabel(info.label, currentLang), href: "/products/" + slug + "/", current: true },
         ];
       }
       return result;

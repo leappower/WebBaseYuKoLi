@@ -340,6 +340,34 @@
   } else {
     initWhatsAppLinks();
   }
+  // ─── Product inquiry prefill ─────────────────────────────────
+  function prefillProductInquiry() {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("from") !== "product") return;
+
+    var model = params.get("model") || "";
+    var name = params.get("name") || "";
+    var category = params.get("category") || "";
+
+    var textarea = document.querySelector("textarea.builder-message");
+    if (textarea && (model || name)) {
+      var msg = "I'm interested in " + (name || model);
+      if (category) msg += " (" + category + ")";
+      if (model) msg += " — Model: " + model;
+      msg += ". Please provide pricing and availability.";
+      textarea.value = msg;
+    }
+  }
+
+  if (typeof Boot !== "undefined") {
+    Boot.register("contacts-prefill", 4, prefillProductInquiry);
+  } else if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", prefillProductInquiry);
+  } else {
+    prefillProductInquiry();
+  }
+  _spaOn(document, "spa:load", prefillProductInquiry, "spa:load-prefill");
+
   // Re-init after SPA navigation
   _spaOn(document, "spa:load", initWhatsAppLinks, "spa:load");
   // Re-init after bfcache restore

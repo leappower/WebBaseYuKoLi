@@ -31,7 +31,7 @@
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  /* padding-top 由 JS 动态设置：读取 navigator 实际高度 */
+  padding-top: var(--nav-height, 65px);
   overflow: hidden;
 }
 #skeleton-overlay[data-hidden] {
@@ -58,6 +58,11 @@
   .skeleton-container {
     padding: 0 var(--container-px, 1.25rem);
   } /* lg: aligned */
+}
+@media (min-width: 1024px) {
+  #skeleton-overlay {
+    padding-top: var(--nav-height, 109px);
+  }
 }
 @media (min-width: 1280px) {
   .skeleton-container {

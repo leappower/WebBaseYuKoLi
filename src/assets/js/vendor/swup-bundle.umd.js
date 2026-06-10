@@ -2370,8 +2370,6 @@
       overlay.removeAttribute("data-hidden");
       overlay.style.opacity = "1";
       overlay.style.pointerEvents = "auto";
-      // 三屏适配：读取 navigator 实际高度
-      overlay.style.paddingTop = getNavigatorHeight() + "px";
       void overlay.offsetHeight; // 强制重绘
       overlay.style.transition = "";
     }
@@ -2410,6 +2408,27 @@
         }
       } catch (e) {
         console.warn("[SWUP] ProductGrid init error:", e);
+      }
+      // 面包屑：产品分类页需要注入面包屑脚本
+      if (typeof global.Breadcrumb === "undefined") {
+        var bcScripts = [
+          "/assets/js/breadcrumb-data.js?v=" + (global.SW_VERSION || Date.now()),
+          "/assets/js/breadcrumb-render.js?v=" + (global.SW_VERSION || Date.now()),
+          "/assets/js/breadcrumb.js?v=" + (global.SW_VERSION || Date.now()),
+        ];
+        for (var bci = 0; bci < bcScripts.length; bci++) {
+          (function (src) {
+            var ss = document.createElement("script");
+            ss.src = src;
+            document.head.appendChild(ss);
+          })(bcScripts[bci]);
+        }
+      } else {
+        try {
+          global.Breadcrumb.refresh();
+        } catch (e) {
+          /* noop */
+        }
       }
     }
 
@@ -2909,10 +2928,11 @@
         // ─── 面包屑脚本注入与渲染 ───
         // 策略：不依赖 DOM 中的 script 标签（SwupHeadPlugin persistAssets 会导致
         // 标签残留但全局变量可能已丢失），只检查全局变量 window.Breadcrumb 是否存在。
-        // PDP 路径需要面包屑：/products/<cat>/<model>/
+        // PDP 路径 + 产品分类页需要面包屑
         var toUrl = visit.to && visit.to.url ? visit.to.url : p;
         var _isPdp = /^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/.test(toUrl);
-        if (_isPdp) {
+        var _isCategoryPage = /^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)\/$/.test(toUrl);
+        if (_isPdp || _isCategoryPage) {
           if (typeof global.Breadcrumb !== "undefined") {
             setTimeout(function () {
               try {
@@ -3087,8 +3107,6 @@
               overlay.removeAttribute("data-hidden");
               overlay.style.opacity = "1";
               overlay.style.pointerEvents = "auto";
-              // 三屏适配：读取 navigator 实际高度
-              overlay.style.paddingTop = getNavigatorHeight() + "px";
               // 强制重绘后触发过渡
               overlay.offsetWidth;
               overlay.style.transition = "";
