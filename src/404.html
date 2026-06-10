@@ -44,6 +44,25 @@
           if (cats.indexOf(c) !== -1) window.location.replace("/products/" + c + "/");
           return;
         }
+        // Old route aliases: /coffee/ → /products/coffee/
+        if (cats.indexOf(s) !== -1) {
+          window.location.replace("/products/" + s + "/");
+          return;
+        }
+        // Sub-routes: /solutions/oem/ → add trailing slash
+        var subRoutes = ["solutions/oem","solutions/odm","solutions/obm","solutions/rd","solutions/packaging",
+                          "resources/catalog","resources/videos","resources/whitepapers"];
+        for (var i = 0; i < subRoutes.length; i++) {
+          if (n === "/" + subRoutes[i]) {
+            window.location.replace("/" + subRoutes[i] + "/");
+            return;
+          }
+        }
+        // /products/ → add trailing slash
+        if (n === "/products") {
+          window.location.replace("/products/");
+          return;
+        }
         var routes = [
             "home",
             "solutions",
