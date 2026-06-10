@@ -274,7 +274,7 @@ function discoverRoutes() {
 
   // Filter out routes that have no HTML files in their source directory
   routes = routes.filter(function (route) {
-    var sourceDir = path.join(DIST_DIR, route.sourceDir || route.slug);
+    var sourceDir = path.join(SRC_DIR, 'pages', route.sourceDir || route.slug);
     if (fs.existsSync(sourceDir)) {
       var files = fs.readdirSync(sourceDir);
       for (var p = 0; p < files.length; p++) {
