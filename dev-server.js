@@ -123,6 +123,12 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  // 设备特定 HTML 文件（/home/index-mobile.html）— swup fetch 用这个路径
+  if (ext === '.html' && /index-(pc|mobile|tablet)\.html$/.test(urlPath)) {
+    serveStatic(res, urlPath);
+    return;
+  }
+
   // 无扩展名但有 query string 的静态资源请求（/assets/js/xxx?v=123）
   if (!ext && req.url.includes('?')) {
     serveStatic(res, urlPath);
@@ -151,7 +157,7 @@ const server = http.createServer((req, res) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 BrewYuKoLi dev server at http://localhost:${PORT}`);
   console.log(`   URL 保持干净，设备检测服务端处理`);
 });
