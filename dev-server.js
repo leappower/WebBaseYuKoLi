@@ -1,201 +1,157 @@
 #!/usr/bin/env node
-// Dev server — HTTP on 3000, HTTPS on 3443
-var http = require('http');
-var https = require('https');
-var http_or_https = require('http');
-var fs = require('fs');
-var path = require('path');
+/**
+ * BrewYuKoLi 开发服务器
+ * - URL 保持干净（/products/coffee/），不暴露 index-pc/mobile/tablet
+ * - 根据设备 UA 返回对应设备文件
+ * - 支持 SPA fallback（未匹配路径 → index.html）
+ * - 用法: node dev-server.js [port]
+ */
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-var PORT = process.env.PORT || 3000;
-var SSL_PORT = 3443;
-var ROOT = path.join(__dirname, 'dist');
+const DIST = path.join(__dirname, 'dist');
+const PORT = parseInt(process.argv[2] || '8765', 10);
 
-// Google Apps Script endpoint — set via GOOGLE_FORM_URL env or .env
-var GOOGLE_FORM_URL = process.env.GOOGLE_FORM_URL || '';
-
-// .env loader
-var envFile = path.join(__dirname, '.env');
-try {
-  if (fs.existsSync(envFile)) {
-    var envContent = fs.readFileSync(envFile, 'utf8');
-    envContent.split('\n').forEach(function(line) {
-      var match = line.match(/^([A-Z_]+)=(.*)$/);
-      if (match && !process.env[match[1]]) {
-        process.env[match[1]] = match[2].replace(/^['"]|['"]$/g, '');
-        if (match[1] === 'GOOGLE_FORM_URL') GOOGLE_FORM_URL = process.env[match[1]];
-      }
-    });
-  }
-} catch(e) {}
-
-// Load product data from embedded static JS for API mock
-var PRODUCT_DATA;
-try {
-  var window = {};
-  eval(fs.readFileSync(path.join(ROOT, 'assets/js/product-data-table.js'), 'utf8').replace('"use strict";', ''));
-  PRODUCT_DATA = window.PRODUCT_DATA_TABLE || [];
-} catch (e) {
-  PRODUCT_DATA = [];
+// 设备检测（与前端 routeToFetchUrl 对齐）
+function getDeviceSuffix(ua) {
+  if (!ua) return 'index-pc.html';
+  const lower = ua.toLowerCase();
+  const mobile = /mobile|android|iphone|ipod/i.test(lower) && !/ipad|tablet|silk/i.test(lower);
+  const tablet = /ipad|tablet|silk/i.test(lower) || (/android/i.test(lower) && !/mobile/i.test(lower));
+  if (mobile) return 'index-mobile.html';
+  if (tablet) return 'index-tablet.html';
+  return 'index-pc.html';
 }
 
-var MIME = {
-  html: 'text/html; charset=utf-8',
-  css: 'text/css; charset=utf-8',
-  js: 'application/javascript; charset=utf-8',
-  json: 'application/json; charset=utf-8',
-  png: 'image/png',
-  jpg: 'image/jpeg',
-  webp: 'image/webp',
-  svg: 'image/svg+xml',
-  gif: 'image/gif',
-  ico: 'image/x-icon',
-  xml: 'application/xml',
-  txt: 'text/plain; charset=utf-8',
-  mp4: 'video/mp4',
-  webm: 'video/webm',
-  woff: 'font/woff',
-  woff2: 'font/woff2',
-  ttf: 'font/ttf',
-  otf: 'font/otf',
-  pdf: 'application/pdf',
+// 路由映射（与前端 routeToFetchUrl 对齐）
+function routeToFilePath(urlPath) {
+  let p = urlPath.replace(/\/+$/, '') || '/home';
+  if (p === '/') p = '/home';
+
+  // /home/ → /home/index-*.html
+  if (p === '/home') return { dir: '/home', suffix: true };
+  // /products/coffee/ → /products/coffee/index-*.html
+  if (/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)$/.test(p))
+    return { dir: p, suffix: true };
+  // /pdp/ → /pdp/index-*.html (PDP 模板)
+  if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_.-]+$/.test(p))
+    return { dir: '/pdp', suffix: true };
+  // /cases/<slug>/ → /cases/detail/index-*.html?slug=xxx (需要 query string，这里只返回文件)
+  const caseMatch = p.match(/^\/cases\/([a-z0-9-]+)$/);
+  if (caseMatch) return { dir: '/cases/detail', suffix: true, query: 'slug=' + caseMatch[1] };
+  // 旧路由: /coffee/ → /products/coffee/
+  const oldRoute = p.match(/^\/(coffee|tea|meal|beauty|weight|gut|lifestyle|legacy)$/);
+  if (oldRoute) return { dir: '/products/' + oldRoute[1], suffix: true };
+  // 通用: /solutions/oem/ → /solutions/oem/
+  if (/^\/solutions\/(oem|odm|obm|rd|packaging)$/.test(p))
+    return { dir: p, suffix: true };
+  if (/^\/solutions$/.test(p)) return { dir: '/solutions', suffix: true };
+  if (/^\/resources\/(catalog|videos|whitepapers)$/.test(p))
+    return { dir: p, suffix: true };
+  if (/^\/manufacturing$/.test(p)) return { dir: '/manufacturing', suffix: true };
+  if (/^\/compliance$/.test(p)) return { dir: '/compliance', suffix: true };
+  // 通用 fallback: 请求的路径
+  return { dir: p, suffix: false };
+}
+
+const MIME = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'application/javascript; charset=utf-8',
+  '.json': 'application/json',
+  '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg',
+  '.webp': 'image/webp', '.svg': 'image/svg+xml', '.gif': 'image/gif',
+  '.ico': 'image/x-icon', '.woff': 'font/woff', '.woff2': 'font/woff2',
+  '.mp4': 'video/mp4', '.webm': 'video/webm',
+  '.pdf': 'application/pdf', '.txt': 'text/plain',
 };
 
-function handler(req, res) {
+function serveFile(res, filePath, status) {
   try {
-    var p = req.url.split('?')[0].split('#')[0];
-
-    // ─── Quote Submission API (proxies to Google Apps Script) ──
-    if (p === '/api/quote-submit' && req.method === 'POST') {
-      if (!GOOGLE_FORM_URL) {
-        res.writeHead(503, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Quote service not configured' }));
-        return;
-      }
-      var body = '';
-      req.on('data', function(chunk) { body += chunk; });
-      req.on('end', function() {
-        var opts = require('url').parse(GOOGLE_FORM_URL);
-        opts.method = 'POST';
-        opts.headers = { 'Content-Type': 'text/plain;charset=utf-8', 'Content-Length': Buffer.byteLength(body) };
-        var proto = opts.protocol === 'https:' ? https : http_or_https;
-        var proxyReq = proto.request(opts, function(proxyRes) {
-          var data = '';
-          proxyRes.on('data', function(c) { data += c; });
-          proxyRes.on('end', function() {
-            res.writeHead(proxyRes.statusCode, { 'Content-Type': 'application/json' });
-            res.end(data);
-          });
-        });
-        proxyReq.on('error', function(err) {
-          console.error('[dev-server] quote-submit proxy error:', err.message);
-          res.writeHead(502, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Failed to submit' }));
-        });
-        proxyReq.write(body);
-        proxyReq.end();
-      });
-      return;
-    }
-
-    // ─── API mock endpoints ──────────────────────────────
-    if (p === '/api/public/products-data') {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(PRODUCT_DATA));
-      return;
-    }
-
-    // ─── Dev mode: serve i18n language JSON directly from src/ (hot reload) ──
-    if (p.startsWith('/assets/lang/') && p.endsWith('.json')) {
-      var srcLangDir = path.join(__dirname, 'src/assets/lang');
-      var langFile = path.basename(p);
-      var srcPath = path.join(srcLangDir, langFile);
-      if (fs.existsSync(srcPath)) {
-        var ext = 'json';
-        res.writeHead(200, {
-          'Content-Type': MIME[ext] || 'application/octet-stream',
-          'Cache-Control': 'no-cache, no-store, must-revalidate'
-        });
-        fs.createReadStream(srcPath).pipe(res);
-        return;
-        return;
-      }
-    }
-
-    // ─── Static file serving ─────────────────────────────
-    var fp = path.join(ROOT, p);
-
-    // Route /products/<cat>/<model>/ → pdp/index-[device].html
-    var prodPdpMatch = p.match(/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/$/);
-    if (prodPdpMatch) {
-      var uaP = (req.headers['user-agent'] || '').toLowerCase();
-      var isMobileP = /mobile|android|iphone|ipod/i.test(uaP) && !/ipad|tablet/i.test(uaP);
-      var isTabletP = /ipad|tablet/i.test(uaP) || (/android/i.test(uaP) && !/mobile/i.test(uaP));
-      var pdpSuffixP = isMobileP ? 'index-mobile.html' : isTabletP ? 'index-tablet.html' : 'index-pc.html';
-      fp = path.join(ROOT, 'pdp', pdpSuffixP);
-    }
-
-    if (!fs.existsSync(fp)) {
-      // API routes should 404, not fallback to SPA shell
-      if (p.startsWith('/api/')) {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Not found in dev mode' }));
-        return;
-      }
-      // Unknown HTML routes → 404
-      var notFoundFile = path.join(ROOT, '404.html');
-      if (fs.existsSync(notFoundFile)) {
-        res.writeHead(404, { 'Content-Type': 'text/html' });
-        res.end(fs.readFileSync(notFoundFile, 'utf-8'));
-        return;
-      }
-      // SPA fallback for HTML routes (only for known routes)
-      fp = path.join(ROOT, 'index.html');
-    }
-
-    var stat = fs.statSync(fp);
-    if (stat.isDirectory()) {
-      var idx = path.join(fp, 'index.html');
-      if (fs.existsSync(idx)) {
-        fp = idx;
-        // Device detection for directory index: serve device-specific file when UA indicates mobile/tablet
-        var uaDir = (req.headers['user-agent'] || '').toLowerCase();
-        var isMobDir = /mobile|android|iphone|ipod/i.test(uaDir) && !/ipad|tablet/i.test(uaDir);
-        var isTabDir = /ipad|tablet/i.test(uaDir) || (/android/i.test(uaDir) && !/mobile/i.test(uaDir));
-        if (isMobDir || isTabDir) {
-          var devSuffix = isMobDir ? 'index-mobile.html' : 'index-tablet.html';
-          var baseDir = path.dirname(fp);
-          var devFile = path.join(baseDir, devSuffix);
-          if (fs.existsSync(devFile)) {
-            fp = devFile;
-          }
-        }
-      } else {
-        fp = path.join(ROOT, 'index.html');
-      }
-    }
-
-    var ext = path.extname(fp).slice(1).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
-    fs.createReadStream(fp).pipe(res);
+    const ext = path.extname(filePath).toLowerCase();
+    const mime = MIME[ext] || 'application/octet-stream';
+    const data = fs.readFileSync(filePath);
+    res.writeHead(status || 200, {
+      'Content-Type': mime,
+      'Content-Length': data.length,
+      'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=31536000',
+    });
+    res.end(data);
   } catch (e) {
-    res.writeHead(500);
-    res.end('Internal error');
+    serve404(res, filePath);
   }
 }
 
-http.createServer(handler).listen(PORT, '0.0.0.0');
-
-var sslOpts;
-try {
-  sslOpts = {
-    key: fs.readFileSync(path.join(__dirname, 'localhost-key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'localhost.pem')),
-  };
-  https.createServer(sslOpts, handler).listen(SSL_PORT, '0.0.0.0');
-  console.log('🔒 https://0.0.0.0:' + SSL_PORT);
-} catch (e) {
-  console.log('⚠ No SSL certs found, HTTPS not started');
+function serve404(res, url) {
+  const fp = path.join(DIST, '404.html');
+  if (fs.existsSync(fp)) {
+    serveFile(res, fp, 404);
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/html' });
+    res.end('<h1>404 Not Found</h1><p>' + url + '</p>');
+  }
 }
 
-console.log('🌐 http://0.0.0.0:' + PORT);
-console.log('📁 Serving ' + ROOT);
+// 资源文件（静态）: 直接从 dist 返回
+function serveStatic(res, urlPath) {
+  // 安全检查
+  const safe = path.join(DIST, urlPath).replace(/\/+/g, '/');
+  if (!safe.startsWith(DIST)) { serve404(res, urlPath); return; }
+  
+  // 1. 尝试直接路径
+  if (fs.existsSync(safe) && !fs.statSync(safe).isDirectory()) {
+    serveFile(res, safe);
+    return;
+  }
+  // 2. 目录 → index.html
+  if (fs.existsSync(path.join(safe, 'index.html'))) {
+    serveFile(res, path.join(safe, 'index.html'));
+    return;
+  }
+  serve404(res, urlPath);
+}
+
+const server = http.createServer((req, res) => {
+  const urlObj = new URL(req.url, 'http://' + req.headers.host);
+  const urlPath = decodeURIComponent(urlObj.pathname);
+
+  // 静态资源（有扩展名且不是 .html）直接返回
+  const ext = path.extname(urlPath).toLowerCase();
+  if (ext && ext !== '.html') {
+    serveStatic(res, urlPath);
+    return;
+  }
+
+  // 无扩展名但有 query string 的静态资源请求（/assets/js/xxx?v=123）
+  if (!ext && req.url.includes('?')) {
+    serveStatic(res, urlPath);
+    return;
+  }
+
+  // HTML 请求 → 路由映射 + 设备检测
+  const route = routeToFilePath(urlPath);
+  const ua = req.headers['user-agent'] || '';
+  const deviceFile = route.suffix ? getDeviceSuffix(ua) : 'index-pc.html';
+  const filePath = path.join(DIST, route.dir, deviceFile);
+
+  // 带 query string 的 URL（如 /cases/detail/?slug=xxx）
+  const queryString = route.query ? ('?' + route.query) : '';
+
+  if (fs.existsSync(filePath)) {
+    serveFile(res, filePath);
+  } else {
+    // fallback: dist/<path>/index.html（设备检测重定向由 index.html 内的 JS 处理）
+    const fallback = path.join(DIST, route.dir, 'index.html');
+    if (fs.existsSync(fallback)) {
+      serveFile(res, fallback);
+    } else {
+      serve404(res, urlPath);
+    }
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(`🚀 BrewYuKoLi dev server at http://localhost:${PORT}`);
+  console.log(`   URL 保持干净，设备检测服务端处理`);
+});

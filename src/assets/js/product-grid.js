@@ -744,21 +744,23 @@
       '<h3 class="text-sm font-bold text-slate-900 dark:text-white mb-1 line-clamp-2">' +
       name +
       "</h3>" +
-      '<p class="flex-1 text-xs text-slate-500 dark:text-slate-400 mb-0 line-clamp-2">' +
+      '<p class="text-xs text-slate-500 dark:text-slate-400 mb-0 line-clamp-2">' +
       desc +
       "</p>" +
-      '<div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">' +
+      "</div>" +
+      "</a>" +
+      '<div class="flex items-center px-3 pb-3">' +
       '<a href="/contact/?from=product&model=' +
       encodeURIComponent(p.model || "") +
       "&name=" +
       encodeURIComponent(p.name || "") +
       "&category=" +
       encodeURIComponent(p._categoryLabel || p._category || "") +
-      '" class="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg font-bold text-[10px] hover:opacity-90 transition-opacity" onclick="event.stopPropagation()"><span data-i18n="products_card_inquire">询价</span><span class="material-symbols-outlined text-[10px]">arrow_forward</span></a>' +
-      '<span class="material-symbols-outlined text-slate-400 text-sm">arrow_forward</span>' +
+      '" class="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-lg font-bold text-[10px] hover:opacity-90 transition-opacity"><span data-i18n="products_card_inquire">询价</span><span class="material-symbols-outlined text-[10px]">arrow_forward</span></a>' +
+      '<a href="' +
+      link +
+      '" class="ml-auto flex items-center gap-0.5 text-xs text-primary font-medium hover:underline"><span data-i18n="products_card_view_detail">详情</span><span class="material-symbols-outlined text-xs">arrow_forward</span></a>' +
       "</div>" +
-      "</div>" +
-      "</a>" +
       "</article>"
     );
   }
