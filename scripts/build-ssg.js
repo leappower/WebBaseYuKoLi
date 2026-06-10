@@ -390,6 +390,11 @@ function injectThemeAndNavScripts(html, deviceType) {
     allTags += '<script defer src="' + bp + '/assets/js/theme-init.js"></script>\n  ';
   }
 
+  // ── 1.5 Device utils (unified device detection — must be after theme-init) ──
+  if (html.indexOf('device-utils.js') === -1) {
+    allTags += '<script defer src="' + bp + '/assets/js/utils/device-utils.js"></script>\n  ';
+  }
+
   // ── 2. i18n + dropdown + nav + ui bundles ──
   // These bundles contain: lang-registry, translations, dropdown modules,
   // navigator.js, slide-menu.js, custom-select.js, mega-menu.js,

@@ -15,32 +15,24 @@
           s = n.replace(/^\//, "");
         var cats = ["all", "coffee", "tea", "meal", "beauty", "weight", "gut", "lifestyle", "legacy"];
 
-        // ── Virtual routes: PDP ───────────────────────────
-        if (/^\/products\/([a-zA-Z0-9_-]+)\/[a-zA-Z0-9_..-]+$/.test(n)) {
-          var cat = n.replace(/^\/products\/([a-zA-Z0-9_-]+)\/[a-zA-Z0-9_..-]+$/, "$1");
+        // ── Virtual routes: PDP /products/<category>/<model>/ ────
+        // Redirect to the category page so user lands on a working page.
+        // Model format: uppercase letters, digits, hyphens (e.g. CF-005, TE-002)
+        var pdpMatch = n.match(/^\/products\/([a-zA-Z0-9_-]+)\/([A-Z0-9][\w-]*)$/);
+        if (pdpMatch) {
+          var cat = pdpMatch[1];
           if (cats.indexOf(cat) !== -1) window.location.replace("/products/" + cat + "/");
           else window.location.replace("/products/");
           return;
         }
-        // Old-format PDP: /products/<model>/ (not a known category)
-        if (/^\/products\/[^/]+$/.test(n) &&
-            cats.indexOf(n.replace(/^\/products\//, "")) === -1 &&
-            ["detail","compare"].indexOf(n.replace(/^\/products\//, "")) === -1) {
-          window.location.replace("/products/");
-          return;
-        }
-        // ── Virtual routes: case detail ────────────────────
+
+        // ── Virtual routes: case detail /cases/<slug>/ ──────────
         if (/^\/cases\/[a-z0-9-]+$/.test(n) && n !== "/cases/index") {
           window.location.replace("/cases/");
           return;
         }
-        // ── Virtual routes: news detail ────────────────────
-        if (n === "/news/detail") {
-          window.location.replace("/news/detail/");
-          return;
-        }
 
-        // ── Known routes: add trailing slash ───────────────
+        // ── Known routes: add trailing slash ───────────────────
         if (/^\/products\//.test(p)) {
           var c = p.replace(/^\/products\//, "").replace(/\/$/, "");
           if (cats.indexOf(c) !== -1) window.location.replace("/products/" + c + "/");
@@ -52,8 +44,10 @@
           return;
         }
         // Sub-routes: /solutions/oem/ → add trailing slash
-        var subRoutes = ["solutions/oem","solutions/odm","solutions/obm","solutions/rd","solutions/packaging",
-                          "resources/catalog","resources/videos","resources/whitepapers"];
+        var subRoutes = [
+          "solutions/oem", "solutions/odm", "solutions/obm", "solutions/rd", "solutions/packaging",
+          "resources/catalog", "resources/videos", "resources/whitepapers",
+        ];
         for (var i = 0; i < subRoutes.length; i++) {
           if (n === "/" + subRoutes[i]) {
             window.location.replace("/" + subRoutes[i] + "/");
@@ -66,24 +60,12 @@
           return;
         }
         var routes = [
-            "home",
-            "solutions",
-            "about",
-            "contact",
-            "cases",
-            "support",
-            "manufacturing",
-            "compliance",
-            "resources",
-            "news",
-            "profit-calculator",
-            "quote",
-            "thank-you",
-          ];
-          if (routes.indexOf(s) !== -1) window.location.replace("/" + s + "/");
-          var seg = n.split("/").pop();
-          if (routes.indexOf(seg) !== -1) window.location.replace("/" + seg + "/");
-        }
+          "home", "solutions", "about", "contact", "cases",
+          "support", "manufacturing", "compliance", "resources", "thank-you",
+        ];
+        if (routes.indexOf(s) !== -1) window.location.replace("/" + s + "/");
+        var seg = n.split("/").pop();
+        if (routes.indexOf(seg) !== -1) window.location.replace("/" + seg + "/");
       })();
     </script>
 
@@ -104,55 +86,24 @@
 
     <style>
       @keyframes float {
-        0%,
-        100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-10px);
-        }
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
       }
-      .float-anim {
-        animation: float 3s ease-in-out infinite;
-      }
+      .float-anim { animation: float 3s ease-in-out infinite; }
       @keyframes pulse-ring {
-        0% {
-          transform: scale(0.8);
-          opacity: 0.6;
-        }
-        100% {
-          transform: scale(1.8);
-          opacity: 0;
-        }
+        0% { transform: scale(0.8); opacity: 0.6; }
+        100% { transform: scale(1.8); opacity: 0; }
       }
-      .pulse-ring {
-        animation: pulse-ring 2.5s ease-out infinite;
-      }
+      .pulse-ring { animation: pulse-ring 2.5s ease-out infinite; }
       @keyframes fade-up {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
       }
-      .fade-up {
-        animation: fade-up 0.6s ease-out both;
-      }
-      .fade-up-d1 {
-        animation-delay: 0.1s;
-      }
-      .fade-up-d2 {
-        animation-delay: 0.2s;
-      }
-      .fade-up-d3 {
-        animation-delay: 0.3s;
-      }
-      .fade-up-d4 {
-        animation-delay: 0.4s;
-      }
+      .fade-up { animation: fade-up 0.6s ease-out both; }
+      .fade-up-d1 { animation-delay: 0.1s; }
+      .fade-up-d2 { animation-delay: 0.2s; }
+      .fade-up-d3 { animation-delay: 0.3s; }
+      .fade-up-d4 { animation-delay: 0.4s; }
     </style>
   </head>
   <body
