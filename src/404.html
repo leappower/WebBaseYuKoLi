@@ -7,18 +7,44 @@
     <link rel="canonical" href="https://brew.yukoli.com/" />
     <meta name="robots" content="noindex" />
     <script src="/site.config.js" defer></script>
-    <!-- Redirect: known routes without trailing slash → correct path with slash -->
+    <!-- SPA Fallback: redirect known virtual routes to physical pages -->
     <script>
       (function () {
         var p = window.location.pathname,
           n = p.replace(/\/$/, ""),
           s = n.replace(/^\//, "");
         var cats = ["all", "coffee", "tea", "meal", "beauty", "weight", "gut", "lifestyle", "legacy"];
+
+        // ── Virtual routes: PDP ───────────────────────────
+        if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_..-]+$/.test(n)) {
+          window.location.replace("/products/");
+          return;
+        }
+        // Old-format PDP: /products/<model>/ (not a known category)
+        if (/^\/products\/[^/]+$/.test(n) &&
+            cats.indexOf(n.replace(/^\/products\//, "")) === -1 &&
+            ["detail","compare"].indexOf(n.replace(/^\/products\//, "")) === -1) {
+          window.location.replace("/products/");
+          return;
+        }
+        // ── Virtual routes: case detail ────────────────────
+        if (/^\/cases\/[a-z0-9-]+$/.test(n) && n !== "/cases/index") {
+          window.location.replace("/cases/");
+          return;
+        }
+        // ── Virtual routes: news detail ────────────────────
+        if (n === "/news/detail") {
+          window.location.replace("/news/detail/");
+          return;
+        }
+
+        // ── Known routes: add trailing slash ───────────────
         if (/^\/products\//.test(p)) {
           var c = p.replace(/^\/products\//, "").replace(/\/$/, "");
           if (cats.indexOf(c) !== -1) window.location.replace("/products/" + c + "/");
-        } else {
-          var routes = [
+          return;
+        }
+        var routes = [
             "home",
             "solutions",
             "about",
@@ -34,10 +60,8 @@
             "thank-you",
           ];
           if (routes.indexOf(s) !== -1) window.location.replace("/" + s + "/");
-          else {
-            var seg = n.split("/").pop();
-            if (routes.indexOf(seg) !== -1) window.location.replace("/" + seg + "/");
-          }
+          var seg = n.split("/").pop();
+          if (routes.indexOf(seg) !== -1) window.location.replace("/" + seg + "/");
         }
       })();
     </script>
