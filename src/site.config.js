@@ -396,7 +396,7 @@
         {
           slug: "tea",
           key: "nav_products_tea",
-          label: { en: "Tea &amp; Milk Tea", "zh-CN": "茶饮系列" },
+          label: { en: "Tea & Milk Tea", "zh-CN": "茶饮系列" },
           icon: "local_cafe",
           emoji: "🍵",
           accent: "green",

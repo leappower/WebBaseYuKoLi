@@ -565,7 +565,7 @@ function generateRouteIndex(route) {
   // Inject device detection into the index.html
   var redirectJs =
     '<script>' +
-    '(function(){var ua=navigator.userAgent.toLowerCase();var m=/mobile|android|iphone|ipod/i.test(ua)&&!/ipad|tablet|silk/i.test(ua);var t=/ipad|tablet|silk/i.test(ua)||(/android/i.test(ua)&&!/mobile/i.test(ua));if(!m&&!t)return;var d=m?"index-mobile.html":"index-tablet.html";var p=window.location.pathname;if(p.charAt(p.length-1)!=="/")p+="/";var b=p.substring(0,p.lastIndexOf("/")+1);if(b&&b!=="/")window.location.replace(b+d)})()' +
+    '(function(){var ua=navigator.userAgent.toLowerCase();var m=/mobile|android|iphone|ipod/i.test(ua)&&!/ipad|tablet|silk/i.test(ua);var t=/ipad|tablet|silk/i.test(ua)||(/android/i.test(ua)&&!/mobile/i.test(ua));if(!m&&!t)return;var d=m?"index-mobile.html":"index-tablet.html";var p=window.location.pathname;if(p.charAt(p.length-1)!=="/")p+="/";var b=p.substring(0,p.lastIndexOf("/")+1);var s=window.location.search||"";var h=window.location.hash||"";if(b&&b!=="/")window.location.replace(b+d+s+h)})()' +
     '</script>';
   html = html.replace('</head>', redirectJs + '</head>');
 
