@@ -2409,20 +2409,26 @@
       } catch (e) {
         console.warn("[SWUP] ProductGrid init error:", e);
       }
-      // 面包屑：产品分类页需要注入面包屑脚本
+      // 面包屑：产品分类页需要注入面包屑脚本（链式加载保证顺序）
       if (typeof global.Breadcrumb === "undefined") {
+        var bcVersion = "?v=" + (global.SW_VERSION || Date.now());
         var bcScripts = [
-          "/assets/js/breadcrumb-data.js?v=" + (global.SW_VERSION || Date.now()),
-          "/assets/js/breadcrumb-render.js?v=" + (global.SW_VERSION || Date.now()),
-          "/assets/js/breadcrumb.js?v=" + (global.SW_VERSION || Date.now()),
+          "/assets/js/breadcrumb-data.js" + bcVersion,
+          "/assets/js/breadcrumb-render.js" + bcVersion,
+          "/assets/js/breadcrumb.js" + bcVersion,
         ];
-        for (var bci = 0; bci < bcScripts.length; bci++) {
-          (function (src) {
-            var ss = document.createElement("script");
-            ss.src = src;
-            document.head.appendChild(ss);
-          })(bcScripts[bci]);
-        }
+        (function loadChain(i) {
+          if (i >= bcScripts.length) return;
+          var ss = document.createElement("script");
+          ss.src = bcScripts[i];
+          ss.onload = function () {
+            loadChain(i + 1);
+          };
+          ss.onerror = function () {
+            loadChain(i + 1);
+          };
+          document.head.appendChild(ss);
+        })(0);
       } else {
         try {
           global.Breadcrumb.refresh();
@@ -2942,15 +2948,14 @@
               }
             }, 50);
           } else {
+            var bcVersion = "?t=" + (global.SW_VERSION || Date.now());
             var bcScripts = [
-              "/assets/js/breadcrumb-data.js?t=" + (global.SW_VERSION || Date.now()),
-              "/assets/js/breadcrumb-render.js?t=" + (global.SW_VERSION || Date.now()),
-              "/assets/js/breadcrumb.js?t=" + (global.SW_VERSION || Date.now()),
+              "/assets/js/breadcrumb-data.js" + bcVersion,
+              "/assets/js/breadcrumb-render.js" + bcVersion,
+              "/assets/js/breadcrumb.js" + bcVersion,
             ];
-            var bcPending = bcScripts.length;
-            function bcOnReady() {
-              bcPending--;
-              if (bcPending <= 0) {
+            (function loadChain(i) {
+              if (i >= bcScripts.length) {
                 setTimeout(function () {
                   if (typeof global.Breadcrumb !== "undefined") {
                     try {
@@ -2962,20 +2967,19 @@
                     console.warn("[Breadcrumb] scripts loaded but Breadcrumb undefined");
                   }
                 }, 50);
+                return;
               }
-            }
-            for (var bi = 0; bi < bcScripts.length; bi++) {
-              (function (src) {
-                var ss = document.createElement("script");
-                ss.src = src;
-                ss.onload = bcOnReady;
-                ss.onerror = function () {
-                  console.warn("[Breadcrumb] script load failed:", src);
-                  bcOnReady();
-                };
-                document.head.appendChild(ss);
-              })(bcScripts[bi]);
-            }
+              var ss = document.createElement("script");
+              ss.src = bcScripts[i];
+              ss.onload = function () {
+                loadChain(i + 1);
+              };
+              ss.onerror = function () {
+                console.warn("[Breadcrumb] script load failed:", bcScripts[i]);
+                loadChain(i + 1);
+              };
+              document.head.appendChild(ss);
+            })(0);
           }
         } // ─── 脚本热重载：提取新页面特有脚本并注入 ───
         // 替代 ScriptsPlugin optin 模式，解决 data-swup-reload-script 遗漏问题
