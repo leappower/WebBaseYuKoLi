@@ -16,8 +16,10 @@
         var cats = ["all", "coffee", "tea", "meal", "beauty", "weight", "gut", "lifestyle", "legacy"];
 
         // ── Virtual routes: PDP ───────────────────────────
-        if (/^\/products\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_..-]+$/.test(n)) {
-          window.location.replace("/products/");
+        if (/^\/products\/([a-zA-Z0-9_-]+)\/[a-zA-Z0-9_..-]+$/.test(n)) {
+          var cat = n.replace(/^\/products\/([a-zA-Z0-9_-]+)\/[a-zA-Z0-9_..-]+$/, "$1");
+          if (cats.indexOf(cat) !== -1) window.location.replace("/products/" + cat + "/");
+          else window.location.replace("/products/");
           return;
         }
         // Old-format PDP: /products/<model>/ (not a known category)

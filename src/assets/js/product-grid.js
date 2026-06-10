@@ -1041,12 +1041,18 @@
       // Gallery mode: container already initializes pagination in renderGrid
       if (grid.getAttribute && grid.getAttribute("data-gallery") === "true") {
         renderGrid("product-grid", null, 0);
-      } else if (typeof DeviceUtils !== "undefined" && DeviceUtils && DeviceUtils.isMobile()) {
-        renderGrid("product-grid", renderMobile, 100);
-      } else if (typeof DeviceUtils !== "undefined" && DeviceUtils && DeviceUtils.isTablet()) {
-        renderGrid("product-grid", renderTablet, 100);
       } else {
-        renderGrid("product-grid", renderPC, 100);
+        var dt =
+          typeof DeviceUtils !== "undefined" && DeviceUtils
+            ? DeviceUtils.isMobile()
+              ? "mobile"
+              : DeviceUtils.isTablet()
+                ? "tablet"
+                : "pc"
+            : getDeviceType();
+        if (dt === "mobile") renderGrid("product-grid", renderMobile, 100);
+        else if (dt === "tablet") renderGrid("product-grid", renderTablet, 100);
+        else renderGrid("product-grid", renderPC, 100);
       }
     }
     initCategoryTabs();
