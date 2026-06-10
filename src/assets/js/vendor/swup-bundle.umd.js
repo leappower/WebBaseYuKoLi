@@ -2654,8 +2654,10 @@
    * /resources/catalog/ → /resources/catalog/index-pc.html
    * /news/detail/  → /news/detail-pc.html (flat-file pattern)
    */
-  function routeToFetchUrl(path) {
+  function routeToFetchUrl(rawPath) {
     var suffix = getDeviceSuffix();
+    // 剥离 query string（只对路径做路由映射，query string 由 swup 内部保留）
+    var path = rawPath.split("?")[0].split("#")[0];
 
     // 将 SPA 路由路径转换为设备特定页面的 fetch URL。
     // resolveUrl 的逆向：routeToFetchUrl 负责找到实际存在的 HTML 文件去 fetch，

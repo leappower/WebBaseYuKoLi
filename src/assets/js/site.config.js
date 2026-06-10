@@ -377,7 +377,7 @@
         {
           slug: "tea",
           key: "nav_products_tea",
-          label: { en: "Tea &amp; Milk Tea", "zh-CN": "茶饮系列" },
+          label: { en: "Tea & Milk Tea", "zh-CN": "茶饮系列" },
           icon: "local_cafe",
           emoji: "🍵",
           accent: "green",
@@ -393,7 +393,7 @@
         {
           slug: "beauty",
           key: "nav_products_beauty",
-          label: { en: "Beauty &amp; Collagen", "zh-CN": "胶原养颜" },
+          label: { en: "Beauty & Collagen", "zh-CN": "胶原养颜" },
           icon: "spa",
           emoji: "✨",
           accent: "pink",
