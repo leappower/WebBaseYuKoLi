@@ -470,6 +470,7 @@
             var o = {};
             for (var k in p) o[k] = p[k];
             o._category = cat.category || cat.slug || "";
+            o._categoryLabel = getCategoryLabel(o._category);
             o._imageUrl = img;
             return o;
           })()
@@ -482,6 +483,18 @@
   // ─── Accent color lookup ──────────────────────────────────────
   // Maps a product's category to a data-accent value.
   // Reads from SITE_CONFIG.categories.products[].accent; falls back to "coral".
+  // Slug → display name for URL query params (e.g. "coffee" → "Coffee")
+  function getCategoryLabel(slug) {
+    var cfgCats = ((window.SITE_CONFIG || window._cfg || {}).categories || {}).products || [];
+    for (var i = 0; i < cfgCats.length; i++) {
+      if (cfgCats[i].slug === slug && cfgCats[i].label) {
+        var lang = document.documentElement.lang || "en";
+        return cfgCats[i].label[lang] || cfgCats[i].label["en"] || slug;
+      }
+    }
+    return slug;
+  }
+
   function getProductAccent(p) {
     if (!p) return "coral";
     var cat = p._category || "";
@@ -588,7 +601,7 @@
       "&name=" +
       encodeURIComponent(p.name || "") +
       "&category=" +
-      encodeURIComponent(p._category || "") +
+      encodeURIComponent(p._categoryLabel || p._category || "") +
       '" class="flex items-center gap-1.5 bg-primary text-white px-4 py-2 rounded-lg font-bold text-xs hover:opacity-90 transition-opacity"><span data-i18n="products_card_inquire">\u8BE2\u4EF7</span><span class="material-symbols-outlined text-xs">arrow_forward</span></a>' +
       '<div class="flex items-center gap-2">' +
       '<a href="' +
@@ -669,7 +682,7 @@
       "&name=" +
       encodeURIComponent(p.name || "") +
       "&category=" +
-      encodeURIComponent(p._category || "") +
+      encodeURIComponent(p._categoryLabel || p._category || "") +
       '" class="flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-lg font-bold text-xs hover:opacity-90 transition-opacity"><span data-i18n="products_card_inquire">询价</span><span class="material-symbols-outlined text-xs">arrow_forward</span></a>' +
       '<div class="flex items-center gap-2">' +
       '<a href="' +
@@ -734,13 +747,13 @@
       '<p class="flex-1 text-xs text-slate-500 dark:text-slate-400 mb-0 line-clamp-2">' +
       desc +
       "</p>" +
-      '<div class="mt-auto flex items-center justify-between">' +
+      '<div class="mt-auto flex items-center justify-between pt-3 border-t border-slate-100 dark:border-slate-700">' +
       '<a href="/contact/?from=product&model=' +
       encodeURIComponent(p.model || "") +
       "&name=" +
       encodeURIComponent(p.name || "") +
       "&category=" +
-      encodeURIComponent(p._category || "") +
+      encodeURIComponent(p._categoryLabel || p._category || "") +
       '" class="flex items-center gap-1 bg-primary text-white px-3 py-1 rounded-lg font-bold text-[10px] hover:opacity-90 transition-opacity" onclick="event.stopPropagation()"><span data-i18n="products_card_inquire">询价</span><span class="material-symbols-outlined text-[10px]">arrow_forward</span></a>' +
       '<span class="material-symbols-outlined text-slate-400 text-sm">arrow_forward</span>' +
       "</div>" +

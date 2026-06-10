@@ -22,7 +22,7 @@
 /* ───────── 骨架层：文档流中 header 和 footer 之间，独立于 #spa-content ───────── */
 #skeleton-overlay {
   position: absolute;
-  top: 0;
+  top: var(--nav-height, 65px);
   left: 0;
   right: 0;
   bottom: 0;
@@ -31,7 +31,6 @@
   opacity: 1;
   transition: opacity 350ms ease-out;
   pointer-events: auto;
-  padding-top: var(--nav-height, 65px);
   overflow: hidden;
 }
 #skeleton-overlay[data-hidden] {
@@ -61,7 +60,6 @@
 }
 @media (min-width: 1024px) {
   #skeleton-overlay {
-    padding-top: var(--nav-height, 109px);
   }
 }
 @media (min-width: 1280px) {
