@@ -3,7 +3,7 @@
 <html class="light" lang="en">
   <head>
     <script src="/site.config.js" defer></script>
-    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script defer src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
 
     <meta charset="utf-8" />
     <meta
@@ -17,11 +17,9 @@
       property="og:description"
       content="Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business."
     />
-    <meta property="og:url" content="https://brew.yukoli.com/products/all/" />
+    <meta property="og:url" content="/products/all/" />
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
     <title data-i18n="products_all_page_title">All Products | {brand} Smart products manufacturing</title>
-    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
       rel="preload"
       href="/assets/fonts/public-sans-latin-400-normal.woff2"
@@ -38,8 +36,10 @@
     />
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
     <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
-    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" /></noscript>
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" /></noscript>
     <style>
       body {
         font-family: "Public Sans", sans-serif;
@@ -96,9 +96,9 @@
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "YuKoLi Beverage & Instant Food - All Products",
-        "description": "Complete range of YuKoLi beverage and instant food products, covering Coffee & Beverage, Tea, Meal Replacement & Protein, Collagen, and more across 7 categories. Filter by category or compare to find the best OEM/ODM solution.",
-        "url": "https://brew.yukoli.com/products/all/"
+        "name": "Brand Beverage & Instant Food - All Products",
+        "description": "Complete range of Brand beverage and instant food products, covering Coffee & Beverage, Tea, Meal Replacement & Protein, Collagen, and more across multiple categories. Filter by category or compare to find the best OEM/ODM solution.",
+        "url": "/products/all/"
       }
     </script>
     <link rel="stylesheet" href="/assets/css/skeleton.css" />
@@ -221,7 +221,7 @@
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </a>
               <button
-                onclick="window.YuKoLiFAB && YuKoLiFAB.openWhatsApp('page-cta', 'wa_msg_default')"
+                onclick="window.BrandFAB && BrandFAB.openWhatsApp('page-cta', 'wa_msg_default')"
                 class="inline-flex items-center justify-center gap-2 border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold text-sm hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
               >
                 <span data-i18n="products_cta_btn_contact">Contact Sales</span>

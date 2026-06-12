@@ -79,7 +79,10 @@
   function isTestEnvironment() {
     var hostname = window.location.hostname;
     return (
-      hostname === "localhost" || hostname === "127.0.0.1" || hostname.includes(".local") || hostname.includes("test")
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname.indexOf(".local") !== -1 ||
+      hostname.indexOf("test") !== -1
     );
   }
 
@@ -1073,7 +1076,7 @@
       ].join("\n")
     );
 
-    window.location.href = "mailto:179564128@qq.com?subject=" + mailSubject + "&body=" + mailBody;
+    window.location.href = "mailto:SUPPORT_EMAIL_PLACEHOLDER?subject=" + mailSubject + "&body=" + mailBody;
   }
 
   // ─── 全局导出 ─────────────────────────────────────────────────────────────

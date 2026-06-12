@@ -1,12 +1,15 @@
 /*!
- * analytics_integrations_name — BrewYuKoLi — GA4 Analytics Integration
+ * analytics_integrations_name — GA4 Analytics Integration
  * IIFE, ES5-compatible
  * Reads config from window.SITE_CONFIG.analytics
  */
 (function () {
   "use strict";
 
-  var config = (typeof window !== "undefined" && window.SITE_CONFIG && window.SITE_CONFIG.analytics) ? window.SITE_CONFIG.analytics : null;
+  var config =
+    typeof window !== "undefined" && window.SITE_CONFIG && window.SITE_CONFIG.analytics
+      ? window.SITE_CONFIG.analytics
+      : null;
 
   if (!config || !config.enabled || !config.ga4Id) {
     return; // GA4 disabled or no ID provided
@@ -31,7 +34,7 @@
     // Set default consent
     window.gtag("js", new Date());
     window.gtag("config", GA_ID, {
-      send_page_view: false // We handle page views manually for SPA
+      send_page_view: false, // We handle page views manually for SPA
     });
 
     // Inject the GA4 script
@@ -48,7 +51,7 @@
   function sendPageView(path) {
     if (typeof window.gtag !== "function") return;
     window.gtag("event", "page_view", {
-      page_path: path || (window.location.pathname + window.location.search + window.location.hash)
+      page_path: path || window.location.pathname + window.location.search + window.location.hash,
     });
   }
 
@@ -78,7 +81,7 @@
             var label = el.getAttribute("data-ga-label") || el.textContent || "";
             trackEvent(eventName, {
               event_category: "engagement",
-              event_label: label.trim().substring(0, 100)
+              event_label: label.trim().substring(0, 100),
             });
           });
         }

@@ -34,7 +34,9 @@
   // 按 priority 升序执行（同优先级按注册顺序）
   function flush() {
     if (!ready) return;
-    queue.sort(function (a, b) { return a.priority - b.priority; });
+    queue.sort(function (a, b) {
+      return a.priority - b.priority;
+    });
     for (var i = 0; i < queue.length; i++) {
       try {
         queue[i].fn();
@@ -82,6 +84,8 @@
 
   window.Boot = {
     register: register,
-    isReady: function () { return ready; }
+    isReady: function () {
+      return ready;
+    },
   };
 })();

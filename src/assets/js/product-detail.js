@@ -408,7 +408,7 @@
         esc(product.badge) +
         "</span>"
       : "";
-    var wa = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814";
+    var wa = (window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "";
 
     // Video support: product.video or product.videoUrl from CMS
     var videoUrl = product.video || product.videoUrl || "";
@@ -640,7 +640,7 @@
       pdp_recommend_products: "Recommended Products",
       pdp_view_detail: "View Details",
       pdp_back: "Back",
-      pdp_site_suffix: "YuKoLi Health Food",
+      pdp_site_suffix: "OEM/ODM Products",
       nav_product_center: "Products",
     };
     return map[key] || key;

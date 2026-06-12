@@ -23,7 +23,7 @@ npm start
 ## 目录结构
 
 ```
-yukoli-tech/
+brand-project-tech/
 ├── src/
 │   ├── index.html               # HTML 模板（webpack 注入 bundle/css）
 │   ├── index.js                 # webpack 入口

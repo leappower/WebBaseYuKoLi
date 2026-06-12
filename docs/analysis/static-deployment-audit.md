@@ -163,7 +163,7 @@ image-assets.js:84: return fetch("/images/image-manifest.json")
 ```
 
 **影响**  
-子路径部署（如 `brew.yukoli.com/brew/`）下 image 清单 fetch 失败 → 图片列表无法加载。
+子路径部署（如 `brew.brand-project.com/brew/`）下 image 清单 fetch 失败 → 图片列表无法加载。
 
 **修复方案**  
 改为 `fetch((window.BASE_PATH || "") + "/images/image-manifest.json")`

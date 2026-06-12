@@ -35,7 +35,7 @@ Regex fallback `[\\s\\S]` 在 regex literal `/pattern/` 中匹配的是字面字
 **Module**: `src/assets/css/styles.css`
 
 ### Symptom
-所有相邻 section 被 `main > section + section { margin-top: -3.5rem }` 吞噬间距，Trust Bar / Why YuKoLi 视觉重叠。
+所有相邻 section 被 `main > section + section { margin-top: -3.5rem }` 吞噬间距，Trust Bar / Why BRAND_PROJECT 视觉重叠。
 
 ### Root Cause
 通用 collapse 规则过于激进，没有覆盖以下场景：
@@ -85,10 +85,10 @@ fetch `/products/tea/index-pc.html` 返回 7668 字节（文件实际 9728），
 **Module**: `tailwind.config.js` + `src/assets/css/styles.css`
 
 ### Symptom
-`--color-primary: #2E7D32` 被 `tailwind.css` 中的 `--color-primary: #ec5b13`（旧项目）覆盖。所有品牌色显示为橙色。
+`--color-primary: #2E7D32` 被 `tailwind.css` 中的 `--color-primary: #2E7D32`（旧项目）覆盖。所有品牌色显示为橙色。
 
 ### Root Cause
-`styles.css` 先加载 → CSS 变量写入 → `tailwind.css` 后加载 → 同名 CSS 变量覆盖。`tailwind.config.js` 中的 primary 值为旧 KitchenYuKoLi 项目的 `#ec5b13`，未更新。
+`styles.css` 先加载 → CSS 变量写入 → `tailwind.css` 后加载 → 同名 CSS 变量覆盖。`tailwind.config.js` 中的 primary 值为旧 BRAND_PROJECT 项目的 `#2E7D32`，未更新。
 
 ### Fix
 将 `tailwind.config.js` 所有品牌色调为 `#2E7D32`，重新运行 `npm run build:css`。

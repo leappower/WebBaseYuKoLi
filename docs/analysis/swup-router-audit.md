@@ -163,7 +163,7 @@ if (this.routes[redirectTo] || this.routes[href]) {
 ```
 
 - **动态路由遗漏**: 通过 `CATEGORY_SLUGS` 生成的 slug 不会被 `this.routes` 包含 → 直接浏览器导航
-- **外部链接误判**: `if (href.startsWith("http")) return` — 但如果项目部署在子路径下，root-relative 链接 `/products/` 会被正确处理，但 `https://brew.yukoli.com/products/` 会触发全页刷新
+- **外部链接误判**: `if (href.startsWith("http")) return` — 但如果项目部署在子路径下，root-relative 链接 `/products/` 会被正确处理，但 `https://brew.brand-project.com/products/` 会触发全页刷新
 
 ### 2.3 SWUP 共存问题
 

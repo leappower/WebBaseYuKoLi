@@ -1,4 +1,4 @@
-# ENV-SETUP.md — 环境搭建指南 (BrewYuKoLi)
+# ENV-SETUP.md — 环境搭建指南 (BRAND_PROJECT)
 
 > **最后更新**：2026-05-23
 > **分支**：feat/swup-replace-spa-v2 → dev
@@ -24,8 +24,8 @@ npm --version    # >= 9.0.0
 ## 2. 初次克隆
 
 ```bash
-git clone git@github.com:leappower/BrewYuKoLi.git
-cd BrewYuKoLi
+git clone git@github.com:leappower/BRAND_PROJECT.git
+cd BRAND_PROJECT
 
 # 切换到 dev 分支
 git checkout dev

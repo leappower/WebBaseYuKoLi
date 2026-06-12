@@ -3,27 +3,27 @@
 <html class="light" lang="en">
   <head>
     <script src="/site.config.js" defer></script>
-    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
-    <link rel="canonical" href="https://brew.yukoli.com/contact/" />
-    <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/contact/" />
-    <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/contact/" />
-    <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/contact/" />
+    <script defer src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <link rel="canonical" href="/contact/" />
+    <link rel="alternate" hreflang="zh-CN" href="/contact/" />
+    <link rel="alternate" hreflang="en" href="/contact/" />
+    <link rel="alternate" hreflang="x-default" href="/contact/" />
 
     <meta charset="utf-8" />
     <meta
       data-i18n-meta="contact_meta_description"
       name="description"
-      content="Contact YuKoLi — Get health food OEM/ODM quotes and technical consultation. Global service network covering Southeast Asia, Middle East, South Asia, and more."
+      content="Contact {brand} — Get OEM/ODM quotes and technical consultation."
     />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title data-i18n="contact_meta_title">Yukoli | Contact Us</title>
-    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
+    <title data-i18n="contact_meta_title">{brand} | Contact Us</title>
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
     <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
-    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" /></noscript>
     <link rel="stylesheet" href="/assets/css/product-builder.css?v=20260601" />
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" /></noscript>
     <script>
       (function () {
         if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
@@ -500,8 +500,8 @@
             >
               <span class="material-symbols-outlined text-primary text-xl mb-2">email</span>
               <p class="text-xs font-bold" data-i18n="contact_card_email_title">Email Us</p>
-              <a href="mailto:support.brew@yukoli.com" class="text-xs text-primary font-bold">
-                support.brew@yukoli.com
+              <a href="mailto:support.brew@example.com" class="text-xs text-primary font-bold">
+                support.brew@example.com
               </a>
             </div>
             <div
@@ -509,14 +509,14 @@
             >
               <span class="material-symbols-outlined text-primary text-xl mb-2">phone</span>
               <p class="text-xs font-bold" data-i18n="contact_card_phone_title">Call Us</p>
-              <p class="text-xs text-slate-500">+86 18565718814</p>
+              <p class="text-xs text-slate-500">+1-xxx-xxx-xxxx</p>
             </div>
             <div
               class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center"
             >
               <span class="material-symbols-outlined text-primary text-xl mb-2">chat</span>
               <p class="text-xs font-bold" data-i18n="contact_card_whatsapp_title">WhatsApp</p>
-              <p class="text-xs text-slate-500">+86 18565718814</p>
+              <p class="text-xs text-slate-500">+1-xxx-xxx-xxxx</p>
             </div>
           </div>
         </div>
@@ -536,9 +536,7 @@
                   <span class="text-xl">🇨🇳</span>
                   <h3 class="font-bold" data-i18n="contact_office_hq">China Headquarters</h3>
                 </div>
-                <p class="text-xs text-slate-500" data-i18n="contact_company_name">
-                  Foshan YuKoLi Technology Co., Ltd.
-                </p>
+                <p class="text-xs text-slate-500" data-i18n="contact_company_name">{company.shortName}</p>
               </div>
             </div>
             <div class="space-y-3">
@@ -546,9 +544,7 @@
                 <span class="material-symbols-outlined text-primary text-base mt-0.5">apartment</span>
                 <div>
                   <p class="text-sm font-bold mb-0.5" data-i18n="contact_china_address_label">Company Address</p>
-                  <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-                    广东省佛山市顺德区大良街道红岗社区展伦路83号万创园12栋502室之六
-                  </p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{company.addressZh}</p>
                 </div>
               </div>
             </div>

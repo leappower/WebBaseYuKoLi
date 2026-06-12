@@ -9,7 +9,7 @@
  *
  * 导出：window.ThemeInit
  */
-;(function (_global) {
+(function (_global) {
   "use strict";
 
   var MODULE_ID = "theme-init";
@@ -28,7 +28,9 @@
     if (!match) return "";
     var family = match[1];
     // 替换空格为 +
-    return "https://fonts.googleapis.com/css2?family=" + family.replace(/ /g, "+") + ":wght@400;500;600;700&display=swap";
+    return (
+      "https://fonts.googleapis.com/css2?family=" + family.replace(/ /g, "+") + ":wght@400;500;600;700&display=swap"
+    );
   }
 
   /**
@@ -205,7 +207,6 @@
   _global.ThemeInit = {
     init: init,
     injectFontLinks: injectFontLinks,
-    applyTokenVars: applyTokenVars
+    applyTokenVars: applyTokenVars,
   };
-
 })(window || global);

@@ -256,7 +256,7 @@
       return Promise.resolve(this.translationsCache.get(cacheKey));
     }
 
-    var storageKey = "yukoli-translations-" + cacheKey;
+    var storageKey = "translations-" + cacheKey;
     var self = this;
 
     // 非开发者模式：尝试 localStorage 缓存

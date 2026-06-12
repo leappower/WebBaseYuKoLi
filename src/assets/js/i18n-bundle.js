@@ -224,7 +224,7 @@ if (typeof window !== "undefined") {
     (r.prototype.loadUITranslations = function (t) {
       var e = "ui-" + t;
       if (this.translationsCache.has(e)) return Promise.resolve(this.translationsCache.get(e));
-      var n = "yukoli-translations-" + e,
+      var n = "translations-" + e,
         o = null;
       if (!a)
         try {
@@ -382,9 +382,36 @@ if (typeof window !== "undefined") {
     }),
     (r.prototype.interpolate = function (t) {
       if (typeof t !== "string") return t;
-      var brand =
-        this._brandName || (this._brandName = (window.SITE_CONFIG && window.SITE_CONFIG.brandName) || "Brand");
-      return t.replace(/\{brand\}/g, brand);
+      var cfg = window.SITE_CONFIG || {};
+      var co = cfg.company || {};
+      var cap = cfg.capabilities || {};
+      var addr = co.address || {};
+      if (!this._cache) {
+        this._brandName = cfg.brandName || (cfg.brand && cfg.brand.name) || "Brand";
+        this._cache = {};
+      }
+      return t
+        .replace(/\{brand\}/g, this._brandName)
+        .replace(/\{company\.legalName\}/g, co.legalName || "Company Legal Name")
+        .replace(/\{company\.shortName\}/g, co.shortName || "Brand Technology Co., Ltd.")
+        .replace(/\{city\}/g, co.city || "City")
+        .replace(/\{region\}/g, co.region || "Region")
+        .replace(/\{country\}/g, co.country || "Country")
+        .replace(/\{address\.full\}/g, addr.full || "Full Address")
+        .replace(/\{address\.short\}/g, addr.short || "City, Country")
+        .replace(/\{jurisdiction\}/g, co.jurisdiction || "City, Region")
+        .replace(/\{foundedYear\}/g, co.foundedYear || 2000)
+        .replace(/\{years\}/g, cap.yearsExperience || 20)
+        .replace(/\{factories\}/g, cap.factories || 0)
+        .replace(/\{factoryArea\}/g, cap.factoryArea || "60,000㎡")
+        .replace(/\{warehouses\}/g, cap.warehouses || 0)
+        .replace(/\{productLines\}/g, cap.productLines || 0)
+        .replace(/\{skuCount\}/g, cap.skuCount || "500+")
+        .replace(/\{dailyCapacity\}/g, cap.dailyCapacity || "100,000+")
+        .replace(/\{exportCountries\}/g, cap.exportCountries || "30+")
+        .replace(/\{shippingHours\}/g, cap.shippingHours || 48)
+        .replace(/\{certifications\}/g, (cap.certifications || []).join("/"))
+        .replace(/\{moq\}/g, cap.moq || 500);
     }),
     (r.prototype.translate = function (t) {
       var e = this.translationsCache.get("ui-" + this.currentLanguage);
@@ -506,7 +533,11 @@ if (typeof window !== "undefined") {
     }),
     (r.prototype.refreshCompanyName = function (t) {
       var e = (t && this.interpolate(t.company_name)) || this.interpolate(this.getFallbackTranslation("company_name"));
-      ((e && "company_name" !== e) || "zh-CN" !== this.currentLanguage || (e = "佛山市跃迁力科技有限公司"),
+      ((e && "company_name" !== e) ||
+        "zh-CN" !== this.currentLanguage ||
+        (e =
+          (window.SITE_CONFIG && window.SITE_CONFIG.company && window.SITE_CONFIG.company.legalName) ||
+          "Company Legal Name Co., Ltd."),
         e &&
           "company_name" !== e &&
           document.querySelectorAll('[data-i18n="company_name"]').forEach(function (t) {
@@ -736,7 +767,7 @@ if (typeof window !== "undefined") {
       e.forEach(function (t) {
         var e = t.getAttribute("data-code").toLowerCase(),
           a = t.textContent.toLowerCase();
-        t.style.display = e.includes(n) || a.includes(n) ? "" : "none";
+        t.style.display = e.indexOf(n) !== -1 || a.indexOf(n) !== -1 ? "" : "none";
       });
     }),
     (r.prototype.resetLanguageSearch = function () {

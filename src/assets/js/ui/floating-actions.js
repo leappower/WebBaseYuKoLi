@@ -1,5 +1,5 @@
 /**
- * floating-actions.js — Yukoli Floating Actions Component
+ * floating-actions.js — Floating Actions Component
  *
  * 功能：
  * - 回到顶部按钮（滚动 > threshold 时显示）
@@ -27,9 +27,7 @@
 
   var WHATSAPP_HREF =
     "https://wa.me/" +
-    ((window.Contacts && window.Contacts.whatsapp) ||
-      ((window.SITE_CONFIG || {}).contacts || {}).whatsapp ||
-      "8618565718814");
+    ((window.Contacts && window.Contacts.whatsapp) || ((window.SITE_CONFIG || {}).contacts || {}).whatsapp || "");
   var SCROLL_THRESHOLD = 300;
 
   // 可通过 window 覆盖
@@ -178,7 +176,7 @@
 
   /**
    * Public API: open WhatsApp from any page CTA button.
-   * Usage: <button onclick="YuKoLiFAB.openWhatsApp('source','msg_key')">
+   * Usage: <button onclick="FloatingActions.openWhatsApp('source','msg_key')">
    * Falls back to opening WhatsApp directly if FAB not initialized.
    */
   FloatingActionsController.openWhatsApp = function (source, msgKey) {
@@ -336,5 +334,5 @@
   });
 
   window.FloatingActions = { mount: mount, openWhatsApp: FloatingActionsController.openWhatsApp };
-  window.YuKoLiFAB = { openWhatsApp: FloatingActionsController.openWhatsApp };
+  window.FAB = window.FloatingActions; // backward compat
 })(window);

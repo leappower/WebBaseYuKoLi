@@ -25,9 +25,10 @@
   /* ─── Export (stub for backward compat) ────────────────────── */
   _global.NavFooter = {
     init: init,
-    render: function () { return ""; },
+    render: function () {
+      return "";
+    },
     injectStyles: function () {},
-    updateActive: function () {}
+    updateActive: function () {},
   };
-
 })(window || global);

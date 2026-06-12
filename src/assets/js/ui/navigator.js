@@ -132,14 +132,6 @@
     news: "contact",
     "thank-you": "contact",
     all: "products",
-    coffee: "products",
-    tea: "products",
-    meal: "products",
-    beauty: "products",
-    weight: "products",
-    gut: "products",
-    lifestyle: "products",
-    legacy: "products",
     oem: "solutions",
     rd: "solutions",
     packaging: "solutions",
@@ -185,14 +177,10 @@
     news: "cnt",
     "thank-you": "cnt",
     all: "prod",
-    coffee: "prod",
-    tea: "prod",
-    meal: "prod",
-    beauty: "prod",
-    weight: "prod",
-    gut: "prod",
-    lifestyle: "prod",
-    legacy: "prod",
+    // Brand-specific category mappings — replace with actual brand categories
+    // Example:
+    // "product-1": "prod",
+    // "product-2": "prod",
     oem: "sol",
     rd: "sol",
     packaging: "sol",
@@ -343,7 +331,7 @@
       'src="' +
       basePath +
       '/assets/images/logo-footer.webp" ' +
-      'alt="Yukoli" width="32" height="32" ' +
+      'alt="" width="32" height="32" ' +
       'style="width:32px;height:32px;object-fit:contain" />' +
       "</a>" +
       "</div>" +
@@ -683,7 +671,7 @@
       'src="' +
       basePath +
       '/assets/images/logo-footer.webp" ' +
-      'alt="Yukoli" width="44" height="44" ' +
+      'alt="" width="44" height="44" ' +
       'style="width:44px;height:44px;object-fit:contain" />' +
       "</a>" +
       '<nav class="hidden md:flex items-center gap-4 lg:gap-8">' +

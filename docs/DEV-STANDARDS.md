@@ -1,4 +1,4 @@
-# DEV-STANDARDS.md — KitchenYuKoLi / BrewYuKoLi 开发规范 v2.0
+# DEV-STANDARDS.md — Brand Scaffold 开发规范 v2.0
 
 > **生效日期**：2026-05-13
 > **适用范围**：所有开发人员、AI Agent、自动化工具
@@ -151,7 +151,7 @@ Root cause: touchstart handler was not removed on route change.
 | JS 语法 | `node -c` 所有修改的 `.js` | ❌ |
 | JSON 格式 | 所有修改的 `.json` | ❌ |
 | 大文件 | 单文件 >50MB | ❌ |
-| 品牌泄露 | `#ec5b13` / `"YuKoLi"` / 硬编码联系方式 | ❌ |
+| 品牌泄露 | `#2E7D32` / `"BRAND_PROJECT"` / 硬编码联系方式 | ❌ |
 | console.log | 未 guard 的 console | 🟡 |
 | 编码 | 非 UTF-8 文件 | ❌ |
 
@@ -191,10 +191,10 @@ Root cause: touchstart handler was not removed on route change.
   var _brand  = _cfg.brand  || {};
   var _theme  = _cfg.theme  || {};
   var _colors = _theme.colors || {};
-  var _primary = _colors.primary || "#ec5b13";
+  var _primary = _colors.primary || "#2E7D32";
 
   // ── Config-driven values (MANDATORY) ──
-  var BRAND_NAME = _brand.name || "YuKoLi";
+  var BRAND_NAME = _brand.name || "BRAND_PROJECT";
 
   // ... module code
 })();
@@ -215,7 +215,7 @@ Root cause: touchstart handler was not removed on route change.
 // 优先级：site.config → window.Contacts → 硬编码默认值
 var waNumber = (window.Contacts && window.Contacts.whatsapp)
   || _cfg.contacts.whatsapp
-  || "8613163756465";
+  || "86CONTACT_PHONE";
 ```
 
 ### 3.4 品牌色使用 🔴
@@ -858,9 +858,9 @@ git push origin master --force-with-lease  # 比 --force 安全
 
 | 场景 | 推荐工具 | 命令 | 说明 |
 |------|---------|------|------|
-| 精确字面量搜索 | `grep -rn` | `grep -rn '#ec5b13' src/` | 不解析正则，最安全 |
+| 精确字面量搜索 | `grep -rn` | `grep -rn '#2E7D32' src/` | 不解析正则，最安全 |
 | 正则模式搜索 | `grep -rPn` | `grep -rPn '(let\|const)\s+\w+' src/` | 需注意正则转义 |
-| 跨文件大范围搜索 | `rg` (ripgrep) | `rg '#ec5b13' src/` | 比 grep 快 10x，默认忽略 .gitignore |
+| 跨文件大范围搜索 | `rg` (ripgrep) | `rg '#2E7D32' src/` | 比 grep 快 10x，默认忽略 .gitignore |
 | 交互式搜索 | VS Code `Ctrl+Shift+F` | — | 可预览上下文，推荐确认类搜索 |
 | 语义搜索（模糊） | AI Agent | 自然语言描述 | 仅用于探索，**不可用于批量替换决策** |
 
@@ -870,7 +870,7 @@ git push origin master --force-with-lease  # 比 --force 安全
 
 ```bash
 # 第 1 步：搜索（只看，不碰）
-grep -rn '#ec5b13' src/assets/js/
+grep -rn '#2E7D32' src/assets/js/
 
 # 第 2 步：确认命中范围
 # 问自己：
@@ -882,7 +882,7 @@ grep -rn '#ec5b13' src/assets/js/
 # 问自己：
 #   - vendor/ 目录是否被误包含？
 #   - 注释中是否有同名内容需要保留？
-#   - fallback 值（|| '#ec5b13'）是否应被跳过？
+#   - fallback 值（|| '#2E7D32'）是否应被跳过？
 ```
 
 #### 10.1.3 搜索结果分类
@@ -893,7 +893,7 @@ grep -rn '#ec5b13' src/assets/js/
 |------|------|---------|
 | **定义处** | DEF | 替换为变量名 |
 | **使用处（非 fallback）** | USE | 替换为变量引用 |
-| **Fallback 默认值** | FB | **保留**（`\|\| "#ec5b13"`） |
+| **Fallback 默认值** | FB | **保留**（`\|\| "#2E7D32"`） |
 | **注释/文档** | DOC | 更新注释文本或保留 |
 | **vendor/第三方** | VENDOR | **不碰** |
 | **字符串字面量/正则** | LIT | 逐个评估，不能批量 |
@@ -924,7 +924,7 @@ grep -rn '#ec5b13' src/assets/js/
 # 纯文本替换 (str.replace)
 python3 -c "
 import os
-DOMAIN = 'https://brew.yukoli.com'
+DOMAIN = 'https://brew.brand-project.com'
 for r, d, fs in os.walk('dist'):
     for f in fs:
         fp = os.path.join(r, f)
@@ -971,7 +971,7 @@ for r, d, fs in os.walk('dist'):
 ```python
 # 看似简单，实际有 3 层引号嵌套：Python 外层 → 替换字符串内 → JS 代码内
 content = content.replace(
-    'var x = "#ec5b13"',       # 这里的 " 是 Python 转义
+    'var x = "#2E7D32"',       # 这里的 " 是 Python 转义
     'var x = "' + _primary + '"'  # 这里的 " 在 JS 中被解析成字面量
 )
 # 结果：JS 文件中出现  var x = "' + _primary + '"   而不是变量拼接！
@@ -980,8 +980,8 @@ content = content.replace(
 **❌ `sed` — 正则特殊字符灾难**
 
 ```bash
-# 搜索 #ec5b13
-sed -i 's/#ec5b13/_primary/g' file.js
+# 搜索 #2E7D32
+sed -i 's/#2E7D32/_primary/g' file.js
 
 # 搜索 (window.SITE_CONFIG || window._cfg)  — 管号、方括号全是正则元字符！
 sed -i 's/(window.SITE_CONFIG || window._cfg)/(window.SITE_CONFIG)/g' file.js
@@ -1008,7 +1008,7 @@ sed -i 's/(window.SITE_CONFIG || window._cfg)/(window.SITE_CONFIG)/g' file.js
 
 # 1. 确认位置
 grep -n '目标字符串' src/assets/js/target.js
-# 输出: 42:  var color = "#ec5b13";
+# 输出: 42:  var color = "#2E7D32";
 
 # 2. 查看上下文（前后 3 行）
 sed -n '39,45p' src/assets/js/target.js
@@ -1020,10 +1020,10 @@ sed -n '39,45p' src/assets/js/target.js
 #### 10.3.2 同一文件多处替换（中风险）
 
 ```bash
-# 场景：一个文件中 5 处 #ec5b13 需要替换为 _primary
+# 场景：一个文件中 5 处 #2E7D32 需要替换为 _primary
 
 # 1. 搜索并列出所有命中（带行号和上下文）
-grep -n -B2 -A2 '#ec5b13' src/assets/js/target.js
+grep -n -B2 -A2 '#2E7D32' src/assets/js/target.js
 
 # 2. 逐个分类：哪些该替换、哪些是 fallback、哪些是注释
 
@@ -1106,7 +1106,7 @@ grep -n -B2 -A2 '#ec5b13' src/assets/js/target.js
 
 ```bash
 # ✅ 安全：字面量搜索，不解析正则
-grep -F '#ec5b13' src/  # 或 rg --fixed-strings
+grep -F '#2E7D32' src/  # 或 rg --fixed-strings
 
 # ❌ 危险：括号被当作捕获组
 grep 'window.SITE_CONFIG || window._cfg' src/
@@ -1241,13 +1241,13 @@ rg 'var x = "'\''\+ y \+"'  # 用单引号拼接转义
 ```python
 # ❌ 错误
 content = content.replace(
-    'badge.style.color = "#ec5b13"',
+    'badge.style.color = "#2E7D32"',
     'badge.style.color = "' + _primary + '"'
 )
 # 结果：badge.style.color = "' + _primary + '"  （字面量！变量未生效）
 
 # ✅ 正确：用 edit 工具精确匹配整行
-# oldText: 'badge.style.color = "#ec5b13";'
+# oldText: 'badge.style.color = "#2E7D32";'
 # newText: 'badge.style.color = _primary;'
 ```
 
@@ -1266,14 +1266,14 @@ echo '{"key": "line1"}' | jq '.key = "line1_2"'
 
 ```javascript
 // 原始代码
-var _primary = (_theme.colors || {}).primary || "#ec5b13";
+var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
 // ❌ 错误：把 fallback 也替换了
-// 替换 #ec5b13 → _primary
+// 替换 #2E7D32 → _primary
 var _primary = (_theme.colors || {}).primary || "_primary"; // 死循环！
 
 // ✅ 正确：跳过 fallback 行
-// 搜索时排除 || "#ec5b13" 模式
+// 搜索时排除 || "#2E7D32" 模式
 ```
 
 #### 案例 4：正则中的单引号导致 JS 语法错误
@@ -1777,7 +1777,7 @@ git log -p --follow -S "要改的具体内容" -- <文件路径> | head -100
 我们的改动: build.sh 从 98 行重写为 154 行
 远程的改动:
   - commit 94340a8: cp src/assets/js/site.config.js → cp src/site.config.js (路径修正)
-  - commit 94340a8: 新增 %DOMAIN% → https://brew.yukoli.com 占位符替换步骤
+  - commit 94340a8: 新增 %DOMAIN% → https://brew.brand-project.com 占位符替换步骤
 
 处理步骤:
 

@@ -1,60 +1,103 @@
-# BrewYuKoLi — B 端官网脚手架
+# Health Food OEM/ODM Website Scaffold
 
-> 基于 `site.config.js` 配置驱动的多语言响应式 B 端官网框架。换一套配置，即可生成全新站点。
+> A config-driven, multilingual, responsive website scaffold for health food OEM/ODM companies. Swap `site.config.js` and you have a brand-new site.
 
-**当前实例：** BrewYuKoLi — YuKoLi 品牌商用 brewing/beverage 设备官网
+## Overview
 
-## 快速开始
+This scaffold generates a complete B2B corporate website from a single configuration file — no frontend framework, no build-time rendering dependency. HTML + IIFE JS (ES5) + CSS Variables + Tailwind CDN.
+
+**Ideal for:** OEM/ODM health food companies, food & beverage equipment manufacturers, or any B2B product showcase site.
+
+## Quick Start
 
 ```bash
-git clone https://github.com/leappower/BrewYuKoLi.git
-cd BrewYuKoLi
-npm install && npm run dev
+git clone https://github.com/org/brand-project.git
+cd brand-project
+npm install
+./build.sh dev
 ```
 
-编辑 `site.config.js`，刷新即生效。无需框架，无需编译前端。
+Open your browser to `http://localhost:3000`. Edit `site.config.js`, refresh — changes take effect immediately.
 
-## 核心特性
+## Features
 
-- **配置驱动** — `site.config.js` 一个文件控制全站（品牌信息、导航、产品、SEO、社交链接等）
-- **纯静态多页面** — HTML + IIFE JS（ES5）+ CSS 变量 + Tailwind CDN，零构建前端依赖
-- **25 种语言** — 内置翻译系统，按需异步加载，优雅降级
-- **三屏适配** — PC / Tablet / Mobile 响应式布局
-- **RTL 支持** — 阿拉伯语、希伯来语自动切换布局方向
-- **构建工具链** — `build.sh`（主构建）、webpack（辅助打包）、`build-ssg.js`（静态生成）
-- **Node.js ≥ 16，npm ≥ 8**
+- **Config-driven** — One `site.config.js` file controls the entire site (brand info, navigation, products, SEO, social links, etc.)
+- **Pure static multi-page** — HTML + IIFE JS + CSS Variables + Tailwind CDN, zero frontend build dependency
+- **25 languages** — Built-in translation system, async loading on demand, graceful degradation
+- **Triple-screen responsive** — PC / Tablet / Mobile layouts
+- **RTL support** — Arabic, Hebrew auto-switch layout direction
+- **Build toolchain** — `build.sh` (main build), webpack (auxiliary bundling), `build-ssg.js` (static generation)
+- **Node.js ≥ 16, npm ≥ 8**
 
-## 目录结构
+## site.config.js
+
+The heart of the scaffold. Key sections:
+
+| Section | Purpose |
+|---------|---------|
+| `brand` | Company name, logo, tagline, colors |
+| `nav` | Navigation menu items and structure |
+| `products` | Product categories and items |
+| `seo` | Meta titles, descriptions, OG tags per page |
+| `social` | Social media links |
+| `contact` | Phone, email, WhatsApp, address |
+| `i18n` | Supported languages and default locale |
+
+Example:
+
+```javascript
+module.exports = {
+  brand: {
+    name: 'Your Brand',
+    tagline: 'Your tagline here',
+    primaryColor: '#2E7D32',
+  },
+  contact: {
+    phone: '+1234567890',
+    email: 'info@example.com',
+  },
+  // ... see site.config.js for full options
+};
+```
+
+## Project Structure
 
 ```
-BrewYuKoLi/
-├── site.config.js          # 🎯 全站配置（改这个）
-├── build.sh                # 主构建脚本
-├── build-ssg.js            # 静态站点生成
-├── webpack.config.js       # 辅助打包
-├── index.html              # 入口页面
-├── assets/                 # 静态资源
-│   ├── js/                 # 业务脚本（IIFE）
-│   ├── css/                # 样式文件
-│   └── images/             # 图片资源
-├── data/                   # 产品与内容数据
-└── docs/                   # 开发文档
+brand-project/
+├── site.config.js          # 🎯 Site configuration (edit this)
+├── build.sh                # Main build script
+├── build-ssg.js            # Static site generator
+├── webpack.config.js       # Auxiliary bundling
+├── index.html              # Entry page
+├── assets/                 # Static assets
+│   ├── js/                 # Business scripts (IIFE)
+│   ├── css/                # Stylesheets
+│   └── images/             # Image assets
+├── data/                   # Product & content data
+└── docs/                   # Documentation
 ```
 
-## 文档
+## Deployment
 
-| 文档 | 说明 |
-|------|------|
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | 系统架构 |
-| [BUILD.md](docs/BUILD.md) | 构建与部署 |
-| [DEV-STANDARDS.md](docs/DEV-STANDARDS.md) | 开发规范（10 章节） |
-| [I18N.md](docs/I18N.md) | 多语言系统 |
-| [PRODUCT_DATA.md](docs/PRODUCT_DATA.md) | 产品数据结构 |
-| [IMAGES.md](docs/IMAGES.md) | 图片管理规范 |
-| [RELEASE.md](docs/RELEASE.md) | 发布流程 |
-| [SECURITY.md](docs/SECURITY.md) | 安全策略 |
-| [SITE-CONFIG.md](docs/SITE-CONFIG.md) | 配置说明 |
+```bash
+# Production build
+./build.sh prod
 
-## 许可证
+# Output goes to dist/
+# Deploy dist/ to any static host (Netlify, Vercel, S3, Nginx, etc.)
+```
 
-MIT © [YuKoLi Technology](https://www.yukoli.com)
+## Documentation
+
+| Doc | Description |
+|-----|-------------|
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | System architecture |
+| [BUILD.md](docs/BUILD.md) | Build & deployment |
+| [DEV-STANDARDS.md](docs/DEV-STANDARDS.md) | Development standards |
+| [I18N.md](docs/I18N.md) | Multilingual system |
+| [SECURITY.md](docs/SECURITY.md) | Security policy |
+| [SITE-CONFIG.md](docs/SITE-CONFIG.md) | Configuration reference |
+
+## License
+
+MIT

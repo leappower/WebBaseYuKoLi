@@ -9,7 +9,7 @@
 (function (global) {
   "use strict";
   var _theme = (window.SITE_CONFIG || window._cfg || {}).theme || {};
-  var _primary = ((_theme.colors || {}).primary) || "#2E7D32";
+  var _primary = (_theme.colors || {}).primary || "#2E7D32";
 
   var _spaRegs = {};
   function _spaOn(tgt, evt, fn, key) {
@@ -49,7 +49,7 @@
 
   // ─── 16. Google Maps Service Center — full architecture (§1.2) ───────────────
   /**
-   * Yukoli 服务中心地图逻辑。
+   * Service center map logic。
    *
    * 依赖：Google Maps JavaScript API + Places API
    * 启用步骤：
@@ -61,16 +61,16 @@
    * 当 API 未加载时，此函数静默返回，页面显示静态背景图 fallback。
    */
 
-  // Yukoli 全球服务中心示例坐标（真实部署时从后端 API 获取）
-  var YUKOLI_SERVICE_CENTERS = [
-    { name: "Yukoli Shanghai HQ", lat: 31.2304, lng: 121.4737 },
-    { name: "Yukoli Jakarta Hub", lat: -6.2088, lng: 106.8456 },
-    { name: "Yukoli Kuala Lumpur", lat: 3.139, lng: 101.6869 },
-    { name: "Yukoli Singapore Tech", lat: 1.3521, lng: 103.8198 },
-    { name: "Yukoli Bangkok Service", lat: 13.7563, lng: 100.5018 },
-    { name: "Yukoli Dubai MENA", lat: 25.2048, lng: 55.2708 },
-    { name: "Yukoli Frankfurt EU", lat: 50.1109, lng: 8.6821 },
-    { name: "Yukoli Los Angeles NA", lat: 34.0522, lng: -118.2437 },
+  // Service center coordinates (replace with real data)
+  var SERVICE_CENTERS = [
+    { name: "Service Center Shanghai", lat: 31.2304, lng: 121.4737 },
+    { name: "Service Center Jakarta", lat: -6.2088, lng: 106.8456 },
+    { name: "Service Center Kuala Lumpur", lat: 3.139, lng: 101.6869 },
+    { name: "Service Center Singapore", lat: 1.3521, lng: 103.8198 },
+    { name: "Service Center Bangkok", lat: 13.7563, lng: 100.5018 },
+    { name: "Service Center Dubai", lat: 25.2048, lng: 55.2708 },
+    { name: "Service Center Frankfurt", lat: 50.1109, lng: 8.6821 },
+    { name: "Service Center Los Angeles", lat: 34.0522, lng: -118.2437 },
   ];
 
   // 暂时未被使用 — API key 未配置，当前显示静态 SVG fallback
@@ -93,7 +93,7 @@
       center: { lat: 5.0, lng: 105.0 },
       zoom: 4,
       styles: [
-        // Subtle grayscale style matching Yukoli design language
+        // Subtle grayscale style matching brand design language
         { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
         { elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
         { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9c9c9" }] },
@@ -108,7 +108,7 @@
     window._serviceMapInstance = map;
 
     // Place service center markers
-    YUKOLI_SERVICE_CENTERS.forEach(function (center) {
+    SERVICE_CENTERS.forEach(function (center) {
       var marker = new window.google.maps.Marker({
         position: { lat: center.lat, lng: center.lng },
         map: map,
@@ -126,7 +126,9 @@
       var infoWindow = new window.google.maps.InfoWindow({
         content:
           "<div style=\"font-family:'Public Sans',sans-serif;padding:4px 8px;\">" +
-          '<strong style="color:' + _primary + ';">' +
+          '<strong style="color:' +
+          _primary +
+          ';">' +
           center.name +
           "</strong>" +
           '<br><span style="font-size:12px;color:#64748b;">24/7 Support Hub</span>' +
@@ -154,10 +156,10 @@
         window._serviceMapInstance.panTo(loc);
         window._serviceMapInstance.setZoom(8);
 
-        // Find nearest Yukoli service center to the geocoded point
+        // Find nearest service center to the geocoded point
         var nearestCenter = null;
         var minDist = Infinity;
-        YUKOLI_SERVICE_CENTERS.forEach(function (c) {
+        SERVICE_CENTERS.forEach(function (c) {
           var dLat = c.lat - loc.lat();
           var dLng = c.lng - loc.lng();
           var dist = dLat * dLat + dLng * dLng;

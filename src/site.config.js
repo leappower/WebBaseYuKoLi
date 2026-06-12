@@ -1,67 +1,101 @@
 /*!
- * site_config_site_name — 站点配置枢纽（生产版本）
- * 所有模块通过 window.SITE_CONFIG 读取
+ * site.config.js — 脚手架模板品牌配置
  *
- * site_config_last_updated — 最后更新：2026-05-17 (Nav Alignment Phase 1)
- * 变更：
- *   - 更新 navMode desktop 为 mega-menu
- *   - 更新 footer.mobileItems 符合统一底部栏规范
- *   - site_config_update_contact_whatsapp: 添加 contact.whatsappNumber，统一 WhatsApp 号码
- *   - site_config_update_nav_secondary: 添加 nav.secondaryItems（About/News/FAQ）
- *   - site_config_update_brand: 添加 brand 配置，品牌色统一 #2E7D32
+ * 本文件展示脚手架的默认品牌配置结构。
+ * 在新品牌项目中，复制此文件并替换占位符即可。
+ *
+ * 构建时加载顺序：先加载 site.config.base.js (可选)，再加载 site.config.js 覆盖品牌配置。
+ * 当前脚手架默认只加载 site.config.js（已包含完整的通用默认值）。
+ *
+ * ⚠️ 修改 site.config.base.js = 修改脚手架基础设施（可选加载）
+ * ✏️ 修改本文件 = 修改品牌配置（只影响当前品牌）
  */
 (function () {
   "use strict";
-  var cfg = {
+  var brand = {
     // ═══════════════════════════════════════════════════════════
-    // Brand
+    // Brand — 品牌基本信息（必填）
     // ═══════════════════════════════════════════════════════════
     brand: {
-      name: "YuKoLi",
-      nameZh: "优科力",
-      nameFull: "Foshan YuKoLi Technology Co., Ltd.",
-      slogan: { en: "Your OEM/ODM Partner for Health Food Manufacturing", "zh-CN": "您的健康食品 OEM/ODM 合作伙伴" },
+      name: "BRAND_NAME",
+      nameZh: "品牌中文名",
+      nameFull: "FULL LEGAL NAME",
+      slogan: { en: "Your Slogan Here", "zh-CN": "品牌口号" },
       logo: "/assets/images/logo-footer.webp",
-      domain: "yukoli.com",
+      domain: "example.com",
     },
 
     // ═══════════════════════════════════════════════════════════
-    // SEO
+    // Company — 公司实体信息
+    // 用于 i18n 占位符 {company.legalName}、{company.shortName}、{city} 等
+    // ═══════════════════════════════════════════════════════════
+    company: {
+      legalName: "Company Legal Name Co., Ltd.",
+      shortName: "BRAND_NAME Technology Co., Ltd.",
+      city: "City",
+      region: "Province/State",
+      country: "Country",
+      foundedYear: 2000,
+      jurisdiction: "City, Region",
+      address: {
+        full: "Full street address, City, Region, Country",
+        short: "City, Country",
+      },
+    },
+
+    // ═══════════════════════════════════════════════════════════
+    // Capabilities — 业务能力数据
+    // 用于 i18n 占位符 {years}、{factories}、{factoryArea} 等
+    // ═══════════════════════════════════════════════════════════
+    capabilities: {
+      yearsExperience: 20,
+      factories: 4,
+      factoryArea: "60,000㎡",
+      warehouses: 10,
+      productLines: 8,
+      skuCount: "500+",
+      dailyCapacity: "100,000+",
+      exportCountries: "30+",
+      shippingHours: 48,
+      certifications: ["HACCP", "FDA", "ISO"],
+      moq: 500,
+    },
+
+    // ═══════════════════════════════════════════════════════════
+    // SEO — 搜索引擎优化
     // ═══════════════════════════════════════════════════════════
     seo: {
-      title: {
-        en: '<span data-i18n="seo_yukoli">YuKoLi</span> — <span data-i18n="seo_OEM_ODM_Health_Food_Manufacturer">OEM/ODM Health Food Manufacturer</span>',
-        "zh-CN":
-          '<span data-i18n="seo_yukoli">优科力</span> — <span data-i18n="seo_健康食品_OEM_ODM代工生产">健康食品 OEM/ODM 代工生产</span>',
-      },
+      siteName: "BRAND_NAME",
+      siteNameZh: "品牌中文名",
+      titleTemplate: "%s | BRAND_NAME",
       description: {
-        en: "FDA & HACCP certified OEM/ODM health food manufacturer. 4 owned factories, 100K+ units daily capacity. Coffee, tea, meal replacement, collagen & more.",
-        "zh-CN": "FDA/HACCP 认证健康食品代工厂。4 大自有工厂，日产能 10 万+。咖啡、代餐、胶原蛋白等 OEM/ODM。",
+        en: "A brief description of your business for search engines.",
+        "zh-CN": "一段面向搜索引擎的简短业务描述。",
       },
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Contact
+    // Contact — 联系方式
     // ═══════════════════════════════════════════════════════════
-    contacts: {
-      whatsapp: "8618565718814",
-      whatsappDisplay: "+86 185 6571 8814",
-      whatsappMessage: "Hi YuKoLi, I'm interested in your OEM/ODM solutions.",
-      email: "sales@yukoli.com",
-      phone: "+86-757-xxxxxxx",
-      address: { en: "Foshan, Guangdong, China", "zh-CN": "中国广东省佛山市" },
+    contact: {
+      whatsappNumber: "",
+      whatsappLink: "",
+      email: "support@example.com",
+      phone: "+1-xxx-xxx-xxxx",
+      address: { en: "City, Country", "zh-CN": "国家/城市" },
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Forms — 表单提交直连 Google Apps Script
+    // Forms — 表单提交端点
     // ═══════════════════════════════════════════════════════════
     forms: {
-      gasUrl:
-        "https://script.google.com/macros/s/AKfycbymllbA_mL_l3muQN9QaU04FEGpXbmvzuGmZvYvDntjxK1QMF6BK8NZBrdqc1E22rBa5w/exec",
+      enabled: true,
+      endpoint: "",
+      method: "POST",
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Navigation — L1 主导航 (6 项, 所有断点统一)
+    // Navigation — 品牌导航结构
     // ═══════════════════════════════════════════════════════════
     nav: {
       items: [
@@ -72,38 +106,24 @@
           children: [
             {
               id: "oem",
-              label: { en: "OEM Manufacturing", "zh-CN": "OEM 代工" },
+              label: { en: "Solution 1", "zh-CN": "方案一" },
               icon: "precision_manufacturing",
               slug: "oem",
               href: "/solutions/oem/",
             },
             {
               id: "odm",
-              label: { en: "ODM Private Label", "zh-CN": "ODM 贴牌" },
+              label: { en: "Solution 2", "zh-CN": "方案二" },
               icon: "design_services",
               slug: "odm",
               href: "/solutions/odm/",
             },
             {
               id: "obm",
-              label: { en: "OBM Full-Service", "zh-CN": "OBM 自有品牌" },
+              label: { en: "Solution 3", "zh-CN": "方案三" },
               icon: "verified",
               slug: "obm",
               href: "/solutions/obm/",
-            },
-            {
-              id: "rd",
-              label: { en: "R&D & Flavor Lab", "zh-CN": "研发与风味实验室" },
-              icon: "science",
-              slug: "rd",
-              href: "/solutions/rd/",
-            },
-            {
-              id: "packaging",
-              label: { en: "Packaging & Labeling", "zh-CN": "包装与标签合规" },
-              icon: "inventory",
-              slug: "packaging",
-              href: "/solutions/packaging/",
             },
           ],
         },
@@ -113,76 +133,25 @@
           i18nKey: "nav_products",
           children: [
             {
-              id: "all",
-              label: { en: "All Products", "zh-CN": "全部产品" },
-              icon: "grid_view",
-              slug: "all",
-              i18nKey: "nav_products_all",
-              href: "/products/all/",
+              id: "product-1",
+              label: { en: "Product Category 1", "zh-CN": "产品分类一" },
+              icon: "inventory_2",
+              slug: "product-1",
+              href: "/products/product-1/",
             },
             {
-              id: "coffee",
-              label: { en: "Coffee", "zh-CN": "咖啡系列" },
-              icon: "coffee",
-              slug: "coffee",
-              i18nKey: "nav_products_coffee",
-              href: "/products/coffee/",
+              id: "product-2",
+              label: { en: "Product Category 2", "zh-CN": "产品分类二" },
+              icon: "category",
+              slug: "product-2",
+              href: "/products/product-2/",
             },
             {
-              id: "tea",
-              label: { en: "Tea & Milk Tea", "zh-CN": "茶饮奶茶系列" },
-              icon: "local_cafe",
-              slug: "tea",
-              i18nKey: "nav_products_tea",
-              href: "/products/tea/",
-            },
-            {
-              id: "meal",
-              label: { en: "Meal Replacement", "zh-CN": "代餐系列" },
-              icon: "restaurant",
-              slug: "meal",
-              i18nKey: "nav_products_meal",
-              href: "/products/meal/",
-            },
-            {
-              id: "beauty",
-              label: { en: "Beauty & Collagen", "zh-CN": "美容胶原系列" },
-              icon: "spa",
-              slug: "beauty",
-              i18nKey: "nav_products_beauty",
-              href: "/products/beauty/",
-            },
-            {
-              id: "weight",
-              label: { en: "Weight Management", "zh-CN": "体重管理" },
-              icon: "monitor_weight",
-              slug: "weight",
-              i18nKey: "nav_products_weight",
-              href: "/products/weight/",
-            },
-            {
-              id: "gut",
-              label: { en: "Gut Health", "zh-CN": "肠道健康" },
-              icon: "biotech",
-              slug: "gut",
-              i18nKey: "nav_products_gut",
-              href: "/products/gut/",
-            },
-            {
-              id: "lifestyle",
-              label: { en: "Lifestyle Functional", "zh-CN": "功能冲饮" },
-              icon: "energy_savings_leaf",
-              slug: "lifestyle",
-              i18nKey: "nav_products_lifestyle",
-              href: "/products/lifestyle/",
-            },
-            {
-              id: "legacy",
-              label: { en: "Legacy Classics", "zh-CN": "经典冲饮" },
-              icon: "auto_stories",
-              slug: "legacy",
-              i18nKey: "nav_products_legacy",
-              href: "/products/legacy/",
+              id: "product-3",
+              label: { en: "Product Category 3", "zh-CN": "产品分类三" },
+              icon: "science",
+              slug: "product-3",
+              href: "/products/product-3/",
             },
           ],
         },
@@ -193,59 +162,17 @@
           children: [
             {
               id: "bases",
-              label: { en: "Our 4 Production Bases", "zh-CN": "四大生产基地" },
+              label: { en: "Production Bases", "zh-CN": "生产基地" },
               icon: "factory",
               slug: "bases",
               href: "/manufacturing/#bases",
             },
             {
               id: "quality",
-              label: { en: "Quality Control", "zh-CN": "质量管控体系" },
+              label: { en: "Quality Control", "zh-CN": "质量管控" },
               icon: "verified",
               slug: "quality",
               href: "/manufacturing/#quality",
-            },
-            {
-              id: "smart",
-              label: { en: "Smart Factory", "zh-CN": "智能工厂" },
-              icon: "precision_manufacturing",
-              slug: "smart",
-              href: "/manufacturing/#smart",
-            },
-            {
-              id: "supplychain",
-              label: { en: "Global Supply Chain", "zh-CN": "全球供应链" },
-              icon: "public",
-              slug: "supplychain",
-              href: "/manufacturing/#supplychain",
-            },
-          ],
-        },
-        {
-          id: "compliance",
-          label: { en: "Compliance", "zh-CN": "认证合规" },
-          i18nKey: "nav_compliance",
-          children: [
-            {
-              id: "certs",
-              label: { en: "Global Certifications", "zh-CN": "国际认证" },
-              icon: "verified_user",
-              slug: "certs",
-              href: "/compliance/#certs",
-            },
-            {
-              id: "halal",
-              label: { en: "Halal Dedicated Lines", "zh-CN": "清真认证专线" },
-              icon: "assured_workload",
-              slug: "halal",
-              href: "/compliance/#halal",
-            },
-            {
-              id: "coa",
-              label: { en: "Lab Reports & COA", "zh-CN": "检测报告与 COA" },
-              icon: "description",
-              slug: "coa",
-              href: "/compliance/#coa",
             },
           ],
         },
@@ -256,17 +183,10 @@
           children: [
             {
               id: "catalog",
-              label: { en: "2026 Product Catalog", "zh-CN": "2026 产品目录" },
+              label: { en: "Catalog", "zh-CN": "产品目录" },
               icon: "menu_book",
               slug: "catalog",
               href: "/resources/catalog/",
-            },
-            {
-              id: "whitepapers",
-              label: { en: "Whitepapers & Trends", "zh-CN": "行业白皮书" },
-              icon: "article",
-              slug: "whitepapers",
-              href: "/resources/whitepapers/",
             },
             {
               id: "cases",
@@ -274,13 +194,6 @@
               icon: "analytics",
               slug: "cases",
               href: "/cases/",
-            },
-            {
-              id: "videos",
-              label: { en: "Video Library", "zh-CN": "视频中心" },
-              icon: "play_circle",
-              slug: "videos",
-              href: "/resources/videos/",
             },
           ],
         },
@@ -298,39 +211,23 @@
             },
             {
               id: "samples",
-              label: { en: "Request Free Samples", "zh-CN": "免费样品" },
+              label: { en: "Request Samples", "zh-CN": "免费样品" },
               icon: "redeem",
               slug: "samples",
               href: "/contact/#samples",
-            },
-            {
-              id: "visit",
-              label: { en: "Visit Our Factory", "zh-CN": "参观工厂" },
-              icon: "tour",
-              slug: "visit",
-              href: "/contact/#visit",
-            },
-            {
-              id: "network",
-              label: { en: "Global Sales Network", "zh-CN": "全球销售网络" },
-              icon: "language",
-              slug: "network",
-              href: "/contact/#network",
             },
           ],
         },
       ],
 
-      // 二级导航项（非 L1，用于 slide-menu 二级区域 + footer）
       secondaryItems: [
-        { id: "about", label: { en: "About YuKoLi", "zh-CN": "关于优科力" }, i18nKey: "nav_about", href: "/about/" },
-        { id: "news", label: { en: "News", "zh-CN": "新闻动态" }, i18nKey: "nav_news", href: "/news/" },
+        { id: "about", label: { en: "About Us", "zh-CN": "关于我们" }, i18nKey: "nav_about", href: "/about/" },
         { id: "faq", label: { en: "FAQ", "zh-CN": "常见问题" }, i18nKey: "nav_faq", href: "/faq/" },
       ],
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Footer
+    // Footer — 品牌底部导航
     // ═══════════════════════════════════════════════════════════
     footer: {
       mobileItems: [
@@ -348,7 +245,7 @@
           type: "external",
           icon: "chat",
           label: { en: "WhatsApp", "zh-CN": "WhatsApp" },
-          href: "https://wa.me/8618565718814",
+          href: "#",
           whatsapp: true,
         },
       ],
@@ -374,84 +271,47 @@
           type: "external",
           icon: "chat",
           label: { en: "WhatsApp", "zh-CN": "WhatsApp" },
-          href: "https://wa.me/8618565718814",
+          href: "#",
           whatsapp: true,
         },
       ],
     },
 
     // ═══════════════════════════════════════════════════════════
-    // 页面分类体系
+    // 产品分类 — 替换为实际品牌产品线
     // ═══════════════════════════════════════════════════════════
     categories: {
       products: [
         {
-          slug: "coffee",
-          key: "nav_products_coffee",
-          label: { en: "Coffee", "zh-CN": "咖啡系列" },
-          icon: "coffee",
-          emoji: "☕",
+          slug: "product-1",
+          key: "nav_products_product_1",
+          label: { en: "Product Category 1", "zh-CN": "产品分类一" },
+          icon: "inventory_2",
+          emoji: "📦",
           accent: "coral",
         },
         {
-          slug: "tea",
-          key: "nav_products_tea",
-          label: { en: "Tea & Milk Tea", "zh-CN": "茶饮系列" },
-          icon: "local_cafe",
-          emoji: "🍵",
+          slug: "product-2",
+          key: "nav_products_product_2",
+          label: { en: "Product Category 2", "zh-CN": "产品分类二" },
+          icon: "category",
+          emoji: "🏷️",
           accent: "green",
         },
         {
-          slug: "meal",
-          key: "nav_products_meal",
-          label: { en: "Meal Replacement", "zh-CN": "代餐系列" },
-          icon: "restaurant",
-          emoji: "🥤",
+          slug: "product-3",
+          key: "nav_products_product_3",
+          label: { en: "Product Category 3", "zh-CN": "产品分类三" },
+          icon: "science",
+          emoji: "🔬",
           accent: "gold",
-        },
-        {
-          slug: "beauty",
-          key: "nav_products_beauty",
-          label: { en: "Beauty & Collagen", "zh-CN": "胶原养颜" },
-          icon: "spa",
-          emoji: "✨",
-          accent: "pink",
-        },
-        {
-          slug: "weight",
-          key: "nav_products_weight",
-          label: { en: "Weight Management", "zh-CN": "体重管理" },
-          icon: "monitor_weight",
-          emoji: "⚖️",
-          accent: "orange",
-        },
-        {
-          slug: "gut",
-          key: "nav_products_gut",
-          label: { en: "Gut Health", "zh-CN": "肠道健康" },
-          icon: "biotech",
-          emoji: "🫘",
-          accent: "lime",
-        },
-        {
-          slug: "lifestyle",
-          key: "nav_products_lifestyle",
-          label: { en: "Functional Drinks", "zh-CN": "功能冲饮" },
-          icon: "energy_savings_leaf",
-          emoji: "🍃",
-          accent: "purple",
-        },
-        {
-          slug: "legacy",
-          key: "nav_products_legacy",
-          label: { en: "Classic Beverages", "zh-CN": "经典冲饮" },
-          icon: "auto_stories",
-          emoji: "📖",
-          accent: "teal",
         },
       ],
     },
 
+    // ═══════════════════════════════════════════════════════════
+    // Routes — 页面路由到导航 ID 的映射
+    // ═══════════════════════════════════════════════════════════
     routes: {
       activeMap: {
         "oem-customization": "solutions",
@@ -461,32 +321,18 @@
         news: "contact",
         "thank-you": "contact",
         cases: "resources",
-
-        /* Solutions sub-pages */
         oem: "solutions",
+        odm: "solutions",
+        obm: "solutions",
         rd: "solutions",
         packaging: "solutions",
-
-        /* Products sub-pages */
-        all: "products",
-        coffee: "products",
-        tea: "products",
-        meal: "products",
-        beauty: "products",
-        weight: "products",
-        gut: "products",
-        lifestyle: "products",
-        legacy: "products",
-
-        /* Resources sub-pages */
         catalog: "resources",
         videos: "resources",
-        whitepapers: "resources",
       },
     },
 
     // ═══════════════════════════════════════════════════════════
-    // i18n / 多语言
+    // i18n — 多语言配置（品牌可扩展）
     // ═══════════════════════════════════════════════════════════
     i18n: {
       defaultLang: "en",
@@ -544,8 +390,6 @@
         uk: "Українська",
         he: "עברית",
       },
-      // Build languages array from supportedLangs + langLabels
-      // Consumed by lang-registry.js → LANG_REGISTRY.LANGUAGES
       languages: (function () {
         var codes = [
           "en",
@@ -641,7 +485,7 @@
     },
 
     // ═══════════════════════════════════════════════════════════
-    // 主题 / 设计令牌
+    // Theme — 品牌主题色
     // ═══════════════════════════════════════════════════════════
     theme: {
       colors: {
@@ -651,29 +495,29 @@
     },
 
     // ═══════════════════════════════════════════════════════════
-    // 功能开关
+    // Features — 功能开关
     // ═══════════════════════════════════════════════════════════
     features: {
       megaMenu: true,
-      mobileFooterNav: false, // 旧功能 — 废弃，由 unifiedBottomNav 替代
-      unifiedBottomNav: true, // 统一底部导航（新）
+      mobileFooterNav: false,
+      unifiedBottomNav: true,
       geoHero: false,
       iotPulse: false,
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Nav Mode（导航模式）
+    // NavMode — 导航模式
     // ═══════════════════════════════════════════════════════════
     navMode: {
       desktop: "dropdown",
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Analytics（GA4 数据分析）
+    // Analytics
     // ═══════════════════════════════════════════════════════════
     analytics: {
-      ga4Id: "", // GA4 Measurement ID, 留空则不注入
-      enabled: false, // 默认关闭，设为 true + 填入 ga4Id 才激活
+      ga4Id: "",
+      enabled: false,
       events: {
         quoteClick: "quote_click",
         sampleClick: "sample_click",
@@ -684,7 +528,7 @@
     },
 
     // ═══════════════════════════════════════════════════════════
-    // Images（图片路径）
+    // Images — 图片路径
     // ═══════════════════════════════════════════════════════════
     images: {
       logo: "/assets/images/logo-footer.webp",
@@ -694,7 +538,7 @@
   };
 
   // JJC-020 T2.4: BASE_PATH 感知 — 对外提供路径解析方法
-  cfg.resolvePath = function (path) {
+  brand.resolvePath = function (path) {
     if (!path || path.indexOf("/") === 0) {
       return ((typeof window !== "undefined" && window.BASE_PATH) || "") + (path || "");
     }
@@ -703,11 +547,11 @@
 
   // 挂载到全局
   if (typeof window !== "undefined") {
-    window.SITE_CONFIG = cfg;
+    window.SITE_CONFIG = brand;
   }
 
   // 兼容旧访问方式
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = cfg;
+    module.exports = brand;
   }
 })();

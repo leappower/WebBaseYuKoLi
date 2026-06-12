@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const BASE_URL = 'https://brew.yukoli.com';
+const BASE_URL = 'https://example.com';
 const PAGES_DIR = path.join(__dirname, '..', 'dist', 'pages');
 const EXCLUDE = ['products/detail', 'quote', 'thank-you', 'landing'];
 const PRIORITY_MAP = { '': 1.0, 'home': 1.0, 'products': 0.9, 'applications': 0.8 };

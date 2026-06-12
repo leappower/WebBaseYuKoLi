@@ -1,6 +1,6 @@
 /**
  * ComparePage — renders product comparison table on /products/compare/
- * Reads selected products from localStorage YUKOLI_COMPARE_ITEMS
+ * Reads selected products from localStorage COMPARE_ITEMS
  * Reads product data from localStorage pdt_v2 (no API dependency)
  */
 (function () {
@@ -14,7 +14,7 @@
     tgt.addEventListener(evt, fn, { signal: ac.signal });
   }
 
-  var COMPARE_KEY = "YUKOLI_COMPARE_ITEMS";
+  var COMPARE_KEY = "COMPARE_ITEMS";
   var DATA_KEY = "pdt_v2";
   var STORE_KEY = "PRODUCT_DATA_TABLE";
   var selected = [];

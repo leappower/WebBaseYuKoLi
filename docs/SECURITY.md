@@ -73,4 +73,4 @@ We kindly ask that you:
 - Don't perform DoS attacks or degrade service performance
 - Don't spam our systems with automated vulnerability scanners
 
-Thank you for helping keep HTML-YuQL and our users safe!
+Thank you for helping keep BRAND_PROJECT and our users safe!

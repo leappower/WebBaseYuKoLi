@@ -3,34 +3,31 @@
 <html class="light" lang="en">
   <head>
     <script src="/site.config.js" defer></script>
-    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
-    <link rel="canonical" href="https://brew.yukoli.com/contact/" />
-    <link rel="alternate" hreflang="zh-CN" href="https://brew.yukoli.com/contact/" />
-    <link rel="alternate" hreflang="en" href="https://brew.yukoli.com/contact/" />
-    <link rel="alternate" hreflang="x-default" href="https://brew.yukoli.com/contact/" />
+    <script defer src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <link rel="canonical" href="/contact/" />
+    <link rel="alternate" hreflang="zh-CN" href="/contact/" />
+    <link rel="alternate" hreflang="en" href="/contact/" />
+    <link rel="alternate" hreflang="x-default" href="/contact/" />
 
     <meta charset="utf-8" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Yukoli | Contact Us - Industrial Health Food OEM Solutions" />
-    <meta
-      property="og:description"
-      content="Contact Yukoli for industrial health food solutions. Get in touch with our global team."
-    />
-    <meta property="og:url" content="https://brew.yukoli.com/contact/" />
+    <meta property="og:title" content="{brand} | Contact Us - Industrial OEM Solutions" />
+    <meta property="og:description" content="Contact {brand} for OEM/ODM solutions." />
+    <meta property="og:url" content="/contact/" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
       data-i18n-meta="contact_meta_description"
       name="description"
-      content="Contact YuKoLi — Get health food OEM/ODM quotes and technical consultation. Global service network covering Southeast Asia, Middle East, South Asia, and more."
+      content="Contact {brand} — Get OEM/ODM quotes and technical consultation."
     />
-    <title data-i18n="contact_meta_title">Yukoli | Contact Us - Health Food OEM/ODM</title>
-    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
+    <title data-i18n="contact_meta_title">{brand} | Contact Us - OEM/ODM</title>
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
     <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
-    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" /></noscript>
     <link rel="stylesheet" href="/assets/css/product-builder.css?v=20260601" />
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" /></noscript>
     <script>
       (function () {
         if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
@@ -43,26 +40,26 @@
       {
         "@context": "https://schema.org",
         "@type": "ContactPage",
-        "name": "联系我们 - 佛山市跃迁力科技有限公司",
-        "url": "https://brew.yukoli.com/contact/",
-        "description": "联系佛山市跃迁力科技有限公司,获取健康冲调食品 OEM/ODM 报价与技术支持。"
+        "name": "Contact Us - {company.fullName}",
+        "url": "/contact/",
+        "description": "Contact {company.fullName} for OEM/ODM quotes and technical consultation."
       }
     </script>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
-        "name": "Foshan YuKoLi Technology Co., Ltd.",
-        "url": "https://brew.yukoli.com/contact/",
-        "telephone": "+8618565718814",
-        "email": "support.brew@yukoli.com",
+        "name": "{company.shortName}",
+        "url": "/contact/",
+        "telephone": "+",
+        "email": "support.brew@example.com",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "万创园12栋502室之六, 展伦路83号",
-          "addressLocality": "佛山市顺德区大良街道",
-          "addressRegion": "广东",
+          "streetAddress": "{company.street}",
+          "addressLocality": "{city}",
+          "addressRegion": "{region}",
           "addressCountry": "CN"
-        },
+        }
       }
     </script>
     <link rel="stylesheet" href="/assets/css/skeleton.css" />
@@ -565,8 +562,8 @@
                 <span class="material-symbols-outlined text-primary text-2xl">email</span>
               </div>
               <h3 class="text-lg font-bold mb-2" data-i18n="contact_card_email_title">Email Us</h3>
-              <p class="text-slate-500 text-base mb-4" data-i18n="contact_card_email_desc">销售咨询与技术</p>
-              <a href="mailto:support.brew@yukoli.com" class="text-primary font-bold">support.brew@yukoli.com</a>
+              <p class="text-slate-500 text-base mb-4" data-i18n="contact_card_email_desc">Sales & Technical</p>
+              <a href="mailto:support.brew@example.com" class="text-primary font-bold">support.brew@example.com</a>
             </div>
             <div
               class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center hover:border-primary/50 transition-all"
@@ -576,9 +573,9 @@
               </div>
               <h3 class="text-lg font-bold mb-2" data-i18n="contact_card_phone_title">Call Us</h3>
               <p class="text-slate-500 text-base mb-4" data-i18n="contact_card_phone_hours">
-                周一至周五 9:00-18:00 (UTC+8)
+                Mon-Fri 9:00-18:00 (UTC+8)
               </p>
-              <a href="tel:+8618565718814" class="text-primary font-bold">+86 18565718814</a>
+              <a href="tel:+1-xxx-xxx-xxxx" class="text-primary font-bold">+1-xxx-xxx-xxxx</a>
             </div>
             <div
               class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-8 text-center hover:border-primary/50 transition-all"
@@ -587,12 +584,16 @@
                 <span class="material-symbols-outlined text-primary text-2xl">chat</span>
               </div>
               <h3 class="text-lg font-bold mb-2" data-i18n="contact_card_whatsapp_title">WhatsApp</h3>
-              <p class="text-slate-500 text-base mb-4" data-i18n="contact_card_whatsapp_desc">紧急回复通道</p>
+              <p class="text-slate-500 text-base mb-4" data-i18n="contact_card_whatsapp_desc">Quick Response</p>
               <button
-                onclick="window.YuKoLiFAB &amp;&amp; window.YuKoLiFAB.openWhatsApp('phone-number','wa_msg_contact')"
+                onclick="
+                  window.SITE_CONFIG &&
+                    window.SITE_CONFIG.contact &&
+                    window.SITE_CONFIG.contact.openWhatsApp('wa_msg_contact')
+                "
                 class="text-primary font-bold"
               >
-                +86 18565718814
+                +1-xxx-xxx-xxxx
               </button>
             </div>
           </div>
@@ -615,9 +616,7 @@
                   <span class="text-2xl">🇨🇳</span>
                   <h3 class="text-xl font-bold" data-i18n="contact_office_hq">China Headquarters</h3>
                 </div>
-                <p class="text-slate-500 text-sm" data-i18n="contact_company_name">
-                  Foshan YuKoLi Technology Co., Ltd.
-                </p>
+                <p class="text-slate-500 text-sm" data-i18n="contact_company_name">{company.shortName}</p>
               </div>
             </div>
             <div class="space-y-4">
@@ -629,14 +628,13 @@
                     class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed"
                     data-i18n="contact_china_address"
                   >
-                    Room 502-6, Building 12, Wanchuangyuan, No.83 Zhanlun Road, Honggang Community, Daliang Street,
-                    Shunde District, Foshan City, Guangdong Province, China
+                    {company.addressEn}
                   </p>
                   <p
                     class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mt-2"
                     data-i18n="contact_china_address_zh"
                   >
-                    广东省佛山市顺德区大良街道红岗社区展伦路83号万创园12栋502室之六
+                    {company.addressZh}
                   </p>
                 </div>
               </div>

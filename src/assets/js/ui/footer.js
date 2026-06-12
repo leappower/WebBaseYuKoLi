@@ -77,8 +77,7 @@
         "</p>"
       : "";
     var waHref =
-      "https://wa.me/" +
-      ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814");
+      "https://wa.me/" + ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "");
 
     if (item.isWhatsApp) {
       return (
@@ -146,13 +145,6 @@
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 text-center" data-i18n="footer_products_title">Products</h4>' +
       '<ul class="list-none space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/products/all/" class="hover:text-white transition-colors" data-i18n="nav_products">All Products</a></li>' +
-      '<li><a href="/products/coffee/" class="hover:text-white transition-colors" data-i18n="nav_products_coffee">Coffee</a></li>' +
-      '<li><a href="/products/tea/" class="hover:text-white transition-colors" data-i18n="nav_products_tea">Tea &amp; Milk Tea</a></li>' +
-      '<li><a href="/products/meal/" class="hover:text-white transition-colors" data-i18n="nav_products_meal">Meal Replacement</a></li>' +
-      '<li><a href="/products/beauty/" class="hover:text-white transition-colors" data-i18n="nav_products_beauty">Beauty</a></li>' +
-      '<li><a href="/products/weight/" class="hover:text-white transition-colors" data-i18n="nav_products_weight">Weight Management</a></li>' +
-      '<li><a href="/products/gut/" class="hover:text-white transition-colors" data-i18n="nav_products_gut">Gut Health</a></li>' +
-      '<li><a href="/products/lifestyle/" class="hover:text-white transition-colors" data-i18n="nav_products_lifestyle">Lifestyle</a></li>' +
       "</ul></div>" +
       /* Solutions */
       '<div class="block text-center">' +
@@ -205,13 +197,6 @@
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_products_title">Products</h4>' +
       '<ul class="list-none space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/products/all/" class="hover:text-white transition-colors" data-i18n="nav_products">All Products</a></li>' +
-      '<li><a href="/products/coffee/" class="hover:text-white transition-colors" data-i18n="nav_products_coffee">Coffee Series</a></li>' +
-      '<li><a href="/products/tea/" class="hover:text-white transition-colors" data-i18n="nav_products_tea">Tea &amp; Milk Tea</a></li>' +
-      '<li><a href="/products/meal/" class="hover:text-white transition-colors" data-i18n="nav_products_meal">Meal Replacement</a></li>' +
-      '<li><a href="/products/beauty/" class="hover:text-white transition-colors" data-i18n="nav_products_beauty">Beauty &amp; Collagen</a></li>' +
-      '<li><a href="/products/weight/" class="hover:text-white transition-colors" data-i18n="nav_products_weight">Weight Management</a></li>' +
-      '<li><a href="/products/gut/" class="hover:text-white transition-colors" data-i18n="nav_products_gut">Gut Health</a></li>' +
-      '<li><a href="/products/lifestyle/" class="hover:text-white transition-colors" data-i18n="nav_products_lifestyle">Lifestyle</a></li>' +
       "</ul>" +
       "</div>" +
       /* Solutions */
@@ -232,7 +217,7 @@
       '<li><a href="/cases/" class="hover:text-white transition-colors" data-i18n="nav_cases">Case Studies</a></li>' +
       '<li><a href="/resources/catalog/" class="hover:text-white transition-colors" data-i18n="nav_resources">Resources</a></li>' +
       '<li><a href="/contact/" class="hover:text-white transition-colors" data-i18n="nav_contact">Contact Us</a></li>' +
-      '<li><a href="/about/" class="hover:text-white transition-colors" data-i18n="nav_about">About YuKoLi</a></li>' +
+      '<li><a href="/about/" class="hover:text-white transition-colors" data-i18n="nav_about">About Us</a></li>' +
       "</ul>" +
       "</div>" +
       /* Legal */

@@ -1,21 +1,25 @@
 <!doctype html>
-<html class="light" lang="en">
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Detail | Brand</title>
+        <noscript><link rel="stylesheet" href="/assets/css/styles.css" /></noscript>
+        <noscript><link rel="stylesheet" href="/assets/css/tailwind.css" /></noscript>
+
     <script src="/site.config.js" defer></script>
-    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script defer src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
 
     <meta charset="utf-8" />
     <meta name="description" content="" id="meta-description" />
-    <meta name="keywords" content="YuKoLi案例,OEM案例,ODM案例,健康食品代工" />
+    <meta name="keywords" content="Brand案例,OEM案例,ODM案例,健康食品代工" />
     <meta property="og:type" content="article" />
     <meta property="og:title" content="" id="og-title" />
     <meta property="og:description" content="" id="og-description" />
     <meta property="og:url" content="" id="og-url" />
-    <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
+    <meta property="og:image" content="/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="cases_page_title">Case Studies | {{brand}}</title>
-    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
       rel="preload"
       href="/assets/fonts/public-sans-latin-400-normal.woff2"
@@ -32,8 +36,10 @@
     />
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
     <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
-    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" /></noscript>
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" /></noscript>
     <script>
       (function () {
         if (localStorage.getItem("darkMode") === "true") document.documentElement.classList.add("dark");
@@ -43,137 +49,12 @@
     <link rel="stylesheet" href="/assets/css/skeleton.css" />
   </head>
   <body
-    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased transition-colors duration-300 overflow-x-clip"
-    data-case-variant="mobile"
+    class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased min-h-screen flex flex-col"
   >
-    <!-- Top Navigation Bar -->
-    <navigator
-      data-component="navigator"
-      data-swup-persist="nav"
-      data-variant="mobile"
-      data-active="cases"
-      data-cta-text-key="nav_get_quote"
-      data-cta-href="/contact/"
-    ></navigator>
-
-    <main id="spa-content">
-      <!-- Breadcrumb rendered by breadcrumb.js -->
-      <!-- ═══ Hero ═══ -->
-      <section
-        id="case-detail-hero"
-        class="fullwidth-bg hero-overlap relative py-10 overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-orange-100/30 dark:from-primary/10 dark:to-orange-900/20"
-      >
-        <div class="section-content">
-          <div id="breadcrumb-container"></div>
-          <div class="w-full">
-            <div id="case-hero-badges" class="flex flex-wrap items-center gap-1.5 mb-3"></div>
-            <h1 id="case-hero-title" class="text-2xl font-black leading-tight tracking-tight mb-3"></h1>
-            <blockquote
-              id="case-hero-quote"
-              class="text-sm text-slate-600 dark:text-slate-400 italic border-l-4 border-primary pl-3"
-            ></blockquote>
-            <div id="case-hero-metrics" class="flex flex-wrap gap-2 mt-5"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ Client Background ═══ -->
-      <section id="case-section-background" class="fullwidth-bg py-10">
-        <div class="section-content">
-          <div class="">
-            <h2 class="text-lg font-black mb-4" data-i18n="case_detail_background">客户背景</h2>
-            <div
-              id="case-background-content"
-              class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed space-y-3"
-            ></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ Pain Points ═══ -->
-      <section id="case-section-pain-points" class="fullwidth-bg py-10 bg-slate-50 dark:bg-slate-800/50">
-        <div class="section-content">
-          <div class="">
-            <h2 class="text-lg font-black mb-5 text-center" data-i18n="case_detail_pain_points">核心痛点</h2>
-            <div id="case-pain-points-grid" class="flex flex-col gap-4"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ Solution ═══ -->
-      <section id="case-section-solution" class="fullwidth-bg py-10">
-        <div class="section-content">
-          <div class="">
-            <h2 class="text-lg font-black mb-5 text-center" data-i18n="case_detail_solution">YuKoLi 方案</h2>
-            <div id="case-solution-grid" class="grid grid-cols-1 gap-3"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ Metrics ═══ -->
-      <section id="case-section-metrics" class="fullwidth-bg py-10 bg-primary text-white">
-        <div class="section-content">
-          <div class="">
-            <h2 class="text-lg font-black mb-5 text-center text-white" data-i18n="case_detail_metrics">关键数据</h2>
-            <div id="case-metrics-grid" class="grid grid-cols-2 gap-3"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ Results ═══ -->
-      <section id="case-section-results" class="fullwidth-bg py-10">
-        <div class="section-content">
-          <div class="">
-            <h2 class="text-lg font-black mb-5 text-center" data-i18n="case_detail_results">客户成果</h2>
-            <div id="case-results-grid" class="flex flex-col gap-4"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ Testimonial ═══ -->
-      <section id="case-section-testimonial" class="fullwidth-bg py-10 bg-primary/5 dark:bg-primary/10">
-        <div class="section-content">
-          <div class="text-center">
-            <span class="material-symbols-outlined text-4xl text-primary/30 mb-3">format_quote</span>
-            <blockquote
-              id="case-testimonial-text"
-              class="text-base font-semibold leading-relaxed text-slate-700 dark:text-slate-200 mb-3"
-            ></blockquote>
-            <cite id="case-testimonial-author" class="not-italic text-xs text-slate-500 dark:text-slate-400"></cite>
-          </div>
-        </div>
-      </section>
-
-      <!-- ═══ CTA ═══ -->
-      <section class="fullwidth-bg py-10 bg-primary">
-        <div class="section-content">
-          <div class="text-center">
-            <h2 class="text-xl font-black text-white mb-3" data-i18n="case_detail_cta_title">想要类似成果？</h2>
-            <p class="text-sm text-white/80 mb-5" data-i18n="case_detail_cta_desc">立即联系 YuKoLi 团队</p>
-            <a
-              href="/contact/"
-              class="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-xl font-bold text-sm hover:shadow-lg transition-all"
-            >
-              <span class="material-symbols-outlined">support_agent</span>
-              <span data-i18n="case_detail_cta_button">联系 YuKoLi 团队</span>
-            </a>
-          </div>
-        </div>
-      </section>
+    <navigator data-component="navigator" data-active="cases"></navigator>
+    <main id="spa-content" class="flex-1 pt-[var(--nav-height,65px)]">
+      <!-- Case detail content will be rendered by JS -->
     </main>
-
-    <!-- Footer -->
-    <footer data-component="footer" data-swup-persist="footer" data-variant="mobile" data-cta="true"></footer>
-
-    <!-- Scripts -->
-    <!-- SWUP SPA Router v4.9.0 -->
-    <script defer src="/assets/js/vendor/swup-bundle.umd.js?v=202605291142"></script>
-    <script defer src="/assets/js/page-init.js?v=202605291142"></script>
-    <script src="/assets/js/case-detail.js?v=202605291142" data-swup-script></script>
-    <script data-swup-script>
-      document.addEventListener("DOMContentLoaded", function () {
-        if (window.CaseDetail) CaseDetail.init("mobile");
-      });
-    </script>
+    <footer data-component="footer" data-active="cases"></footer>
   </body>
 </html>

@@ -147,7 +147,7 @@ cp "$SRC/index.html" "$DIST/index.html"
 # ─── 6.5. Replace %DOMAIN% placeholder ──────────────────────────
 python3 -c "
 import os
-DOMAIN = 'https://brew.yukoli.com'
+DOMAIN = 'https://example.com'
 for root in [os.environ['DIST'], os.environ['SRC']]:
     for r, d, fs in os.walk(root):
         for f in fs:

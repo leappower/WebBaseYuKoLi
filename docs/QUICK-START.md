@@ -1,12 +1,12 @@
 # 快速开始
 
-> 新开发者 5 分钟上手 BrewYuKoLi 项目。
+> 新开发者 5 分钟上手 BRAND_PROJECT 项目。
 
 ## 环境准备
 
 ```bash
 # 要求：Node.js ≥ 16, npm ≥ 8
-git clone <repo-url> && cd BrewYuKoLi
+git clone <repo-url> && cd BRAND_PROJECT
 npm install
 ```
 
@@ -21,7 +21,7 @@ npm start        # webpack dev server → http://localhost:3000
 ## 项目结构速览
 
 ```
-BrewYuKoLi/
+BRAND_PROJECT/
 ├── src/
 │   ├── pages/           # 页面 HTML（按 section / device 组织）
 │   ├── assets/

@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — 项目架构 v2.2 (BrewYuKoLi)
+# ARCHITECTURE.md — 项目架构 v2.2 (BRAND_PROJECT)
 
 > **最后更新**：2026-06-05
 > **当前架构**：SWUP SPA + SSG 三屏分离 + 骨架屏 CSS 过渡
@@ -240,9 +240,7 @@ src/pages/
 ├── home/                 (三屏: index-pc/mobile/tablet.html)
 ├── products/
 │   ├── all/ (三屏)
-│   ├── coffee/ (三屏)
-│   ├── tea/, meal/, beauty/, weight/, gut/, lifestyle/, legacy/ (三屏)
-│   └── detail/ (三屏 + index.html)
+│   └── index (三屏, 产品列表)
 ├── solutions/
 │   ├── oem/ (三屏)
 │   ├── odm/ (三屏)
@@ -251,17 +249,24 @@ src/pages/
 │   └── packaging/ (三屏)
 ├── manufacturing/ (三屏)
 ├── compliance/ (三屏)
-├── cases/ (三屏)
+├── cases/
+│   ├── index (三屏)
+│   └── detail/ (三屏)
 ├── resources/
 │   ├── catalog/ (三屏)
 │   ├── videos/ (三屏)
 │   └── whitepapers/ (三屏)
-├── support/ (三屏)
-├── about/, contact/, landing/, thank-you/ (三屏)
-└── applications/ (三屏)
+├── about/ (三屏)
+├── contact/ (三屏)
+├── thank-you/ (三屏)
+├── privacy/ (三屏)
+└── terms/ (三屏)
 ```
 
-总计: 88 个 SSG HTML 文件
+总计: 63 个 SSG HTML 文件
+
+> **脚手架说明**: 产品分类子页面（coffee/tea/meal 等）已移除。
+> 品牌项目根据需要自行添加产品分类页面，并在 site.config.js 的 `categories.products` 和 `nav.items[].children` 中定义。
 
 ### 5.2 build.sh 构建流程
 
@@ -380,27 +385,31 @@ npm run test:e2e         # Playwright
 
 ## 10. 产品分类与路由映射
 
-### 10.1 产品分类（健康产品线）
+### 10.1 产品分类（脚手架默认无分类）
 
-```
-categories.products (site.config.js):
-  all       → 全部产品
-  coffee    → 咖啡系列
-  tea       → 茶饮系列
-  meal      → 代餐系列
-  beauty    → 胶原养颜
-  weight    → 体重管理
-  gut       → 肠道健康
-  lifestyle → 功能冲饮
-  legacy    → 经典冲饮
+脚手架不预设产品分类。品牌项目在 `site.config.js` 中定义：
+
+```javascript
+categories: {
+  products: [
+    { slug: "category-slug", label: { en: "...", "zh-CN": "..." }, icon: "..." }
+  ],
+},
+nav: {
+  items: [{
+    id: "products",
+    children: [
+      { id: "category", label: {...}, href: "/products/category/" }
+    ]
+  }]
+}
 ```
 
 ### 10.2 路由映射
 
 ```
 /products/<slug>/  → /products/<slug>/index-{device}.html
-/<slug>/           → /products/<slug>/index-{device}.html (redirect)
-/products/<model>/ → /products/detail/index-{device}.html (PDP)
+/products/all/     → /products/all/index-{device}.html
 ```
 
 ---
@@ -408,23 +417,27 @@ categories.products (site.config.js):
 ## 附录: 目录结构
 
 ```
-BrewYuKoLi/
+BRAND_PROJECT/
 ├── src/
 │   ├── index.html                     ← SPA Shell
-│   ├── pages/                         ← 88 SSG 页面
+│   ├── pages/                         ← 63 SSG 页面
 │   │   ├── home/, products/, solutions/
 │   │   ├── manufacturing/, compliance/
-│   │   ├── cases/, resources/, support/
-│   │   └── about/, contact/, landing/, thank-you/
+│   │   ├── cases/, resources/
+│   │   └── about/, contact/, thank-you/, privacy/, terms/
 │   └── assets/
-│       ├── js/
+│       ├── js/                        ← ~77 业务 JS 模块
 │       │   ├── swup-init.js           ← SWUP 初始化
-│       │   ├── spa-router.js          ← 旧版 SPA Router (保留)
 │       │   ├── page-init.js, translations.js
-│       │   ├── product-grid.js, product-detail.js
-│       │   ├── ui/ (navigator, footer, ...)
+│       │   ├── product-grid.js, product-list.js
+│       │   ├── site.config.js         ← 品牌配置
+│       │   ├── ui/ (navigator, footer, mega-menu, ...)
+│       │   ├── lib/ (dom-utils, i18n-core, ...)
+│       │   ├── utils/ (device-utils, spa-events, ...)
 │       │   └── vendor/ (swup + plugins)
 │       ├── css/ (styles, skeleton, tailwind)
+│       ├── data/ (search-index.js)
+│       ├── templates/ (HTML 组件模板)
 │       └── lang/ (i18n JSON)
 ├── dist/                              ← 构建产物
 ├── docs/                              ← 项目文档

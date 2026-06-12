@@ -111,7 +111,7 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**根因**: 项目从 KitchenYuKoLi fork，继承了 IIFE + concat 模式。团队正确地将 CSS 迁移到了 Webpack + PostCSS，但 **JS 部分从未完成迁移**。
+**根因**: 项目从遗留代码库 fork，继承了 IIFE + concat 模式。团队正确地将 CSS 迁移到了 Webpack + PostCSS，但 **JS 部分从未完成迁移**。
 
 **影响**:
 - 没有 ESM → 没有 import/export → 一切靠全局变量 → 时序问题必然

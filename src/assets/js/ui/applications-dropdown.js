@@ -18,7 +18,7 @@
     var cats = _categories[categoryKey] || [];
     return cats.map(function (cat) {
       return {
-        key: cat.i18nKey || ("nav_" + categoryKey + "_" + cat.slug),
+        key: cat.i18nKey || "nav_" + categoryKey + "_" + cat.slug,
         label: cat.label || cat.i18nKey || cat.slug,
         icon: cat.icon || "circle",
         href: parentPath + (cat.slug || "") + "/",

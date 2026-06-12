@@ -70,189 +70,9 @@
   });
 
   // ─── Cross-sell: read from site.config.js ────────────────
-  var _fallbackCrossSell = {
-    coffee: [
-      { slug: "tea", reason: "Coffee + Tea — complete beverage line", highlight: "+100% beverage line" },
-      { slug: "beauty", reason: "Coffee + Beauty — internal wellness", highlight: "+50% avg. ticket" },
-      { slug: "meal", reason: "Coffee + Meal — healthy one-stop", highlight: "Scene expansion" },
-      { slug: "lifestyle", reason: "Coffee + Lifestyle — brand upgrade", highlight: "Brand upgrade" },
-    ],
-    tea: [
-      { slug: "coffee", reason: "Tea + Coffee — dual beverage lines", highlight: "+80% audience" },
-      { slug: "weight", reason: "Tea + Weight — popular combo", highlight: "+60% repurchase" },
-      { slug: "gut", reason: "Tea + Gut — probiotic tea trend", highlight: "New trend" },
-    ],
-    meal: [
-      { slug: "coffee", reason: "Meal + Coffee — breakfast combo", highlight: "Breakfast scene" },
-      { slug: "weight", reason: "Meal + Weight — core line", highlight: "Core category" },
-      { slug: "gut", reason: "Meal + Probiotics — balanced nutrition", highlight: "Balanced nutrition" },
-    ],
-    beauty: [
-      { slug: "coffee", reason: "Beauty + Coffee — collagen coffee", highlight: "Hot combo" },
-      { slug: "tea", reason: "Beauty + Herbal — natural beauty", highlight: "Natural concept" },
-      { slug: "weight", reason: "Beauty + Slim — dual solution", highlight: "Dual effect" },
-      { slug: "gut", reason: "Beauty + Gut — skin from within", highlight: "Inside-out" },
-    ],
-    weight: [
-      { slug: "meal", reason: "Weight + Meal — golden combo", highlight: "Gold pairing" },
-      { slug: "coffee", reason: "Weight + Black Coffee — boost metabolism", highlight: "Accelerate metabolism" },
-      { slug: "beauty", reason: "Weight + Beauty — slim & glow", highlight: "Slim & beauty" },
-      { slug: "lifestyle", reason: "Weight + Lifestyle — sustainable", highlight: "Sustainable" },
-    ],
-    gut: [
-      { slug: "meal", reason: "Gut + Meal — dual improvement", highlight: "Dual improvement" },
-      { slug: "tea", reason: "Gut + Tea — refreshing gut care", highlight: "Fresh gut care" },
-      { slug: "beauty", reason: "Gut + Beauty — skin health", highlight: "Skin improvement" },
-    ],
-    lifestyle: [
-      { slug: "coffee", reason: "Lifestyle + Coffee — daily essential", highlight: "Daily essential" },
-      { slug: "tea", reason: "Lifestyle + Tea — slow living", highlight: "Slow living" },
-      { slug: "weight", reason: "Lifestyle + Weight — health loop", highlight: "Health loop" },
-    ],
-  };
+  var _fallbackCrossSell = {}; // populate per project
 
-  var _fallbackScenes = {
-    coffee: [
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Build your coffee brand from 0 to 1 with OEM one-stop delivery",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Chain store consistent quality, standardized delivery",
-      },
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Health food brand, functional coffee customization",
-      },
-    ],
-    tea: [
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Tea brand from formula to packaging, full chain",
-      },
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Healthy tea series with natural functional customization",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Chain tea standardized output with stable supply chain",
-      },
-    ],
-    meal: [
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Healthy meal replacement with scientific nutrition formula",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Chain convenience store meal products, standardized mass production",
-      },
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Meal replacement brand from formula to market launch",
-      },
-    ],
-    beauty: [
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Beauty food brand customization from concept to mass production",
-      },
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Oral beauty line with collagen and functional foods",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Beauty chain brand standardized supply",
-      },
-    ],
-    weight: [
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Weight management food with low-calorie scientific formula",
-      },
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Fat loss brand OEM with differentiated formula",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Gym/convenience store standardized products",
-      },
-    ],
-    gut: [
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Probiotic food with viability assurance technology",
-      },
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Gut health brand with differentiated strain solutions",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Chain pharmacy/health food store supply",
-      },
-    ],
-    lifestyle: [
-      {
-        href: "/applications/brand-creation/",
-        slug: "brand-creation",
-        icon: "storefront",
-        desc: "Lifestyle brand customization, full-category health foods",
-      },
-      {
-        href: "/applications/chain-retail/",
-        slug: "chain-retail",
-        icon: "store",
-        desc: "Chain retail health food standardized supply",
-      },
-      {
-        href: "/applications/healthy-food/",
-        slug: "healthy-food",
-        icon: "eco",
-        desc: "Healthy living food series, daily nutrition supplement",
-      },
-    ],
-  };
+  var _fallbackScenes = {}; // populate per project
 
   var CROSS_SELL_MAP =
     (_cfg.crossSell || {}).map && Object.keys(_cfg.crossSell.map).length > 0 ? _cfg.crossSell.map : _fallbackCrossSell;
@@ -410,148 +230,7 @@
 
   // ─── Products page scene links (services) ─────────────────────
   // Product category pages show service scene links
-  var PRODUCTS_SERVICE_SCENE = {
-    coffee: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM service for coffee brands",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom packaging design for coffee",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-    tea: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM for tea brands",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom packaging design for tea",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-    meal: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM for meal replacement brands",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom portable packaging for meal replacement",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-    beauty: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM for beauty food",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom premium packaging for beauty products",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-    weight: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM for weight management",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom packaging for weight management",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-    gut: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM for probiotics",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom active packaging for probiotics",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-    lifestyle: [
-      {
-        href: "/solutions/oem/",
-        slug: "oem",
-        icon: "precision_manufacturing",
-        desc: "Private Label OEM for lifestyle foods",
-      },
-      {
-        href: "/solutions/packaging/",
-        slug: "packaging",
-        icon: "inventory_2",
-        desc: "Custom packaging for lifestyle brands",
-      },
-      {
-        href: "/solutions/quality/",
-        slug: "quality",
-        icon: "verified",
-        desc: "Halal / ISO / HACCP international quality certification",
-      },
-    ],
-  };
+  var PRODUCTS_SERVICE_SCENE = {}; // populate per project
 
   // Service labels for solutions cross-sell
   var SOLUTION_LABELS = {
@@ -584,12 +263,12 @@
 
   function isProductsCategoryPage() {
     var path = getPagePath();
-    return /^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle)(\/)?$/.test(path);
+    return /^\/products\/(all|[^/]+)(\/)?$/.test(path);
   }
 
   function detectCategorySlug() {
     var path = getPagePath();
-    var match = path.match(/^\/products\/(all|coffee|tea|meal|beauty|weight|gut|lifestyle)$/);
+    var match = path.match(/^\/products\/(all|[^/]+)$/);
     return match ? match[1] : null;
   }
 
@@ -972,7 +651,7 @@
 
   function trackPdpReferrer() {
     var path = (window.location.pathname || "/").replace(/\/$/, "");
-    if (/^\/products\/(coffee|tea|meal|beauty|weight|gut|lifestyle)$/.test(path)) {
+    if (/^\/products\/([^/]+)$/.test(path)) {
       try {
         sessionStorage.setItem("pdp_referrer", path);
       } catch (e) {}

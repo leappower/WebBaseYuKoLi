@@ -65,9 +65,13 @@
       this._ac = new AbortController();
       if (parentSignal) {
         var self = this;
-        parentSignal.addEventListener("abort", function () {
-          self.destroy();
-        }, { once: true });
+        parentSignal.addEventListener(
+          "abort",
+          function () {
+            self.destroy();
+          },
+          { once: true }
+        );
       }
     }
   }
@@ -92,7 +96,9 @@
   };
 
   Object.defineProperty(EventManager.prototype, "active", {
-    get: function () { return !this._ac.signal.aborted; }
+    get: function () {
+      return !this._ac.signal.aborted;
+    },
   });
 
   // ─── Expose ────────────────────────────────────────────────────

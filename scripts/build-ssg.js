@@ -12,13 +12,13 @@
  * server-side routing or SPA fallback (no .htaccess, no Express middleware).
  *
  * WITHOUT SSG (SPA mode):
- *   - User visits yukoli.com/catalog → GitHub Pages returns 404 (no such file)
+ *   - User visits example.com/catalog → GitHub Pages returns 404 (no such file)
  *   - SPA fallback (_redirects) doesn't work on GitHub Pages
  *   - Page refresh on any route breaks the site
  *   - Search engines may not index hash-based URLs (/#/catalog)
  *
  * WITH SSG (this script):
- *   - User visits yukoli.com/catalog/ → GitHub Pages serves dist/catalog/index.html ✅
+ *   - User visits example.com/catalog/ → GitHub Pages serves dist/catalog/index.html ✅
  *   - Page refresh works everywhere ✅
  *   - Each page has real <title>, <meta>, OG tags for SEO ✅
  *   - First contentful paint is faster (no JS routing needed) ✅
@@ -61,8 +61,8 @@
  *
  * ── URL EXAMPLES (GitHub Pages) ──────────────────────────────────
  *
- *   Before (SPA):   yukoli.com/catalog     → 404 on GitHub Pages
- *   After (SSG):    yukoli.com/catalog/    → serves /catalog/index.html
+ *   Before (SPA):   example.com/catalog     → 404 on GitHub Pages
+ *   After (SSG):    example.com/catalog/    → serves /catalog/index.html
  *
  *   Note: URLs without trailing slash (/home) are handled by 404.html,
  *   which redirects to /home/ (with slash) using JavaScript.
@@ -673,7 +673,7 @@ function generateSPAShell() {
     + '<head>\n'
     + '  <meta charset="UTF-8">\n'
     + '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-    + '  <link rel="canonical" href="https://brew.yukoli.com/home/">\n'
+    + '  <link rel="canonical" href="/home/">\n'
     + '  <script>window.location.replace("' + target + '");</script>\n'
     + '  <noscript><meta http-equiv="refresh" content="0;url=' + target + '"></noscript>\n'
     + '</head>\n'

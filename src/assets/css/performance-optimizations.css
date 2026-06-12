@@ -117,7 +117,7 @@
 
 /* Trust Bar CSS 已迁移至 styles.css */
 
-📝 示例: 动态添加 will-change 的 JavaScript 函数
+📝示例: 动态添加 will-change 的 JavaScript 函数;
 /*
 function startAnimation(element) {
   element.style.willChange = 'transform, opacity';

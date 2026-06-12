@@ -3,13 +3,13 @@
 <html class="light" lang="en">
   <head>
     <script src="/site.config.js" defer></script>
-    <script src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
+    <script defer src="/assets/js/utils/dom-utils.js?v=202605291142"></script>
 
     <meta charset="utf-8" />
     <meta
       data-i18n-meta="meta_products_all_description"
       name="description"
-      content="探索 YuKoLi 全系列冲调食品，咖啡、茶饮、代餐、胶原蛋白、体重管理、肠道健康、功能冲饮七大品类，按分类筛选，找到最适合您的 OEM/ODM 方案。"
+      content="探索 Brand 全系列冲调食品，咖啡、茶饮、代餐、胶原蛋白、体重管理、肠道健康、功能冲饮七大品类，按分类筛选，找到最适合您的 OEM/ODM 方案。"
     />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="All Products | {brand} Smart products manufacturing" />
@@ -17,12 +17,10 @@
       property="og:description"
       content="Explore {brand}'s full range of products OEM/ODM solutions. Filter by category or compare to find the best automation solution for your business."
     />
-    <meta property="og:url" content="https://brew.yukoli.com/products/all/" />
-    <meta property="og:image" content="https://brew.yukoli.com/assets/images/logo-header.webp" />
+    <meta property="og:url" content="/products/all/" />
+    <meta property="og:image" content="/assets/images/logo-header.webp" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title data-i18n="products_all_page_title">All Products | {brand} Smart products manufacturing</title>
-    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" />
-    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" />
     <link
       rel="preload"
       href="/assets/fonts/public-sans-latin-400-normal.woff2"
@@ -39,8 +37,10 @@
     />
     <link rel="preload" href="/assets/fonts/local-fonts.css" as="style" onload="this.rel = 'stylesheet'" />
     <noscript><link rel="stylesheet" href="/assets/fonts/local-fonts.css" /></noscript>
-    <link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" />
-    <link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" />
+    <link rel="preload" href="/assets/css/styles.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/styles.css?v=202605291142" /></noscript>
+    <link rel="preload" href="/assets/css/tailwind.css?v=202605291142" as="style" onload="this.rel=stylesheet" />
+    <noscript><link rel="stylesheet" href="/assets/css/tailwind.css?v=202605291142" /></noscript>
     <style>
       body {
         font-family: "Public Sans", sans-serif;
@@ -135,9 +135,9 @@
       {
         "@context": "https://schema.org",
         "@type": "CollectionPage",
-        "name": "YuKoLi Beverage & Instant Food - All Products",
-        "description": "Complete range of YuKoLi beverage and instant food products, covering Coffee & Beverage, Tea, Meal Replacement & Protein, Collagen, Weight Management, Gut Health, and Functional Drinks across 7 categories. Filter by category or compare to find the best OEM/ODM solution.",
-        "url": "https://brew.yukoli.com/products/all/"
+        "name": "Brand Beverage & Instant Food - All Products",
+        "description": "Complete range of Brand beverage and instant food products, covering Multiple Product Categories across multiple categories. Filter by category or compare to find the best OEM/ODM solution.",
+        "url": "/products/all/"
       }
     </script>
     <link rel="stylesheet" href="/assets/css/skeleton.css" />
@@ -332,7 +332,7 @@
                   <span data-i18n="products_cta_btn_quote">Get a Quote</span>
                 </a>
                 <button
-                  onclick="window.YuKoLiFAB && YuKoLiFAB.openWhatsApp('page-cta', 'wa_msg_products')"
+                  onclick="window.BrandFAB && BrandFAB.openWhatsApp('page-cta', 'wa_msg_products')"
                   class="bg-white text-primary px-10 py-5 rounded-xl font-black hover:brightness-110 transition-all shadow-xl shadow-primary/20"
                 >
                   <span data-i18n="products_cta_btn_contact">Contact Sales</span>
@@ -377,6 +377,5 @@
         scrollbar-width: none;
       }
     </style>
-
   </body>
 </html>

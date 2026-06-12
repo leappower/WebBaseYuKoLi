@@ -356,7 +356,10 @@
   function _refreshCompanyName(uiData) {
     var name =
       (uiData && core._interpolate(uiData.company_name)) || core._interpolate(_getFallbackTranslation("company_name"));
-    if ((!name || name === "company_name") && core.currentLanguage === "zh-CN") name = "佛山市跃迁力科技有限公司";
+    if ((!name || name === "company_name") && core.currentLanguage === "zh-CN")
+      name =
+        (window.SITE_CONFIG && window.SITE_CONFIG.company && window.SITE_CONFIG.company.legalName) ||
+        "Company Legal Name Co., Ltd.";
     if (name && name !== "company_name") {
       document.querySelectorAll('[data-i18n="company_name"]').forEach(function (el) {
         if (el.textContent !== name) el.textContent = name;

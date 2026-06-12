@@ -834,8 +834,7 @@
         "</p>"
       : "";
     var waHref =
-      "https://wa.me/" +
-      ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "8618565718814");
+      "https://wa.me/" + ((window.Contacts && window.Contacts.whatsapp) || (_cfg.contacts || {}).whatsapp || "");
 
     if (item.isWhatsApp) {
       return (
@@ -903,13 +902,6 @@
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 text-center" data-i18n="footer_products_title">Products</h4>' +
       '<ul class="list-none space-y-1 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/products/all/" class="hover:text-white transition-colors" data-i18n="nav_products">All Products</a></li>' +
-      '<li><a href="/products/coffee/" class="hover:text-white transition-colors" data-i18n="nav_products_coffee">Coffee</a></li>' +
-      '<li><a href="/products/tea/" class="hover:text-white transition-colors" data-i18n="nav_products_tea">Tea &amp; Milk Tea</a></li>' +
-      '<li><a href="/products/meal/" class="hover:text-white transition-colors" data-i18n="nav_products_meal">Meal Replacement</a></li>' +
-      '<li><a href="/products/beauty/" class="hover:text-white transition-colors" data-i18n="nav_products_beauty">Beauty</a></li>' +
-      '<li><a href="/products/weight/" class="hover:text-white transition-colors" data-i18n="nav_products_weight">Weight Management</a></li>' +
-      '<li><a href="/products/gut/" class="hover:text-white transition-colors" data-i18n="nav_products_gut">Gut Health</a></li>' +
-      '<li><a href="/products/lifestyle/" class="hover:text-white transition-colors" data-i18n="nav_products_lifestyle">Lifestyle</a></li>' +
       "</ul></div>" +
       /* Solutions */
       '<div class="block text-center">' +
@@ -962,13 +954,6 @@
       '<h4 class="text-xs sm:text-sm font-bold uppercase tracking-wider mb-2 sm:mb-4" data-i18n="footer_products_title">Products</h4>' +
       '<ul class="list-none space-y-1 sm:space-y-2 text-xs sm:text-sm text-slate-300">' +
       '<li><a href="/products/all/" class="hover:text-white transition-colors" data-i18n="nav_products">All Products</a></li>' +
-      '<li><a href="/products/coffee/" class="hover:text-white transition-colors" data-i18n="nav_products_coffee">Coffee Series</a></li>' +
-      '<li><a href="/products/tea/" class="hover:text-white transition-colors" data-i18n="nav_products_tea">Tea &amp; Milk Tea</a></li>' +
-      '<li><a href="/products/meal/" class="hover:text-white transition-colors" data-i18n="nav_products_meal">Meal Replacement</a></li>' +
-      '<li><a href="/products/beauty/" class="hover:text-white transition-colors" data-i18n="nav_products_beauty">Beauty &amp; Collagen</a></li>' +
-      '<li><a href="/products/weight/" class="hover:text-white transition-colors" data-i18n="nav_products_weight">Weight Management</a></li>' +
-      '<li><a href="/products/gut/" class="hover:text-white transition-colors" data-i18n="nav_products_gut">Gut Health</a></li>' +
-      '<li><a href="/products/lifestyle/" class="hover:text-white transition-colors" data-i18n="nav_products_lifestyle">Lifestyle</a></li>' +
       "</ul>" +
       "</div>" +
       /* Solutions */
@@ -989,7 +974,7 @@
       '<li><a href="/cases/" class="hover:text-white transition-colors" data-i18n="nav_cases">Case Studies</a></li>' +
       '<li><a href="/resources/catalog/" class="hover:text-white transition-colors" data-i18n="nav_resources">Resources</a></li>' +
       '<li><a href="/contact/" class="hover:text-white transition-colors" data-i18n="nav_contact">Contact Us</a></li>' +
-      '<li><a href="/about/" class="hover:text-white transition-colors" data-i18n="nav_about">About YuKoLi</a></li>' +
+      '<li><a href="/about/" class="hover:text-white transition-colors" data-i18n="nav_about">About Us</a></li>' +
       "</ul>" +
       "</div>" +
       /* Legal */
@@ -1143,7 +1128,7 @@
   });
 })(window);
 /**
- * floating-actions.js — Yukoli Floating Actions Component
+ * floating-actions.js — Floating Actions Component
  *
  * 功能：
  * - 回到顶部按钮（滚动 > threshold 时显示）
@@ -1171,9 +1156,7 @@
 
   var WHATSAPP_HREF =
     "https://wa.me/" +
-    ((window.Contacts && window.Contacts.whatsapp) ||
-      ((window.SITE_CONFIG || {}).contacts || {}).whatsapp ||
-      "8618565718814");
+    ((window.Contacts && window.Contacts.whatsapp) || ((window.SITE_CONFIG || {}).contact || {}).whatsappNumber || "");
   var SCROLL_THRESHOLD = 300;
 
   // 可通过 window 覆盖
@@ -1322,7 +1305,7 @@
 
   /**
    * Public API: open WhatsApp from any page CTA button.
-   * Usage: <button onclick="YuKoLiFAB.openWhatsApp('source','msg_key')">
+   * Usage: <button onclick="FloatingActions.openWhatsApp('source','msg_key')">
    * Falls back to opening WhatsApp directly if FAB not initialized.
    */
   FloatingActionsController.openWhatsApp = function (source, msgKey) {
@@ -1478,7 +1461,7 @@
   });
 
   window.FloatingActions = { mount: mount, openWhatsApp: FloatingActionsController.openWhatsApp };
-  window.YuKoLiFAB = { openWhatsApp: FloatingActionsController.openWhatsApp };
+  window.FAB = window.FloatingActions; // backward compat alias
 })(window);
 /**
  * currency.js — 多币种工具模块

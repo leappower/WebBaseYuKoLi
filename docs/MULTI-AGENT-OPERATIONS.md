@@ -2,7 +2,7 @@
 
 > **状态**：评审中 · **生效**：评审通过后
 > **适用范围**：所有 AI Agent（OpenClaw 子 agent）、人类开发者通过 agent 协作的场景
-> **来源**：BrewYuKoLi 项目实际落地经验 + subagent-orchestrator skill v2 通用规范
+> **来源**：BRAND_PROJECT 项目实际落地经验 + subagent-orchestrator skill v2 通用规范
 
 ---
 
@@ -71,7 +71,7 @@
 
 ```bash
 pwd
-# 必须是 /Users/chee/Projects/BrewYuKoLi/ 或其 worktree 子目录
+# 必须是 /Users/chee/Projects/BRAND_PROJECT/ 或其 worktree 子目录
 # 绝对不要在 homebrew、系统目录或其他项目中执行
 ```
 
@@ -83,7 +83,7 @@ pwd
 
 ```bash
 # 1. 确认主工作目录干净
-cd /Users/chee/Projects/BrewYuKoLi
+cd /Users/chee/Projects/BRAND_PROJECT
 git status --porcelain    # 必须为空
 
 # 2. 同步远端
@@ -99,7 +99,7 @@ git branch | grep "dev-"
 PROJECT_DIR=$(pwd)
 for suffix in a b c; do
   BRANCH="dev-feat-<描述>-${suffix}"
-  WT_DIR="../BrewYuKoLi-${suffix}"
+  WT_DIR="../BRAND_PROJECT-${suffix}"
   git worktree add "$WT_DIR" -b "$BRANCH"
   ln -sf "$PROJECT_DIR/node_modules" "$WT_DIR/node_modules"
   git push origin "$BRANCH"
@@ -133,7 +133,7 @@ done
 
 ```bash
 # 创建 worktree 后必须做 node_modules 符号链接
-ln -sf /Users/chee/Projects/BrewYuKoLi/node_modules /Users/chee/Projects/BrewYuKoLi-agent-a/node_modules
+ln -sf /Users/chee/Projects/BRAND_PROJECT/node_modules /Users/chee/Projects/BRAND_PROJECT-agent-a/node_modules
 
 # 如果主项目新增了 npm 依赖，需要在主仓库安装后重新链接
 npm install <pkg>   # 在主仓库执行
@@ -179,7 +179,7 @@ subagents(action=list)    # 检查活跃子 agent
 ## 任务：[简短描述]
 
 ### 工作环境
-- 工作目录：~/Projects/BrewYuKoLi-<suffix>（git worktree）
+- 工作目录：~/Projects/BRAND_PROJECT-<suffix>（git worktree）
 - 分支：dev-feat-<描述>（已 checkout，无需切换）
 - 拉取：git pull origin dev-feat-<描述>（确保最新）
 
@@ -484,17 +484,17 @@ docs/plan/
 
 ```yaml
 # 每15分钟定时汇报
-name: "brew-yukoli-15min-check"
+name: "brew-brand-project-15min-check"
 schedule:
   kind: "every"
   everyMs: 900000  # 15分钟 = 900000ms
 payload:
   kind: "agentTurn"
   message: |
-    执行 BrewYuKoLi 项目健康检查，输出当前状态简报。
+    执行 BRAND_PROJECT 项目健康检查，输出当前状态简报。
 
     检查清单：
-    1. cd ~/Projects/BrewYuKoLi
+    1. cd ~/Projects/BRAND_PROJECT
     2. git fetch origin --quiet 2>&1
     3. git status --short
     4. git log --since="15 minutes ago" --oneline --all --format="%h %s"
@@ -516,7 +516,7 @@ delivery:
 ### 4.2 简明汇报模板
 
 ```
-📊 BrewYuKoLi | YYYY-MM-DD HH:mm
+📊 BRAND_PROJECT | YYYY-MM-DD HH:mm
 
 ━━━━━━━━━━━━━━━━━━
 📦 最近15分钟产出
@@ -566,7 +566,7 @@ Agent-Z ⏳ 等待中
 ### 4.4 每日 18:00 完整报告 🟡
 
 ```yaml
-name: "brew-yukoli-daily-report"
+name: "brew-brand-project-daily-report"
 schedule:
   kind: "cron"
   expr: "0 18 * * 1-5"
@@ -574,7 +574,7 @@ schedule:
 payload:
   kind: "agentTurn"
   message: |
-    执行 BrewYuKoLi 日终完整报告。
+    执行 BRAND_PROJECT 日终完整报告。
     ...
     （同 4.1 格式 + 本周统计）
 sessionTarget: "isolated"
@@ -829,10 +829,10 @@ refactor/extract-config-bridge
 ### 7.4 工作目录命名约定 🟡
 
 ```bash
-../BrewYuKoLi-a/        # Agent A 的 worktree
-../BrewYuKoLi-b/        # Agent B 的 worktree
-../BrewYuKoLi-c/        # Agent C 的 worktree
-# 与分支后缀约定一致：dev-feat-xxx-a → BrewYuKoLi-a
+../BRAND_PROJECT-a/        # Agent A 的 worktree
+../BRAND_PROJECT-b/        # Agent B 的 worktree
+../BRAND_PROJECT-c/        # Agent C 的 worktree
+# 与分支后缀约定一致：dev-feat-xxx-a → BRAND_PROJECT-a
 ```
 
 ---
@@ -1301,9 +1301,9 @@ git push origin scaffold/v1.0
 
 **修复**：
 ```bash
-ls -la ../BrewYuKoLi-a/node_modules    # 检查符号链接
-ln -sf /Users/chee/Projects/BrewYuKoLi/node_modules ../BrewYuKoLi-a/node_modules
-cd /Users/chee/Projects/BrewYuKoLi && npm install  # 在主仓库安装
+ls -la ../BRAND_PROJECT-a/node_modules    # 检查符号链接
+ln -sf /Users/chee/Projects/BRAND_PROJECT/node_modules ../BRAND_PROJECT-a/node_modules
+cd /Users/chee/Projects/BRAND_PROJECT && npm install  # 在主仓库安装
 ```
 
 ### 10.2 子 Agent 改了不应该改的文件
@@ -1409,12 +1409,12 @@ cron action=runs <id>     # 查看运行历史
 # 用法: bash scripts/multi-agent-check.sh
 # 可由 cron 调用或手动执行
 
-echo "=== BrewYuKoLi 多 Agent 环境健康检查 ==="
+echo "=== BRAND_PROJECT 多 Agent 环境健康检查 ==="
 echo "检查时间: $(date '+%Y-%m-%d %H:%M:%S')"
 echo ""
 
 # ── 0. 工作目录检查 ──
-PROJECT_DIR="/Users/chee/Projects/BrewYuKoLi"
+PROJECT_DIR="/Users/chee/Projects/BRAND_PROJECT"
 if [ "$(pwd)" != "$PROJECT_DIR" ]; then
   cd "$PROJECT_DIR" 2>/dev/null || {
     echo "❌ 无法进入项目目录: $PROJECT_DIR"
@@ -1898,7 +1898,7 @@ git diff dev <branch> -- src/assets/js/<修改的文件>
     │     └─ git push origin scaffold/v1.0
     │
     └── ④ 清理 worktree
-          ├─ git worktree remove ../BrewYuKoLi-xxx --force
+          ├─ git worktree remove ../BRAND_PROJECT-xxx --force
           └─ git branch -D dev-feat-xxx
 ```
 
@@ -1907,7 +1907,7 @@ git diff dev <branch> -- src/assets/js/<修改的文件>
 | 超时时间 | 处理 |
 |---------|------|
 | 1 分钟无消息 | 不处理（预热时间） |
-| 3 分钟无产出文件 | `find ../BrewYuKoLi-xxx -name "*.js" -mmin -3` 检查 |
+| 3 分钟无产出文件 | `find ../BRAND_PROJECT-xxx -name "*.js" -mmin -3` 检查 |
 | 5 分钟无产出（卡住） | `subagents(action=kill, target=...)` → 主 agent 自行完成 |
 | 10 分钟仍在运行 | `sessions_history(sessionKey)` 查看日志 |
 
@@ -1961,7 +1961,7 @@ echo "2026-05-23: Agent dev-feat-xxx 失败 - 任务描述不精确,
 ## 16. 从业界最佳实践汲取的规范建议（评审报告）
 
 > **来源**: Google eng-practices (Code Review), Kubernetes Community (Contributing Guide), Angular (CONTRIBUTING.md), Conventional Commits, Google JS Style Guide
-> **用途**: 这些是外部最佳实践与当前 BrewYuKoLi 规范的对比, 待评审后决定是否纳入
+> **用途**: 这些是外部最佳实践与当前 BRAND_PROJECT 规范的对比, 待评审后决定是否纳入
 
 ### 16.1 当前规范已经做得好的
 
@@ -2164,12 +2164,12 @@ Angular 明确规定:
 
 > **架构原则**：MLL 文档定义「单脑多手」—— `glm-5-turbo` 是唯一的 Agent（大脑），其他模型都是工具（手），只接收 prompt 返回结果，不参与对话决策。
 > 
-> **BrewYuKoLi 项目特性**：本项目是静态多页面官网 + Express 后端，前端不直接调用 AI 模型 API。多模型使用场景集中在 **代码开发过程中的 Agent 协作**，而非产品运行时。
+> **BRAND_PROJECT 项目特性**：本项目是静态多页面官网 + Express 后端，前端不直接调用 AI 模型 API。多模型使用场景集中在 **代码开发过程中的 Agent 协作**，而非产品运行时。
 
 ### 18.1 项目场景路由（哪些需要多模型，哪些不需要）
 
 ```text
-┌─ BrewYuKoLi 开发流程中 Agent 的模型使用场景 ──────────────────┐
+┌─ BRAND_PROJECT 开发流程中 Agent 的模型使用场景 ──────────────────┐
 │                                                                  │
 │  Agent 代码开发                             无需多模型           │
 │  ├── 主 Agent 统筹/评审                   ✓ 固定在 glm-5-turbo  │
@@ -2296,7 +2296,7 @@ Angular 明确规定:
 
 **特别注意**: 主 Agent（glm-5-turbo）**不参与 Falback 链降级**。如果主 Key 限流 → 切 Zhipu2 备用 Key。如果两个 Key 都不可用 → 报告人类。主 Agent 不能用执行模型替代。
 
-### 18.5 Token 预算管理（BrewYuKoLi 项目特化）
+### 18.5 Token 预算管理（BRAND_PROJECT 项目特化）
 
 | 任务类型 | Token 预算 | 超限处理 |
 |---------|-----------|---------|
@@ -2317,11 +2317,11 @@ IF 同子 Agent 失败 2 次  →  不再重派, 主 Agent 自行完成
 IF 15 分钟内需 >6 个子 Agent  →  分批, 每批 ≤6 个, 批间等 30 秒
 ```
 
-### 18.6 多模型工作流：具体到 BrewYuKoLi 项目
+### 18.6 多模型工作流：具体到 BRAND_PROJECT 项目
 
 #### 工作流 1：代码双审（Write + Review）
 
-**适用**: 前端代码修改、新功能实现、重构（BrewYuKoLi 最常用的多模型场景）
+**适用**: 前端代码修改、新功能实现、重构（BRAND_PROJECT 最常用的多模型场景）
 
 ```
 主 Agent（glm-5-turbo）整理需求 + 代码上下文

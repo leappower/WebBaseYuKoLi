@@ -13,4 +13,4 @@
  *     All runtime JS is loaded directly by pages via <script defer> tags.
  *     See src/index.html (SPA shell) for the complete script manifest.
  */
-import './assets/css/styles.css';
+import "./assets/css/styles.css";

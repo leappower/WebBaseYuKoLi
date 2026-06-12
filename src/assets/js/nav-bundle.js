@@ -2018,14 +2018,6 @@
     news: "contact",
     "thank-you": "contact",
     all: "products",
-    coffee: "products",
-    tea: "products",
-    meal: "products",
-    beauty: "products",
-    weight: "products",
-    gut: "products",
-    lifestyle: "products",
-    legacy: "products",
     oem: "solutions",
     rd: "solutions",
     packaging: "solutions",
@@ -2226,7 +2218,7 @@
       'src="' +
       basePath +
       '/assets/images/logo-footer.webp" ' +
-      'alt="Yukoli" width="32" height="32" ' +
+      'alt="Logo" width="32" height="32" ' +
       'style="width:32px;height:32px;object-fit:contain" />' +
       "</a>" +
       "</div>" +
@@ -2566,7 +2558,7 @@
       'src="' +
       basePath +
       '/assets/images/logo-footer.webp" ' +
-      'alt="Yukoli" width="44" height="44" ' +
+      'alt="Logo" width="44" height="44" ' +
       'style="width:44px;height:44px;object-fit:contain" />' +
       "</a>" +
       '<nav class="hidden md:flex items-center gap-4 lg:gap-8">' +
@@ -4126,7 +4118,7 @@
       '/home/">' +
       '<img src="' +
       basePath +
-      '/assets/images/logo-footer.webp" alt="Yukoli" width="32" height="32" />' +
+      '/assets/images/logo-footer.webp" alt="Logo" width="32" height="32" />' +
       "</a>" +
       '<button id="mobile-menu-close" type="button" class="mobile-menu-close" aria-label="Close menu">' +
       '<span class="material-symbols-outlined">close</span>' +

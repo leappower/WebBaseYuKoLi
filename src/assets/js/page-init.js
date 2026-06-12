@@ -20,8 +20,7 @@
      SECTION 1: CONSTANTS & CONFIGURATION
      ═══════════════════════════════════════════════════════════════════ */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
-  var WHATSAPP_NUMBER =
-    (_cfg.contacts || {}).whatsapp || (window.Contacts && window.Contacts.whatsapp) || "8618565718814";
+  var WHATSAPP_NUMBER = (_cfg.contacts || {}).whatsapp || (window.Contacts && window.Contacts.whatsapp) || "";
   var _routes = (_cfg.routes || {}).pages || {};
   var PAGES = Object.freeze({
     home: _routes.home || "/home/",
@@ -143,7 +142,7 @@
      ═══════════════════════════════════════════════════════════════════ */
   function wireWhatsAppLinks() {
     var wa = document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp"]');
-    var href = whatsappHref(__safe.t("whatsapp_default_msg") || "Hello Yukoli, I need support.");
+    var href = whatsappHref(__safe.t("whatsapp_default_msg") || "Hello, I need support.");
     for (var i = 0; i < wa.length; i++) {
       var link = wa[i];
       var current = link.getAttribute("href") || "";

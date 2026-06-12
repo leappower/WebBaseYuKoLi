@@ -15,6 +15,16 @@
   "use strict";
 
   /* ================================================================
+   *  Config Bridge (DEV-STANDARDS 3.1)
+   * ================================================================ */
+
+  var _cfg = global.SITE_CONFIG || global._cfg || {};
+  var _brand = _cfg.brand || {};
+  var _theme = _cfg.theme || {};
+  var _colors = _theme.colors || {};
+  var _primary = _colors.primary || "#2E7D32";
+
+  /* ================================================================
    *  工具（从 DropdownBase 借用）
    * ================================================================ */
 
@@ -351,15 +361,18 @@
     var gridHtml = "";
 
     if (navId === "products") {
-      var allCard = renderProductCard({
-        key: "all",
-        name: resolveLabel({ en: "All Products", "zh-CN": "全部产品" }),
-        icon: "grid_view",
-        emoji: "📋",
-        accent: "coral",
-        desc: resolveLabel({ en: "Browse all product categories", "zh-CN": "浏览全部产品分类" }),
-        href: (global.BASE_PATH || "") + "/products/all/",
-      }, global.BASE_PATH || "");
+      var allCard = renderProductCard(
+        {
+          key: "all",
+          name: resolveLabel({ en: "All Products", "zh-CN": "全部产品" }),
+          icon: "grid_view",
+          emoji: "📋",
+          accent: "coral",
+          desc: resolveLabel({ en: "Browse all product categories", "zh-CN": "浏览全部产品分类" }),
+          href: (global.BASE_PATH || "") + "/products/all/",
+        },
+        global.BASE_PATH || ""
+      );
       gridHtml = allCard + "\n" + renderProductCardsHtml();
     } else if (navItem.children && navItem.children.length > 0) {
       var basePathLocal = basePath;

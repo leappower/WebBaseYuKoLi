@@ -1,12 +1,12 @@
 /**
- * YuKoLi Lead Form Gate
+ * Lead Form Gate
  * Intercepts PDF download buttons with a lead capture modal.
  * ES5 / IIFE — no let/const/arrow/template-literal.
  */
 (function () {
   "use strict";
 
-  var STORAGE_KEY = "yukoli_leads";
+  var STORAGE_KEY = "lead_form_data";
   var BRAND_COLOR = "#2E7D32";
   var GAS_FORM_URL = window.SITE_CONFIG && window.SITE_CONFIG.forms && window.SITE_CONFIG.forms.gasUrl;
 
@@ -278,7 +278,7 @@
 
   /* ---- public API: bind download buttons ---- */
 
-  window.YuKoLiLeadForm = {
+  window.LeadForm = {
     init: function (selector) {
       selector = selector || "[data-lead-pdf]";
       var buttons = document.querySelectorAll(selector);
@@ -301,13 +301,13 @@
   /* auto-init on DOMContentLoaded */
   if (typeof Boot !== "undefined") {
     Boot.register("lead-form", 4, function () {
-      window.YuKoLiLeadForm.init();
+      window.LeadForm.init();
     });
   } else if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", function () {
-      window.YuKoLiLeadForm.init();
+      window.LeadForm.init();
     });
   } else {
-    window.YuKoLiLeadForm.init();
+    window.LeadForm.init();
   }
 })();

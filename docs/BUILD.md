@@ -39,7 +39,7 @@ PORT=3099 node server.js
 # http://localhost:3099/home/
 
 # 带 base path（通过 Caddy 反代时用 BASE_PATH 指定）
-PORT=3097 BASE_PATH=/brew node server.js
+PORT=3000 BASE_PATH=/brew node server.js
 # 通过 Caddy 反代后访问：https://192.168.3.181:3443/home/
 ```
 
@@ -47,8 +47,8 @@ PORT=3097 BASE_PATH=/brew node server.js
 |------|------|------|------|
 | 3000 | Webpack Dev Server (HMR) | HTTP | http://localhost:3000 |
 | 3099 | Express 静态服务 (默认) | HTTP | http://localhost:3099 |
-| 3097 | Express 静态服务 (Brew 专用) | HTTP | http://localhost:3097 |
-| 3443 | Caddy HTTPS 反代 → 3097 | HTTPS | https://192.168.3.181:3443/home/ |
+| 3000 | Express 静态服务 (Brew 专用) | HTTP | http://localhost:3000 |
+| 3443 | Caddy HTTPS 反代 → 3000 | HTTPS | https://192.168.3.181:3443/home/ |
 
 ---
 
@@ -263,11 +263,11 @@ node scripts/verify-static-build.js
 ```bash
 # 构建镜像
 npm run docker:build
-# 等同于：docker build -t html-yuql .
+# 等同于：docker build -t brand-project .
 
 # 运行容器（端口 3000）
 npm run docker:run
-# 等同于：docker run -p 3000:3000 html-yuql
+# 等同于：docker run -p 3000:3000 brand-project
 ```
 
 ### Dockerfile 说明

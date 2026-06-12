@@ -15,7 +15,7 @@
 // Fallback 语言数据（与 site.config.js i18n.languages 保持同步）
 // ─────────────────────────────────────────────────────────────────────────────
 var _FALLBACK_LANGUAGES = [
-  { code: "en", nativeName: "English", englishName: "English", sortOrder: 0, hasTranslation: true }
+  { code: "en", nativeName: "English", englishName: "English", sortOrder: 0, hasTranslation: true },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -80,10 +80,14 @@ function getNativeNames(filter) {
 // Node.js 环境
 if (typeof module !== "undefined" && module.exports) {
   function getSupportedCodes(filter) {
-    return getLangs(filter).map(function (l) { return l.code; });
+    return getLangs(filter).map(function (l) {
+      return l.code;
+    });
   }
   function getAllCodes() {
-    return LANGUAGES.map(function (l) { return l.code; });
+    return LANGUAGES.map(function (l) {
+      return l.code;
+    });
   }
   function getEnglishNames(filter) {
     return getLangs(filter).reduce(function (acc, l) {

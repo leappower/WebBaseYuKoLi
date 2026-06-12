@@ -1,5 +1,5 @@
 /**
- * product-builder.js — YuKoLi Product Brief Builder
+ * product-builder.js — Product Brief Builder
  *
  * Interactive form component for Contact page.
  * Replaces the traditional static form with a card-based builder interface.
@@ -30,16 +30,7 @@
   var _cfg = global.SITE_CONFIG || global._cfg || {};
 
   // Product category definitions (emoji + label for tags)
-  var CATEGORIES = [
-    { slug: "coffee", emoji: "☕", label: "Coffee Series", labelCn: "咖啡系列" },
-    { slug: "tea", emoji: "🍵", label: "Tea & Milk Tea", labelCn: "茶饮系列" },
-    { slug: "meal", emoji: "🥤", label: "Meal Replacement", labelCn: "代餐系列" },
-    { slug: "beauty", emoji: "✨", label: "Beauty Collagen", labelCn: "胶原养颜" },
-    { slug: "weight", emoji: "⚖️", label: "Weight Management", labelCn: "体重管理" },
-    { slug: "gut", emoji: "🫘", label: "Gut Health", labelCn: "肠道健康" },
-    { slug: "lifestyle", emoji: "🍃", label: "Lifestyle Drinks", labelCn: "功能冲饮" },
-    { slug: "legacy", emoji: "📖", label: "Legacy Classics", labelCn: "经典冲饮" },
-  ];
+  var CATEGORIES = []; // populate per project
 
   // Country → phone prefix mapping
   var COUNTRY_CODES = {
@@ -157,16 +148,15 @@
     var mode = state.mode || "";
     var cats = state.categories || [];
 
-    if (mode === "oem" && cats.indexOf("coffee") !== -1) {
+    if (mode === "oem" && cats.length > 0) {
       return (
-        __safe.t("product_builder_smartmatch_oem_coffee") ||
-        "Your OEM Coffee inquiry matches our specialty: 200+ coffee recipes, certified organic options."
+        __safe.t("product_builder_smartmatch_oem") ||
+        "Your OEM inquiry matches our specialty. Our team will provide tailored recommendations."
       );
     }
-    if (mode === "odm" && cats.indexOf("meal") !== -1) {
+    if (mode === "odm" && cats.length > 0) {
       return (
-        __safe.t("product_builder_smartmatch_odm_meal") ||
-        "ODM Meal Replacement is our fastest-growing category! We can prepare 3-5 formula samples for your review."
+        __safe.t("product_builder_smartmatch_odm") || "Our ODM team can prepare 3-5 formula samples for your review."
       );
     }
     if (mode === "obm") {

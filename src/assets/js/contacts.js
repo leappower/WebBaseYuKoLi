@@ -32,7 +32,7 @@
    */
   var _cfg = window.SITE_CONFIG || window._cfg || {};
   var _social = (_cfg.contacts || {}).social || {};
-  var WHATSAPP_NUMBER = (_cfg.contacts || {}).whatsapp || "8618565718814";
+  var WHATSAPP_NUMBER = (_cfg.contacts || {}).whatsapp || "";
 
   // ============================================
   // WHATSAPP SOURCE TRACKING
@@ -91,7 +91,7 @@
    * Message format:
    *   [自然需求描述]
    *   ---
-   *   yukoli.com/path [source]
+   *   example.com/path [source]
    *
    * @param {Object} opts
    * @param {string} [opts.message] - User-facing natural language message (from data-wa-message or custom)

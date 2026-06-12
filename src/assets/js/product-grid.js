@@ -10,7 +10,7 @@
   }
 
   var STORE_KEY = "PRODUCT_DATA_TABLE";
-  var COMPARE_KEY = "YUKOLI_COMPARE_ITEMS";
+  var COMPARE_KEY = "COMPARE_ITEMS";
   var MAX_COMPARE = 3;
 
   // ─── Compare helpers ───────────────────────────────────────────
